@@ -1,0 +1,2818 @@
+* TODO A faire [3/6]
+  * [X] Installer FxT 
+  * [X] Compiler StarPU MPI avec FxT
+  * [X] Installation swirl
+  * [ ] Apprendre R [0/3]
+    * [ ] BLABLA
+    * [ ] BLABLA
+    * [ ] BLABLA
+  * [ ] Apprendre à utiliser grid5000
+    oarsub, kadeploy, kaenv3
+  * [X] Installer simgrid
+  * [ ] linker example de samuel avec starpu et simgrid
+* Memo
+** Commandes emacs
+C-c C-h : raccourcis associé au mode utilisé
+C-c C-e : Ouvre menu avec possibilité d'exporter en html, latex, etc...
+* 2014
+** 2014-12 décembre
+*** 2014-12-15 lundi
+**** Installation starpu
+     #+begin_src R :results output :session :exports both
+     summary(cars)
+     #+end_src
+
+Entered on [2014-12-15 lun. 12:47]
+
+***** Essai starpu de la forge
+Lancement du configure
+#+begin_src sh :results output :exports both
+  cd ~/Programmation/C/IMAG/TER/starpu
+  ./configure
+#+end_src
+
+#+RESULTS:
+#+begin_example
+checking build system type... x86_64-unknown-linux-gnu
+checking host system type... x86_64-unknown-linux-gnu
+checking target system type... x86_64-unknown-linux-gnu
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking whether make supports nested variables... (cached) yes
+checking for style of include used by make... GNU
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking dependency style of gcc... gcc3
+checking for ar... ar
+checking the archiver (ar) interface... ar
+checking for gcc... (cached) gcc
+checking whether we are using the GNU C compiler... (cached) yes
+checking whether gcc accepts -g... (cached) yes
+checking for gcc option to accept ISO C89... (cached) none needed
+checking whether gcc understands -c and -o together... (cached) yes
+checking dependency style of gcc... (cached) gcc3
+checking for g++... g++
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking dependency style of g++... gcc3
+checking how to run the C preprocessor... gcc -E
+checking for a sed that does not truncate output... /usr/bin/sed
+checking whether ln -s works... yes
+checking for g77... no
+checking for xlf... no
+checking for f77... no
+checking for frt... no
+checking for pgf77... no
+checking for cf77... no
+checking for fort77... no
+checking for fl32... no
+checking for af77... no
+checking for xlf90... no
+checking for f90... no
+checking for pgf90... no
+checking for pghpf... no
+checking for epcf90... no
+checking for gfortran... no
+checking for g95... no
+checking for xlf95... no
+checking for f95... no
+checking for fort... no
+checking for ifort... no
+checking for ifc... no
+checking for efc... no
+checking for pgfortran... no
+checking for pgf95... no
+checking for lf95... no
+checking for ftn... no
+checking for nagfor... no
+checking whether we are using the GNU Fortran 77 compiler... no
+checking whether  accepts -g... no
+checking for gstat... no
+checking for stat... stat
+checking for gdate... no
+checking for date... date
+checking how to print strings... printf
+checking for a sed that does not truncate output... (cached) /usr/bin/sed
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by gcc... /usr/bin/ld
+checking if the linker (/usr/bin/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking the maximum length of command line arguments... 1635000
+checking whether the shell understands some XSI constructs... yes
+checking whether the shell understands "+="... yes
+checking how to convert x86_64-unknown-linux-gnu file names to x86_64-unknown-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-unknown-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /usr/bin/ld option to reload object files... -r
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for archiver @FILE support... @
+checking for strip... strip
+checking for ranlib... ranlib
+checking command to parse /usr/bin/nm -B output from gcc object... ok
+checking for sysroot... no
+checking for mt... no
+checking if : is a manifest tool... no
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if gcc supports -fno-rtti -fno-exceptions... no
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking if gcc PIC flag -fPIC -DPIC works... yes
+checking if gcc static flag -static works... yes
+checking if gcc supports -c -o file.o... yes
+checking if gcc supports -c -o file.o... (cached) yes
+checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking how to run the C++ preprocessor... g++ -E
+checking for ld used by g++... /usr/bin/ld -m elf_x86_64
+checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking for g++ option to produce PIC... -fPIC -DPIC
+checking if g++ PIC flag -fPIC -DPIC works... yes
+checking if g++ static flag -static works... yes
+checking if g++ supports -c -o file.o... yes
+checking if g++ supports -c -o file.o... (cached) yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether ln -s works... yes
+checking for ANSI C header files... (cached) yes
+checking for C/C++ restrict keyword... __restrict
+checking for bash... /bin/sh
+checking for svn... /usr/bin/svn
+checking for svnversion... /usr/bin/svnversion
+checking for lib... no
+checking size of void *... 8
+checking for pthread_create in -lpthread... yes
+checking for library containing sqrt... -lm
+checking for main in -lws2_32... no
+checking for sysconf... yes
+checking for pthread_spin_lock... yes
+checking for pthread_barrier_init... yes
+checking for pthread_setaffinity_np... yes
+checking for posix_memalign... yes
+checking for memalign... yes
+checking for drand48... yes
+checking for erand48_r... yes
+checking for strerror_r... yes
+checking for setenv... yes
+checking for unsetenv... yes
+checking for nearbyintf... yes
+checking for rintf... yes
+checking malloc.h usability... yes
+checking malloc.h presence... yes
+checking for malloc.h... yes
+checking valgrind/valgrind.h usability... yes
+checking valgrind/valgrind.h presence... yes
+checking for valgrind/valgrind.h... yes
+checking valgrind/helgrind.h usability... yes
+checking valgrind/helgrind.h presence... yes
+checking for valgrind/helgrind.h... yes
+checking for sched_yield... yes
+checking aio.h usability... yes
+checking aio.h presence... yes
+checking for aio.h... yes
+checking for mkstemps... yes
+checking for pread... yes
+checking for pwrite... yes
+checking whether the target supports __sync_val_compare_and_swap... yes
+checking whether the target supports __sync_bool_compare_and_swap... yes
+checking whether the target supports __sync_fetch_and_add... yes
+checking whether the target supports __sync_fetch_and_or... yes
+checking whether the target supports __sync_lock_test_and_set... yes
+checking whether the target supports __sync_synchronize... yes
+checking for library containing set_mempolicy... no
+checking whether libnuma is available... no
+checking maximum number of sched_ctxs... 10
+checking maximum number of CPUs... 64
+checking whether CPUs should be used... yes
+checking maximum number of CUDA devices... 4
+checking whether CUDA is available... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /usr/local/cuda... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /c/cuda... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /cygdrive/c/cuda... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /opt/cuda... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /..... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /..... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /..... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /..... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is working... no
+checking whether CUDA should be used... no
+checking for pkg-config... /usr/bin/pkg-config
+checking pkg-config is at least version 0.9.0... yes
+checking whether MAGMA should be used... no
+checking for cufftDoubleComplex... no
+checking whether CURAND is available... no
+checking maximum number of OpenCL devices... 8
+checking whether OpenCL is available... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL is available in /usr/local/cuda no and no... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL is available in /c/cuda no and no... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL is available in /cygdrive/c/cuda no and no... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL is available in /opt/cuda no and no... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL is available in /.. no and no... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking for clEnqueueMarkerWithWaitList... no
+checking whether OpenCL should be used... no
+checking whether asynchronous copy should be disabled... no
+checking whether asynchronous CUDA copy should be disabled... no
+checking whether asynchronous OpenCL copy should be disabled... no
+checking whether asynchronous MIC copy should be disabled... no
+checking whether SimGrid is enabled... no
+checking whether blocking drivers should be enabled... no
+checking maximum number of MIC devices... 4
+checking maximum number of MIC threads... 
+checking RCCE.h usability... no
+checking RCCE.h presence... no
+checking for RCCE.h... no
+checking for RCCE_init in -lRCCE_bigflags_nongory_nopwrmgmt... no
+checking whether RCCE should be used... no
+checking Maximum number of message-passing kernels... 10
+checking whether debug mode should be enabled... no
+checking whether extra checks should be performed... no
+checking whether debug messages should be displayed... no
+checking whether coverage testing should be enabled... no
+checking whether FxT traces should be generated... no
+checking whether additional locking systems FxT traces should be enabled... no
+checking whether performance debugging should be enabled... no
+checking whether performance model debugging should be enabled... no
+checking whether statistics should be generated... no
+checking whether memory stats should be displayed... no
+checking glpk.h usability... no
+checking glpk.h presence... no
+checking for glpk.h... no
+checking for main in -lglpk... no
+checking Ayudame.h usability... no
+checking Ayudame.h presence... no
+checking for Ayudame.h... no
+checking how many buffers can be manipulated per task... 8
+checking maximum number of nodes to use... checking maximum number of memory nodes... 8
+checking whether allocation cache should be used... yes
+checking using explicit performance model location... no
+checking performance models location... $HOME/.starpu/sampling/
+checking for clock_gettime in -lrt... yes
+checking for clock_gettime... yes
+checking Maximum number of workers... 64
+checking Maximum number of workers combinations... 64
+checking maximum number of implementations... 4
+checking leveldb/db.h usability... no
+checking leveldb/db.h presence... no
+checking for leveldb/db.h... no
+checking for main in -lleveldb... no
+checking calibration heuristic of history-based StarPU calibrator... 50
+checking for mpicc... /usr/bin/mpicc
+checking mpicc path... /usr/bin/mpicc
+checking for mpiexec... /usr/bin/mpiexec
+checking whether mpiexec is available... /usr/bin/mpiexec
+checking whether MPI tests should be run... yes
+checking whether the StarPU MPI library should be generated... yes
+checking for StarPU-Top... checking for qmake-qt4... /usr/bin/qmake-qt4
+checking whether compiler support -Wall... yes
+checking whether compiler support -Werror=implicit... yes
+checking whether compiler support -Werror=implicit-function-declaration... yes
+checking whether GCC supports plug-ins... no
+checking for OpenMP runtime support... no
+checking for SOCL... no
+checking for gdb... /usr/bin/gdb
+checking whether OpenGL rendering is enabled... no
+checking for X... libraries , headers 
+checking for gethostbyname... yes
+checking for connect... yes
+checking for remove... yes
+checking for shmat... yes
+checking for IceConnectionNumber in -lICE... yes
+checking for library containing sgemm_... -lblas
+checking which BLAS lib should be used... system
+checking for FFTW... yes
+checking for FFTWF... yes
+checking for FFTWL... yes
+checking for HWLOC... yes
+checking whether hwloc should be used... yes
+checking f77.h usability... no
+checking f77.h presence... no
+checking for f77.h... no
+checking for icc... no
+checking for help2man... no
+checking for struct cudaDeviceProp.pciDomainID... no
+checking for struct cudaDeviceProp.pciBusID... no
+checking for doxygen... /usr/bin/doxygen
+checking for pdflatex... /usr/bin/pdflatex
+checking for epstopdf... /usr/bin/epstopdf
+checking whether documentation should be compiled... yes
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating tests/regression/regression.sh
+config.status: creating tests/regression/profiles
+config.status: creating tests/regression/profiles.build.only
+config.status: creating Makefile
+config.status: creating src/Makefile
+config.status: creating tools/Makefile
+config.status: creating tools/starpu_codelet_profile
+config.status: creating tools/starpu_codelet_histo_profile
+config.status: creating tools/starpu_workers_activity
+config.status: creating tools/starpu_paje_draw_histogram
+config.status: creating tools/starpu_paje_state_stats
+config.status: creating tools/starpu_paje_summary
+config.status: creating socl/Makefile
+config.status: creating socl/src/Makefile
+config.status: creating socl/examples/Makefile
+config.status: creating socl/vendors/socl.icd
+config.status: creating socl/vendors/install/socl.icd
+config.status: creating libstarpu.pc
+config.status: creating starpu-1.0.pc
+config.status: creating starpu-1.1.pc
+config.status: creating starpu-1.2.pc
+config.status: creating mpi/libstarpumpi.pc
+config.status: creating mpi/starpumpi-1.0.pc
+config.status: creating mpi/starpumpi-1.1.pc
+config.status: creating mpi/starpumpi-1.2.pc
+config.status: creating starpufft/Makefile
+config.status: creating starpufft/src/Makefile
+config.status: creating starpufft/tests/Makefile
+config.status: creating starpufft/libstarpufft.pc
+config.status: creating starpufft/starpufft-1.0.pc
+config.status: creating starpufft/starpufft-1.1.pc
+config.status: creating starpufft/starpufft-1.2.pc
+config.status: creating examples/Makefile
+config.status: creating examples/stencil/Makefile
+config.status: creating tests/Makefile
+config.status: creating tests/loader-cross.sh
+config.status: creating mpi/Makefile
+config.status: creating mpi/src/Makefile
+config.status: creating mpi/tests/Makefile
+config.status: creating mpi/examples/Makefile
+config.status: creating starpu-top/StarPU-Top.pro
+config.status: creating starpu-top/StarPU-Top-qwt-embed.pri
+config.status: creating starpu-top/StarPU-Top-qwt-system.pri
+config.status: creating gcc-plugin/Makefile
+config.status: creating gcc-plugin/src/Makefile
+config.status: creating gcc-plugin/tests/Makefile
+config.status: creating gcc-plugin/tests/run-test
+config.status: creating gcc-plugin/examples/Makefile
+config.status: creating sc_hypervisor/Makefile
+config.status: creating sc_hypervisor/src/Makefile
+config.status: creating sc_hypervisor/examples/Makefile
+config.status: creating doc/Makefile
+config.status: creating doc/doxygen/Makefile
+config.status: creating doc/doxygen/doxygen-config.cfg
+config.status: creating doc/doxygen/doxygen_filter.sh
+config.status: creating tools/msvc/starpu_var.bat
+config.status: creating src/common/config.h
+config.status: src/common/config.h is unchanged
+config.status: creating include/starpu_config.h
+config.status: include/starpu_config.h is unchanged
+config.status: creating gcc-plugin/include/starpu-gcc/config.h
+config.status: gcc-plugin/include/starpu-gcc/config.h is unchanged
+config.status: creating starpu-top/config.h
+config.status: starpu-top/config.h is unchanged
+config.status: executing depfiles commands
+config.status: executing libtool commands
+config.status: executing executable-scripts commands
+configure:
+
+	CPUs   enabled: yes
+	CUDA   enabled: no
+	OpenCL enabled: no
+	SCC    enabled: no
+	MIC    enabled: no
+
+	Compile-time limits
+	(change these with --enable-maxcpus, --enable-maxcudadev,
+	--enable-maxopencldev, --enable-maxmicdev, --enable-maxnodes,
+        --enable-maxbuffers)
+        (Note these numbers do not represent the number of detected
+	devices, but the maximum number of devices StarPU can manage)
+
+	Maximum number of CPUs:           64
+	Maximum number of CUDA devices:   0
+	Maximum number of OpenCL devices: 0
+	Maximum number of SCC devices:    0
+	Maximum number of MIC threads:    0
+	Maximum number of memory nodes:   8
+	Maximum number of task buffers:   8
+
+	GPU-GPU transfers: no
+	Allocation cache:  yes
+
+	Magma enabled:     no
+	BLAS library:      system
+	hwloc:             yes
+	FxT trace enabled: no
+	StarPU-Top:        yes
+
+        Documentation:     yes
+        Examples:          yes
+
+	StarPU Extensions:
+	       MPI enabled:                                 yes
+	       MPI test suite:                              yes
+	       FFT Support:                                 yes
+	       GCC plug-in:                                 no
+	       GCC plug-in test suite (requires GNU Guile): no
+	       OpenMP runtime support enabled:              no
+	       SOCL enabled:                                no
+               SOCL test suite:                             no
+               Scheduler Hypervisor:                        no
+               simgrid enabled:                             no
+               ayudame enabled:                             no
+
+#+end_example
+
+Tentative de compilation de l'archive de la forge
+#+begin_src sh :results output :exports both
+  cd ~/Programmation/C/IMAG/TER/starpu
+  make
+#+end_src
+
+Erreurs de compilation
+#+begin_src R :results output :session :exports both
+Warning: Tag `SYMBOL_CACHE_SIZE' at line 370 of file `../../doc/doxygen/doxygen.cfg' has become obsolete.
+         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
+Warning: Tag `XML_SCHEMA' at line 1507 of file `../../doc/doxygen/doxygen.cfg' has become obsolete.
+         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
+Warning: Tag `XML_DTD' at line 1513 of file `../../doc/doxygen/doxygen.cfg' has become obsolete.
+         To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/10scheduling_context_hypervisor.doxy:78: warning: explicit link request to 'STARPU_HYPERVISOR_TAG' could not be resolved
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/10scheduling_context_hypervisor.doxy:112: warning: unable to resolve reference to `UsersInputInTheResizingProcess' for \ref command
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/18mic_scc_support.doxy:43: warning: unable to resolve reference to `STARPU_MIC_SINK_PROGRAM_NAME' for \ref command
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/18mic_scc_support.doxy:45: warning: unable to resolve reference to `STARPU_MIC_SINK_PROGRAM_PATH' for \ref command
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/41configure_options.doxy:129: warning: explicit link request to 'STARPU_MAXCPUS' could not be resolved
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/41configure_options.doxy:248: warning: explicit link request to 'STARPU_MAXIMPLEMENTATIONS' could not be resolved
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/41configure_options.doxy:257: warning: explicit link request to 'STARPU_NMAX_SCHED_CTXS' could not be resolved
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/api/mpi.doxy:273: warning: explicit link request to 'STARPU_NODE_SELECTION_POLICY' could not be resolved
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/api/scheduling_contexts.doxy:47: warning: unable to resolve reference to `STARPU_NMAX_SCHED_CTXS' for \ref command
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/api/scheduling_contexts.doxy:101: warning: unable to resolve reference to `STARPU_NMAX_SCHED_CTXS' for \ref command
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/api/scheduling_contexts.doxy:130: warning: explicit link request to 'STARPU_NMAX_SCHED_CTXS' could not be resolved
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/api/standard_memory_library.doxy:92: warning: The following parameters of starpu_memory_allocate(unsigned node, size_t size, int flags) are not documented:
+  parameter 'flags'
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/api/workers.doxy:123: warning: unable to resolve reference to `STARPU_MAXCPUS' for \ref command
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/00introduction.doxy:277: warning: unable to resolve reference to `ModuleDocumentation' for \ref command
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/00introduction.doxy:278: warning: unable to resolve reference to `FileDocumentation' for \ref command
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/00introduction.doxy:277: warning: unable to resolve reference to `ModuleDocumentation' for \ref command
+/home/steven/Programmation/C/IMAG/TER/trunk/doc/doxygen/chapters/00introduction.doxy:278: warning: unable to resolve reference to `FileDocumentation' for \ref command
+#+end_src
+
+On me dis que certaines instructions dans le fichier doxygen.cfg sont
+obselètes.
+Je tente une mise à jour du fichier
+#+begin_src sh :results output :exports both
+  cd ~/Programmation/C/IMAG/TER/trunk/docs/doxygen/
+  doxygen -u doxygen.cfg
+#+end_src
+
+#+begin_src R :results output :session :exports both
+  Warning: Tag `SYMBOL_CACHE_SIZE' at line 370 of file `doxygen.cfg' has become obsolete.
+           This tag has been removed.
+  Warning: Tag `XML_SCHEMA' at line 1507 of file `doxygen.cfg' has become obsolete.
+           This tag has been removed.
+  Warning: Tag `XML_DTD' at line 1513 of file `doxygen.cfg' has become obsolete.
+           This tag has been removed.
+
+
+  Configuration file `doxygen.cfg' updated.
+#+end_src
+
+En lançant le make la compile ne passait pas car il manquait un fichier latex xtab.sty
+En installant texlive-latexextra la compile est passé
+#+begin_src sh :results output :exports both
+  yaourt -S texlive-latexextra
+#+end_src
+
+Maintenant, le starpu récupéré sur la forge fonctionne aussi
+Apparement des fichiers texlive était manquant empêchant la
+compilation de se terminer.
+
+***** Essai starpu récupérer sur le site
+Autre essaie à partir du tar.gz
+Apparemment les 4 commandes suivantes ne servent pas à la compilation
+de starpu
+#+begin_src sh :results output :exports both
+  export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:~/Programmation/C/starpu-1.1.3/
+  export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:~/Programmation/C/starpu-1.1.3/mpi/
+  pkg-config --cflags starpumpi-1.1
+  pkg-config --libs starpumpi-1.1
+#+end_src
+
+#+RESULTS:
+: -I/usr/local/include/starpu/1.1 -I/usr/include/libxml2 
+: -L/usr/local/lib -lstarpumpi-1.1 -lstarpu-1.1 -lhwloc 
+
+Lancement du configure
+#+begin_src sh :results output :exports both
+  cd ~/Programmation/C/starpu-1.1.3
+  ./configure
+#+end_src
+#+RESULTS:
+#+begin_example
+checking build system type... x86_64-unknown-linux-gnu
+checking host system type... x86_64-unknown-linux-gnu
+checking target system type... x86_64-unknown-linux-gnu
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking whether make supports nested variables... (cached) yes
+checking for style of include used by make... GNU
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking dependency style of gcc... gcc3
+checking for ar... ar
+checking the archiver (ar) interface... ar
+checking for gcc... (cached) gcc
+checking whether we are using the GNU C compiler... (cached) yes
+checking whether gcc accepts -g... (cached) yes
+checking for gcc option to accept ISO C89... (cached) none needed
+checking whether gcc understands -c and -o together... (cached) yes
+checking dependency style of gcc... (cached) gcc3
+checking for g++... g++
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking dependency style of g++... gcc3
+checking how to run the C preprocessor... gcc -E
+checking for a sed that does not truncate output... /usr/bin/sed
+checking whether ln -s works... yes
+checking for g77... no
+checking for xlf... no
+checking for f77... no
+checking for frt... no
+checking for pgf77... no
+checking for cf77... no
+checking for fort77... no
+checking for fl32... no
+checking for af77... no
+checking for xlf90... no
+checking for f90... no
+checking for pgf90... no
+checking for pghpf... no
+checking for epcf90... no
+checking for gfortran... no
+checking for g95... no
+checking for xlf95... no
+checking for f95... no
+checking for fort... no
+checking for ifort... no
+checking for ifc... no
+checking for efc... no
+checking for pgfortran... no
+checking for pgf95... no
+checking for lf95... no
+checking for ftn... no
+checking for nagfor... no
+checking whether we are using the GNU Fortran 77 compiler... no
+checking whether  accepts -g... no
+checking how to print strings... printf
+checking for a sed that does not truncate output... (cached) /usr/bin/sed
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by gcc... /usr/bin/ld
+checking if the linker (/usr/bin/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking the maximum length of command line arguments... 1635000
+checking whether the shell understands some XSI constructs... yes
+checking whether the shell understands "+="... yes
+checking how to convert x86_64-unknown-linux-gnu file names to x86_64-unknown-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-unknown-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /usr/bin/ld option to reload object files... -r
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for archiver @FILE support... @
+checking for strip... strip
+checking for ranlib... ranlib
+checking command to parse /usr/bin/nm -B output from gcc object... ok
+checking for sysroot... no
+checking for mt... no
+checking if : is a manifest tool... no
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if gcc supports -fno-rtti -fno-exceptions... no
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking if gcc PIC flag -fPIC -DPIC works... yes
+checking if gcc static flag -static works... yes
+checking if gcc supports -c -o file.o... yes
+checking if gcc supports -c -o file.o... (cached) yes
+checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... yes
+checking how to run the C++ preprocessor... g++ -E
+checking for ld used by g++... /usr/bin/ld -m elf_x86_64
+checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking for g++ option to produce PIC... -fPIC -DPIC
+checking if g++ PIC flag -fPIC -DPIC works... yes
+checking if g++ static flag -static works... yes
+checking if g++ supports -c -o file.o... yes
+checking if g++ supports -c -o file.o... (cached) yes
+checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether ln -s works... yes
+checking for ANSI C header files... (cached) yes
+checking for C/C++ restrict keyword... __restrict
+checking for bash... /bin/sh
+checking for svnversion... /usr/bin/svnversion
+checking for lib... no
+checking size of void *... 8
+checking for pthread_create in -lpthread... yes
+checking for library containing sqrt... -lm
+checking for main in -lws2_32... no
+checking for sysconf... yes
+checking for pthread_spin_lock... yes
+checking for pthread_barrier_init... yes
+checking for pthread_setaffinity_np... yes
+checking for posix_memalign... yes
+checking for memalign... yes
+checking for drand48... yes
+checking for erand48_r... yes
+checking for strerror_r... yes
+checking for setenv... yes
+checking for unsetenv... yes
+checking for nearbyintf... yes
+checking for rintf... yes
+checking malloc.h usability... yes
+checking malloc.h presence... yes
+checking for malloc.h... yes
+checking valgrind/valgrind.h usability... yes
+checking valgrind/valgrind.h presence... yes
+checking for valgrind/valgrind.h... yes
+checking valgrind/helgrind.h usability... yes
+checking valgrind/helgrind.h presence... yes
+checking for valgrind/helgrind.h... yes
+checking for sched_yield... yes
+checking whether the target supports __sync_val_compare_and_swap... yes
+checking whether the target supports __sync_bool_compare_and_swap... yes
+checking whether the target supports __sync_fetch_and_add... yes
+checking whether the target supports __sync_fetch_and_or... yes
+checking whether the target supports __sync_lock_test_and_set... yes
+checking whether the target supports __sync_synchronize... yes
+checking for library containing set_mempolicy... no
+checking whether libnuma is available... no
+checking maximum number of sched_ctxs... 10
+checking maximum number of CPUs... 64
+checking whether CPUs should be used... yes
+checking maximum number of CUDA devices... 4
+checking whether CUDA is available... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /usr/local/cuda... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /c/cuda... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /cygdrive/c/cuda... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /opt/cuda... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /..... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /..... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /..... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is available in /..... 
+checking cuda.h usability... no
+checking cuda.h presence... no
+checking for cuda.h... no
+checking whether CUDA is working... no
+checking whether CUDA should be used... no
+checking for pkg-config... /usr/bin/pkg-config
+checking pkg-config is at least version 0.9.0... yes
+checking whether MAGMA should be used... no
+checking for cufftDoubleComplex... no
+checking whether CURAND is available... no
+checking maximum number of OpenCL devices... 8
+checking whether OpenCL is available... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL is available in /usr/local/cuda no and no... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL is available in /c/cuda no and no... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL is available in /cygdrive/c/cuda no and no... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL is available in /opt/cuda no and no... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL is available in /.. no and no... 
+checking CL/cl.h usability... no
+checking CL/cl.h presence... no
+checking for CL/cl.h... no
+checking whether OpenCL should be used... no
+checking whether asynchronous copy should be disabled... no
+checking whether asynchronous CUDA copy should be disabled... no
+checking whether asynchronous OpenCL copy should be disabled... no
+checking whether SimGrid is enabled... no
+checking whether blocking drivers should be disabled... no
+checking whether debug mode should be enabled... no
+checking whether extra checks should be performed... no
+checking whether debug messages should be displayed... no
+checking whether coverage testing should be enabled... no
+checking whether FxT traces should be generated... no
+checking whether performance debugging should be enabled... no
+checking whether performance model debugging should be enabled... no
+checking whether statistics should be generated... no
+checking whether memory stats should be displayed... no
+checking glpk.h usability... no
+checking glpk.h presence... no
+checking for glpk.h... no
+checking for main in -lglpk... no
+checking Ayudame.h usability... no
+checking Ayudame.h presence... no
+checking for Ayudame.h... no
+checking how many buffers can be manipulated per task... 8
+checking maximum number of memory nodes... 1
+checking whether allocation cache should be used... yes
+checking using explicit performance model location... no
+checking performance models location... $HOME/.starpu/sampling/
+checking for clock_gettime in -lrt... yes
+checking for clock_gettime... yes
+checking Maximum number of workers... 80
+checking maximum number of implementations... 8
+checking for mpicc... /usr/bin/mpicc
+checking mpicc path... /usr/bin/mpicc
+checking for mpiexec... /usr/bin/mpiexec
+checking whether mpiexec is available... /usr/bin/mpiexec
+checking whether MPI tests should be run... no
+checking whether the StarPU MPI library should be generated... yes
+checking for StarPU-Top... checking for qmake-qt4... /usr/bin/qmake-qt4
+checking whether compiler support -W... yes
+checking whether compiler support -Wall... yes
+checking whether compiler support -Wextra... yes
+checking whether compiler support -Werror=implicit... yes
+checking whether GCC supports plug-ins... no
+checking for SOCL... no
+checking for gdb... /usr/bin/gdb
+checking whether OpenGL rendering is enabled... no
+checking for X... libraries , headers 
+checking for gethostbyname... yes
+checking for connect... yes
+checking for remove... yes
+checking for shmat... yes
+checking for IceConnectionNumber in -lICE... yes
+checking for library containing sgemm_... -lblas
+checking which BLAS lib should be used... system
+checking for FFTW... yes
+checking for FFTWF... yes
+checking for FFTWL... yes
+checking for HWLOC... yes
+checking whether hwloc should be used... yes
+checking f77.h usability... no
+checking f77.h presence... no
+checking for f77.h... no
+checking for icc... no
+checking for help2man... no
+checking for struct cudaDeviceProp.pciDomainID... no
+checking for struct cudaDeviceProp.pciBusID... no
+checking for doxygen... /usr/bin/doxygen
+checking for pdflatex... /usr/bin/pdflatex
+checking for epstopdf... /usr/bin/epstopdf
+checking whether documentation should be compiled... yes
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating tests/regression/regression.sh
+config.status: creating tests/regression/profiles
+config.status: creating tests/regression/profiles.build.only
+config.status: creating Makefile
+config.status: creating src/Makefile
+config.status: creating tools/Makefile
+config.status: creating tools/starpu_codelet_profile
+config.status: creating tools/starpu_codelet_histo_profile
+config.status: creating tools/starpu_workers_activity
+config.status: creating tools/starpu_paje_draw_histogram
+config.status: creating tools/starpu_paje_state_stats
+config.status: creating tools/starpu_paje_summary
+config.status: creating socl/Makefile
+config.status: creating socl/src/Makefile
+config.status: creating socl/examples/Makefile
+config.status: creating socl/vendors/socl.icd
+config.status: creating socl/vendors/install/socl.icd
+config.status: creating libstarpu.pc
+config.status: creating starpu-1.0.pc
+config.status: creating starpu-1.1.pc
+config.status: creating mpi/libstarpumpi.pc
+config.status: creating mpi/starpumpi-1.0.pc
+config.status: creating mpi/starpumpi-1.1.pc
+config.status: creating starpufft/Makefile
+config.status: creating starpufft/src/Makefile
+config.status: creating starpufft/tests/Makefile
+config.status: creating starpufft/libstarpufft.pc
+config.status: creating starpufft/starpufft-1.0.pc
+config.status: creating starpufft/starpufft-1.1.pc
+config.status: creating examples/Makefile
+config.status: creating examples/stencil/Makefile
+config.status: creating tests/Makefile
+config.status: creating mpi/Makefile
+config.status: creating mpi/src/Makefile
+config.status: creating mpi/tests/Makefile
+config.status: creating mpi/examples/Makefile
+config.status: creating starpu-top/StarPU-Top.pro
+config.status: creating starpu-top/StarPU-Top-qwt-embed.pri
+config.status: creating starpu-top/StarPU-Top-qwt-system.pri
+config.status: creating gcc-plugin/Makefile
+config.status: creating gcc-plugin/src/Makefile
+config.status: creating gcc-plugin/tests/Makefile
+config.status: creating gcc-plugin/tests/run-test
+config.status: creating gcc-plugin/examples/Makefile
+config.status: creating sc_hypervisor/Makefile
+config.status: creating sc_hypervisor/src/Makefile
+config.status: creating sc_hypervisor/examples/Makefile
+config.status: creating doc/Makefile
+config.status: creating doc/doxygen/Makefile
+config.status: creating doc/doxygen/doxygen-config.cfg
+config.status: creating doc/doxygen/doxygen_filter.sh
+config.status: creating tools/mvsc/starpu_var.bat
+config.status: creating src/common/config.h
+config.status: src/common/config.h is unchanged
+config.status: creating include/starpu_config.h
+config.status: include/starpu_config.h is unchanged
+config.status: creating gcc-plugin/include/starpu-gcc/config.h
+config.status: gcc-plugin/include/starpu-gcc/config.h is unchanged
+config.status: creating starpu-top/config.h
+config.status: starpu-top/config.h is unchanged
+config.status: executing depfiles commands
+config.status: executing libtool commands
+config.status: executing executable-scripts commands
+configure:
+
+	CPUs   enabled: yes
+	CUDA   enabled: no
+	OpenCL enabled: no
+
+	Compile-time limits
+	(change these with --enable-maxcpus, --enable-maxcudadev,
+	--enable-maxopencldev, --enable-maxbuffers)
+        (Note these numbers do not represent the number of detected
+	devices, but the maximum number of devices StarPU can manage)
+
+	Maximum number of CPUs:           64
+	Maximum number of CUDA devices:   4
+	Maximum number of OpenCL devices: 8
+	Maximum number of memory nodes:   1
+	Maximum number of task buffers:   8
+
+	GPU-GPU transfers: no
+	Allocation cache:  yes
+
+	Magma enabled:     no
+	BLAS library:      system
+	hwloc:             yes
+	FxT trace enabled: no
+	StarPU-Top:        yes
+
+        Documentation:     yes
+        Examples:          yes
+
+	StarPU Extensions:
+	       MPI enabled:                                 yes
+	       MPI test suite:                              no
+	       FFT Support:                                 yes
+	       GCC plug-in:                                 no
+	       GCC plug-in test suite (requires GNU Guile): no
+	       SOCL enabled:                                no
+               SOCL test suite:                             no
+               Scheduler Hypervisor:                        no
+               simgrid enabled:                             no
+               ayudame enabled:                             no
+
+#+end_example
+
+*** 2014-12-16 mardi
+**** Installation Fxt
+#+begin_src sh :session foo :results output :exports both 
+  cd ~/Programmation/TER
+  wget http://download.savannah.gnu.org/releases/fkt/fxt-0.3.0.tar.gz
+#+end_src
+
+#+begin_src sh :session foo :results output :exports both 
+  cd ~/Programmation/TER/fxt-0.3.0/
+  mkdir build
+  cd build
+  ./configure --prefix=$FXTDIR
+  make 
+  make install
+#+end_src
+
+
+#+begin_src R :results output :session :exports both
+  Making install in tools
+  make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/tools »
+  make  install-am
+  make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/tools »
+  make[3] : on entre dans le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/tools »
+   /usr/bin/mkdir -p '/lib'
+   /bin/sh ../libtool   --mode=install /usr/bin/install -c   libfxt.la '/lib'
+  libtool: install: /usr/bin/install -c .libs/libfxt.so.0.0.0 /lib/libfxt.so.0.0.0
+  libtool: install: (cd /lib && { ln -s -f libfxt.so.0.0.0 libfxt.so.0 || { rm -f libfxt.so.0 && ln -s libfxt.so.0.0.0 libfxt.so.0; }; })
+  libtool: install: (cd /lib && { ln -s -f libfxt.so.0.0.0 libfxt.so || { rm -f libfxt.so && ln -s libfxt.so.0.0.0 libfxt.so; }; })
+  libtool: install: /usr/bin/install -c .libs/libfxt.lai /lib/libfxt.la
+  libtool: install: /usr/bin/install -c .libs/libfxt.a /lib/libfxt.a
+  libtool: install: chmod 644 /lib/libfxt.a
+  libtool: install: ranlib /lib/libfxt.a
+  libtool: finish: PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/build-tools/19/:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/steven/Programmation/android-sdk-linux/tools:/sbin" ldconfig -n /lib
+  ----------------------------------------------------------------------
+  Libraries have been installed in:
+     /lib
+
+  If you ever happen to want to link against installed libraries
+  in a given directory, LIBDIR, you must either use libtool, and
+  specify the full pathname of the library, or use the `-LLIBDIR'
+  flag during linking and do at least one of the following:
+     - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+       during execution
+     - add LIBDIR to the `LD_RUN_PATH' environment variable
+       during linking
+     - use the `-Wl,-rpath -Wl,LIBDIR' linker flag
+     - have your system administrator add LIBDIR to `/etc/ld.so.conf'
+
+  See any operating system documentation about shared libraries for
+  more information, such as the ld(1) and ld.so(8) manual pages.
+  ----------------------------------------------------------------------
+   /usr/bin/mkdir -p '/bin'
+    /bin/sh ../libtool   --mode=install /usr/bin/install -c fxt_print fkt_record fkt_setmask fkt_extract fkt_print fkt_select '/bin'
+  libtool: install: /usr/bin/install -c .libs/fxt_print /bin/fxt_print
+  libtool: install: /usr/bin/install -c .libs/fkt_record /bin/fkt_record
+  libtool: install: /usr/bin/install -c fkt_setmask /bin/fkt_setmask
+  libtool: install: /usr/bin/install -c fkt_extract /bin/fkt_extract
+  libtool: install: /usr/bin/install -c .libs/fkt_print /bin/fkt_print
+  libtool: install: /usr/bin/install -c fkt_select /bin/fkt_select
+   /usr/bin/mkdir -p '/bin'
+   /usr/bin/install -c ../../tools/sigmund '/bin'
+  set -e; \
+  cd /bin ; \
+   rm -f fkt_disable ; ln -s fkt_setmask fkt_disable ;  rm -f fkt_enable ; ln -s fkt_setmask fkt_enable ;  rm -f fkt_probe0 ; ln -s fkt_setmask fkt_probe0 ;
+  make  install-exec-hook
+  make[4] : on entre dans le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/tools »
+  make[4]: rien à faire pour « install-exec-hook ».
+  make[4] : on quitte le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/tools »
+   /usr/bin/mkdir -p '/include'
+   /usr/bin/install -c -m 644 ../../tools/fxt-tools.h ../../tools/fxt.h fut.h '/include'
+   /usr/bin/mkdir -p '/include/fxt'
+   /usr/bin/install -c -m 644 ../../tools/fxt-tools.h ../../tools/fxt.h fut.h '/include/fxt'
+  make[3] : on quitte le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/tools »
+  make[2] : on quitte le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/tools »
+  make[1] : on quitte le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/tools »
+  Making install in doc
+  make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/doc »
+  make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/doc »
+  make[2]: rien à faire pour « install-exec-am ».
+   /usr/bin/mkdir -p '/share/doc/fxt'
+   /usr/bin/install -c -m 644 ../../doc/manuel.pdf '/share/doc/fxt'
+  make[2] : on quitte le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/doc »
+  make[1] : on quitte le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build/doc »
+  make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build »
+  make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build »
+  make[2]: rien à faire pour « install-exec-am ».
+   /usr/bin/mkdir -p '/lib/pkgconfig'
+   /usr/bin/install -c -m 644 fxt.pc '/lib/pkgconfig'
+  make[2] : on quitte le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build »
+  make[1] : on quitte le répertoire « /home/steven/Programmation/TER/fxt-0.3.0/build »
+
+  #+end_src
+
+Définition des flags de compilation pour compiler StarPU avec FxT
+#+begin_src sh :results output :exports both
+  pkg-config --cflags fxt
+  pkg-config --libs fxt
+#+end_src
+
+#+RESULTS:
+: -I/include 
+: -lfxt 
+2014-12-17 mer.
+Recompilation de starpu avec FxT
+#+begin_src sh :results output :exports both
+  cd Programmation/TER/starpu/
+  ./configure --with-fxt
+#+end_src
+
+**** Test mpi choleski
+    #+begin_src sh :results output :exports both
+     export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:~/Programmation/TER/trunk/
+     export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:~/Programmation/TER/trunk/mpi/
+     pkg-config --cflags starpumpi-1.1
+     pkg-config --libs starpumpi-1.1
+    #+end_src
+
+    #+RESULTS:
+    : -I/usr/local/include/starpu/1.2 -I/usr/include/libxml2 
+    : -L/usr/local/lib -lstarpumpi-1.2 -lstarpu-1.2 -lhwloc 
+    
+**** DONE Installation de swirl
+     Le paquet curl et tk sont necessaires
+*** 2014-12-17 mercredi
+ Vérification de l'installation de de FxT et de la génération de trace.
+ #+begin_src sh :results output :exports both
+   STARPU_GENERATE_TRACE=1 ./cholesky_implicit -size 960 -nblocks 1    
+ #+end_src
+
+#+begin_src R :results output :file "test.txt"
+cd ~/Programmation/TER/trunk
+./configure --with-fxt
+#+end_src
+
+#+RESULTS:
+[[file:test.txt]]
+
+*** 2014-12-19 vendredi
+**** Installation de simgrid
+***** Essai avec source de la forge
+#+begin_src sh :session foo :results output :exports both 
+  cd ~/Programmation/TER/simgrid/build
+  cmake ../ -DCMAKE_INSTALL_PREFIX=~/Programs/simgrid -Denable_smpi=ON
+#+end_src
+
+
+
+
+#+begin_src sh :session foo :results output :file "out_make_simgrid.txt" :exports both 
+  make -j 8 && make install
+#+end_src
+
+#+RESULTS:
+[[file:~/Programmation/TER/Journaux/out_make_simgrid.txt]]
+
+***** Essai à partir du tar.gz
+      #+begin_src sh :session foo :results output :exports both 
+        export https_proxy="http://proxy:3128"
+        export http_proxy="http://proxy:3128"
+        cd ~/Programmation/TER
+        wget https://gforge.inria.fr/frs/download.php/file/33686/SimGrid-3.11.1.tar.gz
+      #+end_src
+
+      #+RESULTS:
+      #+begin_example
+
+      steven@archeon:~/org/build$ steven@archeon:~/Programmation/TER$ --2014-12-19 14:49:52--  https://gforge.inria.fr/frs/download.php/file/33686/SimGrid-3.11.1.tar.gz
+      Résolution de proxy (proxy)… 192.168.35.254
+      Connexion à proxy (proxy)|192.168.35.254|:3128… connecté.
+      requête Proxy transmise, en attente de la réponse… 200 OK
+      Taille : 4643984 (4,4M) [application/binary]
+      Sauvegarde en : « SimGrid-3.11.1.tar.gz.3 »
+      [                      ]       0  --.-KB/s             imGrid-3.11.1.tar.g   6%[>                     ] 296,00K  1,44MB/s             mGrid-3.11.1.tar.gz  12%[=>                    ] 552,00K  1,29MB/s             Grid-3.11.1.tar.gz.  14%[==>                   ] 648,00K  1,02MB/s             SimGrid-3.11.1.tar.  21%[===>                  ] 968,00K  1,03MB/s             imGrid-3.11.1.tar.g  24%[====>                 ]   1,07M   979KB/s             mGrid-3.11.1.tar.gz  31%[=====>                ]   1,38M  1,03MB/s             Grid-3.11.1.tar.gz.  37%[=======>              ]   1,65M  1,06MB/s             SimGrid-3.11.1.tar.  43%[========>             ]   1,93M  1,08MB/s             imGrid-3.11.1.tar.g  46%[=========>            ]   2,05M  1,02MB/s             mGrid-3.11.1.tar.gz  53%[==========>           ]   2,38M  1,07MB/s             Grid-3.11.1.tar.gz.  61%[============>         ]   2,74M  1,13MB/s             SimGrid-3.11.1.tar.  64%[=============>        ]   2,85M  1,08MB/s             imGrid-3.11.1.tar.g  70%[==============>       ]   3,10M  1,09MB/s             mGrid-3.11.1.tar.gz  74%[===============>      ]   3,30M  1,05MB/s   eta 1s    Grid-3.11.1.tar.gz.  77%[================>     ]   3,45M  1,00MB/s   eta 1s    SimGrid-3.11.1.tar.  86%[==================>   ]   3,85M  1,05MB/s   eta 1s    imGrid-3.11.1.tar.g  90%[==================>   ]   4,02M  1018KB/s   eta 1s    mGrid-3.11.1.tar.gz  94%[===================>  ]   4,18M  1,01MB/s   eta 1s    Grid-3.11.1.tar.gz.  96%[====================> ]   4,29M   988KB/s   eta 0s    SimGrid-3.11.1.tar.  99%[====================> ]   4,41M   974KB/s   eta 0s    SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s   
+
+      2014-12-19 14:50:12 (996 KB/s) — « SimGrid-3.11.1.tar.gz.3 » sauvegardé [4643984/4643984]
+#+end_example
+
+      #+begin_src sh :session foo :results output :exports both 
+        tar zxf SimGrid-3.11.1.tar.gz
+        cd SimGrid-3.11
+        mkdir build
+        cd build/
+        mkdir ~/Programs/Simgrid
+        cmake ../ -DCMAKE_INSTALL_PREFIX=~/Programs/Simgrid -Denable_smpi=ON
+      #+end_src
+
+      #+RESULTS:
+      #+begin_example
+
+      steven@archeon:~/Programmation/TER/SimGrid-3.11$ steven@archeon:~/Programmation/TER/SimGrid-3.11$ steven@archeon:~/Programmation/TER/SimGrid-3.11/build$ mkdir: impossible de créer le répertoire « /home/steven/Programs/Simgrid »: Le fichier existe
+      -- The C compiler identification is GNU 4.9.2
+      -- Check for working C compiler: /usr/bin/cc
+      -- Check for working C compiler: /usr/bin/cc -- works
+      -- Detecting C compiler ABI info
+      -- Detecting C compiler ABI info - done
+      -- The CXX compiler identification is GNU 4.9.2
+      -- Check for working CXX compiler: /usr/bin/c++
+      -- Check for working CXX compiler: /usr/bin/c++ -- works
+      -- Detecting CXX compiler ABI info
+      -- Detecting CXX compiler ABI info - done
+      -- Found Perl: /usr/bin/perl (found version "5.20.1") 
+      -- Looking for sys/types.h
+      -- Looking for sys/types.h - found
+      -- Looking for stdint.h
+      -- Looking for stdint.h - found
+      -- Looking for stddef.h
+      -- Looking for stddef.h - found
+      -- Check size of void*
+      -- Check size of void* - done
+      -- System processor: x86_64 (x86_64, 64 bits)
+      -- Cmake version 3.0
+      -- Check if the system is big endian
+      -- Searching 16 bit integer
+      -- Check size of unsigned short
+      -- Check size of unsigned short - done
+      -- Using unsigned short
+      -- Check if the system is big endian - little endian
+      -- Looking for agraph.h
+      -- Looking for agraph.h - not found
+      -- Looking for cgraph.h
+      -- Looking for cgraph.h - found
+      -- Looking for graph.h
+      -- Looking for graph.h - not found
+      -- Looking for lib agraph
+      -- Looking for lib agraph - not found
+      -- Looking for lib cgraph
+      -- Looking for lib cgraph - found
+      -- Looking for lib graph
+      -- Looking for lib graph - not found
+      -- Looking for lib cdt
+      -- Looking for lib cdt - found
+      -- Looking for sigc++/sigc++.h
+      -- Looking for sigc++/sigc++.h - found
+      -- Looking for sigc++config.h
+      -- Looking for sigc++config.h - not found
+      -- Looking for libsigc++
+      -- Looking for libsigc++ - found
+      -- Boost version: 1.57.0
+      -- Looking for dlopen in dl
+      -- Looking for dlopen in dl - found
+      -- Looking for backtrace in execinfo
+      -- Looking for backtrace in execinfo - not found
+      -- Looking for pthread_create in pthread
+      -- Looking for pthread_create in pthread - found
+      -- Looking for sem_init in pthread
+      -- Looking for sem_init in pthread - found
+      -- Looking for sem_open in pthread
+      -- Looking for sem_open in pthread - found
+      -- Looking for sem_timedwait in pthread
+      -- Looking for sem_timedwait in pthread - found
+      -- Looking for pthread_mutex_timedlock in pthread
+      -- Looking for pthread_mutex_timedlock in pthread - found
+      -- Looking for clock_gettime in rt
+      -- Looking for clock_gettime in rt - found
+      -- Looking for include files time.h, sys/time.h
+      -- Looking for include files time.h, sys/time.h - found
+      -- Looking for 4 include files stdlib.h, ..., float.h
+      -- Looking for 4 include files stdlib.h, ..., float.h - found
+      -- Looking for pthread.h
+      -- Looking for pthread.h - found
+      -- Looking for valgrind/valgrind.h
+      -- Looking for valgrind/valgrind.h - found
+      -- Looking for socket.h
+      -- Looking for socket.h - not found
+      -- Looking for sys/socket.h
+      -- Looking for sys/socket.h - found
+      -- Looking for stat.h
+      -- Looking for stat.h - not found
+      -- Looking for sys/stat.h
+      -- Looking for sys/stat.h - found
+      -- Looking for windows.h
+      -- Looking for windows.h - not found
+      -- Looking for winsock.h
+      -- Looking for winsock.h - not found
+      -- Looking for winsock2.h
+      -- Looking for winsock2.h - not found
+      -- Looking for WinDef.h
+      -- Looking for WinDef.h - not found
+      -- Looking for errno.h
+      -- Looking for errno.h - found
+      -- Looking for unistd.h
+      -- Looking for unistd.h - found
+      -- Looking for execinfo.h
+      -- Looking for execinfo.h - found
+      -- Looking for signal.h
+      -- Looking for signal.h - found
+      -- Looking for sys/time.h
+      -- Looking for sys/time.h - found
+      -- Looking for sys/param.h
+      -- Looking for sys/param.h - found
+      -- Looking for sys/sysctl.h
+      -- Looking for sys/sysctl.h - found
+      -- Looking for time.h
+      -- Looking for time.h - found
+      -- Looking for inttypes.h
+      -- Looking for inttypes.h - found
+      -- Looking for memory.h
+      -- Looking for memory.h - found
+      -- Looking for stdlib.h
+      -- Looking for stdlib.h - found
+      -- Looking for strings.h
+      -- Looking for strings.h - found
+      -- Looking for string.h
+      -- Looking for string.h - found
+      -- Looking for ucontext.h
+      -- Looking for ucontext.h - found
+      -- Looking for stdio.h
+      -- Looking for stdio.h - found
+      -- Looking for linux/futex.h
+      -- Looking for linux/futex.h - found
+      -- Looking for gettimeofday
+      -- Looking for gettimeofday - found
+      -- Looking for nanosleep
+      -- Looking for nanosleep - found
+      -- Looking for getdtablesize
+      -- Looking for getdtablesize - found
+      -- Looking for sysconf
+      -- Looking for sysconf - found
+      -- Looking for readv
+      -- Looking for readv - found
+      -- Looking for popen
+      -- Looking for popen - found
+      -- Looking for signal
+      -- Looking for signal - found
+      -- Looking for snprintf
+      -- Looking for snprintf - found
+      -- Looking for vsnprintf
+      -- Looking for vsnprintf - found
+      -- Looking for asprintf
+      -- Looking for asprintf - found
+      -- Looking for vasprintf
+      -- Looking for vasprintf - found
+      -- Looking for makecontext
+      -- Looking for makecontext - found
+      -- Looking for mmap
+      -- Looking for mmap - found
+      -- Looking for bin f2c - not found (http://www.netlib.org/f2c/)
+      -- Looking for lib f2c - not found
+      -- Looking for f2c.h - not found
+      -- Fortran 77 support for smpi is disabled.
+      -- Looking for bin gfortran
+      -- Found gfortran: /usr/bin/gfortran
+      -- Fortran 90 support for smpi also needs f2c.
+      -- Fortran 90 support for smpi is disabled.
+      -- Check size of int
+      -- Check size of int - done
+      -- Check size of void*
+      -- Check size of void* - done
+      -- Looking for dlfcn.h
+      -- Looking for dlfcn.h - found
+      -- We are using GNU dynamic linker
+      -- sem_open is compilable
+      -- sem_open is executable
+      -- sem_init is compilable
+      -- sem_init is executable
+      -- timedwait is compilable
+      -- timedlock is compilable
+      -- prog_AC_CHECK_MCSC.c is compilable
+      -- mcsc: yes
+      define pth_skaddr_makecontext(skaddr,sksize) ((skaddr))
+      define pth_sksize_makecontext(skaddr,sksize) ((sksize))
+      -- Doxygen version: 1.8.8
+
+
+      Configuration of package `simgrid':
+	      BUILDNAME ...........: UNIX
+	      SITE ................: Linux_3.17.6-1-ARCH_x86_64
+	      Release .............: simgrid-3.11 (release build)
+
+	      Compiler: C .........: /usr/bin/cc (GNU)
+		      version .....: 4.9.2
+	      Compiler: C++ .......: /usr/bin/c++ (GNU)
+		      version .....: 4.9.2
+	      Linker: .............: /usr/bin/ld
+
+	      CFlags ..............: -O3 -finline-functions -funroll-loops -fno-strict-aliasing  -flto -std=gnu99 -g3
+	      CXXFlags ............: -g3 -O3 -finline-functions -funroll-loops -fno-strict-aliasing  -flto 
+	      LDFlags .............: 
+
+	      Compile Gtnets ......: 0
+	      Compile NS-3 ........: 0
+	      Gtnets path .........: 
+	      NS-3 path ...........: 
+	      Compile Java ........: 
+	      Compile Scala........: 
+	      Compile Lua .........: 
+	      Compile Smpi ........: 1
+	      Compile MPI testsuite: OFF
+	      Compile Smpi f77 ....: 0
+	      Compile Smpi f90 ....: 0
+	      Compile Static ......: OFF
+
+	      Maintainer mode .....: OFF
+	      Model checking ......: 0
+	      Tracing mode ........: ON
+	      Jedule  mode ........: OFF
+	      Latency bound .......: OFF
+	      Graphviz mode .......: 1
+	      Sigc++ mode .........: 0
+	      Mallocators .........: ON
+
+	      Simgrid dependencies : -lm -lstdc++ -pthread -lcgraph -lrt
+
+	      INSTALL_PREFIX ......: /home/steven/Programs/Simgrid
+      -- Configuring done
+      CMake Warning (dev) at buildtools/Cmake/Distrib.cmake:244 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target "maintainer_files" of target "dist-dir" does not
+	exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:242 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/MakeLib.cmake:19 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target "maintainer_files" of target "simgrid" does not
+	exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:225 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/config_unit.c" of
+	target "testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/cunit_unit.c" of
+	target "testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/dict_unit.c" of
+	target "testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/dynar_unit.c" of
+	target "testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/ex_unit.c" of target
+	"testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/set_unit.c" of
+	target "testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/simgrid_units_main.c"
+	of target "testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/swag_unit.c" of
+	target "testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/xbt_sha_unit.c" of
+	target "testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/xbt_str_unit.c" of
+	target "testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      CMake Warning (dev) at buildtools/Cmake/UnitTesting.cmake:62 (add_dependencies):
+	Policy CMP0046 is not set: Error on non-existent dependency in
+	add_dependencies.  Run "cmake --help-policy CMP0046" for policy details.
+	Use the cmake_policy command to set the policy and suppress this warning.
+
+	The dependency target
+	"/home/steven/Programmation/TER/SimGrid-3.11/build/src/xbt_strbuff_unit.c"
+	of target "testall" does not exist.
+      Call Stack (most recent call first):
+	CMakeLists.txt:218 (include)
+      This warning is for project developers.  Use -Wno-dev to suppress it.
+
+      -- Generating done
+      -- Build files have been written to: /home/steven/Programmation/TER/SimGrid-3.11/build
+#+end_example
+
+      #+begin_src sh :session foo :results output :exports both 
+        make -j 8 && make install
+      #+end_src
+      
+      #+RESULTS:
+      #+begin_example
+      Scanning dependencies of target simgrid-colorizer
+      Scanning dependencies of target manpages
+      Scanning dependencies of target mtest_c
+      Scanning dependencies of target simgrid_update_xml
+      ] [  1%] [  2%] Scanning dependencies of target simgrid
+      Generating manpages
+      Install /home/steven/Programmation/TER/SimGrid-3.11/build/bin/simgrid_update_xml
+      Install /home/steven/Programmation/TER/SimGrid-3.11/build/bin/colorize
+      ] Building C object teshsuite/smpi/mpich3-test/CMakeFiles/mtest_c.dir/util/mtest.c.o
+      ] [  2%] Built target simgrid_update_xml
+      Built target simgrid-colorizer
+      ] Built target manpages
+      Linking C static library ../../../lib/libmtest_c.a
+      ] Built target mtest_c
+      ] [  3%] [  3%] [  3%] [  3%] [  3%] [  3%] [  4%] Building C object CMakeFiles/simgrid.dir/src/msg/instr_msg_task.c.o
+      Building C object CMakeFiles/simgrid.dir/src/bindings/bindings_global.c.o
+      Building C object CMakeFiles/simgrid.dir/src/msg/instr_msg_vm.c.o
+      Building C object CMakeFiles/simgrid.dir/src/msg/msg_global.c.o
+      Building C object CMakeFiles/simgrid.dir/src/msg/instr_msg_process.c.o
+      Building C object CMakeFiles/simgrid.dir/src/msg/msg_environment.c.o
+      Building C object CMakeFiles/simgrid.dir/src/msg/msg_actions.c.o
+      Building C object CMakeFiles/simgrid.dir/src/msg/msg_deployment.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/msg/msg_gos.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/msg/msg_host.c.o
+      ] [  4%] [  5%] Building C object CMakeFiles/simgrid.dir/src/msg/msg_mailbox.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/msg/msg_io.c.o
+      Building C object CMakeFiles/simgrid.dir/src/msg/msg_process.c.o
+      Building C object CMakeFiles/simgrid.dir/src/msg/msg_synchro.c.o
+      ] [  6%] Building C object CMakeFiles/simgrid.dir/src/msg/msg_vm.c.o
+      Building C object CMakeFiles/simgrid.dir/src/msg/msg_task.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/msg/msg_new_api.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simdag/instr_sd_task.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simdag/sd_daxloader.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simdag/sd_global.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simdag/sd_link.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simdag/sd_task.c.o
+      ] [  8%] Building C object CMakeFiles/simgrid.dir/src/simdag/sd_workstation.c.o
+      Building C object CMakeFiles/simgrid.dir/src/simdag/sd_dotloader.c.o
+      ] [  8%] Building C object CMakeFiles/simgrid.dir/src/simgrid/sg_config.c.o
+      Building C object CMakeFiles/simgrid.dir/src/simix/smx_context.c.o
+      ] [  9%] Building C object CMakeFiles/simgrid.dir/src/simix/smx_context_raw.c.o
+      Building C object CMakeFiles/simgrid.dir/src/simix/smx_context_base.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simix/smx_deployment.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simix/smx_environment.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simix/smx_global.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simix/smx_host.c.o
+      ] [ 10%] [ 10%] Building C object CMakeFiles/simgrid.dir/src/simix/smx_io.c.o
+      Building C object CMakeFiles/simgrid.dir/src/simix/smx_network.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simix/smx_process.c.o
+      Building C object CMakeFiles/simgrid.dir/src/simix/smx_smurf.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simix/smx_synchro.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simix/smx_user.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simix/smx_vm.c.o
+      ] [ 12%] Building C object CMakeFiles/simgrid.dir/src/simix/smx_new_api.c.o
+      Building CXX object CMakeFiles/simgrid.dir/src/surf/cpu_cas01.cpp.o
+      ] [ 12%] Building CXX object CMakeFiles/simgrid.dir/src/surf/cpu_interface.cpp.o
+      Building CXX object CMakeFiles/simgrid.dir/src/surf/cpu_ti.cpp.o
+      ] [ 13%] Building CXX object CMakeFiles/simgrid.dir/src/surf/fair_bottleneck.cpp.o
+      Building C object CMakeFiles/simgrid.dir/src/surf/instr_routing.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/surf/instr_surf.c.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/lagrange.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/maxmin.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/network_cm02.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/network_constant.cpp.o
+      ] [ 14%] [ 15%] [ 14%] [ 15%] Building CXX object CMakeFiles/simgrid.dir/src/surf/network_smpi.cpp.o
+      Building CXX object CMakeFiles/simgrid.dir/src/surf/plugins/energy.cpp.o
+      Building C object CMakeFiles/simgrid.dir/src/surf/platf_generator.c.o
+      Building CXX object CMakeFiles/simgrid.dir/src/surf/network_interface.cpp.o
+      Building C object CMakeFiles/simgrid.dir/src/surf/random_mgr.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/surf/sg_platf.c.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/storage_interface.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/storage_n11.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_c_bindings.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_interface.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_routing.cpp.o
+      ] [ 17%] [ 17%] [ 17%] Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_routing_dijkstra.cpp.o
+      Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_routing_cluster.cpp.o
+      Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_routing_cluster_torus.cpp.o
+      Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_routing_cluster_fat_tree.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_routing_floyd.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_routing_full.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_routing_generic.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_routing_none.cpp.o
+      ] [ 19%] Building CXX object CMakeFiles/simgrid.dir/src/surf/surf_routing_vivaldi.cpp.o
+      Building C object CMakeFiles/simgrid.dir/src/surf/surfxml_parse.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/surf/surfxml_parseplatf.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/surf/trace_mgr.c.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/vm_workstation_hl13.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/vm_workstation_interface.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/workstation_clm03.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/workstation_interface.cpp.o
+      ] Building CXX object CMakeFiles/simgrid.dir/src/surf/workstation_ptask_L07.cpp.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_sg_stubs.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simix/smx_context_thread.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_os_thread.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/simix/smx_context_sysv.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/RngStream.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/automaton/automaton.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/automaton/automatonparse_promela.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/config.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/cunit.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/dict.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/dict_cursor.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/dict_elm.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/dict_multi.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/dynar.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/ex.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/fifo.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/graph.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/graphxml_parse.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/heap.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/lib.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/log.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/mallocator.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/parmap.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/set.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/setset.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/snprintf.c.o
+      ] [ 27%] Building C object CMakeFiles/simgrid.dir/src/xbt/swag.c.o
+      Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_log_appender_file.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_log_layout_format.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_log_layout_simple.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_main.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_matrix.c.o
+      ] [ 28%] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_os_time.c.o
+      Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_peer.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_queue.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_replay.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_sg_synchro.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_sha.c.o
+      ] [ 30%] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_str.c.o
+      Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_strbuff.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/xbt/xbt_virtu.c.o
+      ] [ 30%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-3dmesh.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-2dmesh.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-GB.c.o
+      ] [ 31%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-NTSLR-NB.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-NTSLR.c.o
+      ] [ 31%] [ 32%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-bruck.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-SMP-NTS.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-loosely-lr.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-ompi-neighborexchange.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-pair.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-rdb.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-rhv.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-ring.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-smp-simple.c.o
+      ] [ 33%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgather-spreading-simple.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgatherv-GB.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgatherv-mpich-rdb.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgatherv-mpich-ring.c.o
+      ] [ 34%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgatherv-ompi-bruck.c.o
+      ] [ 35%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgatherv-ompi-neighborexchange.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgatherv-pair.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allgatherv-ring.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-lr.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-ompi-ring-segmented.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-rab-rdb.c.o
+      ] [ 36%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-rab1.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-rab2.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-rdb.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-redbcast.c.o
+      ] [ 37%] [ 37%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-smp-binomial-pipeline.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-smp-binomial.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-smp-rdb.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-smp-rsag-lr.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-smp-rsag-rab.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/allreduce-smp-rsag.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-2dmesh.c.o
+      ] [ 39%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-pair-light-barrier.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-3dmesh.c.o
+      ] [ 39%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-pair-one-barrier.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-pair-mpi-barrier.c.o
+      ] [ 39%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-pair.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-rdb.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-ring-light-barrier.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-ring-mpi-barrier.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-ring-one-barrier.c.o
+      ] [ 41%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoall-ring.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoallv-bruck.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoallv-ompi-basic-linear.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoallv-pair-light-barrier.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoallv-pair-mpi-barrier.c.o
+      ] [ 41%] [ 42%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoallv-ring-light-barrier.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoallv-pair.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoallv-pair-one-barrier.c.o
+      ] [ 43%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoallv-ring-mpi-barrier.c.o
+      ] [ 43%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoallv-ring-one-barrier.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/alltoallv-ring.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/barrier-ompi.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-NTSB.c.o
+      ] [ 44%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-NTSL.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-NTSL-Isend.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-SMP-binary.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-SMP-binomial.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-SMP-linear.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-arrival-pattern-aware-wait.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-arrival-pattern-aware.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-arrival-scatter.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-binomial-tree.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-flattree-pipeline.c.o
+      ] [ 46%] [ 46%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-flattree.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-ompi-pipeline.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-ompi-split-bintree.c.o
+      ] [ 47%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-scatter-LR-allgather.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/bcast-scatter-rdb-allgather.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/coll_tuned_topo.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/colls_global.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/gather-ompi.c.o
+      ] [ 48%] [ 48%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/reduce-arrival-pattern-aware.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/reduce-NTSL.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/reduce-binomial.c.o
+      ] [ 49%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/reduce-flat-tree.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/reduce-ompi.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/reduce-scatter-gather.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/reduce_scatter-mpich.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/reduce_scatter-ompi.c.o
+      ] [ 50%] [ 50%] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/scatter-ompi.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/smpi_automatic_selector.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/colls/smpi_mpich_selector.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/colls/smpi_openmpi_selector.c.o
+      ] [ 51%] Building C object CMakeFiles/simgrid.dir/src/smpi/instr_smpi.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_base.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_bench.c.o
+      ] [ 51%] Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_c99.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_coll.c.o
+      ] [ 52%] Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_comm.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_deployment.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_dvfs.c.o
+      ] [ 52%] Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_global.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_group.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_mpi.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_mpi_dt.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_pmpi.c.o
+      ] [ 54%] [ 54%] Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_replay.c.o
+      Building C object CMakeFiles/simgrid.dir/src/instr/instr_TI_trace.c.o
+      Building C object CMakeFiles/simgrid.dir/src/smpi/smpi_topo.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/instr/instr_config.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/instr/instr_interface.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/instr/instr_paje_containers.c.o
+      ] [ 55%] Building C object CMakeFiles/simgrid.dir/src/instr/instr_paje_header.c.o
+      Building C object CMakeFiles/simgrid.dir/src/instr/instr_paje_trace.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/instr/instr_paje_types.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/instr/instr_paje_values.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/instr/instr_resource_utilization.c.o
+      ] Building C object CMakeFiles/simgrid.dir/src/instr/instr_trace.c.o
+      Linking CXX shared library lib/libsimgrid.so
+      ] Built target simgrid
+      Scanning dependencies of target bittorrent
+      Scanning dependencies of target actions
+      Scanning dependencies of target bittorrent_platfgen
+      Scanning dependencies of target migrate_vm
+      Scanning dependencies of target bound
+      Scanning dependencies of target chord
+      ] Generating *_units files for testall...
+      ] [ 56%] [ 57%] [ 58%] Building C object examples/msg/cloud/CMakeFiles/bound.dir/bound.c.o
+      Building C object examples/msg/cloud/CMakeFiles/migrate_vm.dir/migrate_vm.c.o
+      Building C object examples/msg/chord/CMakeFiles/chord.dir/chord.c.o
+      Scanning dependencies of target chainsend
+      Building C object examples/msg/actions/CMakeFiles/actions.dir/actions.c.o
+      ] [ 58%] Building C object examples/msg/bittorrent/CMakeFiles/bittorrent.dir/bittorrent.c.o
+      Building C object examples/msg/bittorrent/CMakeFiles/bittorrent_platfgen.dir/bittorrent_platfgen.c.o
+      ] Building C object examples/msg/chainsend/CMakeFiles/chainsend.dir/chainsend.c.o
+      Linking C executable migrate_vm
+      Linking C executable bound
+      sg_unit_extractor: processing src/xbt/cunit.c (generating /home/steven/Programmation/TER/SimGrid-3.11/build/src/cunit_unit.c)...
+	Suite cunit: "Testsuite mechanism autotest" (1 tests)
+	  unit expect: func= test_expected_failure; title= "expected failures"
+      sg_unit_extractor: processing src/xbt/ex.c (generating /home/steven/Programmation/TER/SimGrid-3.11/build/src/ex_unit.c)...
+	Suite xbt_ex: "Exception Handling" (4 tests)
+	  unit controlflow: func= test_controlflow; title= "basic nested control flow"
+	  unit value: func= test_value; title= "exception value passing"
+	  unit variables: func= test_variables; title= "variable value preservation"
+	  unit cleanup: func= test_cleanup; title= "cleanup handling"
+      sg_unit_extractor: processing src/xbt/dynar.c (generating /home/steven/Programmation/TER/SimGrid-3.11/build/src/dynar_unit.c)...
+	Suite dynar: "Dynar data container" (4 tests)
+	  unit int: func= test_dynar_int; title= "Dynars of integers"
+	  unit insert: func=test_dynar_insert; title="Using the xbt_dynar_insert and xbt_dynar_remove functions"
+	  unit double: func= test_dynar_double; title= "Dynars of doubles"
+	  unit string: func= test_dynar_string; title= "Dynars of strings"
+      sg_unit_extractor: processing src/xbt/dict.c (generating /home/steven/Programmation/TER/SimGrid-3.11/build/src/dict_unit.c)...
+	Suite dict: "Dict data container" (6 tests)
+	  unit basic_heterogeneous: func= test_dict_basic_heterogeneous; title= "Basic usage: change, retrieve, traverse: heterogeneous dict"
+	  unit basic_homogeneous: func= test_dict_basic_homogeneous; title= "Basic usage: change, retrieve, traverse: homogeneous dict"
+	  unit remove_heterogeneous: func= test_dict_remove_heterogeneous; title= "Removing some values: heterogeneous dict"
+	  unit remove_homogeneous: func= test_dict_remove_homogeneous; title= "Removing some values: homogeneous dict"
+	  unit nulldata: func= test_dict_nulldata; title= "NULL data management"
+	  unit crash: func= test_dict_crash; title= "Crash test"
+      sg_unit_extractor: processing src/xbt/set.c (generating /home/steven/Programmation/TER/SimGrid-3.11/build/src/set_unit.c)...
+	Suite set: "Set data container" (4 tests)
+	  unit basic: func= test_set_basic; title= "Basic usage"
+	  unit change: func= test_set_change; title= "Changing some values"
+	  unit retrieve: func= test_set_retrieve; title= "Retrieving some values"
+	  unit remove: func= test_set_remove; title= "Removing some values"
+      sg_unit_extractor: processing src/xbt/swag.c (generating /home/steven/Programmation/TER/SimGrid-3.11/build/src/swag_unit.c)...
+	Suite swag: "Swag data container" (1 tests)
+	  unit basic: func= test_swag_basic; title= "Basic usage"
+      sg_unit_extractor: processing src/xbt/xbt_str.c (generating /home/steven/Programmation/TER/SimGrid-3.11/build/src/xbt_str_unit.c)...
+      Linking C executable actions
+	Suite xbt_str: "String Handling" (3 tests)
+	  unit xbt_str_split_quoted: func= test_split_quoted; title= "test the function xbt_str_split_quoted"
+	  unit xbt_str_split_str: func= test_split_str; title= "test the function xbt_str_split_str"
+	  unit xbt_str_diff: func= test_diff; title= "test the function xbt_str_diff"
+      sg_unit_extractor: processing src/xbt/xbt_strbuff.c (generating /home/steven/Programmation/TER/SimGrid-3.11/build/src/xbt_strbuff_unit.c)...
+	Suite xbt_strbuff: "String Buffers" (1 tests)
+	  unit xbt_strbuff_substitute: func= test_strbuff_substitute; title= "test the function xbt_strbuff_substitute"
+      sg_unit_extractor: processing src/xbt/xbt_sha.c (generating /home/steven/Programmation/TER/SimGrid-3.11/build/src/xbt_sha_unit.c)...
+	Suite hash: "Various hash functions" (1 tests)
+	  unit sha: func= test_crypto_sha; title= "Test of the sha algorithm"
+      sg_unit_extractor: processing src/xbt/config.c (generating /home/steven/Programmation/TER/SimGrid-3.11/build/src/config_unit.c)...
+	Suite config: "Configuration support" (3 tests)
+	  unit memuse: func= test_config_memuse; title= "Alloc and free a config set"
+	  unit validation: func= test_config_validation; title= "Validation tests"
+	  unit use: func= test_config_use; title= "Data retrieving tests"
+      ] [ 58%] Building C object examples/msg/chainsend/CMakeFiles/chainsend.dir/iterator.c.o
+      Building C object examples/msg/bittorrent/CMakeFiles/bittorrent.dir/messages.c.o
+      ] Scanning dependencies of target testall
+      Building C object examples/msg/bittorrent/CMakeFiles/bittorrent_platfgen.dir/messages.c.o
+      ] Linking C executable chord
+      Building C object CMakeFiles/testall.dir/src/cunit_unit.c.o
+      ] Building C object examples/msg/chainsend/CMakeFiles/chainsend.dir/common.c.o
+      ] [ 62%] Building C object examples/msg/bittorrent/CMakeFiles/bittorrent.dir/peer.c.o
+      Building C object CMakeFiles/testall.dir/src/ex_unit.c.o
+      ] [ 62%] Building C object examples/msg/chainsend/CMakeFiles/chainsend.dir/messages.c.o
+      Building C object examples/msg/bittorrent/CMakeFiles/bittorrent_platfgen.dir/peer.c.o
+      ] [ 62%] Building C object CMakeFiles/testall.dir/src/dynar_unit.c.o
+      Building C object examples/msg/chainsend/CMakeFiles/chainsend.dir/broadcaster.c.o
+      ] Built target migrate_vm
+      ] Building C object examples/msg/bittorrent/CMakeFiles/bittorrent.dir/tracker.c.o
+      Scanning dependencies of target multicore
+      ] [ 62%] Building C object examples/msg/cloud/CMakeFiles/multicore.dir/multicore.c.o
+      Building C object CMakeFiles/testall.dir/src/dict_unit.c.o
+      ] Building C object examples/msg/chainsend/CMakeFiles/chainsend.dir/peer.c.o
+      ] [ 62%] Building C object examples/msg/bittorrent/CMakeFiles/bittorrent_platfgen.dir/tracker.c.o
+      Built target bound
+      ] Building C object examples/msg/bittorrent/CMakeFiles/bittorrent_platfgen.dir/connection.c.o
+      Linking C executable multicore
+      ] Building C object examples/msg/bittorrent/CMakeFiles/bittorrent.dir/connection.c.o
+      ] Built target actions
+      ] Scanning dependencies of target scale
+      Scanning dependencies of target simple_vm
+      Linking C executable bittorrent
+      Linking C executable bittorrent_platfgen
+      ] Building C object CMakeFiles/testall.dir/src/set_unit.c.o
+      Linking C executable chainsend
+      Building C object examples/msg/cloud/CMakeFiles/scale.dir/scale.c.o
+      ] Building C object examples/msg/cloud/CMakeFiles/simple_vm.dir/simple_vm.c.o
+      ] Building C object CMakeFiles/testall.dir/src/swag_unit.c.o
+      Linking C executable scale
+      Linking C executable simple_vm
+      ] Building C object CMakeFiles/testall.dir/src/xbt_str_unit.c.o
+      ] Building C object CMakeFiles/testall.dir/src/xbt_strbuff_unit.c.o
+      ] Built target scale
+      Scanning dependencies of target two_tasks_vm
+      ] Building C object examples/msg/cloud/CMakeFiles/two_tasks_vm.dir/two_tasks_vm.c.o
+      ] Building C object CMakeFiles/testall.dir/src/xbt_sha_unit.c.o
+      ] Built target chord
+      Scanning dependencies of target e1
+      ] Building C object CMakeFiles/testall.dir/src/config_unit.c.o
+      ] Linking C executable two_tasks_vm
+      Building C object examples/msg/energy/e1/CMakeFiles/e1.dir/e1.c.o
+      ] [ 64%] Built target chainsend
+      Built target simple_vm
+      ] Building C object CMakeFiles/testall.dir/src/simgrid_units_main.c.o
+      Scanning dependencies of target e2
+      Scanning dependencies of target e3
+      Linking C executable e1
+      ] [ 65%] Building C object examples/msg/energy/e2/CMakeFiles/e2.dir/e2.c.o
+      Building C object examples/msg/energy/e3/CMakeFiles/e3.dir/e3.c.o
+      ] Built target multicore
+      Scanning dependencies of target test_MSG_gpu_task_create
+      Linking C executable src/testall
+      ] Building C object examples/msg/gpu/CMakeFiles/test_MSG_gpu_task_create.dir/test_MSG_gpu_task_create.c.o
+      ] Built target two_tasks_vm
+      Linking C executable e2
+      Scanning dependencies of target gtnets
+      Linking C executable e3
+      ] Building C object examples/msg/gtnets/CMakeFiles/gtnets.dir/gtnets.c.o
+      Linking C executable test_MSG_gpu_task_create
+      ] Built target e1
+      Scanning dependencies of target peer
+      ] Building C object examples/msg/icomms/CMakeFiles/peer.dir/peer.c.o
+      Linking C executable gtnets
+      ] Built target e2
+      ] Built target test_MSG_gpu_task_create
+      Scanning dependencies of target peer2
+      Linking C executable peer
+      Scanning dependencies of target peer3
+      ] Building C object examples/msg/icomms/CMakeFiles/peer2.dir/peer2.c.o
+      ] [ 67%] Built target e3
+      Building C object examples/msg/icomms/CMakeFiles/peer3.dir/peer3.c.o
+      Scanning dependencies of target file
+      ] Building C object examples/msg/io/CMakeFiles/file.dir/file.c.o
+      Linking C executable peer2
+      Linking C executable peer3
+      ] Built target gtnets
+      Linking C executable file
+      Scanning dependencies of target file_unlink
+      ] [ 67%] Built target peer
+      Building C object examples/msg/io/CMakeFiles/file_unlink.dir/file_unlink.c.o
+      Scanning dependencies of target remote
+      ] Building C object examples/msg/io/CMakeFiles/remote.dir/remote.c.o
+      Linking C executable file_unlink
+      ] Built target peer2
+      ] [ 68%] Scanning dependencies of target storage
+      Built target peer3
+      Built target bittorrent
+      ] Scanning dependencies of target masterslave_arg
+      Building C object examples/msg/io/CMakeFiles/storage.dir/storage.c.o
+      Linking C executable remote
+      Scanning dependencies of target kademlia
+      ] [ 68%] Building C object examples/msg/kademlia/CMakeFiles/kademlia.dir/kademlia.c.o
+      Building C object examples/msg/masterslave/CMakeFiles/masterslave_arg.dir/masterslave_arg.c.o
+      ] Built target file
+      Scanning dependencies of target masterslave_bypass
+      ] Building C object examples/msg/masterslave/CMakeFiles/masterslave_bypass.dir/masterslave_bypass.c.o
+      Linking C executable storage
+      ] Linking C executable masterslave_arg
+      Building C object examples/msg/kademlia/CMakeFiles/kademlia.dir/node.c.o
+      ] Built target remote
+      ] [ 69%] Built target file_unlink
+      Built target bittorrent_platfgen
+      Scanning dependencies of target masterslave_cluster
+      ] Scanning dependencies of target masterslave_failure
+      Building C object examples/msg/masterslave/CMakeFiles/masterslave_cluster.dir/masterslave_cluster.c.o
+      Scanning dependencies of target masterslave_failure_platfgen
+      ] Linking C executable masterslave_bypass
+      ] [ 70%] Building C object examples/msg/masterslave/CMakeFiles/masterslave_failure.dir/masterslave_failure.c.o
+      Building C object examples/msg/kademlia/CMakeFiles/kademlia.dir/routing_table.c.o
+      Building C object examples/msg/masterslave/CMakeFiles/masterslave_failure_platfgen.dir/masterslave_failure_platfgen.c.o
+      Linking C executable masterslave_cluster
+      Linking C executable masterslave_failure_platfgen
+      ] Building C object examples/msg/kademlia/CMakeFiles/kademlia.dir/task.c.o
+      Linking C executable masterslave_failure
+      ] Built target masterslave_arg
+      ] Built target storage
+      Scanning dependencies of target masterslave_forwarder
+      Scanning dependencies of target masterslave_kill
+      ] Building C object examples/msg/masterslave/CMakeFiles/masterslave_forwarder.dir/masterslave_forwarder.c.o
+      ] [ 70%] Building C object examples/msg/kademlia/CMakeFiles/kademlia.dir/answer.c.o
+      Building C object examples/msg/masterslave/CMakeFiles/masterslave_kill.dir/masterslave_kill.c.o
+      Linking C executable masterslave_forwarder
+      Linking C executable kademlia
+      Linking C executable masterslave_kill
+      ] Built target masterslave_bypass
+      ] Built target masterslave_cluster
+      Scanning dependencies of target masterslave_mailbox
+      ] Building C object examples/msg/masterslave/CMakeFiles/masterslave_mailbox.dir/masterslave_mailbox.c.o
+      Scanning dependencies of target masterslave_platfgen
+      ] Building C object examples/msg/masterslave/CMakeFiles/masterslave_platfgen.dir/masterslave_platfgen.c.o
+      ] Built target masterslave_failure
+      Scanning dependencies of target migration
+      ] Building C object examples/msg/migration/CMakeFiles/migration.dir/migration.c.o
+      ] Built target masterslave_kill
+      Scanning dependencies of target parallel_task
+      Linking C executable masterslave_mailbox
+      ] Building C object examples/msg/parallel_task/CMakeFiles/parallel_task.dir/parallel_task.c.o
+      ] Built target masterslave_failure_platfgen
+      Linking C executable masterslave_platfgen
+      ] Linking C executable migration
+      Scanning dependencies of target test_ptask
+      Built target testall
+      ] Building C object examples/msg/parallel_task/CMakeFiles/test_ptask.dir/test_ptask.c.o
+      Scanning dependencies of target pastry
+      ] Building C object examples/msg/pastry/CMakeFiles/pastry.dir/pastry.c.o
+      ] Built target masterslave_forwarder
+      Linking C executable parallel_task
+      Scanning dependencies of target msg_pmm
+      ] Building C object examples/msg/pmm/CMakeFiles/msg_pmm.dir/msg_pmm.c.o
+      Linking C executable test_ptask
+      Linking C executable msg_pmm
+      ] Built target masterslave_mailbox
+      Scanning dependencies of target priority
+      Linking C executable pastry
+      ] [ 73%] Building C object examples/msg/priority/CMakeFiles/priority.dir/priority.c.o
+      Built target migration
+      ] Built target masterslave_platfgen
+      Scanning dependencies of target msg_prop
+      ] Scanning dependencies of target synchro
+      ] Building C object examples/msg/properties/CMakeFiles/msg_prop.dir/msg_prop.c.o
+      Built target parallel_task
+      ] Linking C executable priority
+      Building C object examples/msg/semaphores/CMakeFiles/synchro.dir/synchro.c.o
+      Scanning dependencies of target sendrecv
+      ] Building C object examples/msg/sendrecv/CMakeFiles/sendrecv.dir/sendrecv.c.o
+      Linking C executable msg_prop
+      Linking C executable synchro
+      Linking C executable sendrecv
+      ] Built target kademlia
+      ] Built target test_ptask
+      Scanning dependencies of target sk_time
+      ] Built target priority
+      ] Building C object examples/msg/start_kill_time/CMakeFiles/sk_time.dir/sk_time.c.o
+      Scanning dependencies of target suspend
+      Scanning dependencies of target token_bypass
+      ] [ 76%] Building C object examples/msg/suspend/CMakeFiles/suspend.dir/suspend.c.o
+      Building C object examples/msg/token_ring/CMakeFiles/token_bypass.dir/token_bypass.c.o
+      ] Built target msg_pmm
+      Scanning dependencies of target token_ring
+      Linking C executable suspend
+      ] Building C object examples/msg/token_ring/CMakeFiles/token_ring.dir/ring_call.c.o
+      Linking C executable sk_time
+      ] Built target msg_prop
+      ] Built target sendrecv
+      Scanning dependencies of target categories
+      Linking C executable token_bypass
+      ] Built target synchro
+      ] Scanning dependencies of target link_srcdst_user_variables
+      Building C object examples/msg/tracing/CMakeFiles/categories.dir/categories.c.o
+      Scanning dependencies of target link_user_variables
+      ] Building C object examples/msg/tracing/CMakeFiles/link_srcdst_user_variables.dir/link_srcdst_user_variables.c.o
+      ] Linking C executable token_ring
+      Building C object examples/msg/tracing/CMakeFiles/link_user_variables.dir/link_user_variables.c.o
+      ] Linking C executable categories
+      Built target sk_time
+      Linking C executable link_user_variables
+      Scanning dependencies of target ms
+      ] Linking C executable link_srcdst_user_variables
+      Built target suspend
+      ] Building C object examples/msg/tracing/CMakeFiles/ms.dir/ms.c.o
+      Scanning dependencies of target procmig
+      ] [ 78%] Built target pastry
+      Building C object examples/msg/tracing/CMakeFiles/procmig.dir/procmig.c.o
+      ] Built target token_bypass
+      Scanning dependencies of target simple
+      ] Scanning dependencies of target trace_platform
+      Building C object examples/msg/tracing/CMakeFiles/simple.dir/simple.c.o
+      ] [ 79%] [ 79%] Building C object examples/msg/tracing/CMakeFiles/trace_platform.dir/trace_platform.c.o
+      Built target token_ring
+      Built target categories
+      Linking C executable ms
+      Scanning dependencies of target user_variables
+      Scanning dependencies of target ex_sd_test
+      ] Built target link_srcdst_user_variables
+      ] Linking C executable procmig
+      ] Building C object examples/msg/tracing/CMakeFiles/user_variables.dir/user_variables.c.o
+      Scanning dependencies of target sd_avail
+      ] Built target link_user_variables
+      Building C object examples/simdag/CMakeFiles/ex_sd_test.dir/sd_test.c.o
+      ] Linking C executable simple
+      Scanning dependencies of target sd_comm_throttling
+      Building C object examples/simdag/CMakeFiles/sd_avail.dir/sd_avail.c.o
+      Linking C executable trace_platform
+      ] Building C object examples/simdag/CMakeFiles/sd_comm_throttling.dir/sd_comm_throttling.c.o
+      Linking C executable user_variables
+      Linking C executable sd_avail
+      Linking C executable ex_sd_test
+      Linking C executable sd_comm_throttling
+      ] Built target procmig
+      ] Built target simple
+      Scanning dependencies of target sd_fail
+      ] [ 81%] Built target trace_platform
+      Scanning dependencies of target sd_seq_access
+      ] Built target ms
+      Building C object examples/simdag/CMakeFiles/sd_fail.dir/sd_fail.c.o
+      ] Building C object examples/simdag/CMakeFiles/sd_seq_access.dir/sd_seq_access.c.o
+      Scanning dependencies of target sd_test2
+      ] Scanning dependencies of target sd_typed_tasks_test
+      Building C object examples/simdag/CMakeFiles/sd_test2.dir/sd_test2.c.o
+      ] Building C object examples/simdag/CMakeFiles/sd_typed_tasks_test.dir/sd_typed_tasks_test.c.o
+      ] Built target user_variables
+      Linking C executable sd_fail
+      Scanning dependencies of target simdag_tracing
+      Linking C executable sd_seq_access
+      ] [ 81%] Built target sd_avail
+      Building C object examples/simdag/CMakeFiles/simdag_tracing.dir/simdag_trace.c.o
+      ] Linking C executable sd_typed_tasks_test
+      Built target sd_comm_throttling
+      Scanning dependencies of target dax_test
+      Linking C executable sd_test2
+      ] Scanning dependencies of target dot_test
+      Building C object examples/simdag/dax/CMakeFiles/dax_test.dir/dax_test.c.o
+      ] Building C object examples/simdag/dot/CMakeFiles/dot_test.dir/dot_test.c.o
+      Linking C executable simdag_tracing
+      ] Built target ex_sd_test
+      Scanning dependencies of target dot_test2
+      ] Building C object examples/simdag/dot/CMakeFiles/dot_test2.dir/dot_test2.c.o
+      Linking C executable dax_test
+      Linking C executable dot_test
+      ] Built target sd_seq_access
+      Linking C executable dot_test2
+      Scanning dependencies of target ptg_test
+      ] Built target sd_fail
+      ] Building C object examples/simdag/dot/CMakeFiles/ptg_test.dir/ptg_test.c.o
+      ] Built target sd_typed_tasks_test
+      Scanning dependencies of target simulate_dot
+      ] Scanning dependencies of target goal_test
+      Building C object examples/simdag/dot/CMakeFiles/simulate_dot.dir/simulate_dot.c.o
+      ] Building C object examples/simdag/goal/CMakeFiles/goal_test.dir/goal_test.c.o
+      Linking C executable ptg_test
+      ] Built target sd_test2
+      ] Built target simdag_tracing
+      Scanning dependencies of target sd_io
+      Linking C executable simulate_dot
+      ] Scanning dependencies of target sd_meta
+      Built target dot_test2
+      ] [ 82%] Building C object examples/simdag/io/CMakeFiles/sd_io.dir/sd_io.c.o
+      Building C object examples/simdag/metaxml/CMakeFiles/sd_meta.dir/sd_meta.c.o
+      ] Built target dot_test
+      Scanning dependencies of target sd_prop
+      Linking C executable goal_test
+      Scanning dependencies of target minmin_test
+      ] [ 83%] Building C object examples/simdag/properties/CMakeFiles/sd_prop.dir/sd_prop.c.o
+      Built target dax_test
+      ] Scanning dependencies of target bcbench
+      Building C object examples/simdag/scheduling/CMakeFiles/minmin_test.dir/minmin_test.c.o
+      Linking C executable sd_meta
+      ] Building C object examples/smpi/CMakeFiles/bcbench.dir/bcbench.c.o
+      Linking C executable sd_io
+      Linking C executable sd_prop
+      Linking C executable minmin_test
+      ] Linking C executable bcbench
+      Built target ptg_test
+      Scanning dependencies of target mvmul
+      ] Built target simulate_dot
+      ] Building C object examples/smpi/CMakeFiles/mvmul.dir/mvmul.c.o
+      ] Scanning dependencies of target smpi_replay
+      Built target goal_test
+      ] Building C object examples/smpi/CMakeFiles/smpi_replay.dir/replay/replay.c.o
+      Scanning dependencies of target smpi_traced
+      ] [ 83%] Built target sd_io
+      Building C object examples/smpi/CMakeFiles/smpi_traced.dir/tracing/smpi_traced.c.o
+      Scanning dependencies of target smpi_traced_simple
+      ] Built target sd_prop
+      Linking C executable smpi_replay
+      ] [ 83%] Building C object examples/smpi/CMakeFiles/smpi_traced_simple.dir/tracing/smpi_traced_simple.c.o
+      Built target sd_meta
+      Linking C executable mvmul
+      Scanning dependencies of target MM_mpi
+      ] Scanning dependencies of target masterslave_mailbox_smpi
+      Building C object examples/smpi/MM/CMakeFiles/MM_mpi.dir/MM_mpi.c.o
+      ] Built target bcbench
+      ] Building C object examples/smpi/MM/CMakeFiles/MM_mpi.dir/2.5D_MM.c.o
+      ] Building C object examples/smpi/smpi_msg_masterslave/CMakeFiles/masterslave_mailbox_smpi.dir/masterslave_mailbox_smpi.c.o
+      Linking C executable smpi_traced
+      Linking C executable smpi_traced_simple
+      ] Building C object examples/smpi/MM/CMakeFiles/MM_mpi.dir/Summa.c.o
+      ] Building C object examples/smpi/MM/CMakeFiles/MM_mpi.dir/Matrix_init.c.o
+      ] Linking C executable masterslave_mailbox_smpi
+      Built target minmin_test
+      ] Scanning dependencies of target se
+      Built target smpi_replay
+      ] Building C object examples/smpi/energy/CMakeFiles/se.dir/se.c.o
+      Scanning dependencies of target get_sender
+      Scanning dependencies of target host_on_off
+      Linking C executable MM_mpi
+      ] Building C object teshsuite/msg/get_sender/CMakeFiles/get_sender.dir/get_sender.c.o
+      ] Building C object teshsuite/msg/host_on_off/CMakeFiles/host_on_off.dir/host_on_off.c.o
+      ] Built target smpi_traced_simple
+      Scanning dependencies of target pid
+      ] [ 84%] Built target mvmul
+      Building C object teshsuite/msg/pid/CMakeFiles/pid.dir/pid.c.o
+      Linking C executable se
+      Scanning dependencies of target process
+      Linking C executable get_sender
+      ] Linking C executable host_on_off
+      Building C object teshsuite/msg/process/CMakeFiles/process.dir/process.c.o
+      Linking C executable pid
+      ] Built target masterslave_mailbox_smpi
+      Linking C executable process
+      Scanning dependencies of target process_join
+      ] Building C object teshsuite/msg/process_join/CMakeFiles/process_join.dir/process_join.c.o
+      ] Built target smpi_traced
+      ] [ 84%] Scanning dependencies of target storage_basic
+      Built target se
+      Built target get_sender
+      ] Scanning dependencies of target task_destroy_cancel
+      Scanning dependencies of target test_trace_integration
+      Building C object teshsuite/msg/storage/CMakeFiles/storage_basic.dir/storage_basic.c.o
+      Linking C executable process_join
+      ] [ 84%] [ 84%] Building C object teshsuite/msg/task_destroy_cancel/CMakeFiles/task_destroy_cancel.dir/task_destroy_cancel.c.o
+      Building C object teshsuite/msg/trace/CMakeFiles/test_trace_integration.dir/test_trace_integration.c.o
+      Built target pid
+      ] Built target host_on_off
+      Scanning dependencies of target availability_test
+      Scanning dependencies of target basic0
+      ] [ 84%] Building C object teshsuite/simdag/availability/CMakeFiles/availability_test.dir/availability_test.c.o
+      Built target process
+      Linking C executable task_destroy_cancel
+      ] Scanning dependencies of target basic1
+      Building C object teshsuite/simdag/basic/CMakeFiles/basic0.dir/basic0.c.o
+      ] Building C object teshsuite/simdag/basic/CMakeFiles/basic1.dir/basic1.c.o
+      Linking C executable test_trace_integration
+      Linking C executable storage_basic
+      Linking C executable availability_test
+      Linking C executable basic1
+      Linking C executable basic0
+      ] Built target process_join
+      ] Built target MM_mpi
+      Scanning dependencies of target basic2
+      ] Building C object teshsuite/simdag/basic/CMakeFiles/basic2.dir/basic2.c.o
+      Scanning dependencies of target basic3
+      ] Building C object teshsuite/simdag/basic/CMakeFiles/basic3.dir/basic3.c.o
+      ] Built target task_destroy_cancel
+      ] Built target test_trace_integration
+      Scanning dependencies of target basic4
+      Linking C executable basic2
+      Scanning dependencies of target basic5
+      ] [ 85%] Building C object teshsuite/simdag/basic/CMakeFiles/basic4.dir/basic4.c.o
+      Building C object teshsuite/simdag/basic/CMakeFiles/basic5.dir/basic5.c.o
+      Linking C executable basic3
+      ] [ 85%] Built target availability_test
+      Built target basic1
+      Scanning dependencies of target basic6
+      ] Scanning dependencies of target incomplete
+      Built target basic0
+      ] [ 87%] Linking C executable basic4
+      Scanning dependencies of target test_reinit_costs
+      Building C object teshsuite/simdag/basic/CMakeFiles/basic6.dir/basic6.c.o
+      Building C object teshsuite/simdag/incomplete/CMakeFiles/incomplete.dir/incomplete.c.o
+      ] Building C object teshsuite/simdag/network/CMakeFiles/test_reinit_costs.dir/test_reinit_costs.c.o
+      Linking C executable basic5
+      ] Built target storage_basic
+      Scanning dependencies of target test_intra_all2all
+      Linking C executable basic6
+      ] Building C object teshsuite/simdag/network/mxn/CMakeFiles/test_intra_all2all.dir/test_intra_all2all.c.o
+      Linking C executable incomplete
+      ] Built target basic3
+      Scanning dependencies of target test_intra_independent_comm
+      Linking C executable test_reinit_costs
+      ] [ 87%] Built target basic2
+      Building C object teshsuite/simdag/network/mxn/CMakeFiles/test_intra_independent_comm.dir/test_intra_independent_comm.c.o
+      Scanning dependencies of target test_intra_scatter
+      Linking C executable test_intra_all2all
+      ] Building C object teshsuite/simdag/network/mxn/CMakeFiles/test_intra_scatter.dir/test_intra_scatter.c.o
+      ] [ 87%] Built target basic5
+      Built target basic4
+      Scanning dependencies of target test_latency1
+      Linking C executable test_intra_independent_comm
+      Scanning dependencies of target test_latency2
+      ] [ 88%] [ 88%] Built target basic6
+      Building C object teshsuite/simdag/network/p2p/CMakeFiles/test_latency1.dir/test_latency1.c.o
+      Building C object teshsuite/simdag/network/p2p/CMakeFiles/test_latency2.dir/test_latency2.c.o
+      Linking C executable test_intra_scatter
+      Scanning dependencies of target test_latency3
+      ] Built target incomplete
+      ] Building C object teshsuite/simdag/network/p2p/CMakeFiles/test_latency3.dir/test_latency3.c.o
+      Scanning dependencies of target test_latency_bound
+      Linking C executable test_latency2
+      Linking C executable test_latency1
+      ] [ 88%] [ 88%] Built target test_intra_all2all
+      Built target test_reinit_costs
+      Building C object teshsuite/simdag/network/p2p/CMakeFiles/test_latency_bound.dir/test_latency_bound.c.o
+      Scanning dependencies of target test_comp_only_par
+      Scanning dependencies of target test_comp_only_seq
+      ] [ 89%] [ 89%] Building C object teshsuite/simdag/partask/CMakeFiles/test_comp_only_seq.dir/test_comp_only_seq.c.o
+      Built target test_intra_independent_comm
+      Building C object teshsuite/simdag/partask/CMakeFiles/test_comp_only_par.dir/test_comp_only_par.c.o
+      Linking C executable test_latency3
+      Scanning dependencies of target basic_link_test
+      Linking C executable test_latency_bound
+      ] [ 89%] Built target test_intra_scatter
+      ] Building C object teshsuite/simdag/platforms/CMakeFiles/basic_link_test.dir/basic_link_test.c.o
+      Linking C executable test_comp_only_seq
+      Built target test_latency2
+      Scanning dependencies of target basic_parsing_test
+      Linking C executable test_comp_only_par
+      Scanning dependencies of target basic_tracing
+      ] [ 89%] Building C object teshsuite/simdag/platforms/CMakeFiles/basic_parsing_test.dir/basic_parsing_test.c.o
+      Built target test_latency1
+      ] Scanning dependencies of target evaluate_get_route_time
+      Building C object teshsuite/simdag/platforms/CMakeFiles/basic_tracing.dir/basic_tracing.c.o
+      ] Linking C executable basic_link_test
+      Building C object teshsuite/simdag/platforms/CMakeFiles/evaluate_get_route_time.dir/Evaluate_get_route_time.c.o
+      ] Built target test_latency3
+      Scanning dependencies of target evaluate_parse_time
+      Linking C executable basic_parsing_test
+      ] Building C object teshsuite/simdag/platforms/CMakeFiles/evaluate_parse_time.dir/Evaluate_parse_time.c.o
+      ] [ 89%] Built target test_latency_bound
+      Built target test_comp_only_seq
+      ] Built target test_comp_only_par
+      Scanning dependencies of target is_router_test
+      Scanning dependencies of target flatifier
+      Linking C executable basic_tracing
+      Scanning dependencies of target bug-17132
+      ] [ 89%] [ 89%] Building C object teshsuite/simdag/platforms/CMakeFiles/is_router_test.dir/is_router_test.c.o
+      Building C object teshsuite/simdag/platforms/CMakeFiles/flatifier.dir/flatifier.c.o
+      Building C object teshsuite/bug-17132/CMakeFiles/bug-17132.dir/bug-17132.c.o
+      Linking C executable evaluate_get_route_time
+      ] Built target basic_link_test
+      Scanning dependencies of target check_defaults
+      Linking C executable evaluate_parse_time
+      ] Building C object teshsuite/simix/check_defaults/CMakeFiles/check_defaults.dir/check_defaults.c.o
+      Linking C executable is_router_test
+      Linking C executable flatifier
+      Linking C executable bug-17132
+      ] Built target basic_parsing_test
+      ] Scanning dependencies of target stack_overflow
+      Built target basic_tracing
+      Linking C executable check_defaults
+      ] Building C object teshsuite/simix/stack_overflow/CMakeFiles/stack_overflow.dir/stack_overflow.c.o
+      Scanning dependencies of target allgather_coll
+      ] [ 91%] Built target evaluate_get_route_time
+      Building C object teshsuite/smpi/allgather/CMakeFiles/allgather_coll.dir/allgather_coll.c.o
+      Scanning dependencies of target allgatherv_coll
+      ] Built target evaluate_parse_time
+      ] [ 91%] Built target is_router_test
+      Linking C executable stack_overflow
+      Building C object teshsuite/smpi/allgatherv/CMakeFiles/allgatherv_coll.dir/allgatherv_coll.c.o
+      Scanning dependencies of target allreduce
+      Scanning dependencies of target allreduce_coll
+      ] Built target bug-17132
+      ] [ 92%] Building C object teshsuite/smpi/allreduce/CMakeFiles/allreduce_coll.dir/allreduce_coll.c.o
+      Building C object teshsuite/smpi/allreduce/CMakeFiles/allreduce.dir/allreduce.c.o
+      Scanning dependencies of target alltoall2
+      ] [ 92%] Linking C executable allgatherv_coll
+      Built target check_defaults
+      Building C object teshsuite/smpi/alltoall/CMakeFiles/alltoall2.dir/alltoall2.c.o
+      Linking C executable allgather_coll
+      Scanning dependencies of target alltoall_basic
+      ] Linking C executable allreduce
+      Building C object teshsuite/smpi/alltoall/CMakeFiles/alltoall_basic.dir/alltoall_basic.c.o
+      Linking C executable allreduce_coll
+      Linking C executable alltoall2
+      ] [ 92%] Built target stack_overflow
+      Built target flatifier
+      Scanning dependencies of target alltoallv_coll
+      Scanning dependencies of target alltoall_coll
+      ] Linking C executable alltoall_basic
+      ] Building C object teshsuite/smpi/alltoall/CMakeFiles/alltoall_coll.dir/alltoall_coll.c.o
+      Building C object teshsuite/smpi/alltoallv/CMakeFiles/alltoallv_coll.dir/alltoallv_coll.c.o
+      ] Built target allgather_coll
+      Scanning dependencies of target barrier_coll
+      ] Building C object teshsuite/smpi/barrier/CMakeFiles/barrier_coll.dir/barrier.c.o
+      ] Built target allreduce
+      Scanning dependencies of target bcast
+      Linking C executable alltoallv_coll
+      ] Linking C executable alltoall_coll
+      ] Building C object teshsuite/smpi/bcast/CMakeFiles/bcast.dir/bcast.c.o
+      Built target allgatherv_coll
+      Scanning dependencies of target bcast_coll
+      ] [ 94%] Built target alltoall_basic
+      Built target allreduce_coll
+      ] [ 94%] Linking C executable barrier_coll
+      Built target alltoall2
+      Scanning dependencies of target compute
+      Building C object teshsuite/smpi/bcast/CMakeFiles/bcast_coll.dir/bcast_coll.c.o
+      Scanning dependencies of target compute2
+      ] Scanning dependencies of target compute3
+      ] Building C object teshsuite/smpi/compute/CMakeFiles/compute2.dir/compute2.c.o
+      ] Building C object teshsuite/smpi/compute/CMakeFiles/compute3.dir/compute3.c.o
+      Building C object teshsuite/smpi/compute/CMakeFiles/compute.dir/compute.c.o
+      Linking C executable bcast
+      Linking C executable bcast_coll
+      Linking C executable compute
+      Linking C executable compute2
+      ] Linking C executable compute3
+      Built target alltoall_coll
+      Scanning dependencies of target gather_coll
+      ] Building C object teshsuite/smpi/gather/CMakeFiles/gather_coll.dir/gather_coll.c.o
+      ] Built target barrier_coll
+      Scanning dependencies of target hvector_test
+      ] Building C object teshsuite/smpi/hvector/CMakeFiles/hvector_test.dir/hvector_test.c.o
+      ] Built target bcast
+      ] Scanning dependencies of target indexed_test
+      Built target alltoallv_coll
+      ] [ 96%] Linking C executable gather_coll
+      Built target compute2
+      Scanning dependencies of target dsend
+      Building C object teshsuite/smpi/indexed/CMakeFiles/indexed_test.dir/indexed_test.c.o
+      ] Scanning dependencies of target pingpong
+      ] Built target compute3
+      Building C object teshsuite/smpi/pingpong/CMakeFiles/dsend.dir/dsend.c.o
+      Linking C executable hvector_test
+      ] Scanning dependencies of target reduce
+      ] Building C object teshsuite/smpi/pingpong/CMakeFiles/pingpong.dir/pingpong.c.o
+      Built target compute
+      ] Scanning dependencies of target reduce_coll
+      Building C object teshsuite/smpi/reduce/CMakeFiles/reduce.dir/reduce.c.o
+      ] [ 97%] Built target bcast_coll
+      Building C object teshsuite/smpi/reduce/CMakeFiles/reduce_coll.dir/reduce_coll.c.o
+      Linking C executable indexed_test
+      Scanning dependencies of target reduce_scatter_coll
+      Linking C executable pingpong
+      ] Linking C executable dsend
+      Building C object teshsuite/smpi/reduce/CMakeFiles/reduce_scatter_coll.dir/reduce_scatter_coll.c.o
+      Linking C executable reduce
+      ] Built target gather_coll
+      ] Scanning dependencies of target scatter
+      Built target hvector_test
+      Linking C executable reduce_coll
+      ] Linking C executable reduce_scatter_coll
+      Building C object teshsuite/smpi/scatter/CMakeFiles/scatter.dir/scatter.c.o
+      Scanning dependencies of target shared
+      ] Building C object teshsuite/smpi/shared/CMakeFiles/shared.dir/shared.c.o
+      ] Built target indexed_test
+      ] Built target dsend
+      Scanning dependencies of target struct_test
+      Scanning dependencies of target vector_test
+      ] [ 97%] Building C object teshsuite/smpi/struct/CMakeFiles/struct_test.dir/struct_test.c.o
+      Built target pingpong
+      ] Building C object teshsuite/smpi/vector/CMakeFiles/vector_test.dir/vector_test.c.o
+      ] Built target reduce
+      Scanning dependencies of target lmm_usage
+      Linking C executable scatter
+      Scanning dependencies of target maxmin_bench
+      ] Building C object teshsuite/surf/lmm_usage/CMakeFiles/lmm_usage.dir/lmm_usage.c.o
+      ] Linking C executable shared
+      Building C object teshsuite/surf/maxmin_bench/CMakeFiles/maxmin_bench.dir/maxmin_bench.c.o
+      Linking C executable vector_test
+      Linking C executable struct_test
+      ] [ 98%] Built target reduce_scatter_coll
+      Built target reduce_coll
+      Linking C executable maxmin_bench
+      Scanning dependencies of target surf_usage2
+      Scanning dependencies of target surf_usage
+      ] Linking C executable lmm_usage
+      ] Building C object teshsuite/surf/surf_usage/CMakeFiles/surf_usage2.dir/surf_usage2.c.o
+      Building C object teshsuite/surf/surf_usage/CMakeFiles/surf_usage.dir/surf_usage.c.o
+      ] Built target shared
+      Scanning dependencies of target trace_usage
+      ] Linking C executable surf_usage2
+      ] Linking C executable surf_usage
+      Built target vector_test
+      ] Building C object teshsuite/surf/trace_usage/CMakeFiles/trace_usage.dir/trace_usage.c.o
+      Built target scatter
+      Scanning dependencies of target graphxml_usage
+      Scanning dependencies of target heap_bench
+      ] [ 99%] Building C object teshsuite/xbt/graphxml_usage/CMakeFiles/graphxml_usage.dir/graphxml_usage.c.o
+      Building C object teshsuite/xbt/heap_bench/CMakeFiles/heap_bench.dir/heap_bench.c.o
+      ] Built target struct_test
+      Scanning dependencies of target log_large_test
+      ] Linking C executable graphxml_usage
+      Built target maxmin_bench
+      ] Building C object teshsuite/xbt/log_large/CMakeFiles/log_large_test.dir/log_large_test.c.o
+      Linking C executable heap_bench
+      Linking C executable trace_usage
+      Scanning dependencies of target log_usage
+      ] Building C object teshsuite/xbt/log_usage/CMakeFiles/log_usage.dir/log_usage.c.o
+      Linking C executable log_large_test
+      ] Built target surf_usage2
+      Scanning dependencies of target parallel_log_crashtest
+      Linking C executable log_usage
+      ] [ 99%] Built target surf_usage
+      Building C object teshsuite/xbt/parallel_log/CMakeFiles/parallel_log_crashtest.dir/parallel_log_crashtest.c.o
+      Scanning dependencies of target parmap_bench
+      ] Building C object teshsuite/xbt/parmap_bench/CMakeFiles/parmap_bench.dir/parmap_bench.c.o
+      ] Built target trace_usage
+      Scanning dependencies of target parmap_test
+      Linking C executable parallel_log_crashtest
+      ] [ 99%] Building C object teshsuite/xbt/parmap_test/CMakeFiles/parmap_test.dir/parmap_test.c.o
+      ] Built target graphxml_usage
+      Built target log_large_test
+      ] Built target heap_bench
+      Linking C executable parmap_bench
+      Scanning dependencies of target graphicator
+      Scanning dependencies of target tesh
+      ] [ 99%] Building C object tools/graphicator/CMakeFiles/graphicator.dir/graphicator.c.o
+      ] [100%] Built target lmm_usage
+      ] Building C object tools/tesh/CMakeFiles/tesh.dir/tesh.c.o
+      Building C object tools/tesh/CMakeFiles/tesh.dir/run_context.c.o
+      Building C object tools/tesh/CMakeFiles/tesh.dir/signal.c.o
+      ] Built target log_usage
+      Linking C executable parmap_test
+      Linking C executable ../../bin/graphicator
+      ] Built target parallel_log_crashtest
+      Linking C executable ../../bin/tesh
+      ] Built target graphicator
+      ] Built target parmap_bench
+      ] Built target parmap_test
+      ] Built target tesh
+      ] Generating manpages
+      ] Built target manpages
+      ] Built target simgrid
+      ] Install /home/steven/Programmation/TER/SimGrid-3.11/build/bin/colorize
+      ] Built target simgrid-colorizer
+      ] Install /home/steven/Programmation/TER/SimGrid-3.11/build/bin/simgrid_update_xml
+      ] Built target simgrid_update_xml
+      ] Built target testall
+      ] Built target actions
+      ] Built target bittorrent
+      ] Built target bittorrent_platfgen
+      ] Built target chainsend
+      ] Built target chord
+      ] Built target bound
+      ] Built target migrate_vm
+      ] Built target multicore
+      ] Built target scale
+      ] Built target simple_vm
+      ] Built target two_tasks_vm
+      ] Built target e1
+      ] Built target e2
+      ] Built target e3
+      ] Built target test_MSG_gpu_task_create
+      ] Built target gtnets
+      ] Built target peer
+      ] Built target peer2
+      ] Built target peer3
+      ] Built target file
+      ] Built target file_unlink
+      ] Built target remote
+      ] Built target storage
+      ] Built target kademlia
+      ] Built target masterslave_arg
+      ] Built target masterslave_bypass
+      ] Built target masterslave_cluster
+      ] Built target masterslave_failure
+      ] Built target masterslave_failure_platfgen
+      ] Built target masterslave_forwarder
+      ] Built target masterslave_kill
+      ] Built target masterslave_mailbox
+      ] Built target masterslave_platfgen
+      ] Built target migration
+      ] Built target parallel_task
+      ] Built target test_ptask
+      ] Built target pastry
+      ] Built target msg_pmm
+      ] Built target priority
+      ] Built target msg_prop
+      ] Built target synchro
+      ] Built target sendrecv
+      ] Built target sk_time
+      ] Built target suspend
+      ] Built target token_bypass
+      ] Built target token_ring
+      ] Built target categories
+      ] Built target link_srcdst_user_variables
+      ] Built target link_user_variables
+      ] Built target ms
+      ] Built target procmig
+      ] Built target simple
+      ] Built target trace_platform
+      ] Built target user_variables
+      ] Built target ex_sd_test
+      ] Built target sd_avail
+      ] Built target sd_comm_throttling
+      ] Built target sd_fail
+      ] Built target sd_seq_access
+      ] Built target sd_test2
+      ] Built target sd_typed_tasks_test
+      ] Built target simdag_tracing
+      ] Built target dax_test
+      ] Built target dot_test
+      ] Built target dot_test2
+      ] Built target ptg_test
+      ] Built target simulate_dot
+      ] Built target goal_test
+      ] Built target sd_io
+      ] Built target sd_meta
+      ] Built target sd_prop
+      ] Built target minmin_test
+      ] Built target bcbench
+      ] Built target mvmul
+      ] Built target smpi_replay
+      ] Built target smpi_traced
+      ] Built target smpi_traced_simple
+      ] Built target MM_mpi
+      ] Built target masterslave_mailbox_smpi
+      ] Built target se
+      ] Built target get_sender
+      ] Built target host_on_off
+      ] Built target pid
+      ] Built target process
+      ] Built target process_join
+      ] Built target storage_basic
+      ] Built target task_destroy_cancel
+      ] Built target test_trace_integration
+      ] Built target availability_test
+      ] Built target basic0
+      ] Built target basic1
+      ] Built target basic2
+      ] Built target basic3
+      ] Built target basic4
+      ] Built target basic5
+      ] Built target basic6
+      ] Built target incomplete
+      ] Built target test_reinit_costs
+      ] Built target test_intra_all2all
+      ] Built target test_intra_independent_comm
+      ] Built target test_intra_scatter
+      ] Built target test_latency1
+      ] Built target test_latency2
+      ] Built target test_latency3
+      ] Built target test_latency_bound
+      ] Built target test_comp_only_par
+      ] Built target test_comp_only_seq
+      ] Built target basic_link_test
+      ] Built target basic_parsing_test
+      ] Built target basic_tracing
+      ] Built target evaluate_get_route_time
+      ] Built target evaluate_parse_time
+      ] Built target flatifier
+      ] Built target is_router_test
+      ] Built target bug-17132
+      ] Built target check_defaults
+      ] Built target stack_overflow
+      ] Built target allgather_coll
+      ] Built target allgatherv_coll
+      ] Built target allreduce
+      ] Built target allreduce_coll
+      ] Built target alltoall2
+      ] Built target alltoall_basic
+      ] Built target alltoall_coll
+      ] Built target alltoallv_coll
+      ] Built target barrier_coll
+      ] Built target bcast
+      ] Built target bcast_coll
+      ] Built target compute
+      ] Built target compute2
+      ] Built target compute3
+      ] Built target gather_coll
+      ] Built target hvector_test
+      ] Built target indexed_test
+      ] Built target dsend
+      ] Built target pingpong
+      ] Built target reduce
+      ] Built target reduce_coll
+      ] Built target reduce_scatter_coll
+      ] Built target scatter
+      ] Built target shared
+      ] Built target struct_test
+      ] Built target vector_test
+      ] Built target mtest_c
+      ] Built target lmm_usage
+      ] Built target maxmin_bench
+      ] Built target surf_usage
+      ] Built target surf_usage2
+      ] Built target trace_usage
+      ] Built target graphxml_usage
+      ] Built target heap_bench
+      ] Built target log_large_test
+      ] Built target log_usage
+      ] Built target parallel_log_crashtest
+      ] Built target parmap_bench
+      ] Built target parmap_test
+      ] Built target graphicator
+      ] Built target tesh
+      Install the project...
+      -- Install configuration: ""
+      -- Installing: /home/steven/Programs/Simgrid/doc/simgrid/html/
+      -- Installing: /home/steven/Programs/Simgrid/doc/simgrid/HelloWorld/
+      -- Installing: /home/steven/Programs/Simgrid/doc/simgrid/HelloWorld//README
+      -- Installing: /home/steven/Programs/Simgrid/doc/simgrid/HelloWorld//CMakeLists.txt
+      -- Installing: /home/steven/Programs/Simgrid/doc/simgrid/HelloWorld//HelloWorld.c
+      -- Installing: /home/steven/Programs/Simgrid/share/man/man1/simgrid_update_xml.1
+      -- Installing: /home/steven/Programs/Simgrid/share/man/man1/tesh.1
+      -- Installing: /home/steven/Programs/Simgrid/share/man/man1/smpirun.1
+      -- Installing: /home/steven/Programs/Simgrid/share/man/man1/smpicc.1
+      -- Installing: /home/steven/Programs/Simgrid/bin/smpicc
+      -- Installing: /home/steven/Programs/Simgrid/bin/smpicxx
+      -- Installing: /home/steven/Programs/Simgrid/bin/smpirun
+      -- Installing: /home/steven/Programs/Simgrid/bin/tesh
+      -- Installing: /home/steven/Programs/Simgrid/bin/graphicator
+      -- Installing: /home/steven/Programs/Simgrid/bin/simgrid-colorizer
+      -- Installing: /home/steven/Programs/Simgrid/bin/simgrid_update_xml
+      -- Installing: /home/steven/Programs/Simgrid/lib/libsimgrid.so.3.11
+      -- Installing: /home/steven/Programs/Simgrid/lib/libsimgrid.so
+      -- Installing: /home/steven/Programs/Simgrid/include/instr/instr.h
+      -- Installing: /home/steven/Programs/Simgrid/include/msg/datatypes.h
+      -- Installing: /home/steven/Programs/Simgrid/include/msg/msg.h
+      -- Installing: /home/steven/Programs/Simgrid/include/simdag/datatypes.h
+      -- Installing: /home/steven/Programs/Simgrid/include/simdag/simdag.h
+      -- Installing: /home/steven/Programs/Simgrid/include/simgrid.h
+      -- Installing: /home/steven/Programs/Simgrid/include/simgrid/datatypes.h
+      -- Installing: /home/steven/Programs/Simgrid/include/simgrid/modelchecker.h
+      -- Installing: /home/steven/Programs/Simgrid/include/simgrid/platf.h
+      -- Installing: /home/steven/Programs/Simgrid/include/simgrid/platf_generator.h
+      -- Installing: /home/steven/Programs/Simgrid/include/simgrid/plugins.h
+      -- Installing: /home/steven/Programs/Simgrid/include/simgrid/simix.h
+      -- Installing: /home/steven/Programs/Simgrid/include/smpi/mpi.h
+      -- Installing: /home/steven/Programs/Simgrid/include/smpi/smpi.h
+      -- Installing: /home/steven/Programs/Simgrid/include/smpi/smpi_cocci.h
+      -- Installing: /home/steven/Programs/Simgrid/include/smpi/smpi_main.h
+      -- Installing: /home/steven/Programs/Simgrid/include/surf/simgrid_dtd.h
+      -- Installing: /home/steven/Programs/Simgrid/include/surf/surf_routing.h
+      -- Installing: /home/steven/Programs/Simgrid/include/surf/surfxml_parse.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/RngStream.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/asserts.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/automaton.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/config.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/cunit.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/dict.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/dynar.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/ex.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/fifo.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/function_types.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/graph.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/graphxml.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/graphxml_parse.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/hash.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/heap.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/lib.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/log.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/mallocator.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/matrix.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/misc.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/mmalloc.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/module.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/parmap.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/peer.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/queue.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/replay.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/set.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/setset.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/str.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/strbuff.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/swag.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/synchro_core.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/sysdep.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/virtu.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/xbt_os_thread.h
+      -- Installing: /home/steven/Programs/Simgrid/include/xbt/xbt_os_time.h
+      -- Installing: /home/steven/Programs/Simgrid/include/smpi/mpif.h
+      -- Installing: /home/steven/Programs/Simgrid/include/smpi/smpif.h
+      -- Installing: /home/steven/Programs/Simgrid/include/simgrid_config.h
+#+end_example
+
+**** Compilation starpu avec support simgrid
+     Apparement il me manquait déjà la lib opencl
+     #+begin_src sh :results output :exports both
+       yaourt -S libclc
+     #+end_src
+
+     #+begin_src sh :session compile_starpu_simgrid :results output :exports both 
+       cd ~/Programmation/TER/starpu
+       STARPU_SCHED=dmda ./examples/matvecmult/matvecmult
+       STARPU_SCHED=dmda ./examples/matvecmult/matvecmult
+     #+end_src
+
+     Là on a pas le même résultat qu'ici http://starpu.gforge.inria.fr/testing/trunk/doc/html/SimGridSupport.html
+     #+RESULTS:
+     : 
+     : [starpu][starpu_initialize] Warning: StarPU was configured with --with-fxt, which slows down a bit
+     : This application requires an OpenCL worker.
+     : [starpu][starpu_initialize] Warning: StarPU was configured with --with-fxt, which slows down a bit
+     : This application requires an OpenCL worker.
+
+     Tentative de compilation de starpu avec le support de simgrid
+     #+begin_src sh :session compile_starpu_simgrid :results output :exports both
+       # ./configure --with-simgrid-dir=~/Programs/Simgrid
+       pwd
+     #+end_src
+
+     #+RESULTS:
+     : 
+     : /home/steven/Programmation/TER/starpu
+
