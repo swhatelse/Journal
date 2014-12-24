@@ -1,4 +1,4 @@
-* TODO A faire [3/6]
+* TODO A faire [3/7]
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
@@ -8,12 +8,14 @@
     * [ ] BLABLA
   * [ ] Apprendre à utiliser grid5000
     oarsub, kadeploy, kaenv3
-  * [X] Installer simgrid
+  * [-] Simgrid [1/2]
+    * [X] Installer
+    * [X] Tester que tout fonctionne
   * [ ] linker example de samuel avec starpu et simgrid
 * Memo
 ** Commandes emacs
-C-c C-h : raccourcis associé au mode utilisé
-C-c C-e : Ouvre menu avec possibilité d'exporter en html, latex, etc...
+   C-c C-h : raccourcis associé au mode utilisé
+   C-c C-e : Ouvre menu avec possibilité d'exporter en html, latex, etc...
 * 2014
 ** 2014-12 décembre
 *** 2014-12-15 lundi
@@ -25,485 +27,485 @@ C-c C-e : Ouvre menu avec possibilité d'exporter en html, latex, etc...
 Entered on [2014-12-15 lun. 12:47]
 
 ***** Essai starpu de la forge
-Lancement du configure
-#+begin_src sh :results output :exports both
-  cd ~/Programmation/C/IMAG/TER/starpu
-  ./configure
-#+end_src
+      Lancement du configure
+      #+begin_src sh :results output :exports both
+        cd ~/Programmation/C/IMAG/TER/starpu
+        ./configure
+      #+end_src
 
-#+RESULTS:
-#+begin_example
-checking build system type... x86_64-unknown-linux-gnu
-checking host system type... x86_64-unknown-linux-gnu
-checking target system type... x86_64-unknown-linux-gnu
-checking for a BSD-compatible install... /usr/bin/install -c
-checking whether build environment is sane... yes
-checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
-checking for gawk... gawk
-checking whether make sets $(MAKE)... yes
-checking whether make supports nested variables... yes
-checking whether make supports nested variables... (cached) yes
-checking for style of include used by make... GNU
-checking for gcc... gcc
-checking whether the C compiler works... yes
-checking for C compiler default output file name... a.out
-checking for suffix of executables... 
-checking whether we are cross compiling... no
-checking for suffix of object files... o
-checking whether we are using the GNU C compiler... yes
-checking whether gcc accepts -g... yes
-checking for gcc option to accept ISO C89... none needed
-checking whether gcc understands -c and -o together... yes
-checking dependency style of gcc... gcc3
-checking for ar... ar
-checking the archiver (ar) interface... ar
-checking for gcc... (cached) gcc
-checking whether we are using the GNU C compiler... (cached) yes
-checking whether gcc accepts -g... (cached) yes
-checking for gcc option to accept ISO C89... (cached) none needed
-checking whether gcc understands -c and -o together... (cached) yes
-checking dependency style of gcc... (cached) gcc3
-checking for g++... g++
-checking whether we are using the GNU C++ compiler... yes
-checking whether g++ accepts -g... yes
-checking dependency style of g++... gcc3
-checking how to run the C preprocessor... gcc -E
-checking for a sed that does not truncate output... /usr/bin/sed
-checking whether ln -s works... yes
-checking for g77... no
-checking for xlf... no
-checking for f77... no
-checking for frt... no
-checking for pgf77... no
-checking for cf77... no
-checking for fort77... no
-checking for fl32... no
-checking for af77... no
-checking for xlf90... no
-checking for f90... no
-checking for pgf90... no
-checking for pghpf... no
-checking for epcf90... no
-checking for gfortran... no
-checking for g95... no
-checking for xlf95... no
-checking for f95... no
-checking for fort... no
-checking for ifort... no
-checking for ifc... no
-checking for efc... no
-checking for pgfortran... no
-checking for pgf95... no
-checking for lf95... no
-checking for ftn... no
-checking for nagfor... no
-checking whether we are using the GNU Fortran 77 compiler... no
-checking whether  accepts -g... no
-checking for gstat... no
-checking for stat... stat
-checking for gdate... no
-checking for date... date
-checking how to print strings... printf
-checking for a sed that does not truncate output... (cached) /usr/bin/sed
-checking for grep that handles long lines and -e... /usr/bin/grep
-checking for egrep... /usr/bin/grep -E
-checking for fgrep... /usr/bin/grep -F
-checking for ld used by gcc... /usr/bin/ld
-checking if the linker (/usr/bin/ld) is GNU ld... yes
-checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
-checking the name lister (/usr/bin/nm -B) interface... BSD nm
-checking the maximum length of command line arguments... 1635000
-checking whether the shell understands some XSI constructs... yes
-checking whether the shell understands "+="... yes
-checking how to convert x86_64-unknown-linux-gnu file names to x86_64-unknown-linux-gnu format... func_convert_file_noop
-checking how to convert x86_64-unknown-linux-gnu file names to toolchain format... func_convert_file_noop
-checking for /usr/bin/ld option to reload object files... -r
-checking for objdump... objdump
-checking how to recognize dependent libraries... pass_all
-checking for dlltool... no
-checking how to associate runtime and link libraries... printf %s\n
-checking for archiver @FILE support... @
-checking for strip... strip
-checking for ranlib... ranlib
-checking command to parse /usr/bin/nm -B output from gcc object... ok
-checking for sysroot... no
-checking for mt... no
-checking if : is a manifest tool... no
-checking for ANSI C header files... yes
-checking for sys/types.h... yes
-checking for sys/stat.h... yes
-checking for stdlib.h... yes
-checking for string.h... yes
-checking for memory.h... yes
-checking for strings.h... yes
-checking for inttypes.h... yes
-checking for stdint.h... yes
-checking for unistd.h... yes
-checking for dlfcn.h... yes
-checking for objdir... .libs
-checking if gcc supports -fno-rtti -fno-exceptions... no
-checking for gcc option to produce PIC... -fPIC -DPIC
-checking if gcc PIC flag -fPIC -DPIC works... yes
-checking if gcc static flag -static works... yes
-checking if gcc supports -c -o file.o... yes
-checking if gcc supports -c -o file.o... (cached) yes
-checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
-checking whether -lc should be explicitly linked in... no
-checking dynamic linker characteristics... GNU/Linux ld.so
-checking how to hardcode library paths into programs... immediate
-checking whether stripping libraries is possible... yes
-checking if libtool supports shared libraries... yes
-checking whether to build shared libraries... yes
-checking whether to build static libraries... yes
-checking how to run the C++ preprocessor... g++ -E
-checking for ld used by g++... /usr/bin/ld -m elf_x86_64
-checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
-checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
-checking for g++ option to produce PIC... -fPIC -DPIC
-checking if g++ PIC flag -fPIC -DPIC works... yes
-checking if g++ static flag -static works... yes
-checking if g++ supports -c -o file.o... yes
-checking if g++ supports -c -o file.o... (cached) yes
-checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
-checking dynamic linker characteristics... (cached) GNU/Linux ld.so
-checking how to hardcode library paths into programs... immediate
-checking whether ln -s works... yes
-checking for ANSI C header files... (cached) yes
-checking for C/C++ restrict keyword... __restrict
-checking for bash... /bin/sh
-checking for svn... /usr/bin/svn
-checking for svnversion... /usr/bin/svnversion
-checking for lib... no
-checking size of void *... 8
-checking for pthread_create in -lpthread... yes
-checking for library containing sqrt... -lm
-checking for main in -lws2_32... no
-checking for sysconf... yes
-checking for pthread_spin_lock... yes
-checking for pthread_barrier_init... yes
-checking for pthread_setaffinity_np... yes
-checking for posix_memalign... yes
-checking for memalign... yes
-checking for drand48... yes
-checking for erand48_r... yes
-checking for strerror_r... yes
-checking for setenv... yes
-checking for unsetenv... yes
-checking for nearbyintf... yes
-checking for rintf... yes
-checking malloc.h usability... yes
-checking malloc.h presence... yes
-checking for malloc.h... yes
-checking valgrind/valgrind.h usability... yes
-checking valgrind/valgrind.h presence... yes
-checking for valgrind/valgrind.h... yes
-checking valgrind/helgrind.h usability... yes
-checking valgrind/helgrind.h presence... yes
-checking for valgrind/helgrind.h... yes
-checking for sched_yield... yes
-checking aio.h usability... yes
-checking aio.h presence... yes
-checking for aio.h... yes
-checking for mkstemps... yes
-checking for pread... yes
-checking for pwrite... yes
-checking whether the target supports __sync_val_compare_and_swap... yes
-checking whether the target supports __sync_bool_compare_and_swap... yes
-checking whether the target supports __sync_fetch_and_add... yes
-checking whether the target supports __sync_fetch_and_or... yes
-checking whether the target supports __sync_lock_test_and_set... yes
-checking whether the target supports __sync_synchronize... yes
-checking for library containing set_mempolicy... no
-checking whether libnuma is available... no
-checking maximum number of sched_ctxs... 10
-checking maximum number of CPUs... 64
-checking whether CPUs should be used... yes
-checking maximum number of CUDA devices... 4
-checking whether CUDA is available... 
-checking cuda.h usability... no
-checking cuda.h presence... no
-checking for cuda.h... no
-checking whether CUDA is available... 
-checking cuda.h usability... no
-checking cuda.h presence... no
-checking for cuda.h... no
-checking whether CUDA is available in /usr/local/cuda... 
-checking cuda.h usability... no
-checking cuda.h presence... no
-checking for cuda.h... no
-checking whether CUDA is available in /c/cuda... 
-checking cuda.h usability... no
-checking cuda.h presence... no
-checking for cuda.h... no
-checking whether CUDA is available in /cygdrive/c/cuda... 
-checking cuda.h usability... no
-checking cuda.h presence... no
-checking for cuda.h... no
-checking whether CUDA is available in /opt/cuda... 
-checking cuda.h usability... no
-checking cuda.h presence... no
-checking for cuda.h... no
-checking whether CUDA is available in /..... 
-checking cuda.h usability... no
-checking cuda.h presence... no
-checking for cuda.h... no
-checking whether CUDA is available in /..... 
-checking cuda.h usability... no
-checking cuda.h presence... no
-checking for cuda.h... no
-checking whether CUDA is available in /..... 
-checking cuda.h usability... no
-checking cuda.h presence... no
-checking for cuda.h... no
-checking whether CUDA is available in /..... 
-checking cuda.h usability... no
-checking cuda.h presence... no
-checking for cuda.h... no
-checking whether CUDA is working... no
-checking whether CUDA should be used... no
-checking for pkg-config... /usr/bin/pkg-config
-checking pkg-config is at least version 0.9.0... yes
-checking whether MAGMA should be used... no
-checking for cufftDoubleComplex... no
-checking whether CURAND is available... no
-checking maximum number of OpenCL devices... 8
-checking whether OpenCL is available... 
-checking CL/cl.h usability... no
-checking CL/cl.h presence... no
-checking for CL/cl.h... no
-checking whether OpenCL is available in /usr/local/cuda no and no... 
-checking CL/cl.h usability... no
-checking CL/cl.h presence... no
-checking for CL/cl.h... no
-checking whether OpenCL is available in /c/cuda no and no... 
-checking CL/cl.h usability... no
-checking CL/cl.h presence... no
-checking for CL/cl.h... no
-checking whether OpenCL is available in /cygdrive/c/cuda no and no... 
-checking CL/cl.h usability... no
-checking CL/cl.h presence... no
-checking for CL/cl.h... no
-checking whether OpenCL is available in /opt/cuda no and no... 
-checking CL/cl.h usability... no
-checking CL/cl.h presence... no
-checking for CL/cl.h... no
-checking whether OpenCL is available in /.. no and no... 
-checking CL/cl.h usability... no
-checking CL/cl.h presence... no
-checking for CL/cl.h... no
-checking for clEnqueueMarkerWithWaitList... no
-checking whether OpenCL should be used... no
-checking whether asynchronous copy should be disabled... no
-checking whether asynchronous CUDA copy should be disabled... no
-checking whether asynchronous OpenCL copy should be disabled... no
-checking whether asynchronous MIC copy should be disabled... no
-checking whether SimGrid is enabled... no
-checking whether blocking drivers should be enabled... no
-checking maximum number of MIC devices... 4
-checking maximum number of MIC threads... 
-checking RCCE.h usability... no
-checking RCCE.h presence... no
-checking for RCCE.h... no
-checking for RCCE_init in -lRCCE_bigflags_nongory_nopwrmgmt... no
-checking whether RCCE should be used... no
-checking Maximum number of message-passing kernels... 10
-checking whether debug mode should be enabled... no
-checking whether extra checks should be performed... no
-checking whether debug messages should be displayed... no
-checking whether coverage testing should be enabled... no
-checking whether FxT traces should be generated... no
-checking whether additional locking systems FxT traces should be enabled... no
-checking whether performance debugging should be enabled... no
-checking whether performance model debugging should be enabled... no
-checking whether statistics should be generated... no
-checking whether memory stats should be displayed... no
-checking glpk.h usability... no
-checking glpk.h presence... no
-checking for glpk.h... no
-checking for main in -lglpk... no
-checking Ayudame.h usability... no
-checking Ayudame.h presence... no
-checking for Ayudame.h... no
-checking how many buffers can be manipulated per task... 8
-checking maximum number of nodes to use... checking maximum number of memory nodes... 8
-checking whether allocation cache should be used... yes
-checking using explicit performance model location... no
-checking performance models location... $HOME/.starpu/sampling/
-checking for clock_gettime in -lrt... yes
-checking for clock_gettime... yes
-checking Maximum number of workers... 64
-checking Maximum number of workers combinations... 64
-checking maximum number of implementations... 4
-checking leveldb/db.h usability... no
-checking leveldb/db.h presence... no
-checking for leveldb/db.h... no
-checking for main in -lleveldb... no
-checking calibration heuristic of history-based StarPU calibrator... 50
-checking for mpicc... /usr/bin/mpicc
-checking mpicc path... /usr/bin/mpicc
-checking for mpiexec... /usr/bin/mpiexec
-checking whether mpiexec is available... /usr/bin/mpiexec
-checking whether MPI tests should be run... yes
-checking whether the StarPU MPI library should be generated... yes
-checking for StarPU-Top... checking for qmake-qt4... /usr/bin/qmake-qt4
-checking whether compiler support -Wall... yes
-checking whether compiler support -Werror=implicit... yes
-checking whether compiler support -Werror=implicit-function-declaration... yes
-checking whether GCC supports plug-ins... no
-checking for OpenMP runtime support... no
-checking for SOCL... no
-checking for gdb... /usr/bin/gdb
-checking whether OpenGL rendering is enabled... no
-checking for X... libraries , headers 
-checking for gethostbyname... yes
-checking for connect... yes
-checking for remove... yes
-checking for shmat... yes
-checking for IceConnectionNumber in -lICE... yes
-checking for library containing sgemm_... -lblas
-checking which BLAS lib should be used... system
-checking for FFTW... yes
-checking for FFTWF... yes
-checking for FFTWL... yes
-checking for HWLOC... yes
-checking whether hwloc should be used... yes
-checking f77.h usability... no
-checking f77.h presence... no
-checking for f77.h... no
-checking for icc... no
-checking for help2man... no
-checking for struct cudaDeviceProp.pciDomainID... no
-checking for struct cudaDeviceProp.pciBusID... no
-checking for doxygen... /usr/bin/doxygen
-checking for pdflatex... /usr/bin/pdflatex
-checking for epstopdf... /usr/bin/epstopdf
-checking whether documentation should be compiled... yes
-checking that generated files are newer than configure... done
-configure: creating ./config.status
-config.status: creating tests/regression/regression.sh
-config.status: creating tests/regression/profiles
-config.status: creating tests/regression/profiles.build.only
-config.status: creating Makefile
-config.status: creating src/Makefile
-config.status: creating tools/Makefile
-config.status: creating tools/starpu_codelet_profile
-config.status: creating tools/starpu_codelet_histo_profile
-config.status: creating tools/starpu_workers_activity
-config.status: creating tools/starpu_paje_draw_histogram
-config.status: creating tools/starpu_paje_state_stats
-config.status: creating tools/starpu_paje_summary
-config.status: creating socl/Makefile
-config.status: creating socl/src/Makefile
-config.status: creating socl/examples/Makefile
-config.status: creating socl/vendors/socl.icd
-config.status: creating socl/vendors/install/socl.icd
-config.status: creating libstarpu.pc
-config.status: creating starpu-1.0.pc
-config.status: creating starpu-1.1.pc
-config.status: creating starpu-1.2.pc
-config.status: creating mpi/libstarpumpi.pc
-config.status: creating mpi/starpumpi-1.0.pc
-config.status: creating mpi/starpumpi-1.1.pc
-config.status: creating mpi/starpumpi-1.2.pc
-config.status: creating starpufft/Makefile
-config.status: creating starpufft/src/Makefile
-config.status: creating starpufft/tests/Makefile
-config.status: creating starpufft/libstarpufft.pc
-config.status: creating starpufft/starpufft-1.0.pc
-config.status: creating starpufft/starpufft-1.1.pc
-config.status: creating starpufft/starpufft-1.2.pc
-config.status: creating examples/Makefile
-config.status: creating examples/stencil/Makefile
-config.status: creating tests/Makefile
-config.status: creating tests/loader-cross.sh
-config.status: creating mpi/Makefile
-config.status: creating mpi/src/Makefile
-config.status: creating mpi/tests/Makefile
-config.status: creating mpi/examples/Makefile
-config.status: creating starpu-top/StarPU-Top.pro
-config.status: creating starpu-top/StarPU-Top-qwt-embed.pri
-config.status: creating starpu-top/StarPU-Top-qwt-system.pri
-config.status: creating gcc-plugin/Makefile
-config.status: creating gcc-plugin/src/Makefile
-config.status: creating gcc-plugin/tests/Makefile
-config.status: creating gcc-plugin/tests/run-test
-config.status: creating gcc-plugin/examples/Makefile
-config.status: creating sc_hypervisor/Makefile
-config.status: creating sc_hypervisor/src/Makefile
-config.status: creating sc_hypervisor/examples/Makefile
-config.status: creating doc/Makefile
-config.status: creating doc/doxygen/Makefile
-config.status: creating doc/doxygen/doxygen-config.cfg
-config.status: creating doc/doxygen/doxygen_filter.sh
-config.status: creating tools/msvc/starpu_var.bat
-config.status: creating src/common/config.h
-config.status: src/common/config.h is unchanged
-config.status: creating include/starpu_config.h
-config.status: include/starpu_config.h is unchanged
-config.status: creating gcc-plugin/include/starpu-gcc/config.h
-config.status: gcc-plugin/include/starpu-gcc/config.h is unchanged
-config.status: creating starpu-top/config.h
-config.status: starpu-top/config.h is unchanged
-config.status: executing depfiles commands
-config.status: executing libtool commands
-config.status: executing executable-scripts commands
-configure:
-
-	CPUs   enabled: yes
-	CUDA   enabled: no
-	OpenCL enabled: no
-	SCC    enabled: no
-	MIC    enabled: no
-
-	Compile-time limits
-	(change these with --enable-maxcpus, --enable-maxcudadev,
-	--enable-maxopencldev, --enable-maxmicdev, --enable-maxnodes,
-        --enable-maxbuffers)
-        (Note these numbers do not represent the number of detected
-	devices, but the maximum number of devices StarPU can manage)
-
-	Maximum number of CPUs:           64
-	Maximum number of CUDA devices:   0
-	Maximum number of OpenCL devices: 0
-	Maximum number of SCC devices:    0
-	Maximum number of MIC threads:    0
-	Maximum number of memory nodes:   8
-	Maximum number of task buffers:   8
-
-	GPU-GPU transfers: no
-	Allocation cache:  yes
-
-	Magma enabled:     no
-	BLAS library:      system
-	hwloc:             yes
-	FxT trace enabled: no
-	StarPU-Top:        yes
-
-        Documentation:     yes
-        Examples:          yes
-
-	StarPU Extensions:
-	       MPI enabled:                                 yes
-	       MPI test suite:                              yes
-	       FFT Support:                                 yes
-	       GCC plug-in:                                 no
-	       GCC plug-in test suite (requires GNU Guile): no
-	       OpenMP runtime support enabled:              no
-	       SOCL enabled:                                no
-               SOCL test suite:                             no
-               Scheduler Hypervisor:                        no
-               simgrid enabled:                             no
-               ayudame enabled:                             no
-
+      #+RESULTS:
+      #+begin_example
+      checking build system type... x86_64-unknown-linux-gnu
+      checking host system type... x86_64-unknown-linux-gnu
+      checking target system type... x86_64-unknown-linux-gnu
+      checking for a BSD-compatible install... /usr/bin/install -c
+      checking whether build environment is sane... yes
+      checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+      checking for gawk... gawk
+      checking whether make sets $(MAKE)... yes
+      checking whether make supports nested variables... yes
+      checking whether make supports nested variables... (cached) yes
+      checking for style of include used by make... GNU
+      checking for gcc... gcc
+      checking whether the C compiler works... yes
+      checking for C compiler default output file name... a.out
+      checking for suffix of executables... 
+      checking whether we are cross compiling... no
+      checking for suffix of object files... o
+      checking whether we are using the GNU C compiler... yes
+      checking whether gcc accepts -g... yes
+      checking for gcc option to accept ISO C89... none needed
+      checking whether gcc understands -c and -o together... yes
+      checking dependency style of gcc... gcc3
+      checking for ar... ar
+      checking the archiver (ar) interface... ar
+      checking for gcc... (cached) gcc
+      checking whether we are using the GNU C compiler... (cached) yes
+      checking whether gcc accepts -g... (cached) yes
+      checking for gcc option to accept ISO C89... (cached) none needed
+      checking whether gcc understands -c and -o together... (cached) yes
+      checking dependency style of gcc... (cached) gcc3
+      checking for g++... g++
+      checking whether we are using the GNU C++ compiler... yes
+      checking whether g++ accepts -g... yes
+      checking dependency style of g++... gcc3
+      checking how to run the C preprocessor... gcc -E
+      checking for a sed that does not truncate output... /usr/bin/sed
+      checking whether ln -s works... yes
+      checking for g77... no
+      checking for xlf... no
+      checking for f77... no
+      checking for frt... no
+      checking for pgf77... no
+      checking for cf77... no
+      checking for fort77... no
+      checking for fl32... no
+      checking for af77... no
+      checking for xlf90... no
+      checking for f90... no
+      checking for pgf90... no
+      checking for pghpf... no
+      checking for epcf90... no
+      checking for gfortran... no
+      checking for g95... no
+      checking for xlf95... no
+      checking for f95... no
+      checking for fort... no
+      checking for ifort... no
+      checking for ifc... no
+      checking for efc... no
+      checking for pgfortran... no
+      checking for pgf95... no
+      checking for lf95... no
+      checking for ftn... no
+      checking for nagfor... no
+      checking whether we are using the GNU Fortran 77 compiler... no
+      checking whether  accepts -g... no
+      checking for gstat... no
+      checking for stat... stat
+      checking for gdate... no
+      checking for date... date
+      checking how to print strings... printf
+      checking for a sed that does not truncate output... (cached) /usr/bin/sed
+      checking for grep that handles long lines and -e... /usr/bin/grep
+      checking for egrep... /usr/bin/grep -E
+      checking for fgrep... /usr/bin/grep -F
+      checking for ld used by gcc... /usr/bin/ld
+      checking if the linker (/usr/bin/ld) is GNU ld... yes
+      checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+      checking the name lister (/usr/bin/nm -B) interface... BSD nm
+      checking the maximum length of command line arguments... 1635000
+      checking whether the shell understands some XSI constructs... yes
+      checking whether the shell understands "+="... yes
+      checking how to convert x86_64-unknown-linux-gnu file names to x86_64-unknown-linux-gnu format... func_convert_file_noop
+      checking how to convert x86_64-unknown-linux-gnu file names to toolchain format... func_convert_file_noop
+      checking for /usr/bin/ld option to reload object files... -r
+      checking for objdump... objdump
+      checking how to recognize dependent libraries... pass_all
+      checking for dlltool... no
+      checking how to associate runtime and link libraries... printf %s\n
+      checking for archiver @FILE support... @
+      checking for strip... strip
+      checking for ranlib... ranlib
+      checking command to parse /usr/bin/nm -B output from gcc object... ok
+      checking for sysroot... no
+      checking for mt... no
+      checking if : is a manifest tool... no
+      checking for ANSI C header files... yes
+      checking for sys/types.h... yes
+      checking for sys/stat.h... yes
+      checking for stdlib.h... yes
+      checking for string.h... yes
+      checking for memory.h... yes
+      checking for strings.h... yes
+      checking for inttypes.h... yes
+      checking for stdint.h... yes
+      checking for unistd.h... yes
+      checking for dlfcn.h... yes
+      checking for objdir... .libs
+      checking if gcc supports -fno-rtti -fno-exceptions... no
+      checking for gcc option to produce PIC... -fPIC -DPIC
+      checking if gcc PIC flag -fPIC -DPIC works... yes
+      checking if gcc static flag -static works... yes
+      checking if gcc supports -c -o file.o... yes
+      checking if gcc supports -c -o file.o... (cached) yes
+      checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+      checking whether -lc should be explicitly linked in... no
+      checking dynamic linker characteristics... GNU/Linux ld.so
+      checking how to hardcode library paths into programs... immediate
+      checking whether stripping libraries is possible... yes
+      checking if libtool supports shared libraries... yes
+      checking whether to build shared libraries... yes
+      checking whether to build static libraries... yes
+      checking how to run the C++ preprocessor... g++ -E
+      checking for ld used by g++... /usr/bin/ld -m elf_x86_64
+      checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
+      checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+      checking for g++ option to produce PIC... -fPIC -DPIC
+      checking if g++ PIC flag -fPIC -DPIC works... yes
+      checking if g++ static flag -static works... yes
+      checking if g++ supports -c -o file.o... yes
+      checking if g++ supports -c -o file.o... (cached) yes
+      checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+      checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+      checking how to hardcode library paths into programs... immediate
+      checking whether ln -s works... yes
+      checking for ANSI C header files... (cached) yes
+      checking for C/C++ restrict keyword... __restrict
+      checking for bash... /bin/sh
+      checking for svn... /usr/bin/svn
+      checking for svnversion... /usr/bin/svnversion
+      checking for lib... no
+      checking size of void *... 8
+      checking for pthread_create in -lpthread... yes
+      checking for library containing sqrt... -lm
+      checking for main in -lws2_32... no
+      checking for sysconf... yes
+      checking for pthread_spin_lock... yes
+      checking for pthread_barrier_init... yes
+      checking for pthread_setaffinity_np... yes
+      checking for posix_memalign... yes
+      checking for memalign... yes
+      checking for drand48... yes
+      checking for erand48_r... yes
+      checking for strerror_r... yes
+      checking for setenv... yes
+      checking for unsetenv... yes
+      checking for nearbyintf... yes
+      checking for rintf... yes
+      checking malloc.h usability... yes
+      checking malloc.h presence... yes
+      checking for malloc.h... yes
+      checking valgrind/valgrind.h usability... yes
+      checking valgrind/valgrind.h presence... yes
+      checking for valgrind/valgrind.h... yes
+      checking valgrind/helgrind.h usability... yes
+      checking valgrind/helgrind.h presence... yes
+      checking for valgrind/helgrind.h... yes
+      checking for sched_yield... yes
+      checking aio.h usability... yes
+      checking aio.h presence... yes
+      checking for aio.h... yes
+      checking for mkstemps... yes
+      checking for pread... yes
+      checking for pwrite... yes
+      checking whether the target supports __sync_val_compare_and_swap... yes
+      checking whether the target supports __sync_bool_compare_and_swap... yes
+      checking whether the target supports __sync_fetch_and_add... yes
+      checking whether the target supports __sync_fetch_and_or... yes
+      checking whether the target supports __sync_lock_test_and_set... yes
+      checking whether the target supports __sync_synchronize... yes
+      checking for library containing set_mempolicy... no
+      checking whether libnuma is available... no
+      checking maximum number of sched_ctxs... 10
+      checking maximum number of CPUs... 64
+      checking whether CPUs should be used... yes
+      checking maximum number of CUDA devices... 4
+      checking whether CUDA is available... 
+      checking cuda.h usability... no
+      checking cuda.h presence... no
+      checking for cuda.h... no
+      checking whether CUDA is available... 
+      checking cuda.h usability... no
+      checking cuda.h presence... no
+      checking for cuda.h... no
+      checking whether CUDA is available in /usr/local/cuda... 
+      checking cuda.h usability... no
+      checking cuda.h presence... no
+      checking for cuda.h... no
+      checking whether CUDA is available in /c/cuda... 
+      checking cuda.h usability... no
+      checking cuda.h presence... no
+      checking for cuda.h... no
+      checking whether CUDA is available in /cygdrive/c/cuda... 
+      checking cuda.h usability... no
+      checking cuda.h presence... no
+      checking for cuda.h... no
+      checking whether CUDA is available in /opt/cuda... 
+      checking cuda.h usability... no
+      checking cuda.h presence... no
+      checking for cuda.h... no
+      checking whether CUDA is available in /..... 
+      checking cuda.h usability... no
+      checking cuda.h presence... no
+      checking for cuda.h... no
+      checking whether CUDA is available in /..... 
+      checking cuda.h usability... no
+      checking cuda.h presence... no
+      checking for cuda.h... no
+      checking whether CUDA is available in /..... 
+      checking cuda.h usability... no
+      checking cuda.h presence... no
+      checking for cuda.h... no
+      checking whether CUDA is available in /..... 
+      checking cuda.h usability... no
+      checking cuda.h presence... no
+      checking for cuda.h... no
+      checking whether CUDA is working... no
+      checking whether CUDA should be used... no
+      checking for pkg-config... /usr/bin/pkg-config
+      checking pkg-config is at least version 0.9.0... yes
+      checking whether MAGMA should be used... no
+      checking for cufftDoubleComplex... no
+      checking whether CURAND is available... no
+      checking maximum number of OpenCL devices... 8
+      checking whether OpenCL is available... 
+      checking CL/cl.h usability... no
+      checking CL/cl.h presence... no
+      checking for CL/cl.h... no
+      checking whether OpenCL is available in /usr/local/cuda no and no... 
+      checking CL/cl.h usability... no
+      checking CL/cl.h presence... no
+      checking for CL/cl.h... no
+      checking whether OpenCL is available in /c/cuda no and no... 
+      checking CL/cl.h usability... no
+      checking CL/cl.h presence... no
+      checking for CL/cl.h... no
+      checking whether OpenCL is available in /cygdrive/c/cuda no and no... 
+      checking CL/cl.h usability... no
+      checking CL/cl.h presence... no
+      checking for CL/cl.h... no
+      checking whether OpenCL is available in /opt/cuda no and no... 
+      checking CL/cl.h usability... no
+      checking CL/cl.h presence... no
+      checking for CL/cl.h... no
+      checking whether OpenCL is available in /.. no and no... 
+      checking CL/cl.h usability... no
+      checking CL/cl.h presence... no
+      checking for CL/cl.h... no
+      checking for clEnqueueMarkerWithWaitList... no
+      checking whether OpenCL should be used... no
+      checking whether asynchronous copy should be disabled... no
+      checking whether asynchronous CUDA copy should be disabled... no
+      checking whether asynchronous OpenCL copy should be disabled... no
+      checking whether asynchronous MIC copy should be disabled... no
+      checking whether SimGrid is enabled... no
+      checking whether blocking drivers should be enabled... no
+      checking maximum number of MIC devices... 4
+      checking maximum number of MIC threads... 
+      checking RCCE.h usability... no
+      checking RCCE.h presence... no
+      checking for RCCE.h... no
+      checking for RCCE_init in -lRCCE_bigflags_nongory_nopwrmgmt... no
+      checking whether RCCE should be used... no
+      checking Maximum number of message-passing kernels... 10
+      checking whether debug mode should be enabled... no
+      checking whether extra checks should be performed... no
+      checking whether debug messages should be displayed... no
+      checking whether coverage testing should be enabled... no
+      checking whether FxT traces should be generated... no
+      checking whether additional locking systems FxT traces should be enabled... no
+      checking whether performance debugging should be enabled... no
+      checking whether performance model debugging should be enabled... no
+      checking whether statistics should be generated... no
+      checking whether memory stats should be displayed... no
+      checking glpk.h usability... no
+      checking glpk.h presence... no
+      checking for glpk.h... no
+      checking for main in -lglpk... no
+      checking Ayudame.h usability... no
+      checking Ayudame.h presence... no
+      checking for Ayudame.h... no
+      checking how many buffers can be manipulated per task... 8
+      checking maximum number of nodes to use... checking maximum number of memory nodes... 8
+      checking whether allocation cache should be used... yes
+      checking using explicit performance model location... no
+      checking performance models location... $HOME/.starpu/sampling/
+      checking for clock_gettime in -lrt... yes
+      checking for clock_gettime... yes
+      checking Maximum number of workers... 64
+      checking Maximum number of workers combinations... 64
+      checking maximum number of implementations... 4
+      checking leveldb/db.h usability... no
+      checking leveldb/db.h presence... no
+      checking for leveldb/db.h... no
+      checking for main in -lleveldb... no
+      checking calibration heuristic of history-based StarPU calibrator... 50
+      checking for mpicc... /usr/bin/mpicc
+      checking mpicc path... /usr/bin/mpicc
+      checking for mpiexec... /usr/bin/mpiexec
+      checking whether mpiexec is available... /usr/bin/mpiexec
+      checking whether MPI tests should be run... yes
+      checking whether the StarPU MPI library should be generated... yes
+      checking for StarPU-Top... checking for qmake-qt4... /usr/bin/qmake-qt4
+      checking whether compiler support -Wall... yes
+      checking whether compiler support -Werror=implicit... yes
+      checking whether compiler support -Werror=implicit-function-declaration... yes
+      checking whether GCC supports plug-ins... no
+      checking for OpenMP runtime support... no
+      checking for SOCL... no
+      checking for gdb... /usr/bin/gdb
+      checking whether OpenGL rendering is enabled... no
+      checking for X... libraries , headers 
+      checking for gethostbyname... yes
+      checking for connect... yes
+      checking for remove... yes
+      checking for shmat... yes
+      checking for IceConnectionNumber in -lICE... yes
+      checking for library containing sgemm_... -lblas
+      checking which BLAS lib should be used... system
+      checking for FFTW... yes
+      checking for FFTWF... yes
+      checking for FFTWL... yes
+      checking for HWLOC... yes
+      checking whether hwloc should be used... yes
+      checking f77.h usability... no
+      checking f77.h presence... no
+      checking for f77.h... no
+      checking for icc... no
+      checking for help2man... no
+      checking for struct cudaDeviceProp.pciDomainID... no
+      checking for struct cudaDeviceProp.pciBusID... no
+      checking for doxygen... /usr/bin/doxygen
+      checking for pdflatex... /usr/bin/pdflatex
+      checking for epstopdf... /usr/bin/epstopdf
+      checking whether documentation should be compiled... yes
+      checking that generated files are newer than configure... done
+      configure: creating ./config.status
+      config.status: creating tests/regression/regression.sh
+      config.status: creating tests/regression/profiles
+      config.status: creating tests/regression/profiles.build.only
+      config.status: creating Makefile
+      config.status: creating src/Makefile
+      config.status: creating tools/Makefile
+      config.status: creating tools/starpu_codelet_profile
+      config.status: creating tools/starpu_codelet_histo_profile
+      config.status: creating tools/starpu_workers_activity
+      config.status: creating tools/starpu_paje_draw_histogram
+      config.status: creating tools/starpu_paje_state_stats
+      config.status: creating tools/starpu_paje_summary
+      config.status: creating socl/Makefile
+      config.status: creating socl/src/Makefile
+      config.status: creating socl/examples/Makefile
+      config.status: creating socl/vendors/socl.icd
+      config.status: creating socl/vendors/install/socl.icd
+      config.status: creating libstarpu.pc
+      config.status: creating starpu-1.0.pc
+      config.status: creating starpu-1.1.pc
+      config.status: creating starpu-1.2.pc
+      config.status: creating mpi/libstarpumpi.pc
+      config.status: creating mpi/starpumpi-1.0.pc
+      config.status: creating mpi/starpumpi-1.1.pc
+      config.status: creating mpi/starpumpi-1.2.pc
+      config.status: creating starpufft/Makefile
+      config.status: creating starpufft/src/Makefile
+      config.status: creating starpufft/tests/Makefile
+      config.status: creating starpufft/libstarpufft.pc
+      config.status: creating starpufft/starpufft-1.0.pc
+      config.status: creating starpufft/starpufft-1.1.pc
+      config.status: creating starpufft/starpufft-1.2.pc
+      config.status: creating examples/Makefile
+      config.status: creating examples/stencil/Makefile
+      config.status: creating tests/Makefile
+      config.status: creating tests/loader-cross.sh
+      config.status: creating mpi/Makefile
+      config.status: creating mpi/src/Makefile
+      config.status: creating mpi/tests/Makefile
+      config.status: creating mpi/examples/Makefile
+      config.status: creating starpu-top/StarPU-Top.pro
+      config.status: creating starpu-top/StarPU-Top-qwt-embed.pri
+      config.status: creating starpu-top/StarPU-Top-qwt-system.pri
+      config.status: creating gcc-plugin/Makefile
+      config.status: creating gcc-plugin/src/Makefile
+      config.status: creating gcc-plugin/tests/Makefile
+      config.status: creating gcc-plugin/tests/run-test
+      config.status: creating gcc-plugin/examples/Makefile
+      config.status: creating sc_hypervisor/Makefile
+      config.status: creating sc_hypervisor/src/Makefile
+      config.status: creating sc_hypervisor/examples/Makefile
+      config.status: creating doc/Makefile
+      config.status: creating doc/doxygen/Makefile
+      config.status: creating doc/doxygen/doxygen-config.cfg
+      config.status: creating doc/doxygen/doxygen_filter.sh
+      config.status: creating tools/msvc/starpu_var.bat
+      config.status: creating src/common/config.h
+      config.status: src/common/config.h is unchanged
+      config.status: creating include/starpu_config.h
+      config.status: include/starpu_config.h is unchanged
+      config.status: creating gcc-plugin/include/starpu-gcc/config.h
+      config.status: gcc-plugin/include/starpu-gcc/config.h is unchanged
+      config.status: creating starpu-top/config.h
+      config.status: starpu-top/config.h is unchanged
+      config.status: executing depfiles commands
+      config.status: executing libtool commands
+      config.status: executing executable-scripts commands
+      configure:
+      
+      CPUs   enabled: yes
+      CUDA   enabled: no
+      OpenCL enabled: no
+      SCC    enabled: no
+      MIC    enabled: no
+      
+      Compile-time limits
+      (change these with --enable-maxcpus, --enable-maxcudadev,
+      --enable-maxopencldev, --enable-maxmicdev, --enable-maxnodes,
+      --enable-maxbuffers)
+      (Note these numbers do not represent the number of detected
+      devices, but the maximum number of devices StarPU can manage)
+      
+      Maximum number of CPUs:           64
+      Maximum number of CUDA devices:   0
+      Maximum number of OpenCL devices: 0
+      Maximum number of SCC devices:    0
+      Maximum number of MIC threads:    0
+      Maximum number of memory nodes:   8
+      Maximum number of task buffers:   8
+      
+      GPU-GPU transfers: no
+      Allocation cache:  yes
+      
+      Magma enabled:     no
+      BLAS library:      system
+      hwloc:             yes
+      FxT trace enabled: no
+      StarPU-Top:        yes
+      
+      Documentation:     yes
+      Examples:          yes
+      
+      StarPU Extensions:
+      MPI enabled:                                 yes
+      MPI test suite:                              yes
+      FFT Support:                                 yes
+      GCC plug-in:                                 no
+      GCC plug-in test suite (requires GNU Guile): no
+      OpenMP runtime support enabled:              no
+      SOCL enabled:                                no
+      SOCL test suite:                             no
+      Scheduler Hypervisor:                        no
+      simgrid enabled:                             no
+      ayudame enabled:                             no
+      
 #+end_example
 
-Tentative de compilation de l'archive de la forge
-#+begin_src sh :results output :exports both
-  cd ~/Programmation/C/IMAG/TER/starpu
-  make
-#+end_src
+      Tentative de compilation de l'archive de la forge
+      #+begin_src sh :results output :exports both
+      cd ~/Programmation/C/IMAG/TER/starpu
+      make
+      #+end_src
 
-Erreurs de compilation
+      Erreurs de compilation
 #+begin_src R :results output :session :exports both
 Warning: Tag `SYMBOL_CACHE_SIZE' at line 370 of file `../../doc/doxygen/doxygen.cfg' has become obsolete.
          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
@@ -562,21 +564,21 @@ Apparement des fichiers texlive était manquant empêchant la
 compilation de se terminer.
 
 ***** Essai starpu récupérer sur le site
-Autre essaie à partir du tar.gz
-Apparemment les 4 commandes suivantes ne servent pas à la compilation
-de starpu
-#+begin_src sh :results output :exports both
-  export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:~/Programmation/C/starpu-1.1.3/
-  export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:~/Programmation/C/starpu-1.1.3/mpi/
-  pkg-config --cflags starpumpi-1.1
-  pkg-config --libs starpumpi-1.1
-#+end_src
+      Autre essaie à partir du tar.gz
+      Apparemment les 4 commandes suivantes ne servent pas à la compilation
+      de starpu
+      #+begin_src sh :results output :exports both
+        export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:~/Programmation/C/starpu-1.1.3/
+        export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:~/Programmation/C/starpu-1.1.3/mpi/
+        pkg-config --cflags starpumpi-1.1
+        pkg-config --libs starpumpi-1.1
+      #+end_src
 
-#+RESULTS:
-: -I/usr/local/include/starpu/1.1 -I/usr/include/libxml2 
-: -L/usr/local/lib -lstarpumpi-1.1 -lstarpu-1.1 -lhwloc 
+      #+RESULTS:
+      : -I/usr/local/include/starpu/1.1 -I/usr/include/libxml2 
+      : -L/usr/local/lib -lstarpumpi-1.1 -lstarpu-1.1 -lhwloc 
 
-Lancement du configure
+      Lancement du configure
 #+begin_src sh :results output :exports both
   cd ~/Programmation/C/starpu-1.1.3
   ./configure
@@ -2786,6 +2788,833 @@ cd ~/Programmation/TER/trunk
       -- Installing: /home/steven/Programs/Simgrid/include/simgrid_config.h
 #+end_example
 
+***** Test du fonctionnement de Simgrid
+      #+begin_src sh :results output :exports both
+        cd ~/Programmation/TER/SimGrid-3.11/build
+        ctest
+      #+end_src
+
+      #+RESULTS:
+      #+begin_example
+      Test project /home/steven/Programmation/TER/SimGrid-3.11/build
+	      Start   1: tesh-self-basic
+	1/406 Test   #1: tesh-self-basic .............................................   Passed    0.19 sec
+	      Start   2: tesh-self-cd
+	2/406 Test   #2: tesh-self-cd ................................................   Passed    0.03 sec
+	      Start   3: tesh-self-IO-broken-pipe
+	3/406 Test   #3: tesh-self-IO-broken-pipe ....................................   Passed    0.02 sec
+	      Start   4: tesh-self-IO-orders
+	4/406 Test   #4: tesh-self-IO-orders .........................................   Passed    0.04 sec
+	      Start   5: tesh-self-IO-bigsize
+	5/406 Test   #5: tesh-self-IO-bigsize ........................................   Passed    0.03 sec
+	      Start   6: tesh-self-set-return
+	6/406 Test   #6: tesh-self-set-return ........................................   Passed    0.07 sec
+	      Start   7: tesh-self-set-timeout
+	7/406 Test   #7: tesh-self-set-timeout .......................................   Passed    6.01 sec
+	      Start   8: tesh-self-set-output-ignore
+	8/406 Test   #8: tesh-self-set-output-ignore .................................   Passed    0.01 sec
+	      Start   9: tesh-self-set-output-sort
+	9/406 Test   #9: tesh-self-set-output-sort ...................................   Passed    0.07 sec
+	      Start  10: tesh-self-catch-return
+       10/406 Test  #10: tesh-self-catch-return ......................................   Passed    0.08 sec
+	      Start  11: tesh-self-catch-timeout
+       11/406 Test  #11: tesh-self-catch-timeout .....................................   Passed    1.94 sec
+	      Start  12: tesh-self-catch-wrong-output
+       12/406 Test  #12: tesh-self-catch-wrong-output ................................   Passed    0.02 sec
+	      Start  13: tesh-self-bg-basic
+       13/406 Test  #13: tesh-self-bg-basic ..........................................   Passed    0.01 sec
+	      Start  14: tesh-self-background
+       14/406 Test  #14: tesh-self-background ........................................   Passed    2.08 sec
+	      Start  15: tesh-self-set-signal
+       15/406 Test  #15: tesh-self-set-signal ........................................   Passed    0.07 sec
+	      Start  16: tesh-self-bg-set-signal
+       16/406 Test  #16: tesh-self-bg-set-signal .....................................   Passed    1.07 sec
+	      Start  17: tesh-self-catch-signal
+       17/406 Test  #17: tesh-self-catch-signal ......................................   Passed    0.09 sec
+	      Start  18: test-help
+       18/406 Test  #18: test-help ...................................................   Passed    0.00 sec
+	      Start  19: test-help-models
+       19/406 Test  #19: test-help-models ............................................   Passed    0.00 sec
+	      Start  20: test-tracing-help
+       20/406 Test  #20: test-tracing-help ...........................................   Passed    0.00 sec
+	      Start  21: graphicator
+       21/406 Test  #21: graphicator .................................................   Passed    0.01 sec
+	      Start  22: tesh-simix-factory-default
+       22/406 Test  #22: tesh-simix-factory-default ..................................   Passed    0.01 sec
+	      Start  23: tesh-simix-factory-thread
+       23/406 Test  #23: tesh-simix-factory-thread ...................................   Passed    0.01 sec
+	      Start  24: tesh-simix-factory-raw
+       24/406 Test  #24: tesh-simix-factory-raw ......................................   Passed    0.01 sec
+	      Start  25: tesh-simix-factory-ucontext
+       25/406 Test  #25: tesh-simix-factory-ucontext .................................   Passed    0.01 sec
+	      Start  26: stack-overflow-thread
+       26/406 Test  #26: stack-overflow-thread .......................................   Passed    0.01 sec
+	      Start  27: stack-overflow-ucontext
+       27/406 Test  #27: stack-overflow-ucontext .....................................   Passed    0.01 sec
+	      Start  28: stack-overflow-raw
+       28/406 Test  #28: stack-overflow-raw ..........................................   Passed    0.02 sec
+	      Start  29: tesh-surf-lmm
+       29/406 Test  #29: tesh-surf-lmm ...............................................   Passed    0.01 sec
+	      Start  30: tesh-surf-maxmin
+       30/406 Test  #30: tesh-surf-maxmin ............................................   Passed    0.11 sec
+	      Start  31: tesh-surf-usage
+       31/406 Test  #31: tesh-surf-usage .............................................   Passed    0.01 sec
+	      Start  32: tesh-surf-trace
+       32/406 Test  #32: tesh-surf-trace .............................................   Passed    0.01 sec
+	      Start  33: tesh-xbt-log-large
+       33/406 Test  #33: tesh-xbt-log-large ..........................................   Passed    0.01 sec
+	      Start  34: tesh-xbt-log-parallel
+       34/406 Test  #34: tesh-xbt-log-parallel .......................................   Passed    0.04 sec
+	      Start  35: tesh-xbt-parmap
+       35/406 Test  #35: tesh-xbt-parmap .............................................   Passed    1.58 sec
+	      Start  36: tesh-xbt-log
+       36/406 Test  #36: tesh-xbt-log ................................................   Passed    0.01 sec
+	      Start  37: tesh-xbt-graphxml
+       37/406 Test  #37: tesh-xbt-graphxml ...........................................   Passed    0.01 sec
+	      Start  38: tesh-xbt-heap
+       38/406 Test  #38: tesh-xbt-heap ...............................................   Passed    0.26 sec
+	      Start  39: tesh-msg-get-sender-thread
+       39/406 Test  #39: tesh-msg-get-sender-thread ..................................   Passed    0.01 sec
+	      Start  40: tesh-msg-get-sender-ucontext
+       40/406 Test  #40: tesh-msg-get-sender-ucontext ................................   Passed    0.01 sec
+	      Start  41: tesh-msg-get-sender-raw
+       41/406 Test  #41: tesh-msg-get-sender-raw .....................................   Passed    0.01 sec
+	      Start  42: tesh-msg-host-on-off-thread
+       42/406 Test  #42: tesh-msg-host-on-off-thread .................................   Passed    0.01 sec
+	      Start  43: tesh-msg-host-on-off-ucontext
+       43/406 Test  #43: tesh-msg-host-on-off-ucontext ...............................   Passed    0.01 sec
+	      Start  44: tesh-msg-host-on-off-raw
+       44/406 Test  #44: tesh-msg-host-on-off-raw ....................................   Passed    0.01 sec
+	      Start  45: tesh-msg-pid-thread
+       45/406 Test  #45: tesh-msg-pid-thread .........................................   Passed    0.02 sec
+	      Start  46: tesh-msg-pid-ucontext
+       46/406 Test  #46: tesh-msg-pid-ucontext .......................................   Passed    0.02 sec
+	      Start  47: tesh-msg-pid-raw
+       47/406 Test  #47: tesh-msg-pid-raw ............................................   Passed    0.02 sec
+	      Start  48: tesh-msg-process-thread
+       48/406 Test  #48: tesh-msg-process-thread .....................................   Passed    0.01 sec
+	      Start  49: tesh-msg-process-ucontext
+       49/406 Test  #49: tesh-msg-process-ucontext ...................................   Passed    0.01 sec
+	      Start  50: tesh-msg-process-raw
+       50/406 Test  #50: tesh-msg-process-raw ........................................   Passed    0.01 sec
+	      Start  51: tesh-msg-process-join-thread
+       51/406 Test  #51: tesh-msg-process-join-thread ................................   Passed    0.01 sec
+	      Start  52: tesh-msg-process-join-ucontext
+       52/406 Test  #52: tesh-msg-process-join-ucontext ..............................   Passed    0.01 sec
+	      Start  53: tesh-msg-process-join-raw
+       53/406 Test  #53: tesh-msg-process-join-raw ...................................   Passed    0.01 sec
+	      Start  54: tesh-msg-storage-basic-thread
+       54/406 Test  #54: tesh-msg-storage-basic-thread ...............................   Passed    0.01 sec
+	      Start  55: tesh-msg-storage-basic-ucontext
+       55/406 Test  #55: tesh-msg-storage-basic-ucontext .............................   Passed    0.01 sec
+	      Start  56: tesh-msg-storage-basic-raw
+       56/406 Test  #56: tesh-msg-storage-basic-raw ..................................   Passed    0.01 sec
+	      Start  57: tesh-msg-task-destroy-cancel-thread
+       57/406 Test  #57: tesh-msg-task-destroy-cancel-thread .........................   Passed    0.01 sec
+	      Start  58: tesh-msg-task-destroy-cancel-ucontext
+       58/406 Test  #58: tesh-msg-task-destroy-cancel-ucontext .......................   Passed    0.01 sec
+	      Start  59: tesh-msg-task-destroy-cancel-raw
+       59/406 Test  #59: tesh-msg-task-destroy-cancel-raw ............................   Passed    0.01 sec
+	      Start  60: tesh-msg-trace-thread
+       60/406 Test  #60: tesh-msg-trace-thread .......................................   Passed    0.08 sec
+	      Start  61: tesh-msg-trace-ucontext
+       61/406 Test  #61: tesh-msg-trace-ucontext .....................................   Passed    0.08 sec
+	      Start  62: tesh-msg-trace-raw
+       62/406 Test  #62: tesh-msg-trace-raw ..........................................   Passed    0.08 sec
+	      Start  63: msg-file
+       63/406 Test  #63: msg-file ....................................................   Passed    0.02 sec
+	      Start  64: msg-storage
+       64/406 Test  #64: msg-storage .................................................   Passed    0.01 sec
+	      Start  65: msg-remote-io
+       65/406 Test  #65: msg-remote-io ...............................................   Passed    0.01 sec
+	      Start  66: msg-start-kill-time
+       66/406 Test  #66: msg-start-kill-time .........................................   Passed    0.03 sec
+	      Start  67: msg-chainsend
+       67/406 Test  #67: msg-chainsend ...............................................   Passed    0.05 sec
+	      Start  68: msg-sendrecv-CLM03-thread
+       68/406 Test  #68: msg-sendrecv-CLM03-thread ...................................   Passed    0.01 sec
+	      Start  69: msg-sendrecv-CLM03-ucontext
+       69/406 Test  #69: msg-sendrecv-CLM03-ucontext .................................   Passed    0.01 sec
+	      Start  70: msg-sendrecv-CLM03-raw
+       70/406 Test  #70: msg-sendrecv-CLM03-raw ......................................   Passed    0.01 sec
+	      Start  71: msg-sendrecv-Vegas-thread
+       71/406 Test  #71: msg-sendrecv-Vegas-thread ...................................   Passed    0.01 sec
+	      Start  72: msg-sendrecv-Vegas-ucontext
+       72/406 Test  #72: msg-sendrecv-Vegas-ucontext .................................   Passed    0.01 sec
+	      Start  73: msg-sendrecv-Vegas-raw
+       73/406 Test  #73: msg-sendrecv-Vegas-raw ......................................   Passed    0.01 sec
+	      Start  74: msg-sendrecv-Reno-thread
+       74/406 Test  #74: msg-sendrecv-Reno-thread ....................................   Passed    0.01 sec
+	      Start  75: msg-sendrecv-Reno-ucontext
+       75/406 Test  #75: msg-sendrecv-Reno-ucontext ..................................   Passed    0.01 sec
+	      Start  76: msg-sendrecv-Reno-raw
+       76/406 Test  #76: msg-sendrecv-Reno-raw .......................................   Passed    0.01 sec
+	      Start  77: msg-suspend-thread
+       77/406 Test  #77: msg-suspend-thread ..........................................   Passed    0.06 sec
+	      Start  78: msg-suspend-ucontext
+       78/406 Test  #78: msg-suspend-ucontext ........................................   Passed    0.06 sec
+	      Start  79: msg-suspend-raw
+       79/406 Test  #79: msg-suspend-raw .............................................   Passed    0.06 sec
+	      Start  80: msg-pmm-thread
+       80/406 Test  #80: msg-pmm-thread ..............................................   Passed    3.75 sec
+	      Start  81: msg-pmm-ucontext
+       81/406 Test  #81: msg-pmm-ucontext ............................................   Passed    3.78 sec
+	      Start  82: msg-pmm-raw
+       82/406 Test  #82: msg-pmm-raw .................................................   Passed    3.85 sec
+	      Start  83: msg-masterslave-bypass-thread
+       83/406 Test  #83: msg-masterslave-bypass-thread ...............................   Passed    0.01 sec
+	      Start  84: msg-masterslave-bypass-ucontext
+       84/406 Test  #84: msg-masterslave-bypass-ucontext .............................   Passed    0.02 sec
+	      Start  85: msg-masterslave-bypass-raw
+       85/406 Test  #85: msg-masterslave-bypass-raw ..................................   Passed    0.01 sec
+	      Start  86: msg-masterslave-kill-thread
+       86/406 Test  #86: msg-masterslave-kill-thread .................................   Passed    0.01 sec
+	      Start  87: msg-masterslave-kill-ucontext
+       87/406 Test  #87: msg-masterslave-kill-ucontext ...............................   Passed    0.01 sec
+	      Start  88: msg-masterslave-kill-raw
+       88/406 Test  #88: msg-masterslave-kill-raw ....................................   Passed    0.01 sec
+	      Start  89: msg-masterslave-multicore-thread
+       89/406 Test  #89: msg-masterslave-multicore-thread ............................   Passed    0.01 sec
+	      Start  90: msg-masterslave-multicore-ucontext
+       90/406 Test  #90: msg-masterslave-multicore-ucontext ..........................   Passed    0.01 sec
+	      Start  91: msg-masterslave-multicore-raw
+       91/406 Test  #91: msg-masterslave-multicore-raw ...............................   Passed    0.01 sec
+	      Start  92: msg-masterslave-no-crosstraffic-mailbox-thread
+       92/406 Test  #92: msg-masterslave-no-crosstraffic-mailbox-thread ..............   Passed    0.01 sec
+	      Start  93: msg-masterslave-no-crosstraffic-mailbox-ucontext
+       93/406 Test  #93: msg-masterslave-no-crosstraffic-mailbox-ucontext ............   Passed    0.01 sec
+	      Start  94: msg-masterslave-no-crosstraffic-mailbox-raw
+       94/406 Test  #94: msg-masterslave-no-crosstraffic-mailbox-raw .................   Passed    0.01 sec
+	      Start  95: msg-masterslave-no-crosstraffic-thread
+       95/406 Test  #95: msg-masterslave-no-crosstraffic-thread ......................   Passed    0.02 sec
+	      Start  96: msg-masterslave-no-crosstraffic-ucontext
+       96/406 Test  #96: msg-masterslave-no-crosstraffic-ucontext ....................   Passed    0.01 sec
+	      Start  97: msg-masterslave-no-crosstraffic-raw
+       97/406 Test  #97: msg-masterslave-no-crosstraffic-raw .........................   Passed    0.01 sec
+	      Start  98: msg-masterslave-no-crosstraffic-forwarder-thread
+       98/406 Test  #98: msg-masterslave-no-crosstraffic-forwarder-thread ............   Passed    0.06 sec
+	      Start  99: msg-masterslave-no-crosstraffic-forwarder-ucontext
+       99/406 Test  #99: msg-masterslave-no-crosstraffic-forwarder-ucontext ..........   Passed    0.06 sec
+	      Start 100: msg-masterslave-no-crosstraffic-forwarder-raw
+      100/406 Test #100: msg-masterslave-no-crosstraffic-forwarder-raw ...............   Passed    0.06 sec
+	      Start 101: msg-masterslave-no-crosstraffic-failure-thread
+      101/406 Test #101: msg-masterslave-no-crosstraffic-failure-thread ..............   Passed    0.01 sec
+	      Start 102: msg-masterslave-no-crosstraffic-failure-ucontext
+      102/406 Test #102: msg-masterslave-no-crosstraffic-failure-ucontext ............   Passed    0.01 sec
+	      Start 103: msg-masterslave-no-crosstraffic-failure-raw
+      103/406 Test #103: msg-masterslave-no-crosstraffic-failure-raw .................   Passed    0.02 sec
+	      Start 104: msg-masterslave-thread
+      104/406 Test #104: msg-masterslave-thread ......................................   Passed    0.01 sec
+	      Start 105: msg-masterslave-ucontext
+      105/406 Test #105: msg-masterslave-ucontext ....................................   Passed    0.01 sec
+	      Start 106: msg-masterslave-raw
+      106/406 Test #106: msg-masterslave-raw .........................................   Passed    0.01 sec
+	      Start 107: msg-masterslave-forwarder-thread
+      107/406 Test #107: msg-masterslave-forwarder-thread ............................   Passed    0.07 sec
+	      Start 108: msg-masterslave-forwarder-ucontext
+      108/406 Test #108: msg-masterslave-forwarder-ucontext ..........................   Passed    0.06 sec
+	      Start 109: msg-masterslave-forwarder-raw
+      109/406 Test #109: msg-masterslave-forwarder-raw ...............................   Passed    0.06 sec
+	      Start 110: msg-masterslave-failure-thread
+      110/406 Test #110: msg-masterslave-failure-thread ..............................   Passed    0.01 sec
+	      Start 111: msg-masterslave-failure-ucontext
+      111/406 Test #111: msg-masterslave-failure-ucontext ............................   Passed    0.02 sec
+	      Start 112: msg-masterslave-failure-raw
+      112/406 Test #112: msg-masterslave-failure-raw .................................   Passed    0.01 sec
+	      Start 113: msg-masterslave-mailbox-thread
+      113/406 Test #113: msg-masterslave-mailbox-thread ..............................   Passed    0.01 sec
+	      Start 114: msg-masterslave-mailbox-ucontext
+      114/406 Test #114: msg-masterslave-mailbox-ucontext ............................   Passed    0.01 sec
+	      Start 115: msg-masterslave-mailbox-raw
+      115/406 Test #115: msg-masterslave-mailbox-raw .................................   Passed    0.01 sec
+	      Start 116: msg-masterslave-cpu-ti-thread
+      116/406 Test #116: msg-masterslave-cpu-ti-thread ...............................   Passed    0.10 sec
+	      Start 117: msg-masterslave-cpu-ti-ucontext
+      117/406 Test #117: msg-masterslave-cpu-ti-ucontext .............................   Passed    0.09 sec
+	      Start 118: msg-masterslave-cpu-ti-raw
+      118/406 Test #118: msg-masterslave-cpu-ti-raw ..................................   Passed    0.09 sec
+	      Start 119: msg-masterslave-vivaldi-thread
+      119/406 Test #119: msg-masterslave-vivaldi-thread ..............................   Passed    0.02 sec
+	      Start 120: msg-masterslave-vivaldi-ucontext
+      120/406 Test #120: msg-masterslave-vivaldi-ucontext ............................   Passed    0.02 sec
+	      Start 121: msg-masterslave-vivaldi-raw
+      121/406 Test #121: msg-masterslave-vivaldi-raw .................................   Passed    0.02 sec
+	      Start 122: msg-cloud-two-tasks-vm-thread
+      122/406 Test #122: msg-cloud-two-tasks-vm-thread ...............................   Passed    0.01 sec
+	      Start 123: msg-cloud-two-tasks-vm-ucontext
+      123/406 Test #123: msg-cloud-two-tasks-vm-ucontext .............................   Passed    0.01 sec
+	      Start 124: msg-cloud-two-tasks-vm-raw
+      124/406 Test #124: msg-cloud-two-tasks-vm-raw ..................................   Passed    0.01 sec
+	      Start 125: msg-cloud-simple-vm-thread
+      125/406 Test #125: msg-cloud-simple-vm-thread ..................................   Passed    0.02 sec
+	      Start 126: msg-cloud-simple-vm-ucontext
+      126/406 Test #126: msg-cloud-simple-vm-ucontext ................................   Passed    0.02 sec
+	      Start 127: msg-cloud-simple-vm-raw
+      127/406 Test #127: msg-cloud-simple-vm-raw .....................................   Passed    0.01 sec
+	      Start 128: msg-energy-pstates-thread
+      128/406 Test #128: msg-energy-pstates-thread ...................................   Passed    0.01 sec
+	      Start 129: msg-energy-consumption-thread
+      129/406 Test #129: msg-energy-consumption-thread ...............................   Passed    0.01 sec
+	      Start 130: msg-energy-consumption-ucontext
+      130/406 Test #130: msg-energy-consumption-ucontext .............................   Passed    0.01 sec
+	      Start 131: msg-energy-consumption-raw
+      131/406 Test #131: msg-energy-consumption-raw ..................................   Passed    0.01 sec
+	      Start 132: msg-energy-concurrent-tasks-thread
+      132/406 Test #132: msg-energy-concurrent-tasks-thread ..........................   Passed    0.01 sec
+	      Start 133: msg-energy-concurrent-tasks-ucontext
+      133/406 Test #133: msg-energy-concurrent-tasks-ucontext ........................   Passed    0.01 sec
+	      Start 134: msg-energy-concurrent-tasks-raw
+      134/406 Test #134: msg-energy-concurrent-tasks-raw .............................   Passed    0.01 sec
+	      Start 135: msg-token-ring-thread
+      135/406 Test #135: msg-token-ring-thread .......................................   Passed    0.04 sec
+	      Start 136: msg-token-ring-ucontext
+      136/406 Test #136: msg-token-ring-ucontext .....................................   Passed    0.04 sec
+	      Start 137: msg-token-ring-raw
+      137/406 Test #137: msg-token-ring-raw ..........................................   Passed    0.04 sec
+	      Start 138: msg-migration-thread
+      138/406 Test #138: msg-migration-thread ........................................   Passed    0.06 sec
+	      Start 139: msg-migration-ucontext
+      139/406 Test #139: msg-migration-ucontext ......................................   Passed    0.06 sec
+	      Start 140: msg-migration-raw
+      140/406 Test #140: msg-migration-raw ...........................................   Passed    0.06 sec
+	      Start 141: msg-ptask-thread
+      141/406 Test #141: msg-ptask-thread ............................................   Passed    0.02 sec
+	      Start 142: msg-ptask-ucontext
+      142/406 Test #142: msg-ptask-ucontext ..........................................   Passed    0.02 sec
+	      Start 143: msg-ptask-raw
+      143/406 Test #143: msg-ptask-raw ...............................................   Passed    0.02 sec
+	      Start 144: msg-priority-thread
+      144/406 Test #144: msg-priority-thread .........................................   Passed    0.01 sec
+	      Start 145: msg-priority-ucontext
+      145/406 Test #145: msg-priority-ucontext .......................................   Passed    0.01 sec
+	      Start 146: msg-priority-raw
+      146/406 Test #146: msg-priority-raw ............................................   Passed    0.01 sec
+	      Start 147: msg-properties-thread
+      147/406 Test #147: msg-properties-thread .......................................   Passed    0.01 sec
+	      Start 148: msg-properties-ucontext
+      148/406 Test #148: msg-properties-ucontext .....................................   Passed    0.01 sec
+	      Start 149: msg-properties-raw
+      149/406 Test #149: msg-properties-raw ..........................................   Passed    0.01 sec
+	      Start 150: msg-icomms-thread
+      150/406 Test #150: msg-icomms-thread ...........................................   Passed    0.05 sec
+	      Start 151: msg-icomms-ucontext
+      151/406 Test #151: msg-icomms-ucontext .........................................   Passed    0.05 sec
+	      Start 152: msg-icomms-raw
+      152/406 Test #152: msg-icomms-raw ..............................................   Passed    0.05 sec
+	      Start 153: msg-actions-thread
+      153/406 Test #153: msg-actions-thread ..........................................   Passed    0.05 sec
+	      Start 154: msg-actions-ucontext
+      154/406 Test #154: msg-actions-ucontext ........................................   Passed    0.05 sec
+	      Start 155: msg-actions-raw
+      155/406 Test #155: msg-actions-raw .............................................   Passed    0.05 sec
+	      Start 156: msg-chord-no-crosstraffic-thread
+      156/406 Test #156: msg-chord-no-crosstraffic-thread ............................   Passed    0.26 sec
+	      Start 157: msg-chord-no-crosstraffic-ucontext
+      157/406 Test #157: msg-chord-no-crosstraffic-ucontext ..........................   Passed    0.27 sec
+	      Start 158: msg-chord-no-crosstraffic-raw
+      158/406 Test #158: msg-chord-no-crosstraffic-raw ...............................   Passed    0.26 sec
+	      Start 159: msg-chord-no-crosstraffic-parallel-thread
+      159/406 Test #159: msg-chord-no-crosstraffic-parallel-thread ...................   Passed    0.23 sec
+	      Start 160: msg-chord-no-crosstraffic-parallel-ucontext
+      160/406 Test #160: msg-chord-no-crosstraffic-parallel-ucontext .................   Passed    0.22 sec
+	      Start 161: msg-chord-no-crosstraffic-parallel-raw
+      161/406 Test #161: msg-chord-no-crosstraffic-parallel-raw ......................   Passed    0.24 sec
+	      Start 162: msg-chord-thread
+      162/406 Test #162: msg-chord-thread ............................................   Passed    0.26 sec
+	      Start 163: msg-chord-ucontext
+      163/406 Test #163: msg-chord-ucontext ..........................................   Passed    0.25 sec
+	      Start 164: msg-chord-raw
+      164/406 Test #164: msg-chord-raw ...............................................   Passed    0.26 sec
+	      Start 165: msg-chord-parallel-thread
+      165/406 Test #165: msg-chord-parallel-thread ...................................   Passed    0.23 sec
+	      Start 166: msg-chord-parallel-ucontext
+      166/406 Test #166: msg-chord-parallel-ucontext .................................   Passed    0.24 sec
+	      Start 167: msg-chord-parallel-raw
+      167/406 Test #167: msg-chord-parallel-raw ......................................   Passed    0.24 sec
+	      Start 168: msg-bittorrent-thread
+      168/406 Test #168: msg-bittorrent-thread .......................................   Passed    1.09 sec
+	      Start 169: msg-bittorrent-ucontext
+      169/406 Test #169: msg-bittorrent-ucontext .....................................   Passed    1.02 sec
+	      Start 170: msg-bittorrent-raw
+      170/406 Test #170: msg-bittorrent-raw ..........................................   Passed    1.06 sec
+	      Start 171: msg-bittorrent-parallel-thread
+      171/406 Test #171: msg-bittorrent-parallel-thread ..............................   Passed    1.02 sec
+	      Start 172: msg-bittorrent-parallel-ucontext
+      172/406 Test #172: msg-bittorrent-parallel-ucontext ............................   Passed    1.04 sec
+	      Start 173: msg-bittorrent-parallel-raw
+      173/406 Test #173: msg-bittorrent-parallel-raw .................................   Passed    1.02 sec
+	      Start 174: msg-kademlia-thread
+      174/406 Test #174: msg-kademlia-thread .........................................   Passed    0.34 sec
+	      Start 175: msg-kademlia-ucontext
+      175/406 Test #175: msg-kademlia-ucontext .......................................   Passed    0.37 sec
+	      Start 176: msg-kademlia-raw
+      176/406 Test #176: msg-kademlia-raw ............................................   Passed    0.37 sec
+	      Start 177: msg-kademlia-parallel-thread
+      177/406 Test #177: msg-kademlia-parallel-thread ................................   Passed    0.19 sec
+	      Start 178: msg-kademlia-parallel-ucontext
+      178/406 Test #178: msg-kademlia-parallel-ucontext ..............................   Passed    0.20 sec
+	      Start 179: msg-kademlia-parallel-raw
+      179/406 Test #179: msg-kademlia-parallel-raw ...................................   Passed    0.18 sec
+	      Start 180: msg-gtnets-crosstraffic-thread
+      180/406 Test #180: msg-gtnets-crosstraffic-thread ..............................   Passed    0.02 sec
+	      Start 181: msg-gtnets-crosstraffic-ucontext
+      181/406 Test #181: msg-gtnets-crosstraffic-ucontext ............................   Passed    0.02 sec
+	      Start 182: msg-gtnets-crosstraffic-raw
+      182/406 Test #182: msg-gtnets-crosstraffic-raw .................................   Passed    0.02 sec
+	      Start 183: tracing-ms
+      183/406 Test #183: tracing-ms ..................................................   Passed    0.05 sec
+	      Start 184: tracing-trace-platform
+      184/406 Test #184: tracing-trace-platform ......................................   Passed    0.19 sec
+	      Start 185: tracing-user-variables
+      185/406 Test #185: tracing-user-variables ......................................   Passed    0.02 sec
+	      Start 186: tracing-link-user-variables
+      186/406 Test #186: tracing-link-user-variables .................................   Passed    0.01 sec
+	      Start 187: tracing-link-srcdst-user-variables
+      187/406 Test #187: tracing-link-srcdst-user-variables ..........................   Passed    0.02 sec
+	      Start 188: tracing-categories
+      188/406 Test #188: tracing-categories ..........................................   Passed    0.02 sec
+	      Start 189: tracing-process-migration
+      189/406 Test #189: tracing-process-migration ...................................   Passed    0.06 sec
+	      Start 190: msg-icomms-waitany
+      190/406 Test #190: msg-icomms-waitany ..........................................   Passed    0.01 sec
+	      Start 191: tesh-parser-bogus-symmetric
+      191/406 Test #191: tesh-parser-bogus-symmetric .................................   Passed    0.02 sec
+	      Start 192: tesh-parser-bogus-missing-gw
+      192/406 Test #192: tesh-parser-bogus-missing-gw ................................   Passed    0.02 sec
+	      Start 193: tesh-parser-bogus-disk-attachment
+      193/406 Test #193: tesh-parser-bogus-disk-attachment ...........................   Passed    0.01 sec
+	      Start 194: tesh-simdag-bypass
+      194/406 Test #194: tesh-simdag-bypass ..........................................   Passed    0.01 sec
+	      Start 195: tesh-simdag-flatifier
+      195/406 Test #195: tesh-simdag-flatifier .......................................   Passed    0.09 sec
+	      Start 196: tesh-simdag-link
+      196/406 Test #196: tesh-simdag-link ............................................   Passed    0.01 sec
+	      Start 197: tesh-simdag-reinit-costs
+      197/406 Test #197: tesh-simdag-reinit-costs ....................................   Passed    0.01 sec
+	      Start 198: tesh-simdag-parser
+      198/406 Test #198: tesh-simdag-parser ..........................................   Passed    0.09 sec
+	      Start 199: tesh-simdag-parser-sym-full
+      199/406 Test #199: tesh-simdag-parser-sym-full .................................   Passed    0.03 sec
+	      Start 200: tesh-simdag-full-links
+      200/406 Test #200: tesh-simdag-full-links ......................................   Passed    0.01 sec
+	      Start 201: tesh-simdag-basic0
+      201/406 Test #201: tesh-simdag-basic0 ..........................................   Passed    0.01 sec
+	      Start 202: tesh-simdag-basic1
+      202/406 Test #202: tesh-simdag-basic1 ..........................................   Passed    0.01 sec
+	      Start 203: tesh-simdag-basic2
+      203/406 Test #203: tesh-simdag-basic2 ..........................................   Passed    0.01 sec
+	      Start 204: tesh-simdag-basic3
+      204/406 Test #204: tesh-simdag-basic3 ..........................................   Passed    0.01 sec
+	      Start 205: tesh-simdag-basic4
+      205/406 Test #205: tesh-simdag-basic4 ..........................................   Passed    0.01 sec
+	      Start 206: tesh-simdag-basic5
+      206/406 Test #206: tesh-simdag-basic5 ..........................................   Passed    0.01 sec
+	      Start 207: tesh-simdag-basic6
+      207/406 Test #207: tesh-simdag-basic6 ..........................................   Passed    0.01 sec
+	      Start 208: tesh-simdag-incomplete
+      208/406 Test #208: tesh-simdag-incomplete ......................................   Passed    0.01 sec
+	      Start 209: tesh-simdag-p2p-1
+      209/406 Test #209: tesh-simdag-p2p-1 ...........................................   Passed    0.02 sec
+	      Start 210: tesh-simdag-p2p-2
+      210/406 Test #210: tesh-simdag-p2p-2 ...........................................   Passed    0.02 sec
+	      Start 211: tesh-simdag-p2p-3
+      211/406 Test #211: tesh-simdag-p2p-3 ...........................................   Passed    0.02 sec
+	      Start 212: tesh-simdag-p2p-4
+      212/406 Test #212: tesh-simdag-p2p-4 ...........................................   Passed    0.01 sec
+	      Start 213: tesh-simdag-mxn-1
+      213/406 Test #213: tesh-simdag-mxn-1 ...........................................   Passed    0.01 sec
+	      Start 214: tesh-simdag-mxn-2
+      214/406 Test #214: tesh-simdag-mxn-2 ...........................................   Passed    0.01 sec
+	      Start 215: tesh-simdag-mxn-3
+      215/406 Test #215: tesh-simdag-mxn-3 ...........................................   Passed    0.01 sec
+	      Start 216: tesh-simdag-par-1
+      216/406 Test #216: tesh-simdag-par-1 ...........................................   Passed    0.01 sec
+	      Start 217: tesh-simdag-par-2
+      217/406 Test #217: tesh-simdag-par-2 ...........................................   Passed    0.01 sec
+	      Start 218: tesh-simdag-availability
+      218/406 Test #218: tesh-simdag-availability ....................................   Passed    0.01 sec
+	      Start 219: tesh-simdag-full-links01
+      219/406 Test #219: tesh-simdag-full-links01 ....................................   Passed    0.01 sec
+	      Start 220: tesh-simdag-full-links02
+      220/406 Test #220: tesh-simdag-full-links02 ....................................   Passed    0.01 sec
+	      Start 221: tesh-simdag-one-link-g5k
+      221/406 Test #221: tesh-simdag-one-link-g5k ....................................   Passed    0.03 sec
+	      Start 222: simdag-dotload
+      222/406 Test #222: simdag-dotload ..............................................   Passed    0.04 sec
+	      Start 223: simdag-simdag
+      223/406 Test #223: simdag-simdag ...............................................   Passed    0.06 sec
+	      Start 224: simdag-simdag2
+      224/406 Test #224: simdag-simdag2 ..............................................   Passed    0.01 sec
+	      Start 225: simdag-seq-access
+      225/406 Test #225: simdag-seq-access ...........................................   Passed    0.01 sec
+	      Start 226: simdag-typed-tasks
+      226/406 Test #226: simdag-typed-tasks ..........................................   Passed    0.01 sec
+	      Start 227: simdag-fail
+      227/406 Test #227: simdag-fail .................................................   Passed    0.01 sec
+	      Start 228: simdag-avail
+      228/406 Test #228: simdag-avail ................................................   Passed    0.01 sec
+	      Start 229: simdag-comm-throttling
+      229/406 Test #229: simdag-comm-throttling ......................................   Passed    0.01 sec
+	      Start 230: simdag-dax
+      230/406 Test #230: simdag-dax ..................................................   Passed    0.01 sec
+	      Start 231: simdag-dax-cycle
+      231/406 Test #231: simdag-dax-cycle ............................................   Passed    0.01 sec
+	      Start 232: simdag-prop
+      232/406 Test #232: simdag-prop .................................................   Passed    0.01 sec
+	      Start 233: simdag-minmin-scheduling
+      233/406 Test #233: simdag-minmin-scheduling ....................................   Passed    0.02 sec
+	      Start 234: simdag-io
+      234/406 Test #234: simdag-io ...................................................   Passed    0.01 sec
+	      Start 235: tracing-simdag
+      235/406 Test #235: tracing-simdag ..............................................   Passed    0.01 sec
+	      Start 236: tesh-smpi-bcast-thread
+      236/406 Test #236: tesh-smpi-bcast-thread ......................................   Passed    0.21 sec
+	      Start 237: tesh-smpi-bcast-ucontext
+      237/406 Test #237: tesh-smpi-bcast-ucontext ....................................   Passed    0.24 sec
+	      Start 238: tesh-smpi-bcast-raw
+      238/406 Test #238: tesh-smpi-bcast-raw .........................................   Passed    0.24 sec
+	      Start 239: tesh-smpi-reduce-thread
+      239/406 Test #239: tesh-smpi-reduce-thread .....................................   Passed    0.26 sec
+	      Start 240: tesh-smpi-reduce-ucontext
+      240/406 Test #240: tesh-smpi-reduce-ucontext ...................................   Passed    0.26 sec
+	      Start 241: tesh-smpi-reduce-raw
+      241/406 Test #241: tesh-smpi-reduce-raw ........................................   Passed    0.26 sec
+	      Start 242: tesh-smpi-vector-thread
+      242/406 Test #242: tesh-smpi-vector-thread .....................................   Passed    0.05 sec
+	      Start 243: tesh-smpi-vector-ucontext
+      243/406 Test #243: tesh-smpi-vector-ucontext ...................................   Passed    0.06 sec
+	      Start 244: tesh-smpi-vector-raw
+      244/406 Test #244: tesh-smpi-vector-raw ........................................   Passed    0.06 sec
+	      Start 245: tesh-smpi-hvector-thread
+      245/406 Test #245: tesh-smpi-hvector-thread ....................................   Passed    0.05 sec
+	      Start 246: tesh-smpi-hvector-ucontext
+      246/406 Test #246: tesh-smpi-hvector-ucontext ..................................   Passed    0.05 sec
+	      Start 247: tesh-smpi-hvector-raw
+      247/406 Test #247: tesh-smpi-hvector-raw .......................................   Passed    0.06 sec
+	      Start 248: tesh-smpi-indexed-thread
+      248/406 Test #248: tesh-smpi-indexed-thread ....................................   Passed    0.05 sec
+	      Start 249: tesh-smpi-indexed-ucontext
+      249/406 Test #249: tesh-smpi-indexed-ucontext ..................................   Passed    0.06 sec
+	      Start 250: tesh-smpi-indexed-raw
+      250/406 Test #250: tesh-smpi-indexed-raw .......................................   Passed    0.05 sec
+	      Start 251: tesh-smpi-struct-thread
+      251/406 Test #251: tesh-smpi-struct-thread .....................................   Passed    0.05 sec
+	      Start 252: tesh-smpi-struct-ucontext
+      252/406 Test #252: tesh-smpi-struct-ucontext ...................................   Passed    0.06 sec
+	      Start 253: tesh-smpi-struct-raw
+      253/406 Test #253: tesh-smpi-struct-raw ........................................   Passed    0.06 sec
+	      Start 254: tesh-smpi-pt2pt-thread
+      254/406 Test #254: tesh-smpi-pt2pt-thread ......................................   Passed    0.12 sec
+	      Start 255: tesh-smpi-pt2pt-ucontext
+      255/406 Test #255: tesh-smpi-pt2pt-ucontext ....................................   Passed    0.13 sec
+	      Start 256: tesh-smpi-pt2pt-raw
+      256/406 Test #256: tesh-smpi-pt2pt-raw .........................................   Passed    0.12 sec
+	      Start 257: tesh-smpi-compute-thread
+      257/406 Test #257: tesh-smpi-compute-thread ....................................   Passed    0.77 sec
+	      Start 258: tesh-smpi-compute-ucontext
+      258/406 Test #258: tesh-smpi-compute-ucontext ..................................   Passed    0.76 sec
+	      Start 259: tesh-smpi-compute-raw
+      259/406 Test #259: tesh-smpi-compute-raw .......................................   Passed    0.80 sec
+	      Start 260: tesh-smpi-shared-thread
+      260/406 Test #260: tesh-smpi-shared-thread .....................................   Passed    0.06 sec
+	      Start 261: tesh-smpi-shared-ucontext
+      261/406 Test #261: tesh-smpi-shared-ucontext ...................................   Passed    0.06 sec
+	      Start 262: tesh-smpi-shared-raw
+      262/406 Test #262: tesh-smpi-shared-raw ........................................   Passed    0.06 sec
+	      Start 263: tesh-smpi-bug-17132-thread
+      263/406 Test #263: tesh-smpi-bug-17132-thread ..................................   Passed    0.12 sec
+	      Start 264: tesh-smpi-bug-17132-surf-debug-thread
+      264/406 Test #264: tesh-smpi-bug-17132-surf-debug-thread .......................   Passed    0.13 sec
+	      Start 265: tesh-smpi-replay-ti-tracing
+      265/406 Test #265: tesh-smpi-replay-ti-tracing .................................   Passed    0.31 sec
+	      Start 266: tesh-smpi-gather-coll-default
+      266/406 Test #266: tesh-smpi-gather-coll-default ...............................   Passed    0.14 sec
+	      Start 267: tesh-smpi-gather-coll-ompi
+      267/406 Test #267: tesh-smpi-gather-coll-ompi ..................................   Passed    0.14 sec
+	      Start 268: tesh-smpi-gather-coll-mpich
+      268/406 Test #268: tesh-smpi-gather-coll-mpich .................................   Passed    0.14 sec
+	      Start 269: tesh-smpi-gather-coll-ompi_basic_linear
+      269/406 Test #269: tesh-smpi-gather-coll-ompi_basic_linear .....................   Passed    0.14 sec
+	      Start 270: tesh-smpi-gather-coll-ompi_linear_sync
+      270/406 Test #270: tesh-smpi-gather-coll-ompi_linear_sync ......................   Passed    0.14 sec
+	      Start 271: tesh-smpi-gather-coll-ompi_binomial
+      271/406 Test #271: tesh-smpi-gather-coll-ompi_binomial .........................   Passed    0.14 sec
+	      Start 272: tesh-smpi-allgather-coll-default
+      272/406 Test #272: tesh-smpi-allgather-coll-default ............................   Passed    0.15 sec
+	      Start 273: tesh-smpi-allgather-coll-2dmesh
+      273/406 Test #273: tesh-smpi-allgather-coll-2dmesh .............................   Passed    0.15 sec
+	      Start 274: tesh-smpi-allgather-coll-3dmesh
+      274/406 Test #274: tesh-smpi-allgather-coll-3dmesh .............................   Passed    0.14 sec
+	      Start 275: tesh-smpi-allgather-coll-bruck
+      275/406 Test #275: tesh-smpi-allgather-coll-bruck ..............................   Passed    0.14 sec
+	      Start 276: tesh-smpi-allgather-coll-GB
+      276/406 Test #276: tesh-smpi-allgather-coll-GB .................................   Passed    0.15 sec
+	      Start 277: tesh-smpi-allgather-coll-loosely_lr
+      277/406 Test #277: tesh-smpi-allgather-coll-loosely_lr .........................   Passed    0.14 sec
+	      Start 278: tesh-smpi-allgather-coll-NTSLR
+      278/406 Test #278: tesh-smpi-allgather-coll-NTSLR ..............................   Passed    0.15 sec
+	      Start 279: tesh-smpi-allgather-coll-NTSLR_NB
+      279/406 Test #279: tesh-smpi-allgather-coll-NTSLR_NB ...........................   Passed    0.14 sec
+	      Start 280: tesh-smpi-allgather-coll-pair
+      280/406 Test #280: tesh-smpi-allgather-coll-pair ...............................   Passed    0.14 sec
+	      Start 281: tesh-smpi-allgather-coll-rdb
+      281/406 Test #281: tesh-smpi-allgather-coll-rdb ................................   Passed    0.14 sec
+	      Start 282: tesh-smpi-allgather-coll-rhv
+      282/406 Test #282: tesh-smpi-allgather-coll-rhv ................................   Passed    0.14 sec
+	      Start 283: tesh-smpi-allgather-coll-ring
+      283/406 Test #283: tesh-smpi-allgather-coll-ring ...............................   Passed    0.15 sec
+	      Start 284: tesh-smpi-allgather-coll-SMP_NTS
+      284/406 Test #284: tesh-smpi-allgather-coll-SMP_NTS ............................   Passed    0.14 sec
+	      Start 285: tesh-smpi-allgather-coll-smp_simple
+      285/406 Test #285: tesh-smpi-allgather-coll-smp_simple .........................   Passed    0.14 sec
+	      Start 286: tesh-smpi-allgather-coll-spreading_simple
+      286/406 Test #286: tesh-smpi-allgather-coll-spreading_simple ...................   Passed    0.14 sec
+	      Start 287: tesh-smpi-allgather-coll-ompi
+      287/406 Test #287: tesh-smpi-allgather-coll-ompi ...............................   Passed    0.15 sec
+	      Start 288: tesh-smpi-allgather-coll-mpich
+      288/406 Test #288: tesh-smpi-allgather-coll-mpich ..............................   Passed    0.18 sec
+	      Start 289: tesh-smpi-allgather-coll-ompi_neighborexchange
+      289/406 Test #289: tesh-smpi-allgather-coll-ompi_neighborexchange ..............   Passed    0.13 sec
+	      Start 290: tesh-smpi-allgatherv-coll-default
+      290/406 Test #290: tesh-smpi-allgatherv-coll-default ...........................   Passed    0.14 sec
+	      Start 291: tesh-smpi-allgatherv-coll-GB
+      291/406 Test #291: tesh-smpi-allgatherv-coll-GB ................................   Passed    0.14 sec
+	      Start 292: tesh-smpi-allgatherv-coll-pair
+      292/406 Test #292: tesh-smpi-allgatherv-coll-pair ..............................   Passed    0.13 sec
+	      Start 293: tesh-smpi-allgatherv-coll-ring
+      293/406 Test #293: tesh-smpi-allgatherv-coll-ring ..............................   Passed    0.14 sec
+	      Start 294: tesh-smpi-allgatherv-coll-ompi
+      294/406 Test #294: tesh-smpi-allgatherv-coll-ompi ..............................   Passed    0.14 sec
+	      Start 295: tesh-smpi-allgatherv-coll-mpich
+      295/406 Test #295: tesh-smpi-allgatherv-coll-mpich .............................   Passed    0.14 sec
+	      Start 296: tesh-smpi-allgatherv-coll-ompi_neighborexchange
+      296/406 Test #296: tesh-smpi-allgatherv-coll-ompi_neighborexchange .............   Passed    0.14 sec
+	      Start 297: tesh-smpi-allgatherv-coll-ompi_bruck
+      297/406 Test #297: tesh-smpi-allgatherv-coll-ompi_bruck ........................   Passed    0.14 sec
+	      Start 298: tesh-smpi-allgatherv-coll-mpich_rdb
+      298/406 Test #298: tesh-smpi-allgatherv-coll-mpich_rdb .........................   Passed    0.15 sec
+	      Start 299: tesh-smpi-allgatherv-coll-mpich_ring
+      299/406 Test #299: tesh-smpi-allgatherv-coll-mpich_ring ........................   Passed    0.15 sec
+	      Start 300: tesh-smpi-allreduce-coll-default
+      300/406 Test #300: tesh-smpi-allreduce-coll-default ............................   Passed    0.14 sec
+	      Start 301: tesh-smpi-allreduce-coll-lr
+      301/406 Test #301: tesh-smpi-allreduce-coll-lr .................................   Passed    0.14 sec
+	      Start 302: tesh-smpi-allreduce-coll-rab1
+      302/406 Test #302: tesh-smpi-allreduce-coll-rab1 ...............................   Passed    0.13 sec
+	      Start 303: tesh-smpi-allreduce-coll-rab2
+      303/406 Test #303: tesh-smpi-allreduce-coll-rab2 ...............................   Passed    0.13 sec
+	      Start 304: tesh-smpi-allreduce-coll-rab_rdb
+      304/406 Test #304: tesh-smpi-allreduce-coll-rab_rdb ............................   Passed    0.13 sec
+	      Start 305: tesh-smpi-allreduce-coll-rdb
+      305/406 Test #305: tesh-smpi-allreduce-coll-rdb ................................   Passed    0.14 sec
+	      Start 306: tesh-smpi-allreduce-coll-smp_binomial
+      306/406 Test #306: tesh-smpi-allreduce-coll-smp_binomial .......................   Passed    0.14 sec
+	      Start 307: tesh-smpi-allreduce-coll-smp_binomial_pipeline
+      307/406 Test #307: tesh-smpi-allreduce-coll-smp_binomial_pipeline ..............   Passed    0.14 sec
+	      Start 308: tesh-smpi-allreduce-coll-smp_rdb
+      308/406 Test #308: tesh-smpi-allreduce-coll-smp_rdb ............................   Passed    0.14 sec
+	      Start 309: tesh-smpi-allreduce-coll-smp_rsag
+      309/406 Test #309: tesh-smpi-allreduce-coll-smp_rsag ...........................   Passed    0.14 sec
+	      Start 310: tesh-smpi-allreduce-coll-smp_rsag_lr
+      310/406 Test #310: tesh-smpi-allreduce-coll-smp_rsag_lr ........................   Passed    0.14 sec
+	      Start 311: tesh-smpi-allreduce-coll-smp_rsag_rab
+      311/406 Test #311: tesh-smpi-allreduce-coll-smp_rsag_rab .......................   Passed    0.14 sec
+	      Start 312: tesh-smpi-allreduce-coll-redbcast
+      312/406 Test #312: tesh-smpi-allreduce-coll-redbcast ...........................   Passed    0.14 sec
+	      Start 313: tesh-smpi-allreduce-coll-ompi
+      313/406 Test #313: tesh-smpi-allreduce-coll-ompi ...............................   Passed    0.14 sec
+	      Start 314: tesh-smpi-allreduce-coll-mpich
+      314/406 Test #314: tesh-smpi-allreduce-coll-mpich ..............................   Passed    0.14 sec
+	      Start 315: tesh-smpi-allreduce-coll-ompi_ring_segmented
+      315/406 Test #315: tesh-smpi-allreduce-coll-ompi_ring_segmented ................   Passed    0.14 sec
+	      Start 316: tesh-smpi-allreduce-coll-large-ompi_ring_segmented
+      316/406 Test #316: tesh-smpi-allreduce-coll-large-ompi_ring_segmented ..........   Passed    0.22 sec
+	      Start 317: tesh-smpi-alltoall-coll-2dmesh
+      317/406 Test #317: tesh-smpi-alltoall-coll-2dmesh ..............................   Passed    0.14 sec
+	      Start 318: tesh-smpi-alltoall-coll-3dmesh
+      318/406 Test #318: tesh-smpi-alltoall-coll-3dmesh ..............................   Passed    0.13 sec
+	      Start 319: tesh-smpi-alltoall-coll-pair
+      319/406 Test #319: tesh-smpi-alltoall-coll-pair ................................   Passed    0.14 sec
+	      Start 320: tesh-smpi-alltoall-coll-pair_one_barrier
+      320/406 Test #320: tesh-smpi-alltoall-coll-pair_one_barrier ....................   Passed    0.13 sec
+	      Start 321: tesh-smpi-alltoall-coll-pair_light_barrier
+      321/406 Test #321: tesh-smpi-alltoall-coll-pair_light_barrier ..................   Passed    0.12 sec
+	      Start 322: tesh-smpi-alltoall-coll-pair_mpi_barrier
+      322/406 Test #322: tesh-smpi-alltoall-coll-pair_mpi_barrier ....................   Passed    0.14 sec
+	      Start 323: tesh-smpi-alltoall-coll-rdb
+      323/406 Test #323: tesh-smpi-alltoall-coll-rdb .................................   Passed    0.14 sec
+	      Start 324: tesh-smpi-alltoall-coll-ring
+      324/406 Test #324: tesh-smpi-alltoall-coll-ring ................................   Passed    0.13 sec
+	      Start 325: tesh-smpi-alltoall-coll-ring_light_barrier
+      325/406 Test #325: tesh-smpi-alltoall-coll-ring_light_barrier ..................   Passed    0.13 sec
+	      Start 326: tesh-smpi-alltoall-coll-ring_mpi_barrier
+      326/406 Test #326: tesh-smpi-alltoall-coll-ring_mpi_barrier ....................   Passed    0.15 sec
+	      Start 327: tesh-smpi-alltoall-coll-ring_one_barrier
+      327/406 Test #327: tesh-smpi-alltoall-coll-ring_one_barrier ....................   Passed    0.13 sec
+	      Start 328: tesh-smpi-alltoall-coll-bruck
+      328/406 Test #328: tesh-smpi-alltoall-coll-bruck ...............................   Passed    0.11 sec
+	      Start 329: tesh-smpi-alltoall-coll-basic_linear
+      329/406 Test #329: tesh-smpi-alltoall-coll-basic_linear ........................   Passed    0.12 sec
+	      Start 330: tesh-smpi-alltoall-coll-ompi
+      330/406 Test #330: tesh-smpi-alltoall-coll-ompi ................................   Passed    0.12 sec
+	      Start 331: tesh-smpi-alltoall-coll-mpich
+      331/406 Test #331: tesh-smpi-alltoall-coll-mpich ...............................   Passed    0.14 sec
+	      Start 332: tesh-smpi-alltoallv-coll-default
+      332/406 Test #332: tesh-smpi-alltoallv-coll-default ............................   Passed    0.16 sec
+	      Start 333: tesh-smpi-alltoallv-coll-pair
+      333/406 Test #333: tesh-smpi-alltoallv-coll-pair ...............................   Passed    0.14 sec
+	      Start 334: tesh-smpi-alltoallv-coll-pair_light_barrier
+      334/406 Test #334: tesh-smpi-alltoallv-coll-pair_light_barrier .................   Passed    0.14 sec
+	      Start 335: tesh-smpi-alltoallv-coll-pair_mpi_barrier
+      335/406 Test #335: tesh-smpi-alltoallv-coll-pair_mpi_barrier ...................   Passed    0.16 sec
+	      Start 336: tesh-smpi-alltoallv-coll-pair_one_barrier
+      336/406 Test #336: tesh-smpi-alltoallv-coll-pair_one_barrier ...................   Passed    0.14 sec
+	      Start 337: tesh-smpi-alltoallv-coll-ring
+      337/406 Test #337: tesh-smpi-alltoallv-coll-ring ...............................   Passed    0.14 sec
+	      Start 338: tesh-smpi-alltoallv-coll-ring_light_barrier
+      338/406 Test #338: tesh-smpi-alltoallv-coll-ring_light_barrier .................   Passed    0.14 sec
+	      Start 339: tesh-smpi-alltoallv-coll-ring_mpi_barrier
+      339/406 Test #339: tesh-smpi-alltoallv-coll-ring_mpi_barrier ...................   Passed    0.14 sec
+	      Start 340: tesh-smpi-alltoallv-coll-ring_one_barrier
+      340/406 Test #340: tesh-smpi-alltoallv-coll-ring_one_barrier ...................   Passed    0.13 sec
+	      Start 341: tesh-smpi-alltoallv-coll-bruck
+      341/406 Test #341: tesh-smpi-alltoallv-coll-bruck ..............................   Passed    0.14 sec
+	      Start 342: tesh-smpi-alltoallv-coll-ompi
+      342/406 Test #342: tesh-smpi-alltoallv-coll-ompi ...............................   Passed    0.13 sec
+	      Start 343: tesh-smpi-alltoallv-coll-mpich
+      343/406 Test #343: tesh-smpi-alltoallv-coll-mpich ..............................   Passed    0.14 sec
+	      Start 344: tesh-smpi-alltoallv-coll-ompi_basic_linear
+      344/406 Test #344: tesh-smpi-alltoallv-coll-ompi_basic_linear ..................   Passed    0.14 sec
+	      Start 345: tesh-smpi-bcast-coll-default
+      345/406 Test #345: tesh-smpi-bcast-coll-default ................................   Passed    0.13 sec
+	      Start 346: tesh-smpi-bcast-coll-arrival_pattern_aware
+      346/406 Test #346: tesh-smpi-bcast-coll-arrival_pattern_aware ..................   Passed    0.13 sec
+	      Start 347: tesh-smpi-bcast-coll-arrival_pattern_aware_wait
+      347/406 Test #347: tesh-smpi-bcast-coll-arrival_pattern_aware_wait .............   Passed    0.13 sec
+	      Start 348: tesh-smpi-bcast-coll-arrival_scatter
+      348/406 Test #348: tesh-smpi-bcast-coll-arrival_scatter ........................   Passed    0.14 sec
+	      Start 349: tesh-smpi-bcast-coll-binomial_tree
+      349/406 Test #349: tesh-smpi-bcast-coll-binomial_tree ..........................   Passed    0.14 sec
+	      Start 350: tesh-smpi-bcast-coll-flattree
+      350/406 Test #350: tesh-smpi-bcast-coll-flattree ...............................   Passed    0.12 sec
+	      Start 351: tesh-smpi-bcast-coll-flattree_pipeline
+      351/406 Test #351: tesh-smpi-bcast-coll-flattree_pipeline ......................   Passed    0.13 sec
+	      Start 352: tesh-smpi-bcast-coll-NTSB
+      352/406 Test #352: tesh-smpi-bcast-coll-NTSB ...................................   Passed    0.13 sec
+	      Start 353: tesh-smpi-bcast-coll-NTSL
+      353/406 Test #353: tesh-smpi-bcast-coll-NTSL ...................................   Passed    0.13 sec
+	      Start 354: tesh-smpi-bcast-coll-NTSL_Isend
+      354/406 Test #354: tesh-smpi-bcast-coll-NTSL_Isend .............................   Passed    0.13 sec
+	      Start 355: tesh-smpi-bcast-coll-scatter_LR_allgather
+      355/406 Test #355: tesh-smpi-bcast-coll-scatter_LR_allgather ...................   Passed    0.14 sec
+	      Start 356: tesh-smpi-bcast-coll-scatter_rdb_allgather
+      356/406 Test #356: tesh-smpi-bcast-coll-scatter_rdb_allgather ..................   Passed    0.13 sec
+	      Start 357: tesh-smpi-bcast-coll-SMP_binary
+      357/406 Test #357: tesh-smpi-bcast-coll-SMP_binary .............................   Passed    0.12 sec
+	      Start 358: tesh-smpi-bcast-coll-SMP_binomial
+      358/406 Test #358: tesh-smpi-bcast-coll-SMP_binomial ...........................   Passed    0.14 sec
+	      Start 359: tesh-smpi-bcast-coll-SMP_linear
+      359/406 Test #359: tesh-smpi-bcast-coll-SMP_linear .............................   Passed    0.14 sec
+	      Start 360: tesh-smpi-bcast-coll-ompi
+      360/406 Test #360: tesh-smpi-bcast-coll-ompi ...................................   Passed    0.14 sec
+	      Start 361: tesh-smpi-bcast-coll-mpich
+      361/406 Test #361: tesh-smpi-bcast-coll-mpich ..................................   Passed    0.14 sec
+	      Start 362: tesh-smpi-bcast-coll-ompi_split_bintree
+      362/406 Test #362: tesh-smpi-bcast-coll-ompi_split_bintree .....................   Passed    0.13 sec
+	      Start 363: tesh-smpi-bcast-coll-ompi_pipeline
+      363/406 Test #363: tesh-smpi-bcast-coll-ompi_pipeline ..........................   Passed    0.14 sec
+	      Start 364: tesh-smpi-reduce-coll-default
+      364/406 Test #364: tesh-smpi-reduce-coll-default ...............................   Passed    0.14 sec
+	      Start 365: tesh-smpi-reduce-coll-arrival_pattern_aware
+      365/406 Test #365: tesh-smpi-reduce-coll-arrival_pattern_aware .................   Passed    0.15 sec
+	      Start 366: tesh-smpi-reduce-coll-binomial
+      366/406 Test #366: tesh-smpi-reduce-coll-binomial ..............................   Passed    0.13 sec
+	      Start 367: tesh-smpi-reduce-coll-flat_tree
+      367/406 Test #367: tesh-smpi-reduce-coll-flat_tree .............................   Passed    0.12 sec
+	      Start 368: tesh-smpi-reduce-coll-NTSL
+      368/406 Test #368: tesh-smpi-reduce-coll-NTSL ..................................   Passed    0.12 sec
+	      Start 369: tesh-smpi-reduce-coll-scatter_gather
+      369/406 Test #369: tesh-smpi-reduce-coll-scatter_gather ........................   Passed    0.14 sec
+	      Start 370: tesh-smpi-reduce-coll-ompi
+      370/406 Test #370: tesh-smpi-reduce-coll-ompi ..................................   Passed    0.12 sec
+	      Start 371: tesh-smpi-reduce-coll-mpich
+      371/406 Test #371: tesh-smpi-reduce-coll-mpich .................................   Passed    0.12 sec
+	      Start 372: tesh-smpi-reduce-coll-ompi_chain
+      372/406 Test #372: tesh-smpi-reduce-coll-ompi_chain ............................   Passed    0.12 sec
+	      Start 373: tesh-smpi-reduce-coll-ompi_binary
+      373/406 Test #373: tesh-smpi-reduce-coll-ompi_binary ...........................   Passed    0.12 sec
+	      Start 374: tesh-smpi-reduce-coll-ompi_basic_linear
+      374/406 Test #374: tesh-smpi-reduce-coll-ompi_basic_linear .....................   Passed    0.12 sec
+	      Start 375: tesh-smpi-reduce-coll-ompi_binomial
+      375/406 Test #375: tesh-smpi-reduce-coll-ompi_binomial .........................   Passed    0.13 sec
+	      Start 376: tesh-smpi-reduce-coll-ompi_in_order_binary
+      376/406 Test #376: tesh-smpi-reduce-coll-ompi_in_order_binary ..................   Passed    0.14 sec
+	      Start 377: tesh-smpi-reduce-scatter-coll-default
+      377/406 Test #377: tesh-smpi-reduce-scatter-coll-default .......................   Passed    0.14 sec
+	      Start 378: tesh-smpi-reduce-scatter-coll-ompi
+      378/406 Test #378: tesh-smpi-reduce-scatter-coll-ompi ..........................   Passed    0.14 sec
+	      Start 379: tesh-smpi-reduce-scatter-coll-mpich
+      379/406 Test #379: tesh-smpi-reduce-scatter-coll-mpich .........................   Passed    0.14 sec
+	      Start 380: tesh-smpi-reduce-scatter-coll-ompi_basic_recursivehalving
+      380/406 Test #380: tesh-smpi-reduce-scatter-coll-ompi_basic_recursivehalving ...   Passed    0.14 sec
+	      Start 381: tesh-smpi-reduce-scatter-coll-ompi_ring
+      381/406 Test #381: tesh-smpi-reduce-scatter-coll-ompi_ring .....................   Passed    0.14 sec
+	      Start 382: tesh-smpi-reduce-scatter-coll-mpich_noncomm
+      382/406 Test #382: tesh-smpi-reduce-scatter-coll-mpich_noncomm .................   Passed    0.13 sec
+	      Start 383: tesh-smpi-reduce-scatter-coll-mpich_pair
+      383/406 Test #383: tesh-smpi-reduce-scatter-coll-mpich_pair ....................   Passed    0.11 sec
+	      Start 384: tesh-smpi-reduce-scatter-coll-mpich_rdb
+      384/406 Test #384: tesh-smpi-reduce-scatter-coll-mpich_rdb .....................   Passed    0.14 sec
+	      Start 385: tesh-smpi-scatter-coll-default
+      385/406 Test #385: tesh-smpi-scatter-coll-default ..............................   Passed    0.14 sec
+	      Start 386: tesh-smpi-scatter-coll-ompi
+      386/406 Test #386: tesh-smpi-scatter-coll-ompi .................................   Passed    0.14 sec
+	      Start 387: tesh-smpi-scatter-coll-mpich
+      387/406 Test #387: tesh-smpi-scatter-coll-mpich ................................   Passed    0.15 sec
+	      Start 388: tesh-smpi-scatter-coll-ompi_basic_linear
+      388/406 Test #388: tesh-smpi-scatter-coll-ompi_basic_linear ....................   Passed    0.14 sec
+	      Start 389: tesh-smpi-scatter-coll-ompi_binomial
+      389/406 Test #389: tesh-smpi-scatter-coll-ompi_binomial ........................   Passed    0.13 sec
+	      Start 390: tesh-smpi-barrier-coll-default
+      390/406 Test #390: tesh-smpi-barrier-coll-default ..............................   Passed    0.12 sec
+	      Start 391: tesh-smpi-barrier-coll-ompi
+      391/406 Test #391: tesh-smpi-barrier-coll-ompi .................................   Passed    0.14 sec
+	      Start 392: tesh-smpi-barrier-coll-mpich
+      392/406 Test #392: tesh-smpi-barrier-coll-mpich ................................   Passed    0.14 sec
+	      Start 393: tesh-smpi-barrier-coll-ompi_basic_linear
+      393/406 Test #393: tesh-smpi-barrier-coll-ompi_basic_linear ....................   Passed    0.14 sec
+	      Start 394: tesh-smpi-barrier-coll-ompi_tree
+      394/406 Test #394: tesh-smpi-barrier-coll-ompi_tree ............................   Passed    0.14 sec
+	      Start 395: tesh-smpi-barrier-coll-ompi_bruck
+      395/406 Test #395: tesh-smpi-barrier-coll-ompi_bruck ...........................   Passed    0.14 sec
+	      Start 396: tesh-smpi-barrier-coll-ompi_recursivedoubling
+      396/406 Test #396: tesh-smpi-barrier-coll-ompi_recursivedoubling ...............   Passed    0.14 sec
+	      Start 397: tesh-smpi-barrier-coll-ompi_doublering
+      397/406 Test #397: tesh-smpi-barrier-coll-ompi_doublering ......................   Passed    0.14 sec
+	      Start 398: smpi-energy-thread
+      398/406 Test #398: smpi-energy-thread ..........................................   Passed    0.05 sec
+	      Start 399: smpi-energy-ucontext
+      399/406 Test #399: smpi-energy-ucontext ........................................   Passed    0.05 sec
+	      Start 400: smpi-energy-raw
+      400/406 Test #400: smpi-energy-raw .............................................   Passed    0.05 sec
+	      Start 401: smpi-msg-masterslave-thread
+      401/406 Test #401: smpi-msg-masterslave-thread .................................   Passed    0.02 sec
+	      Start 402: smpi-msg-masterslave-ucontext
+      402/406 Test #402: smpi-msg-masterslave-ucontext ...............................   Passed    0.02 sec
+	      Start 403: smpi-msg-masterslave-raw
+      403/406 Test #403: smpi-msg-masterslave-raw ....................................   Passed    0.02 sec
+	      Start 404: smpi-tracing-ptp
+      404/406 Test #404: smpi-tracing-ptp ............................................   Passed    0.35 sec
+	      Start 405: smpi-replay
+      405/406 Test #405: smpi-replay .................................................   Passed    0.68 sec
+	      Start 406: testall
+      406/406 Test #406: testall .....................................................   Passed    0.51 sec
+
+      100% tests passed, 0 tests failed out of 406
+
+      Total Test time (real) =  66.01 sec
+#+end_example
+
 **** Compilation starpu avec support simgrid
      Apparement il me manquait déjà la lib opencl
      #+begin_src sh :results output :exports both
@@ -2815,4 +3644,1121 @@ cd ~/Programmation/TER/trunk
      #+RESULTS:
      : 
      : /home/steven/Programmation/TER/starpu
+
+*** 2014-12-24 mercredi
+**** Réinstallation de de starpu dans le home
+     #+begin_src sh :session s20141224 :results output :exports both 
+       cd ~/Programmation/TER/starpu/build
+       ../configure --prefix=$HOME/Programs/StarPU --with-fxt
+     #+end_src
+
+     #+RESULTS:
+     #+begin_example
+
+     steven@archeon:~/Programmation/TER/starpu/build$ checking build system type... x86_64-unknown-linux-gnu
+     checking host system type... x86_64-unknown-linux-gnu
+     checking target system type... x86_64-unknown-linux-gnu
+     checking for a BSD-compatible install... /usr/bin/install -c
+     checking whether build environment is sane... yes
+     checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+     checking for gawk... gawk
+     (MAKE)... yes
+     checking whether make supports nested variables... yes
+     checking whether make supports nested variables... (cached) yes
+     checking for style of include used by make... GNU
+     checking for gcc... gcc
+     checking whether the C compiler works... yes
+     checking for C compiler default output file name... a.out
+     checking for suffix of executables... 
+     checking whether we are cross compiling... no
+     checking for suffix of object files... o
+     checking whether we are using the GNU C compiler... yes
+     checking whether gcc accepts -g... yes
+     checking for gcc option to accept ISO C89... none needed
+     checking whether gcc understands -c and -o together... yes
+     checking dependency style of gcc... gcc3
+     checking for ar... ar
+     checking the archiver (ar) interface... ar
+     checking for gcc... (cached) gcc
+     checking whether we are using the GNU C compiler... (cached) yes
+     checking whether gcc accepts -g... (cached) yes
+     checking for gcc option to accept ISO C89... (cached) none needed
+     checking whether gcc understands -c and -o together... (cached) yes
+     checking dependency style of gcc... (cached) gcc3
+     checking for g++... g++
+     checking whether we are using the GNU C++ compiler... yes
+     checking whether g++ accepts -g... yes
+     checking dependency style of g++... gcc3
+     checking how to run the C preprocessor... gcc -E
+     checking for a sed that does not truncate output... /usr/bin/sed
+     checking whether ln -s works... yes
+     checking for g77... no
+     checking for xlf... no
+     checking for f77... no
+     checking for frt... no
+     checking for pgf77... no
+     checking for cf77... no
+     checking for fort77... no
+     checking for fl32... no
+     checking for af77... no
+     checking for xlf90... no
+     checking for f90... no
+     checking for pgf90... no
+     checking for pghpf... no
+     checking for epcf90... no
+     checking for gfortran... gfortran
+     checking whether we are using the GNU Fortran 77 compiler... yes
+     checking whether gfortran accepts -g... yes
+     checking for gstat... no
+     checking for stat... stat
+     checking for gdate... no
+     checking for date... date
+     checking how to print strings... printf
+     checking for a sed that does not truncate output... (cached) /usr/bin/sed
+     checking for grep that handles long lines and -e... /usr/bin/grep
+     checking for egrep... /usr/bin/grep -E
+     checking for fgrep... /usr/bin/grep -F
+     checking for ld used by gcc... /usr/bin/ld
+     checking if the linker (/usr/bin/ld) is GNU ld... yes
+     checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+     checking the name lister (/usr/bin/nm -B) interface... BSD nm
+     checking the maximum length of command line arguments... 1635000
+     checking whether the shell understands some XSI constructs... yes
+     checking whether the shell understands "+="... yes
+     checking how to convert x86_64-unknown-linux-gnu file names to x86_64-unknown-linux-gnu format... func_convert_file_noop
+     checking how to convert x86_64-unknown-linux-gnu file names to toolchain format... func_convert_file_noop
+     checking for /usr/bin/ld option to reload object files... -r
+     checking for objdump... objdump
+     checking how to recognize dependent libraries... pass_all
+     checking for dlltool... no
+     s\n
+     checking for archiver @FILE support... @
+     checking for strip... strip
+     checking for ranlib... ranlib
+     checking command to parse /usr/bin/nm -B output from gcc object... ok
+     checking for sysroot... no
+     checking for mt... no
+     checking if : is a manifest tool... no
+     checking for ANSI C header files... yes
+     checking for sys/types.h... yes
+     checking for sys/stat.h... yes
+     checking for stdlib.h... yes
+     checking for string.h... yes
+     checking for memory.h... yes
+     checking for strings.h... yes
+     checking for inttypes.h... yes
+     checking for stdint.h... yes
+     checking for unistd.h... yes
+     checking for dlfcn.h... yes
+     checking for objdir... .libs
+     checking if gcc supports -fno-rtti -fno-exceptions... no
+     checking for gcc option to produce PIC... -fPIC -DPIC
+     checking if gcc PIC flag -fPIC -DPIC works... yes
+     checking if gcc static flag -static works... yes
+     checking if gcc supports -c -o file.o... yes
+     checking if gcc supports -c -o file.o... (cached) yes
+     checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+     checking whether -lc should be explicitly linked in... no
+     checking dynamic linker characteristics... GNU/Linux ld.so
+     checking how to hardcode library paths into programs... immediate
+     checking whether stripping libraries is possible... yes
+     checking if libtool supports shared libraries... yes
+     checking whether to build shared libraries... yes
+     checking whether to build static libraries... yes
+     checking how to run the C++ preprocessor... g++ -E
+     checking for ld used by g++... /usr/bin/ld -m elf_x86_64
+     checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld... yes
+     checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+     checking for g++ option to produce PIC... -fPIC -DPIC
+     checking if g++ PIC flag -fPIC -DPIC works... yes
+     checking if g++ static flag -static works... yes
+     checking if g++ supports -c -o file.o... yes
+     checking if g++ supports -c -o file.o... (cached) yes
+     checking whether the g++ linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+     checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+     checking how to hardcode library paths into programs... immediate
+     checking if libtool supports shared libraries... yes
+     checking whether to build shared libraries... yes
+     checking whether to build static libraries... yes
+     checking for gfortran option to produce PIC... -fPIC
+     checking if gfortran PIC flag -fPIC works... yes
+     checking if gfortran static flag -static works... no
+     checking if gfortran supports -c -o file.o... yes
+     checking if gfortran supports -c -o file.o... (cached) yes
+     checking whether the gfortran linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+     checking dynamic linker characteristics... (cached) GNU/Linux ld.so
+     checking how to hardcode library paths into programs... immediate
+     checking whether ln -s works... yes
+     checking for ANSI C header files... (cached) yes
+     checking for C/C++ restrict keyword... __restrict
+     checking for bash... /bin/sh
+     checking for svn... /usr/bin/svn
+     checking for svnversion... /usr/bin/svnversion
+     checking for lib... no
+     checking size of void *... 8
+     checking for pthread_create in -lpthread... yes
+     checking for library containing sqrt... -lm
+     checking for main in -lws2_32... no
+     checking for sysconf... yes
+     checking for pthread_spin_lock... yes
+     checking for pthread_barrier_init... yes
+     checking for pthread_setaffinity_np... yes
+     checking for posix_memalign... yes
+     checking for memalign... yes
+     checking for drand48... yes
+     checking for erand48_r... yes
+     checking for strerror_r... yes
+     checking for setenv... yes
+     checking for unsetenv... yes
+     checking for nearbyintf... yes
+     checking for rintf... yes
+     checking malloc.h usability... yes
+     checking malloc.h presence... yes
+     checking for malloc.h... yes
+     checking valgrind/valgrind.h usability... yes
+     checking valgrind/valgrind.h presence... yes
+     checking for valgrind/valgrind.h... yes
+     checking valgrind/helgrind.h usability... yes
+     checking valgrind/helgrind.h presence... yes
+     checking for valgrind/helgrind.h... yes
+     checking for sched_yield... yes
+     checking aio.h usability... yes
+     checking aio.h presence... yes
+     checking for aio.h... yes
+     checking for mkstemps... yes
+     checking for pread... yes
+     checking for pwrite... yes
+     checking whether the target supports __sync_val_compare_and_swap... yes
+     checking whether the target supports __sync_bool_compare_and_swap... yes
+     checking whether the target supports __sync_fetch_and_add... yes
+     checking whether the target supports __sync_fetch_and_or... yes
+     checking whether the target supports __sync_lock_test_and_set... yes
+     checking whether the target supports __sync_synchronize... yes
+     checking for library containing set_mempolicy... no
+     checking whether libnuma is available... no
+     checking maximum number of sched_ctxs... 10
+     checking maximum number of CPUs... 64
+     checking whether CPUs should be used... yes
+     checking maximum number of CUDA devices... 4
+     checking whether CUDA is available... 
+     checking cuda.h usability... no
+     checking cuda.h presence... no
+     checking for cuda.h... no
+     checking whether CUDA is available... 
+     checking cuda.h usability... no
+     checking cuda.h presence... no
+     checking for cuda.h... no
+     checking whether CUDA is available in /usr/local/cuda... 
+     checking cuda.h usability... no
+     checking cuda.h presence... no
+     checking for cuda.h... no
+     checking whether CUDA is available in /c/cuda... 
+     checking cuda.h usability... no
+     checking cuda.h presence... no
+     checking for cuda.h... no
+     checking whether CUDA is available in /cygdrive/c/cuda... 
+     checking cuda.h usability... no
+     checking cuda.h presence... no
+     checking for cuda.h... no
+     checking whether CUDA is available in /opt/cuda... 
+     checking cuda.h usability... no
+     checking cuda.h presence... no
+     checking for cuda.h... no
+     checking whether CUDA is available in /..... 
+     checking cuda.h usability... no
+     checking cuda.h presence... no
+     checking for cuda.h... no
+     checking whether CUDA is available in /..... 
+     checking cuda.h usability... no
+     checking cuda.h presence... no
+     checking for cuda.h... no
+     checking whether CUDA is available in /..... 
+     checking cuda.h usability... no
+     checking cuda.h presence... no
+     checking for cuda.h... no
+     checking whether CUDA is available in /..... 
+     checking cuda.h usability... no
+     checking cuda.h presence... no
+     checking for cuda.h... no
+     checking whether CUDA is working... no
+     checking whether CUDA should be used... no
+     checking for pkg-config... /usr/bin/pkg-config
+     checking pkg-config is at least version 0.9.0... yes
+     checking whether MAGMA should be used... no
+     checking for cufftDoubleComplex... no
+     checking whether CURAND is available... no
+     checking maximum number of OpenCL devices... 8
+     checking whether OpenCL is available... 
+     checking CL/cl.h usability... no
+     checking CL/cl.h presence... no
+     checking for CL/cl.h... no
+     checking whether OpenCL is available in /usr/local/cuda no and no... 
+     checking CL/cl.h usability... no
+     checking CL/cl.h presence... no
+     checking for CL/cl.h... no
+     checking whether OpenCL is available in /c/cuda no and no... 
+     checking CL/cl.h usability... no
+     checking CL/cl.h presence... no
+     checking for CL/cl.h... no
+     checking whether OpenCL is available in /cygdrive/c/cuda no and no... 
+     checking CL/cl.h usability... no
+     checking CL/cl.h presence... no
+     checking for CL/cl.h... no
+     checking whether OpenCL is available in /opt/cuda no and no... 
+     checking CL/cl.h usability... no
+     checking CL/cl.h presence... no
+     checking for CL/cl.h... no
+     checking whether OpenCL is available in /.. no and no... 
+     checking CL/cl.h usability... no
+     checking CL/cl.h presence... no
+     checking for CL/cl.h... no
+     checking for clEnqueueMarkerWithWaitList... no
+     checking whether OpenCL should be used... no
+     checking whether asynchronous copy should be disabled... no
+     checking whether asynchronous CUDA copy should be disabled... no
+     checking whether asynchronous OpenCL copy should be disabled... no
+     checking whether asynchronous MIC copy should be disabled... no
+     checking whether SimGrid is enabled... no
+     checking whether blocking drivers should be enabled... no
+     checking maximum number of MIC devices... 4
+     checking maximum number of MIC threads... 
+     checking RCCE.h usability... no
+     checking RCCE.h presence... no
+     checking for RCCE.h... no
+     checking for RCCE_init in -lRCCE_bigflags_nongory_nopwrmgmt... no
+     checking whether RCCE should be used... no
+     checking Maximum number of message-passing kernels... 10
+     checking whether debug mode should be enabled... no
+     checking whether extra checks should be performed... no
+     checking whether debug messages should be displayed... no
+     checking whether coverage testing should be enabled... no
+     checking whether FxT traces should be generated... yes
+     checking for FXT... yes
+     checking for enable_fut_flush... yes
+     checking for fut_set_filename... yes
+     checking whether enable_fut_flush is declared... no
+     checking whether fut_set_filename is declared... no
+     checking for POTI... no
+     checking whether additional locking systems FxT traces should be enabled... no
+     checking whether performance debugging should be enabled... no
+     checking whether performance model debugging should be enabled... no
+     checking whether statistics should be generated... no
+     checking whether memory stats should be displayed... no
+     checking glpk.h usability... no
+     checking glpk.h presence... no
+     checking for glpk.h... no
+     checking for main in -lglpk... no
+     checking Ayudame.h usability... no
+     checking Ayudame.h presence... no
+     checking for Ayudame.h... no
+     checking how many buffers can be manipulated per task... 8
+     checking maximum number of nodes to use... checking maximum number of memory nodes... 8
+     checking whether allocation cache should be used... yes
+     checking using explicit performance model location... no
+     HOME/.starpu/sampling/
+     checking for clock_gettime in -lrt... yes
+     checking for clock_gettime... yes
+     checking Maximum number of workers... 64
+     checking Maximum number of workers combinations... 64
+     checking maximum number of implementations... 4
+     checking leveldb/db.h usability... no
+     checking leveldb/db.h presence... no
+     checking for leveldb/db.h... no
+     checking for main in -lleveldb... no
+     checking calibration heuristic of history-based StarPU calibrator... 50
+     checking for mpicc... /usr/bin/mpicc
+     checking mpicc path... /usr/bin/mpicc
+     checking for mpiexec... /usr/bin/mpiexec
+     checking whether mpiexec is available... /usr/bin/mpiexec
+     checking whether MPI tests should be run... yes
+     checking whether the StarPU MPI library should be generated... yes
+     checking for StarPU-Top... checking for qmake-qt4... /usr/bin/qmake-qt4
+     checking whether compiler support -Wall... yes
+     checking whether compiler support -Werror=implicit... yes
+     checking whether compiler support -Werror=implicit-function-declaration... yes
+     checking whether GCC supports plug-ins... no
+     configure: WARNING: GCC plug-ins not supported; StarPU's GCC plug-in will not be built
+     checking for OpenMP runtime support... no
+     checking for SOCL... no
+     checking for gdb... /usr/bin/gdb
+     checking whether OpenGL rendering is enabled... no
+     checking for X... libraries , headers 
+     checking for gethostbyname... yes
+     checking for connect... yes
+     checking for remove... yes
+     checking for shmat... yes
+     checking for IceConnectionNumber in -lICE... yes
+     checking for library containing sgemm_... -lblas
+     checking which BLAS lib should be used... system
+     checking for FFTW... yes
+     checking for FFTWF... yes
+     checking for FFTWL... yes
+     checking for HWLOC... yes
+     checking whether hwloc should be used... yes
+     checking f77.h usability... no
+     checking f77.h presence... no
+     checking for f77.h... no
+     checking for icc... no
+     checking for help2man... no
+     checking for struct cudaDeviceProp.pciDomainID... no
+     checking for struct cudaDeviceProp.pciBusID... no
+     checking for doxygen... /usr/bin/doxygen
+     checking for pdflatex... /usr/bin/pdflatex
+     checking for epstopdf... /usr/bin/epstopdf
+     checking whether documentation should be compiled... yes
+     checking that generated files are newer than configure... done
+     configure: creating ./config.status
+     config.status: creating tests/regression/regression.sh
+     config.status: creating tests/regression/profiles
+     config.status: creating tests/regression/profiles.build.only
+     config.status: creating Makefile
+     config.status: creating src/Makefile
+     config.status: creating tools/Makefile
+     config.status: creating tools/starpu_codelet_profile
+     config.status: creating tools/starpu_codelet_histo_profile
+     config.status: creating tools/starpu_workers_activity
+     config.status: creating tools/starpu_paje_draw_histogram
+     config.status: creating tools/starpu_paje_state_stats
+     config.status: creating tools/starpu_paje_summary
+     config.status: creating socl/Makefile
+     config.status: creating socl/src/Makefile
+     config.status: creating socl/examples/Makefile
+     config.status: creating socl/vendors/socl.icd
+     config.status: creating socl/vendors/install/socl.icd
+     config.status: creating libstarpu.pc
+     config.status: creating starpu-1.0.pc
+     config.status: creating starpu-1.1.pc
+     config.status: creating starpu-1.2.pc
+     config.status: creating mpi/libstarpumpi.pc
+     config.status: creating mpi/starpumpi-1.0.pc
+     config.status: creating mpi/starpumpi-1.1.pc
+     config.status: creating mpi/starpumpi-1.2.pc
+     config.status: creating starpufft/Makefile
+     config.status: creating starpufft/src/Makefile
+     config.status: creating starpufft/tests/Makefile
+     config.status: creating starpufft/libstarpufft.pc
+     config.status: creating starpufft/starpufft-1.0.pc
+     config.status: creating starpufft/starpufft-1.1.pc
+     config.status: creating starpufft/starpufft-1.2.pc
+     config.status: creating examples/Makefile
+     config.status: creating examples/stencil/Makefile
+     config.status: creating tests/Makefile
+     config.status: creating tests/loader-cross.sh
+     config.status: creating mpi/Makefile
+     config.status: creating mpi/src/Makefile
+     config.status: creating mpi/tests/Makefile
+     config.status: creating mpi/examples/Makefile
+     config.status: creating starpu-top/StarPU-Top.pro
+     config.status: creating starpu-top/StarPU-Top-qwt-embed.pri
+     config.status: creating starpu-top/StarPU-Top-qwt-system.pri
+     config.status: creating gcc-plugin/Makefile
+     config.status: creating gcc-plugin/src/Makefile
+     config.status: creating gcc-plugin/tests/Makefile
+     config.status: creating gcc-plugin/tests/run-test
+     config.status: creating gcc-plugin/examples/Makefile
+     config.status: creating sc_hypervisor/Makefile
+     config.status: creating sc_hypervisor/src/Makefile
+     config.status: creating sc_hypervisor/examples/Makefile
+     config.status: creating doc/Makefile
+     config.status: creating doc/doxygen/Makefile
+     config.status: creating doc/doxygen/doxygen-config.cfg
+     config.status: creating doc/doxygen/doxygen_filter.sh
+     config.status: creating tools/msvc/starpu_var.bat
+     config.status: creating src/common/config.h
+     config.status: src/common/config.h is unchanged
+     config.status: creating include/starpu_config.h
+     config.status: include/starpu_config.h is unchanged
+     config.status: creating gcc-plugin/include/starpu-gcc/config.h
+     config.status: gcc-plugin/include/starpu-gcc/config.h is unchanged
+     config.status: creating starpu-top/config.h
+     config.status: starpu-top/config.h is unchanged
+     config.status: executing depfiles commands
+     config.status: executing libtool commands
+     config.status: executing executable-scripts commands
+     configure:
+
+	     CPUs   enabled: yes
+	     CUDA   enabled: no
+	     OpenCL enabled: no
+	     SCC    enabled: no
+	     MIC    enabled: no
+
+	     Compile-time limits
+	     (change these with --enable-maxcpus, --enable-maxcudadev,
+	     --enable-maxopencldev, --enable-maxmicdev, --enable-maxnodes,
+	     --enable-maxbuffers)
+	     (Note these numbers do not represent the number of detected
+	     devices, but the maximum number of devices StarPU can manage)
+
+	     Maximum number of CPUs:           64
+	     Maximum number of CUDA devices:   0
+	     Maximum number of OpenCL devices: 0
+	     Maximum number of SCC devices:    0
+	     Maximum number of MIC threads:    0
+	     Maximum number of memory nodes:   8
+	     Maximum number of task buffers:   8
+
+	     GPU-GPU transfers: no
+	     Allocation cache:  yes
+
+	     Magma enabled:     no
+	     BLAS library:      system
+	     hwloc:             yes
+	     FxT trace enabled: yes
+	     StarPU-Top:        yes
+
+	     Documentation:     yes
+	     Examples:          yes
+
+	     StarPU Extensions:
+		    MPI enabled:                                 yes
+		    MPI test suite:                              yes
+		    FFT Support:                                 yes
+		    GCC plug-in:                                 no
+		    GCC plug-in test suite (requires GNU Guile): no
+		    OpenMP runtime support enabled:              no
+		    SOCL enabled:                                no
+		    SOCL test suite:                             no
+		    Scheduler Hypervisor:                        no
+		    simgrid enabled:                             no
+		    ayudame enabled:                             no
+#+end_example
+
+     #+begin_src sh :session s20141224 :results output :exports both 
+       make
+     #+end_src
+     
+     #+RESULTS:
+     #+begin_example
+     Making all in src
+     make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu/build/src »
+     make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu/build/src »
+       CC       libstarpu_1.2_la-barrier.lo
+       CC       libstarpu_1.2_la-barrier_counter.lo
+       CC       libstarpu_1.2_la-bitmap.lo
+       CC       libstarpu_1.2_la-hash.lo
+       CC       libstarpu_1.2_la-rwlock.lo
+       CC       libstarpu_1.2_la-starpu_spinlock.lo
+       CC       libstarpu_1.2_la-timing.lo
+       CC       libstarpu_1.2_la-fxt.lo
+       CC       libstarpu_1.2_la-utils.lo
+       CC       libstarpu_1.2_la-thread.lo
+       CC       libstarpu_1.2_la-jobs.lo
+       CC       libstarpu_1.2_la-task.lo
+       CC       libstarpu_1.2_la-task_bundle.lo
+       CC       libstarpu_1.2_la-tree.lo
+       CC       libstarpu_1.2_la-workers.lo
+       CC       libstarpu_1.2_la-combined_workers.lo
+       CC       libstarpu_1.2_la-topology.lo
+       CC       libstarpu_1.2_la-disk.lo
+       CC       libstarpu_1.2_la-debug.lo
+       CC       libstarpu_1.2_la-errorcheck.lo
+       CC       libstarpu_1.2_la-progress_hook.lo
+       CC       libstarpu_1.2_la-cg.lo
+       CC       libstarpu_1.2_la-dependencies.lo
+       CC       libstarpu_1.2_la-implicit_data_deps.lo
+       CC       libstarpu_1.2_la-tags.lo
+       CC       libstarpu_1.2_la-task_deps.lo
+       CC       libstarpu_1.2_la-data_concurrency.lo
+       CC       libstarpu_1.2_la-disk_stdio.lo
+       CC       libstarpu_1.2_la-disk_unistd.lo
+       CC       libstarpu_1.2_la-disk_unistd_global.lo
+       CC       libstarpu_1.2_la-perfmodel_history.lo
+       CC       libstarpu_1.2_la-perfmodel_bus.lo
+       CC       libstarpu_1.2_la-perfmodel.lo
+       CC       libstarpu_1.2_la-perfmodel_print.lo
+       CC       libstarpu_1.2_la-perfmodel_nan.lo
+       CC       libstarpu_1.2_la-regression.lo
+       CC       libstarpu_1.2_la-sched_policy.lo
+       CC       libstarpu_1.2_la-simgrid.lo
+       CC       libstarpu_1.2_la-sched_ctx.lo
+       CC       libstarpu_1.2_la-sched_ctx_list.lo
+       CC       libstarpu_1.2_la-parallel_task.lo
+       CC       libstarpu_1.2_la-detect_combined_workers.lo
+       CC       libstarpu_1.2_la-eager_central_policy.lo
+       CC       libstarpu_1.2_la-eager_central_priority_policy.lo
+       CC       libstarpu_1.2_la-work_stealing_policy.lo
+       CC       libstarpu_1.2_la-locality_work_stealing_policy.lo
+       CC       libstarpu_1.2_la-deque_modeling_policy_data_aware.lo
+       CC       libstarpu_1.2_la-random_policy.lo
+       CC       libstarpu_1.2_la-stack_queues.lo
+       CC       libstarpu_1.2_la-deque_queues.lo
+       CC       libstarpu_1.2_la-fifo_queues.lo
+       CC       libstarpu_1.2_la-parallel_heft.lo
+       CC       libstarpu_1.2_la-parallel_eager.lo
+       CC       libstarpu_1.2_la-driver_common.lo
+       CC       libstarpu_1.2_la-driver_disk.lo
+       CC       libstarpu_1.2_la-memory_nodes.lo
+       CC       libstarpu_1.2_la-write_back.lo
+       CC       libstarpu_1.2_la-coherency.lo
+       CC       libstarpu_1.2_la-data_request.lo
+       CC       libstarpu_1.2_la-datawizard.lo
+       CC       libstarpu_1.2_la-copy_driver.lo
+       CC       libstarpu_1.2_la-filters.lo
+       CC       libstarpu_1.2_la-sort_data_handles.lo
+       CC       libstarpu_1.2_la-malloc.lo
+       CC       libstarpu_1.2_la-memory_manager.lo
+       CC       libstarpu_1.2_la-memalloc.lo
+       CC       libstarpu_1.2_la-memstats.lo
+       CC       libstarpu_1.2_la-footprint.lo
+       CC       libstarpu_1.2_la-datastats.lo
+       CC       libstarpu_1.2_la-user_interactions.lo
+       CC       libstarpu_1.2_la-reduction.lo
+       CC       libstarpu_1.2_la-data_interface.lo
+       CC       libstarpu_1.2_la-bcsr_interface.lo
+       CC       libstarpu_1.2_la-coo_interface.lo
+       CC       libstarpu_1.2_la-csr_interface.lo
+       CC       libstarpu_1.2_la-matrix_filters.lo
+       CC       libstarpu_1.2_la-matrix_interface.lo
+       CC       libstarpu_1.2_la-block_filters.lo
+       CC       libstarpu_1.2_la-block_interface.lo
+       CC       libstarpu_1.2_la-vector_interface.lo
+       CC       libstarpu_1.2_la-bcsr_filters.lo
+       CC       libstarpu_1.2_la-csr_filters.lo
+       CC       libstarpu_1.2_la-vector_filters.lo
+       CC       libstarpu_1.2_la-variable_interface.lo
+       CC       libstarpu_1.2_la-void_interface.lo
+       CC       libstarpu_1.2_la-multiformat_interface.lo
+       CC       libstarpu_1.2_la-execute_on_all.lo
+       CC       libstarpu_1.2_la-starpu_create_sync_task.lo
+       CC       libstarpu_1.2_la-file.lo
+       CC       libstarpu_1.2_la-misc.lo
+       CC       libstarpu_1.2_la-openmp_runtime_support.lo
+       CC       libstarpu_1.2_la-openmp_runtime_support_environment.lo
+       CC       libstarpu_1.2_la-openmp_runtime_support_omp_api.lo
+       CC       libstarpu_1.2_la-starpu_data_cpy.lo
+       CC       libstarpu_1.2_la-starpu_task_insert.lo
+       CC       libstarpu_1.2_la-starpu_task_insert_utils.lo
+       CC       libstarpu_1.2_la-starpu_fxt.lo
+       CC       libstarpu_1.2_la-starpu_fxt_mpi.lo
+       CC       libstarpu_1.2_la-starpu_fxt_dag.lo
+       CC       libstarpu_1.2_la-starpu_paje.lo
+       CC       libstarpu_1.2_la-latency.lo
+       CC       libstarpu_1.2_la-structures_size.lo
+       CC       libstarpu_1.2_la-profiling.lo
+       CC       libstarpu_1.2_la-bound.lo
+       CC       libstarpu_1.2_la-profiling_helpers.lo
+       CC       libstarpu_1.2_la-starpu_top.lo
+       CC       libstarpu_1.2_la-starpu_top_task.lo
+       CC       libstarpu_1.2_la-starpu_top_message_queue.lo
+       CC       libstarpu_1.2_la-starpu_top_connection.lo
+       CC       libstarpu_1.2_la-worker_list.lo
+       CC       libstarpu_1.2_la-worker_tree.lo
+       CC       libstarpu_1.2_la-component_worker.lo
+       CC       libstarpu_1.2_la-component_sched.lo
+       CC       libstarpu_1.2_la-component_fifo.lo
+       CC       libstarpu_1.2_la-prio_deque.lo
+       CC       libstarpu_1.2_la-helper_mct.lo
+       CC       libstarpu_1.2_la-component_prio.lo
+       CC       libstarpu_1.2_la-component_random.lo
+       CC       libstarpu_1.2_la-component_eager.lo
+       CC       libstarpu_1.2_la-component_eager_calibration.lo
+       CC       libstarpu_1.2_la-component_mct.lo
+       CC       libstarpu_1.2_la-component_heft.lo
+       CC       libstarpu_1.2_la-component_best_implementation.lo
+       CC       libstarpu_1.2_la-component_perfmodel_select.lo
+       CC       libstarpu_1.2_la-component_composed.lo
+       CC       libstarpu_1.2_la-modular_eager.lo
+       CC       libstarpu_1.2_la-modular_eager_prefetching.lo
+       CC       libstarpu_1.2_la-modular_prio.lo
+       CC       libstarpu_1.2_la-modular_prio_prefetching.lo
+       CC       libstarpu_1.2_la-modular_random.lo
+       CC       libstarpu_1.2_la-modular_random_prefetching.lo
+       CC       libstarpu_1.2_la-modular_heft.lo
+       CC       libstarpu_1.2_la-modular_heft2.lo
+       CC       libstarpu_1.2_la-driver_cpu.lo
+       CC       libstarpu_1.2_la-starpu_cublas.lo
+       CC       libstarpu_1.2_la-disk_unistd_o_direct.lo
+       CXXLD    libstarpu-1.2.la
+     make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu/build/src »
+     make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu/build/src »
+     Making all in tools
+     make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu/build/tools »
+     make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu/build/tools »
+       CC       starpu_fxt_tool-starpu_fxt_tool.o
+       CCLD     starpu_fxt_tool
+       CC       starpu_fxt_stats-starpu_fxt_stats.o
+       CCLD     starpu_fxt_stats
+       CC       starpu_fxt_data_trace-starpu_fxt_data_trace.o
+       CCLD     starpu_fxt_data_trace
+       CC       starpu_perfmodel_display.o
+       CCLD     starpu_perfmodel_display
+       CC       starpu_perfmodel_plot-starpu_perfmodel_plot.o
+       CCLD     starpu_perfmodel_plot
+       CC       starpu_calibrate_bus.o
+       CCLD     starpu_calibrate_bus
+       CC       starpu_machine_display.o
+       CCLD     starpu_machine_display
+       CC       starpu_lp2paje.o
+       CCLD     starpu_lp2paje
+     make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu/build/tools »
+     make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu/build/tools »
+     Making all in tests
+     make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu/build/tests »
+     make  all-recursive
+     make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu/build/tests »
+     make[3] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu/build/tests »
+       CC       tasks_size_overhead.o
+       CCLD     microbenchs/tasks_size_overhead
+       CC       local_pingpong.o
+       CCLD     microbenchs/local_pingpong
+       CC       main_deprecated_func-deprecated_func.o
+       CCLD     main/deprecated_func
+       CC       init_run_deinit.o
+       CCLD     main/driver_api/init_run_deinit
+       CC       run_driver.o
+       CCLD     main/driver_api/run_driver
+       CC       deploop.o
+       CCLD     main/deploop
+       CC       restart.o
+       CCLD     main/restart
+       CC       execute_on_a_specific_worker.o
+       CCLD     main/execute_on_a_specific_worker
+       CC       execute_schedule.o
+       CCLD     main/execute_schedule
+       CC       insert_task.o
+       CCLD     main/insert_task
+       CC       insert_task_dyn_handles.o
+       CCLD     main/insert_task_dyn_handles
+       CC       insert_task_nullcodelet.o
+       CCLD     main/insert_task_nullcodelet
+       CC       insert_task_array.o
+       CCLD     main/insert_task_array
+       CC       multithreaded.o
+       CCLD     main/multithreaded
+       CC       multithreaded_init.o
+       CCLD     main/multithreaded_init
+       CC       starpu_task_bundle.o
+       CCLD     main/starpu_task_bundle
+       CC       starpu_task_wait_for_all.o
+       CCLD     main/starpu_task_wait_for_all
+       CC       starpu_task_wait.o
+       CCLD     main/starpu_task_wait
+       CC       static_restartable.o
+       CCLD     main/static_restartable
+       CC       static_restartable_using_initializer.o
+       CCLD     main/static_restartable_using_initializer
+       CC       static_restartable_tag.o
+       CCLD     main/static_restartable_tag
+       CC       regenerate.o
+       CCLD     main/regenerate
+       CC       regenerate_pipeline.o
+       CCLD     main/regenerate_pipeline
+       CC       wait_all_regenerable_tasks.o
+       CCLD     main/wait_all_regenerable_tasks
+       CC       subgraph_repeat.o
+       CCLD     main/subgraph_repeat
+       CC       subgraph_repeat_tag.o
+       CCLD     main/subgraph_repeat_tag
+       CC       subgraph_repeat_regenerate.o
+       CCLD     main/subgraph_repeat_regenerate
+       CC       subgraph_repeat_regenerate_tag.o
+       CCLD     main/subgraph_repeat_regenerate_tag
+       CC       empty_task.o
+       CCLD     main/empty_task
+       CC       empty_task_sync_point.o
+       CCLD     main/empty_task_sync_point
+       CC       empty_task_sync_point_tasks.o
+       CCLD     main/empty_task_sync_point_tasks
+       CC       empty_task_chain.o
+       CCLD     main/empty_task_chain
+       CC       tag_wait_api.o
+       CCLD     main/tag_wait_api
+       CC       task_wait_api.o
+       CCLD     main/task_wait_api
+       CC       declare_deps_in_callback.o
+       CCLD     main/declare_deps_in_callback
+       CC       declare_deps_after_submission.o
+       CCLD     main/declare_deps_after_submission
+       CC       declare_deps_after_submission_synchronous.o
+       CCLD     main/declare_deps_after_submission_synchronous
+       CC       get_current_task.o
+       CCLD     main/get_current_task
+       CC       starpu_init.o
+       CCLD     main/starpu_init
+       CC       starpu_worker_exists.o
+       CCLD     main/starpu_worker_exists
+       CC       submit.o
+       CCLD     main/submit
+       CC       pause_resume.o
+       CCLD     main/pause_resume
+       CC       codelet_null_callback.o
+       CCLD     main/codelet_null_callback
+       CC       pack.o
+       CCLD     main/pack
+       CC       allocate.o
+       CCLD     datawizard/allocate
+       CC       acquire_cb.o
+       CCLD     datawizard/acquire_cb
+       CC       acquire_cb_insert.o
+       CCLD     datawizard/acquire_cb_insert
+       CC       acquire_release.o
+       CCLD     datawizard/acquire_release
+       CC       acquire_release2.o
+       CCLD     datawizard/acquire_release2
+       CC       cache.o
+       CCLD     datawizard/cache
+       CC       commute.o
+       CCLD     datawizard/commute
+       CC       commute2.o
+       CCLD     datawizard/commute2
+       CC       copy.o
+       CCLD     datawizard/copy
+       CC       data_implicit_deps.o
+       CCLD     datawizard/data_implicit_deps
+       CC       data_lookup.o
+       CCLD     datawizard/data_lookup
+       CC       scratch.o
+       CCLD     datawizard/scratch
+       CC       sync_and_notify_data.o
+       CCLD     datawizard/sync_and_notify_data
+       CC       sync_and_notify_data_implicit.o
+       CCLD     datawizard/sync_and_notify_data_implicit
+       CC       dsm_stress.o
+       CCLD     datawizard/dsm_stress
+       CC       double_parameter.o
+       CCLD     datawizard/double_parameter
+       CC       write_only_tmp_buffer.o
+       CCLD     datawizard/write_only_tmp_buffer
+       CC       data_invalidation.o
+       CCLD     datawizard/data_invalidation
+       CC       dining_philosophers.o
+       CCLD     datawizard/dining_philosophers
+       CC       manual_reduction.o
+       CCLD     datawizard/manual_reduction
+       CC       readers_and_writers.o
+       CCLD     datawizard/readers_and_writers
+       CC       unpartition.o
+       CCLD     datawizard/unpartition
+       CC       user_interaction_implicit.o
+       CCLD     datawizard/user_interaction_implicit
+       CC       sync_with_data_with_mem.o
+       CCLD     datawizard/sync_with_data_with_mem
+       CC       sync_with_data_with_mem_non_blocking.o
+       CCLD     datawizard/sync_with_data_with_mem_non_blocking
+       CC       sync_with_data_with_mem_non_blocking_implicit.o
+       CCLD     datawizard/sync_with_data_with_mem_non_blocking_implicit
+       CC       mpi_like.o
+       CCLD     datawizard/mpi_like
+       CC       mpi_like_async.o
+       CCLD     datawizard/mpi_like_async
+       CC       critical_section_with_void_interface.o
+       CCLD     datawizard/critical_section_with_void_interface
+       CC       increment_init.o
+       CCLD     datawizard/increment_init
+       CC       increment_redux.o
+       CCLD     datawizard/increment_redux
+       CC       increment_redux_v2.o
+       CCLD     datawizard/increment_redux_v2
+       CC       increment_redux_lazy.o
+       CCLD     datawizard/increment_redux_lazy
+       CC       handle_to_pointer.o
+       CCLD     datawizard/handle_to_pointer
+       CC       lazy_allocation.o
+       CCLD     datawizard/lazy_allocation
+       CC       lazy_unregister.o
+       CCLD     datawizard/lazy_unregister
+       CC       noreclaim.o
+       CCLD     datawizard/noreclaim
+       CC       copy_interfaces.o
+       CCLD     datawizard/interfaces/copy_interfaces
+       CC       test_interfaces.o
+       CC       block_interface.o
+       CCLD     datawizard/interfaces/block/block_interface
+       CC       bcsr_interface.o
+       CCLD     datawizard/interfaces/bcsr/bcsr_interface
+       CC       coo_interface.o
+       CCLD     datawizard/interfaces/coo/coo_interface
+       CC       csr_interface.o
+       CCLD     datawizard/interfaces/csr/csr_interface
+       CC       matrix_interface.o
+       CCLD     datawizard/interfaces/matrix/matrix_interface
+       CC       multiformat_interface.o
+       CC       multiformat_conversion_codelets.o
+       CCLD     datawizard/interfaces/multiformat/multiformat_interface
+       CC       generic.o
+       CC       multiformat_cuda_opencl.o
+       CCLD     datawizard/interfaces/multiformat/advanced/multiformat_cuda_opencl
+       CC       multiformat_data_release.o
+       CCLD     datawizard/interfaces/multiformat/advanced/multiformat_data_release
+       CC       multiformat_worker.o
+       CCLD     datawizard/interfaces/multiformat/advanced/multiformat_worker
+       CC       multiformat_handle_conversion.o
+       CCLD     datawizard/interfaces/multiformat/advanced/multiformat_handle_conversion
+       CC       same_handle.o
+       CCLD     datawizard/interfaces/multiformat/advanced/same_handle
+       CC       variable_interface.o
+       CCLD     datawizard/interfaces/variable/variable_interface
+       CC       test_vector_interface.o
+       CCLD     datawizard/interfaces/vector/test_vector_interface
+       CC       void_interface.o
+       CCLD     datawizard/interfaces/void/void_interface
+       CC       in_place_partition.o
+       CC       scal.o
+       CCLD     datawizard/in_place_partition
+       CC       partition_lazy.o
+       CCLD     datawizard/partition_lazy
+       CC       gpu_register.o
+       CCLD     datawizard/gpu_register
+       CC       gpu_ptr_register.o
+       CCLD     datawizard/gpu_ptr_register
+       CC       variable_parameters.o
+       CCLD     datawizard/variable_parameters
+       CC       wt_host.o
+       CCLD     datawizard/wt_host
+       CC       wt_broadcast.o
+       CCLD     datawizard/wt_broadcast
+       CC       readonly.o
+       CCLD     datawizard/readonly
+       CC       specific_node.o
+       CCLD     datawizard/specific_node
+       CC       disk_copy.o
+       CCLD     disk/disk_copy
+       CC       disk_compute.o
+       CCLD     disk/disk_compute
+       CC       disk_pack.o
+       CCLD     disk/disk_pack
+       CC       starpu_init_noworker.o
+       CCLD     errorcheck/starpu_init_noworker
+       CC       invalid_blocking_calls.o
+       CCLD     errorcheck/invalid_blocking_calls
+       CC       invalid_tasks.o
+       CCLD     errorcheck/invalid_tasks
+       CC       cublas_init.o
+       CCLD     helper/cublas_init
+       CC       starpu_data_cpy.o
+       CCLD     helper/starpu_data_cpy
+       CC       pinned_memory.o
+       CCLD     helper/pinned_memory
+       CC       execute_on_all.o
+       CCLD     helper/execute_on_all
+       CC       starpu_create_sync_task.o
+       CCLD     helper/starpu_create_sync_task
+       CC       async_tasks_overhead.o
+       CCLD     microbenchs/async_tasks_overhead
+       CC       sync_tasks_overhead.o
+       CCLD     microbenchs/sync_tasks_overhead
+       CC       tasks_overhead.o
+       CCLD     microbenchs/tasks_overhead
+       CC       prefetch_data_on_node.o
+       CCLD     microbenchs/prefetch_data_on_node
+       CC       redundant_buffer.o
+       CCLD     microbenchs/redundant_buffer
+       CC       matrix_as_vector.o
+       CCLD     microbenchs/matrix_as_vector
+       CC       init_exit_01.o
+       CCLD     openmp/init_exit_01
+       CC       init_exit_02.o
+       CCLD     openmp/init_exit_02
+       CC       environment.o
+       CCLD     openmp/environment
+       CC       api_01.o
+       CCLD     openmp/api_01
+       CC       parallel_01.o
+       CCLD     openmp/parallel_01
+       CC       parallel_02.o
+       CCLD     openmp/parallel_02
+       CC       parallel_03.o
+       CCLD     openmp/parallel_03
+       CC       parallel_barrier_01.o
+       CCLD     openmp/parallel_barrier_01
+       CC       parallel_master_01.o
+       CCLD     openmp/parallel_master_01
+       CC       parallel_master_inline_01.o
+       CCLD     openmp/parallel_master_inline_01
+       CC       parallel_single_wait_01.o
+       CCLD     openmp/parallel_single_wait_01
+       CC       parallel_single_nowait_01.o
+       CCLD     openmp/parallel_single_nowait_01
+       CC       parallel_single_inline_01.o
+       CCLD     openmp/parallel_single_inline_01
+       CC       parallel_single_copyprivate_01.o
+       CCLD     openmp/parallel_single_copyprivate_01
+       CC       parallel_single_copyprivate_inline_01.o
+       CCLD     openmp/parallel_single_copyprivate_inline_01
+       CC       parallel_critical_01.o
+       CCLD     openmp/parallel_critical_01
+       CC       parallel_critical_inline_01.o
+       CCLD     openmp/parallel_critical_inline_01
+       CC       parallel_critical_named_01.o
+       CCLD     openmp/parallel_critical_named_01
+       CC       parallel_critical_named_inline_01.o
+       CCLD     openmp/parallel_critical_named_inline_01
+       CC       parallel_simple_lock_01.o
+       CCLD     openmp/parallel_simple_lock_01
+       CC       parallel_nested_lock_01.o
+       CCLD     openmp/parallel_nested_lock_01
+       CC       parallel_for_01.o
+       CCLD     openmp/parallel_for_01
+       CC       parallel_for_02.o
+       CCLD     openmp/parallel_for_02
+       CC       parallel_for_ordered_01.o
+       CCLD     openmp/parallel_for_ordered_01
+       CC       parallel_sections_01.o
+       CCLD     openmp/parallel_sections_01
+       CC       parallel_sections_combined_01.o
+       CCLD     openmp/parallel_sections_combined_01
+       CC       task_01.o
+       CCLD     openmp/task_01
+       CC       task_02.o
+       CCLD     openmp/task_02
+       CC       taskwait_01.o
+       CCLD     openmp/taskwait_01
+       CC       taskgroup_01.o
+       CCLD     openmp/taskgroup_01
+       CC       taskgroup_02.o
+       CCLD     openmp/taskgroup_02
+       CC       array_slice_01.o
+       CCLD     openmp/array_slice_01
+       CC       cuda_task_01.o
+       CCLD     openmp/cuda_task_01
+       CC       overlap.o
+       CCLD     overlap/overlap
+       CC       gpu_concurrency.o
+       CCLD     overlap/gpu_concurrency
+       CC       explicit_combined_worker.o
+       CCLD     parallel_tasks/explicit_combined_worker
+       CC       parallel_kernels.o
+       CCLD     parallel_tasks/parallel_kernels
+       CC       parallel_kernels_spmd.o
+       CCLD     parallel_tasks/parallel_kernels_spmd
+       CC       spmd_peager.o
+       CCLD     parallel_tasks/spmd_peager
+       CC       cuda_only.o
+       CCLD     parallel_tasks/cuda_only
+       CC       regression_based.o
+       CCLD     perfmodels/regression_based
+       CC       non_linear_regression_based.o
+       CCLD     perfmodels/non_linear_regression_based
+       CC       feed.o
+       CCLD     perfmodels/feed
+       CC       user_base.o
+       CCLD     perfmodels/user_base
+       CC       valid_model.o
+       CCLD     perfmodels/valid_model
+       CC       value_nan.o
+       CCLD     perfmodels/value_nan
+       CC       memory.o
+       CCLD     perfmodels/memory
+       CC       data_locality.o
+       CCLD     sched_policies/data_locality
+       CC       execute_all_tasks.o
+       CCLD     sched_policies/execute_all_tasks
+       CC       prio.o
+       CCLD     sched_policies/prio
+       CC       simple_deps.o
+       CCLD     sched_policies/simple_deps
+       CC       simple_cpu_gpu_sched.o
+       CCLD     sched_policies/simple_cpu_gpu_sched
+     make[3] : on quitte le répertoire « /home/steven/Programmation/TER/starpu/build/tests »
+     make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu/build/tests »
+     make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu/build/tests »
+     Making all in doc
+     make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu/build/doc »
+     Making all in doxygen
+     make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu/build/doc/doxygen »
+     Warning: tag INPUT: input source `../../doc/doxygen/chapters' does not exist
+     Warning: tag INPUT: input source `../../doc/doxygen/chapters/api' does not exist
+     Warning: tag INPUT: input source `../../doc/doxygen/chapters/api/sc_hypervisor' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_bitmap.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_bound.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_cublas.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_cuda.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_data_filters.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_data.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_data_interfaces.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_deprecated_api.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_disk.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_driver.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_expert.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_fxt.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_hash.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_mic.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_opencl.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_openmp.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_perfmodel.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_profiling.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_rand.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_scc.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_sched_ctx.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_sched_ctx_hypervisor.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_scheduler.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_sink.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_stdlib.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_task_bundle.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_task.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_task_list.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_task_util.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_thread.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_thread_util.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_top.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_tree.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_util.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_worker.h' does not exist
+     Warning: tag INPUT: input source `../../include/starpu_sched_component.h' does not exist
+     Warning: tag INPUT: input source `../../mpi/include/' does not exist
+     Warning: tag INPUT: input source `../../starpufft/include/starpufft.h' does not exist
+     Warning: tag INPUT: input source `../../sc_hypervisor/include' does not exist
+     warning: source ../../doc/doxygen/chapters is not a readable file or directory... skipping.
+     warning: source ../../doc/doxygen/chapters/code is not a readable file or directory... skipping.
+     warning: source ../../doc/doxygen/chapters is not a readable file or directory... skipping.
+     warning: source ../../doc/doxygen/chapters is not a readable file or directory... skipping.
+     warning: source ../../doc/doxygen/chapters/api is not a readable file or directory... skipping.
+     warning: source ../../doc/doxygen/chapters/api/sc_hypervisor is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_bitmap.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_bound.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_cublas.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_cuda.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_data_filters.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_data.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_data_interfaces.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_deprecated_api.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_disk.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_driver.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_expert.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_fxt.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_hash.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_mic.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_opencl.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_openmp.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_perfmodel.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_profiling.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_rand.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_scc.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_sched_ctx.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_sched_ctx_hypervisor.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_scheduler.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_sink.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_stdlib.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_task_bundle.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_task.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_task_list.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_task_util.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_thread.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_thread_util.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_top.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_tree.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_util.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_worker.h is not a readable file or directory... skipping.
+     warning: source ../../include/starpu_sched_component.h is not a readable file or directory... skipping.
+     warning: source ../../mpi/include is not a readable file or directory... skipping.
+     warning: source ../../starpufft/include/starpufft.h is not a readable file or directory... skipping.
+     warning: source ../../sc_hypervisor/include is not a readable file or directory... skipping.
+     /usr/bin/sed: impossible de lire html/pages.html: Aucun fichier ou dossier de ce type
+     Makefile:864 : la recette pour la cible « starpu.tag » a échouée
+     make[2]: *** [starpu.tag] Erreur 2
+     make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu/build/doc/doxygen »
+     Makefile:559 : la recette pour la cible « all-recursive » a échouée
+     make[1]: *** [all-recursive] Erreur 1
+     make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu/build/doc »
+     Makefile:968 : la recette pour la cible « all-recursive » a échouée
+     make: *** [all-recursive] Erreur 1
+#+end_example
+
+     #+begin_src sh :session foo :results output :exports both 
+       make install
+     #+end_src
+
 
