@@ -1,0 +1,34 @@
+* Outils
+** StarPU
+   Gérer et ordonnancer tâches
+
+** Simgrid
+   Permet de simuler des systèmes distribués. Ces systèmes sont décrit par une topologie et leurs bande passantes
+
+** Grid5000
+   Grille de calculateurs
+
+* Problèmatique
+  SMPI -> processus modélisés par des threads. Donc partage le même espace d'adresse. 
+  Problème lorsque l'on a des variable globales. Il faut donc faire en sorte que chaque 
+  processus aient sa propre copie de sa variable globale. Pour cela il faut copier le segment data dans le tas puis le restaurer.
+  Apparement ça, c'est ok.
+  Problème lorsque justement un processus créé un thread.
+  
+  Communication entre MSG et SMPI?
+  
+  Sur le test pour starpu-mpi fourni par samuel, il y a 2 noeuds, avec 1 processus mpi est lancé sur chacun. Chaque processus annonce son
+  rang, qui est unique pour chacun, mais les deux noeuds annonce le même rang. La variable est partagé alors qu'elle ne devrait pas.
+  Apparement entre processus MPI créé de base la séparation est bien effective. Par contre lorsque l'on créé des process MSG ce n'est
+  plus le cas.
+
+  Autre point, il faudrait pouvoir créer un thread et l'attacher à celui créé.
+
+* Fonctionnement simgrid
+  SURF -> simulation hardware
+  SIMIX -> simulation OS
+
+  Dans context SMPI -> privatisation activée
+  Ne fais tourner qu'un seul thread à la fois, ordonnancé par le maestro qui s'occupe des changement de context etc...
+  
+  

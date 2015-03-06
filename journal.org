@@ -1,4 +1,4 @@
-* TODO A faire [3/7]
+* TODO A faire [4/9]
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
@@ -8,10 +8,12 @@
     * [ ] BLABLA
   * [ ] Apprendre à utiliser grid5000
     oarsub, kadeploy, kaenv3
-  * [-] Simgrid [1/2]
+  * [X] Simgrid [2/2]
     * [X] Installer
     * [X] Tester que tout fonctionne
   * [ ] linker example de samuel avec starpu et simgrid
+  * [ ] Jeter un oeil au fichier smpi global.c    
+  * [ ] Refléchir à réorganisation de mon espace de travail
 * Memo
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
@@ -1023,8 +1025,8 @@ configure:
   mkdir build
   cd build
   ./configure --prefix=$FXTDIR
-  make 
-  make install
+  make -5 
+  make install -j5
 #+end_src
 
 
@@ -1575,7 +1577,7 @@ cd ~/Programmation/TER/trunk
 #+end_example
 
       #+begin_src sh :session foo :results output :exports both 
-        make -j 8 && make install
+        make -j8 && make install
       #+end_src
       
       #+RESULTS:
@@ -2787,7 +2789,7 @@ cd ~/Programmation/TER/trunk
       -- Installing: /home/steven/Programs/Simgrid/include/smpi/smpif.h
       -- Installing: /home/steven/Programs/Simgrid/include/simgrid_config.h
 #+end_example
-
+      
 ***** Test du fonctionnement de Simgrid
       #+begin_src sh :results output :exports both
         cd ~/Programmation/TER/SimGrid-3.11/build
@@ -4761,4 +4763,26 @@ cd ~/Programmation/TER/trunk
        make install
      #+end_src
 
-
+* 2015
+** 2015-02 février
+*** 2015-02-05 jeudi
+    Linkage Starpu Simgrid.
+    Modification du script de Lukas.
+**** Réinstallation de FXT
+     #+begin_src sh :results output :exports both
+       export FXTDIR=/home/steven/Programmation/TER/fxt-0.3.0/inst
+       cd ~/Programmation/TER/fxt-0.3.0/
+       mkdir build
+       cd build
+       ./configure --prefix=$FXTDIR
+       make -5 
+       make install -j5
+     #+end_src
+*** 2015-02-06 vendredi
+    Problème d'installation simgrid récupéré sur avec starpu-simgrid, utilisation de la version tar.gz
+    
+*** 2015-02-12 jeudi
+    Pour le problème de compilation lié à la doc, il suffit de désactiver la doc via ccmake par exemple.
+    Documentation sur le fonctionnement de Simgrid.
+    
+*** 2015-02-13 vendredi
