@@ -28,11 +28,14 @@
 
   Dans context SMPI -> privatisation activée
   Ne fais tourner qu'un seul thread à la fois, ordonnancé par le maestro qui s'occupe des changement de context etc...
-  
-  MSG_process_create -> Ne crée pas des processus au sens Unix comme son nom le laisse supposer, mais il simule en fait la création de
-  threads. C'est donc pour ça que le segment data est patagé en plusieurs MSG_process. Et c'est sûrement pourquoi dans l'exemple de Samuel,
-  que les process ont la même valeur pour la variable rank. Cela rejoind bien ce qu'Arnaud disait sur le fait que l'on veuille rattacher
-  un thread à celui l'a créé.
+
+** Fonctionnement MSG_process
+   Ce n'est pas pas un processus au sens Unix mais plutôt un thread.
+
+   MSG_process_create -> Ne crée pas des processus au sens Unix comme son nom le laisse supposer, mais il simule en fait la création de
+   threads. C'est donc pour ça que le segment data est patagé en plusieurs MSG_process. Et c'est sûrement pourquoi dans l'exemple de Samuel,
+   que les process ont la même valeur pour la variable rank. Cela rejoind bien ce qu'Arnaud disait sur le fait que l'on veuille rattacher
+   un thread à celui l'a créé.
 
 * Questions
 ** Communication entre MSG et SMPI?
@@ -54,4 +57,8 @@
     En MPI on est dans un context de système à mémoire partagé. Donc tous les process d'un même noeud MPI partage les même données.
     Mais on ne veut pas que cela soit possible entre les process de différents processus MPI.
     Il nous faut savoir à quelle processus MPI appartient un process. On peut utilisé la notion de "parenté" ou du moins pour chaque
-    process garder l'information du process MPI dans lequel on est.
+    process garder l'information du process MPI dans lequel on est. 
+
+    Comment savoir dans quel contexte le thread est créé (qui crée le process)? On doit pouvoir différencier les processus MPI, il 
+    faudrait pouvoir s'en servir. Regarder où sont mappé les différents process.
+    

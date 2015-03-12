@@ -15,6 +15,7 @@
   * [ ] Jeter un oeil au fichier smpi global.c    
   * [ ] Refléchir à réorganisation de mon espace de travail
   * [ ] Attacher thread au processus MPI qui l'a créé
+    * [ ] Comprendre le fonctionnement des MSG_process
 * Memo
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
