@@ -15,8 +15,6 @@
   Apparement ça, c'est ok.
   Problème lorsque justement un processus créé un thread.
   
-  Communication entre MSG et SMPI?
-  
   Sur le test pour starpu-mpi fourni par samuel, il y a 2 noeuds, avec 1 processus mpi est lancé sur chacun. Chaque processus annonce son
   rang, qui est unique pour chacun, mais les deux noeuds annonce le même rang. La variable est partagé alors qu'elle ne devrait pas.
   Apparement entre processus MPI créé de base la séparation est bien effective. Par contre lorsque l'on créé des process MSG ce n'est
@@ -31,4 +29,29 @@
   Dans context SMPI -> privatisation activée
   Ne fais tourner qu'un seul thread à la fois, ordonnancé par le maestro qui s'occupe des changement de context etc...
   
-  
+  MSG_process_create -> Ne crée pas des processus au sens Unix comme son nom le laisse supposer, mais il simule en fait la création de
+  threads. C'est donc pour ça que le segment data est patagé en plusieurs MSG_process. Et c'est sûrement pourquoi dans l'exemple de Samuel,
+  que les process ont la même valeur pour la variable rank. Cela rejoind bien ce qu'Arnaud disait sur le fait que l'on veuille rattacher
+  un thread à celui l'a créé.
+
+* Questions
+** Communication entre MSG et SMPI?
+
+** Création de threads, XBT MSG?
+
+** Objectif effectué sépération data des MSG_process_create au sein d'un process SMPI?
+
+** Data des MSG_process pas déjà séparées, MSG_process en fait des threads?
+  Les data ne sont pas séparé entre des MSG_process car ne sont pas effectivement des processus au sens Unix mais sont plutôt vu comme
+  threads
+
+** Est-ce que rattacher les process à host est suffisant?
+  Non car un host peut créer plusieurs processus MPI et dans cas les process des différents processus MPI partagerons le même segment. 
+
+* Objectifs
+** Rattacher thread au process MPI qui l'a créé
+*** Axes d'explorations
+    En MPI on est dans un context de système à mémoire partagé. Donc tous les process d'un même noeud MPI partage les même données.
+    Mais on ne veut pas que cela soit possible entre les process de différents processus MPI.
+    Il nous faut savoir à quelle processus MPI appartient un process. On peut utilisé la notion de "parenté" ou du moins pour chaque
+    process garder l'information du process MPI dans lequel on est.

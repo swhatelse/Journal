@@ -1,4 +1,4 @@
-* TODO A faire [4/9]
+* TODO A faire [4/10]
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
@@ -14,6 +14,7 @@
   * [ ] linker example de samuel avec starpu et simgrid
   * [ ] Jeter un oeil au fichier smpi global.c    
   * [ ] Refléchir à réorganisation de mon espace de travail
+  * [ ] Attacher thread au processus MPI qui l'a créé
 * Memo
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
