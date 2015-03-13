@@ -1,4 +1,4 @@
-* TODO A faire [4/10]
+* TODO A faire [7/10]
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
@@ -20,9 +20,9 @@
   * [X] Simgrid [2/2]
     * [X] Installer
     * [X] Tester que tout fonctionne
-  * [ ] linker example de samuel avec starpu et simgrid
-  * [ ] Jeter un oeil au fichier smpi global.c    
-  * [ ] Refléchir à réorganisation de mon espace de travail
+  * [X] linker example de samuel avec starpu et simgrid
+  * [X] Jeter un oeil au fichier smpi global.c    
+  * [X] Refléchir à réorganisation de mon espace de travail
   * [ ] Attacher thread au processus MPI qui l'a créé
     * [ ] Comprendre le fonctionnement des MSG_process
 * Memo
