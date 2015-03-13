@@ -2,10 +2,19 @@
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
-  * [ ] Apprendre R [0/3]
-    * [ ] BLABLA
-    * [ ] BLABLA
-    * [ ] BLABLA
+  * [ ] Apprendre R [0/12]
+    * [ ] Basic build blocks
+    * [ ] Sequences of numbers
+    * [ ] Vectors
+    * [ ] Missing values
+    * [ ] Subsetting vectors  
+    * [ ] Matrices and data frames
+    * [ ] Logic
+    * [ ] lapply and sapply
+    * [ ] vapply and tapply
+    * [ ] Looking at data
+    * [ ] Simulation
+    * [ ] Data and times
   * [ ] Apprendre à utiliser grid5000
     oarsub, kadeploy, kaenv3
   * [X] Simgrid [2/2]
