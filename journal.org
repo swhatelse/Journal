@@ -4813,4 +4813,5 @@ cd ~/Programmation/TER/trunk
     Au moment de la création d'un process MSG on sait à quel host appartient ce dernier. On sait également quel est le père du process.
 
 *** 2015-03-20 vendredi
-    [[img/gdb_bad_rank.jpg][Mauvais smx_host]]
+    [[file:img/gdb_bad_rank.jpg][Mauvais smx_host]]
+    
