@@ -26,7 +26,7 @@
   SURF -> simulation hardware
   SIMIX -> simulation OS
 
-  Dans context SMPI -> privatisation activée
+  Dans context SMPI -> privatisation activée.
   Ne fais tourner qu'un seul thread à la fois, ordonnancé par le maestro qui s'occupe des changement de context etc...
 
 ** Fonctionnement MSG_process
@@ -46,19 +46,24 @@
 
 ** Data des MSG_process pas déjà séparées, MSG_process en fait des threads?
   Les data ne sont pas séparé entre des MSG_process car ne sont pas effectivement des processus au sens Unix mais sont plutôt vu comme
-  threads
+  threads.
 
 ** Est-ce que rattacher les process à host est suffisant?
   Non car un host peut créer plusieurs processus MPI et dans cas les process des différents processus MPI partagerons le même segment. 
 
+** Différence entre MSG_process_t et SIMIX_process_t?
+   Semble être des processus SIMIX particulier.
 * Objectifs
 ** Rattacher thread au process MPI qui l'a créé
 *** Axes d'explorations
-    En MPI on est dans un context de système à mémoire partagé. Donc tous les process d'un même noeud MPI partage les même données.
+    En MPI on est dans un context de système à mémoire partagée. Donc tous les process d'un même noeud MPI partage les même données.
     Mais on ne veut pas que cela soit possible entre les process de différents processus MPI.
-    Il nous faut savoir à quelle processus MPI appartient un process. On peut utilisé la notion de "parenté" ou du moins pour chaque
+    Il nous faut savoir à quel processus MPI appartient un MSG_process. On peut utilisé la notion de "parenté" ou du moins pour chaque
     process garder l'information du process MPI dans lequel on est. 
 
     Comment savoir dans quel contexte le thread est créé (qui crée le process)? On doit pouvoir différencier les processus MPI, il 
-    faudrait pouvoir s'en servir. Regarder où sont mappé les différents process.
+    faudrait pouvoir s'en servir. Regarder où sont mappés les différents process.
     
+    Idée: Garder la trace du process parent (parent_process) (peut-être pas nécessaire), et faire pointer le segment sur celui du 
+    parent. Se servir du contexte privatisation (variable globale smpi_privatize_global_variables) pour "activer" ce fonctionnement. 
+    Pourquoi dans ma modif j'ai toujours le même rank pour tous qui s'affiche.

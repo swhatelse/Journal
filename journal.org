@@ -4797,3 +4797,18 @@ cd ~/Programmation/TER/trunk
     Documentation sur le fonctionnement de Simgrid.
     
 *** 2015-02-13 vendredi
+** 2015-03 mars
+*** 2015-03-13 vendredi
+    Modifs effectuées dans le fichier smx_process.c mais ne sont pas correctes. Balise test steven.
+    J'ai essayé de rattacher les process MSG créés dans un contexte MPI, au processus qui les à créé. Mais le problème c'est que
+    je remonte trop haut dans la hierachie et tout mes process sont rattaché à un seul et même.
+    En fait je donne le segment data du parent mais forcément ça remonte jusqu'au tout premier process. J'essaie de voir si je peux 
+    m'arrêter un bon niveau dans la hierarchie avec les informations que l'on a déjà.
+    Autre problème lié à ma modifs est qu'apparemment le champs data de smx_process_t est obselète et sera remplacé par moddata dont
+    je n'ai trouvé aucune trace.
+    
+*** 2015-03-19 jeudi
+    Etude de la création des MSG_process:
+    Les process MSG sont créés à partir de process SIMIX. Ils servent à simplifier la création de process au niveau user.
+    Au moment de la création d'un process MSG on sait à quel host appartient ce dernier. On sait également quel est le père du process.
+
