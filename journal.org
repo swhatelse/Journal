@@ -4804,11 +4804,13 @@ cd ~/Programmation/TER/trunk
     je remonte trop haut dans la hierachie et tout mes process sont rattaché à un seul et même.
     En fait je donne le segment data du parent mais forcément ça remonte jusqu'au tout premier process. J'essaie de voir si je peux 
     m'arrêter un bon niveau dans la hierarchie avec les informations que l'on a déjà.
-    Autre problème lié à ma modifs est qu'apparemment le champs data de smx_process_t est obselète et sera remplacé par moddata dont
-    je n'ai trouvé aucune trace.
+    Autre problème lié à ma modifs est qu'apparemment le champs data de smx_process_t est apparement obselète et sera remplacé par moddata dont
+    mais je n'ai trouvé aucune trace.
     
 *** 2015-03-19 jeudi
     Etude de la création des MSG_process:
     Les process MSG sont créés à partir de process SIMIX. Ils servent à simplifier la création de process au niveau user.
     Au moment de la création d'un process MSG on sait à quel host appartient ce dernier. On sait également quel est le père du process.
 
+*** 2015-03-20 vendredi
+    [[img/gdb_bad_rank.jpg][Mauvais smx_host]]
