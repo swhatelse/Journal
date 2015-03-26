@@ -5110,3 +5110,16 @@ cd ~/Programmation/TER/trunk
     [StarPU-MPI1-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:900: [simix_process/DEBUG] Control returned to me: 'mpi'
     [StarPU-MPI0-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:900: [simix_process/DEBUG] Control returned to me: 'mpi'
     #+END_EXAMPLE    
+*** 2015-03-26 jeudi
+    Fonctionnement:
+    Smpirun execute le programme directement.
+    Pour lancer ce dernier le main du programme est remplacé par un main "secondaire" (smpi_simulated_main).
+    Ensuite le main par défaut de simgrid ("weak main") est lancé et va se charger d'exécuter le main simulé.
+
+    La fonction smpi_main va s'occuper de créer la plate forme(SIMIX_create_env), de créer les différents process smpi(SIMIX_launch_app) et ensuite de privatiser leurs segments data
+    en le dupliquant quelque part dans le tas. Cela n'est fait qu'a ce moment et donc ce qui est créé après n'est pas privatisé.
+
+    Piste : jeter un oeil à Simix process_list, SIMIX_process_get_data.
+    
+    process_list : type swag(sorte de liste générique)
+    Changement de segment data (smpi_switch_data_segment) effectué au niveau smpi uniquement, c'est pour ça que je ne l'avais pas vu.
