@@ -1198,7 +1198,28 @@ cd ~/Programmation/TER/trunk
       requête Proxy transmise, en attente de la réponse… 200 OK
       Taille : 4643984 (4,4M) [application/binary]
       Sauvegarde en : « SimGrid-3.11.1.tar.gz.3 »
-      [                      ]       0  --.-KB/s             imGrid-3.11.1.tar.g   6%[>                     ] 296,00K  1,44MB/s             mGrid-3.11.1.tar.gz  12%[=>                    ] 552,00K  1,29MB/s             Grid-3.11.1.tar.gz.  14%[==>                   ] 648,00K  1,02MB/s             SimGrid-3.11.1.tar.  21%[===>                  ] 968,00K  1,03MB/s             imGrid-3.11.1.tar.g  24%[====>                 ]   1,07M   979KB/s             mGrid-3.11.1.tar.gz  31%[=====>                ]   1,38M  1,03MB/s             Grid-3.11.1.tar.gz.  37%[=======>              ]   1,65M  1,06MB/s             SimGrid-3.11.1.tar.  43%[========>             ]   1,93M  1,08MB/s             imGrid-3.11.1.tar.g  46%[=========>            ]   2,05M  1,02MB/s             mGrid-3.11.1.tar.gz  53%[==========>           ]   2,38M  1,07MB/s             Grid-3.11.1.tar.gz.  61%[============>         ]   2,74M  1,13MB/s             SimGrid-3.11.1.tar.  64%[=============>        ]   2,85M  1,08MB/s             imGrid-3.11.1.tar.g  70%[==============>       ]   3,10M  1,09MB/s             mGrid-3.11.1.tar.gz  74%[===============>      ]   3,30M  1,05MB/s   eta 1s    Grid-3.11.1.tar.gz.  77%[================>     ]   3,45M  1,00MB/s   eta 1s    SimGrid-3.11.1.tar.  86%[==================>   ]   3,85M  1,05MB/s   eta 1s    imGrid-3.11.1.tar.g  90%[==================>   ]   4,02M  1018KB/s   eta 1s    mGrid-3.11.1.tar.gz  94%[===================>  ]   4,18M  1,01MB/s   eta 1s    Grid-3.11.1.tar.gz.  96%[====================> ]   4,29M   988KB/s   eta 0s    SimGrid-3.11.1.tar.  99%[====================> ]   4,41M   974KB/s   eta 0s    SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s   
+      [                      ]       0  --.-KB/s             
+imGrid-3.11.1.tar.g   6%[>                     ] 296,00K  1,44MB/s             
+mGrid-3.11.1.tar.gz  12%[=>                    ] 552,00K  1,29MB/s             
+Grid-3.11.1.tar.gz.  14%[==>                   ] 648,00K  1,02MB/s             
+SimGrid-3.11.1.tar.  21%[===>                  ] 968,00K  1,03MB/s             
+imGrid-3.11.1.tar.g  24%[====>                 ]   1,07M   979KB/s             
+mGrid-3.11.1.tar.gz  31%[=====>                ]   1,38M  1,03MB/s             
+Grid-3.11.1.tar.gz.  37%[=======>              ]   1,65M  1,06MB/s             
+SimGrid-3.11.1.tar.  43%[========>             ]   1,93M  1,08MB/s             
+imGrid-3.11.1.tar.g  46%[=========>            ]   2,05M  1,02MB/s             
+mGrid-3.11.1.tar.gz  53%[==========>           ]   2,38M  1,07MB/s             
+Grid-3.11.1.tar.gz.  61%[============>         ]   2,74M  1,13MB/s             
+SimGrid-3.11.1.tar.  64%[=============>        ]   2,85M  1,08MB/s             
+imGrid-3.11.1.tar.g  70%[==============>       ]   3,10M  1,09MB/s             
+mGrid-3.11.1.tar.gz  74%[===============>      ]   3,30M  1,05MB/s   eta 1s    
+Grid-3.11.1.tar.gz.  77%[================>     ]   3,45M  1,00MB/s   eta 1s    
+SimGrid-3.11.1.tar.  86%[==================>   ]   3,85M  1,05MB/s   eta 1s    
+imGrid-3.11.1.tar.g  90%[==================>   ]   4,02M  1018KB/s   eta 1s    
+mGrid-3.11.1.tar.gz  94%[===================>  ]   4,18M  1,01MB/s   eta 1s    
+Grid-3.11.1.tar.gz.  96%[====================> ]   4,29M   988KB/s   eta 0s    
+SimGrid-3.11.1.tar.  99%[====================> ]   4,41M   974KB/s   eta 0s    
+SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s   
 
       2014-12-19 14:50:12 (996 KB/s) — « SimGrid-3.11.1.tar.gz.3 » sauvegardé [4643984/4643984]
 #+end_example
@@ -5123,3 +5144,32 @@ cd ~/Programmation/TER/trunk
     
     process_list : type swag(sorte de liste générique)
     Changement de segment data (smpi_switch_data_segment) effectué au niveau smpi uniquement, c'est pour ça que je ne l'avais pas vu.
+*** 2015-04-26 jeudi
+**** Discussions avec Arnaud
+- ajout d'un champ =segment_index= à =smx_process_t= qui correspond à
+  l'index du segment data du process SMPI. Par défaut cet index est
+  initialisé à -1.
+- ajout d'une variable globale à SIMIX =SMPI_switch_data_segment= initialisée
+  à NULL par défaut.
+- Quand on créée les process SMPI, on =SIMIX_segment_index_set= au
+  numéro de segment (de 0 à n-1). Ces process là sont créés par le
+  "maestro", celui qui appelle le =smpi_main=.
+- Quand on créé un process on atterri dans =SIMIX_process_create=. Juste
+  à coté de la récupération du ppid, tu récupères le =segment_index= du
+  père.
+- Après avoir fait le =SIMIX_global_init= (dans =smpi_main=), on set
+  =SMPI_switch_data_segment= à =smpi_switch_data_segement=.
+- On veut changer de segment automatiquement à la sortie des
+  =simcall_*_wait= (voir =simcall_host_execution_wait= dans
+  =smpi_execute_flops=).
+  - Appeler plusieurs fois =smpi_switch_data_segment= n'est pas un
+    problème.
+  - Regardons =simcall_host_execution_wait=, ->
+    =simcall_BODY_host_execution_wait= -> =SIMIX_process_yield=. À la fin
+    d'un de ces deux (trois ?) là, on veut faire
+    #+BEGIN_SRC C
+      if(SMPI_switch_data_segment && ((idx=smx_process_current()->index)!=-1)) {
+        SMPI_switch_data_segment(idx);
+      }
+    #+END_SRC
+    La question, c'est doit-on le faire pour tous les simcalls ? Faut tenter...
