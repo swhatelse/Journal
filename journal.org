@@ -1,6 +1,6 @@
 #+OPTIONS: ^:nil
 
-* TODO A faire [7/10]
+* TODO A faire [8/11]
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
@@ -27,6 +27,13 @@
   * [X] Refléchir à réorganisation de mon espace de travail
   * [ ] Attacher thread au processus MPI qui l'a créé
     * [ ] Comprendre le fonctionnement des MSG_process
+  * [X] Implémenter le changement de contexte [3/3] 
+    * [X] Tagger les process [3/3]
+      * [X] Ajout de l'index du segment data du proc SMPI
+      * [X] Initialisation 
+      * [X] Set de la valeur côté SMPI et SIMIX
+    * [X] Fonction de switch côté SIMIX
+    * [X] Trouver pourquoi ça ne marche pas
 * Memo
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
@@ -5176,3 +5183,5 @@ SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s
       }
     #+END_SRC
     La question, c'est doit-on le faire pour tous les simcalls ? Faut tenter...
+*** 2015-03-27 vendredi
+    Fonction appelée à la fin de SIMIX_process_yield(), ça marche!
