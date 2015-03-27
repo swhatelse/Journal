@@ -34,6 +34,8 @@
       * [X] Set de la valeur côté SMPI et SIMIX
     * [X] Fonction de switch côté SIMIX
     * [X] Trouver pourquoi ça ne marche pas
+  * [ ] Problème de parent host
+    * [ ] Jetter un oeil a xbt_dynar_foreach
 * Memo
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
@@ -5184,4 +5186,315 @@ SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s
     #+END_SRC
     La question, c'est doit-on le faire pour tous les simcalls ? Faut tenter...
 *** 2015-03-27 vendredi
-    Fonction appelée à la fin de SIMIX_process_yield(), ça marche!
+    Fonction appelée à la fin de SIMIX_process_yield(), ça marche! Mais on dirait que le rank ne correspond pas vraiment.
+    #+BEGIN_EXAMPLE
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+    [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process 0 on host 'node-1.acme.org'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context 0
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context '0'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting 0(node-1.acme.org) in the to_run list
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process 1 on host 'node-2.acme.org'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context 1
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context '1'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting 1(node-2.acme.org) in the to_run list
+    [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+    [node-1.acme.org:0:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [node-1.acme.org:0:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    I'm 0/2
+    [node-1.acme.org:0:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    I'm 1/2
+    [node-2.acme.org:1:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process mpi on host 'StarPU-MPI0-MAIN'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context mpi
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context 'mpi'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting mpi(StarPU-MPI0-MAIN) in the to_run list
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process mpi on host 'StarPU-MPI1-MAIN'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context mpi
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context 'mpi'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting mpi(StarPU-MPI1-MAIN) in the to_run list
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [node-1.acme.org:0:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [node-2.acme.org:1:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [node-1.acme.org:0:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [node-2.acme.org:1:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae0d30
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae0c40
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process worker on host 'StarPU-MPI0-CPU0'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context worker
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context 'worker'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting worker(StarPU-MPI0-CPU0) in the to_run list
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process worker on host 'StarPU-MPI0-CPU0'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context worker
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context 'worker'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting worker(StarPU-MPI0-CPU0) in the to_run list
+    My rank from nested : 1
+    [StarPU-MPI0-CPU0:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    My rank from nested : 0
+    [StarPU-MPI0-CPU0:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI0-CPU0:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU0:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI0-CPU0:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU0:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae0b50
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae0a60
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process worker on host 'StarPU-MPI0-CPU1'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context worker
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context 'worker'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting worker(StarPU-MPI0-CPU1) in the to_run list
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process worker on host 'StarPU-MPI0-CPU1'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context worker
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context 'worker'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting worker(StarPU-MPI0-CPU1) in the to_run list
+    My rank from nested : 1
+    [StarPU-MPI0-CPU1:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    My rank from nested : 0
+    [StarPU-MPI0-CPU1:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI0-CPU1:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU1:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI0-CPU1:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU1:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae0970
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae0880
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process worker on host 'StarPU-MPI0-CPU2'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context worker
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context 'worker'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting worker(StarPU-MPI0-CPU2) in the to_run list
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process worker on host 'StarPU-MPI0-CPU2'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context worker
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context 'worker'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting worker(StarPU-MPI0-CPU2) in the to_run list
+    My rank from nested : 1
+    [StarPU-MPI0-CPU2:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    My rank from nested : 0
+    [StarPU-MPI0-CPU2:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI0-CPU2:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU2:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI0-CPU2:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU2:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae0790
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae06a0
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process worker on host 'StarPU-MPI0-CPU3'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context worker
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context 'worker'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting worker(StarPU-MPI0-CPU3) in the to_run list
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:235: [simix_process/DEBUG] Start process worker on host 'StarPU-MPI0-CPU3'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:281: [simix_process/VERBOSE] Create context worker
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:298: [simix_process/DEBUG] Start context 'worker'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:302: [simix_process/DEBUG] Inserting worker(StarPU-MPI0-CPU3) in the to_run list
+    My rank from nested : 1
+    [StarPU-MPI0-CPU3:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    My rank from nested : 0
+    [StarPU-MPI0-CPU3:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI0-CPU3:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU3:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    my rank is 0
+    [StarPU-MPI0-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI0-CPU3:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU3:worker:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    my rank is 1
+    [StarPU-MPI1-MAIN:mpi:(0) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae05b0
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae04c0
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae03d0
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae02e0
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae02e0
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae0d30
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae0c40
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae0b50
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae0a60
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae0970
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae0880
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae0790
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae06a0
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae05b0
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae04c0
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae03d0
+    [StarPU-MPI1-MAIN:mpi:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    my rank is 1
+    [StarPU-MPI1-MAIN:mpi:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [StarPU-MPI0-CPU0:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU0:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0c0a0), waiting action (nil)
+    [StarPU-MPI0-CPU0:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-CPU0:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU0:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0c320), waiting action (nil)
+    [StarPU-MPI0-CPU0:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-CPU1:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU1:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0cda0), waiting action (nil)
+    [StarPU-MPI0-CPU1:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-CPU1:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU1:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0d020), waiting action (nil)
+    [StarPU-MPI0-CPU1:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-CPU2:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU2:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0daa0), waiting action (nil)
+    [StarPU-MPI0-CPU2:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-CPU2:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU2:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0dd20), waiting action (nil)
+    [StarPU-MPI0-CPU2:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-CPU3:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU3:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0e7a0), waiting action (nil)
+    [StarPU-MPI0-CPU3:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [StarPU-MPI0-MAIN:mpi:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    my rank is 0
+    [StarPU-MPI0-MAIN:mpi:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI0-CPU3:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU3:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0ea20), waiting action (nil)
+    [StarPU-MPI0-CPU3:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'worker'
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae03d0
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0c0a0), waiting action (nil)
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0c320), waiting action (nil)
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0cda0), waiting action (nil)
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0d020), waiting action (nil)
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0daa0), waiting action (nil)
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0dd20), waiting action (nil)
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0e7a0), waiting action (nil)
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:818: [simix_process/DEBUG] Create sleep action 0x1ae06a0
+    [1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process worker (0x1c0ea20), waiting action (nil)
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [StarPU-MPI0-CPU0:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU0:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU1:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU1:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU2:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU2:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU3:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [StarPU-MPI0-CPU3:worker:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'worker'
+    [node-2.acme.org:1:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 1.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [node-1.acme.org:0:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process 1 (0x19e3820), waiting action (nil)
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '1'
+    [1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process 1 (0x19e3820), waiting action (nil)
+    [node-1.acme.org:0:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [node-1.acme.org:0:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process 0 (0x19df000), waiting action (nil)
+    [node-1.acme.org:0:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '1'
+    [1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process 0 (0x19df000), waiting action (nil)
+    [node-1.acme.org:0:(0) 1.001209] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: '0'
+    [2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae03d0
+    [2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:865: [simix_process/DEBUG] Destroy action 0x1ae06a0
+    [StarPU-MPI1-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI1-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process mpi (0x19e4450), waiting action (nil)
+    [StarPU-MPI1-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process mpi (0x19e4220), waiting action (nil)
+    [StarPU-MPI0-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:899: [simix_process/DEBUG] Yield process 'mpi'
+    [2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process mpi (0x19e4450), waiting action (nil)
+    [2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:56: [simix_process/DEBUG] Cleanup process mpi (0x19e4220), waiting action (nil)
+    [StarPU-MPI1-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    [StarPU-MPI0-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:905: [simix_process/DEBUG] Control returned to me: 'mpi'
+    
+    #+END_EXAMPLE
+    
+    Dans SIMIX_run , le hostname envoyé au simcall ne correspond pas au smx_host->key du process
+    #+BEGIN_EXAMPLE
+          fp = 0x83b4a0, cp = 0x83b4a0}, {c = 16 '\020', cc = 0x64e510 "StarPU-MPI0-CPU0", s = -6896, i = 6612240, l = 6612240, uc = 16 '\020', us = 58640, ui = 6612240,
+      ul = 6612240, f = 9.26572176e-39, d = 3.266880626057324e-317, sz = 6612240, sgsz = 6612240, sgoff = 6612240, dp = 0x64e510, fp = 0x64e510, cp = 0x64e510}, {c = 0 '\000',
+      cc = 0xbff0000000000000 <error: Cannot access memory at address 0xbff0000000000000>, s = 0, i = 0, l = -4616189618054758400, uc = 0 '\000', us = 0, ui = 0,
+      ul = 13830554455654793216, f = 0, d = -1, sz = 13830554455654793216, sgsz = 13830554455654793216, sgoff = -4616189618054758400, dp = 0xbff0000000000000,
+      fp = 0xbff0000000000000, cp = 0xbff0000000000000}, {c = -1 '\377', cc = 0xffffffff <error: Cannot access memory at address 0xffffffff>, s = -1, i = -1, l = 4294967295,
+      uc = 255 '\377', us = 65535, ui = 4294967295, ul = 4294967295, f = -nan(0x7fffff), d = 2.1219957904712067e-314, sz = 4294967295, sgsz = 4294967295, sgoff = 4294967295,
+      dp = 0xffffffff, fp = 0xffffffff, cp = 0xffffffff}, {c = 0 '\000', cc = 0x0, s = 0, i = 0, l = 0, uc = 0 '\000', us = 0, ui = 0, ul = 0, f = 0, d = 0, sz = 0, sgsz = 0,
+      sgoff = 0, dp = 0x0, fp = 0x0, cp = 0x0}, {c = 0 '\000', cc = 0x0, s = 0, i = 0, l = 0, uc = 0 '\000', us = 0, ui = 0, ul = 0, f = 0, d = 0, sz = 0, sgsz = 0, sgoff = 0,
+      dp = 0x0, fp = 0x0, cp = 0x0}, {c = 0 '\000', cc = 0x0, s = 0, i = 0, l = 0, uc = 0 '\000', us = 0, ui = 0, ul = 0, f = 0, d = 0, sz = 0, sgsz = 0, sgoff = 0, dp = 0x0,
+      fp = 0x0, cp = 0x0}, {c = 0 '\000', cc = 0x0, s = 0, i = 0, l = 0, uc = 0 '\000', us = 0, ui = 0, ul = 0, f = 0, d = 0, sz = 0, sgsz = 0, sgoff = 0, dp = 0x0, fp = 0x0,
+      cp = 0x0}}, result = {c = 0 '\000', cc = 0x0, s = 0, i = 0, l = 0, uc = 0 '\000', us = 0, ui = 0, ul = 0, f = 0, d = 0, sz = 0, sgsz = 0, sgoff = 0, dp = 0x0, fp = 0x0,
+    cp = 0x0}, {new_api = {param1 = 0x0, param2 = 0, result = 0}}}
+    (gdb) p process->smx_host 
+    $15 = (smx_host_t) 0x644ba0
+    (gdb) p process->smx_host->key
+    $16 = 0x6545c0 "StarPU-MPI1-MAIN"
+    #+END_EXAMPLE
