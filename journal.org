@@ -1,6 +1,6 @@
 #+OPTIONS: ^:nil
 
-* TODO A faire [8/11]
+* TODO A faire [9/12]
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
@@ -34,8 +34,9 @@
       * [X] Set de la valeur côté SMPI et SIMIX
     * [X] Fonction de switch côté SIMIX
     * [X] Trouver pourquoi ça ne marche pas
-  * [ ] Problème de parent host
-    * [ ] Jetter un oeil a xbt_dynar_foreach
+  * [X] Problème de parent host
+    * [X] Jetter un oeil a xbt_dynar_foreach
+    * [ ] Comprendre le fonctionnement de SIMIX_run
 * Memo
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
@@ -5551,4 +5552,35 @@ SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s
       $28 = {key = 0x64e040 "StarPU-MPI0-MAIN", key_len = 16, hash_code = 157978233, content = 0x64e010, next = 0x0}
       #+END_EXAMPLE
       
-      xbt_dynar_foreach est juste une macro qui permet de parcourir un tableau dynamique.
+      xbt_dynar_foreach est juste une macro qui permet de parcourir un tableau dynamique. Possible qu'il y ait une erreur lors de 
+      l'insertion dans le dynar?
+      
+      Que fais ce code? Dans SIMIX_run smx_global.c:399
+      #+BEGIN_EXAMPLE
+      xbt_dynar_foreach(simix_global->process_that_ran, iter, process) {
+        if (process->simcall.call != SIMCALL_NONE) {
+          SIMIX_simcall_pre(&process->simcall, 0);
+        }
+      }
+      #+END_EXAMPLE
+      Si je comprends bien, process_that_ran est un dynar que nous parcourons à la recherche de process qui sont en attentes que leurs
+      appels systèmes soient pris en comptent. 
+
+      Au moment du simcall, il y a déjà une incohérence. Que se passe t-il avant?
+      Jettons un oeil à MSG_process_create pour voir où cela nous mène. 
+      
+      Dans simcall_BODY_process_create simcalls_generated_body.c:664
+      #+BEGIN_EXAMPLE
+      (gdb) p hostname
+      $7 = 0x654a90 "StarPU-MPI1-CPU0"
+      (gdb) p *self->smx_host
+      $8 = {key = 0x64e040 "StarPU-MPI0-MAIN", key_len = 16, hash_code = 157978233, content = 0x64e010, next = 0x0}
+      #+END_EXAMPLE
+
+      Déjà ici l'host du process avec lequel a été appelé le simcall diverge de l'host du process retourné par simix.
+      Est-ce que simix nous a bien retourné ce à quoi on s'attendais? 
+      Piste vérifier les pid des process "mpi" créés sur chacun des noeuds.
+
+
+      Hypothèse : switch effectué mais au mauvais moment? (ça parait absurde)
+      
