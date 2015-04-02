@@ -5498,3 +5498,30 @@ SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s
     (gdb) p process->smx_host->key
     $16 = 0x6545c0 "StarPU-MPI1-MAIN"
     #+END_EXAMPLE
+    
+*** 2015-04-02 jeudi
+    Relevé gdb plus clair du problème soulevé vendredi dernier.
+    Ici l'host du parent est StarPU-MPIO* alors que le process enfant est StarPU-MPI1*.
+    smx_process.c:280
+    #+BEGIN_EXAMPLE
+    Breakpoint 3, SIMIX_process_create (process=0x7ffff51d9ee0, name=0x40100d "worker", code=0x400c16 <worker_func>, data=0x83b440, hostname=0x654a90 "StarPU-MPI1-CPU0",
+    kill_time=-1, argc=-1, argv=0x0, properties=0x0, auto_restart=0, parent_process=0x613220)
+    at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:280
+    5: *process->smx_host = {key = 0x654a90 "StarPU-MPI1-CPU0", key_len = 16, hash_code = 196770957, content = 0x654a60, next = 0x0}
+    4: *parent_process->smx_host = {key = 0x64e040 "StarPU-MPI0-MAIN", key_len = 16, hash_code = 157978233, content = 0x64e010, next = 0x0}
+    3: hostname = 0x654a90 "StarPU-MPI1-CPU0"
+    2: parent_process = (smx_process_t) 0x613220
+    #+END_EXAMPLE
+
+    Sur l'exemple de Samuel, le problème ne semble apparaître que pour sur "workers" et les références sont "croisées".
+    On a StarPU-MPIO-CPU* --> StarPU-MPI1-CPU* et StarPU-MPI1-CPU* --> StarPU-MPI0-CPU*.
+    
+    - Regardons comment sont créés les workers, sont-ils correctements créés?
+      Structure test.c
+      |-main
+      | |- application_main
+      | | |- starpu_init
+      | | | |- worker_func
+      | |- mpi_func
+
+    - Est-ce que les segments mémoires rattachés sont bien corrects?
