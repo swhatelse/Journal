@@ -5517,11 +5517,38 @@ SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s
     On a StarPU-MPIO-CPU* --> StarPU-MPI1-CPU* et StarPU-MPI1-CPU* --> StarPU-MPI0-CPU*.
     
     - Regardons comment sont créés les workers, sont-ils correctements créés?
-      Structure test.c
+      Structure test.c:
       |-main
       | |- application_main
       | | |- starpu_init
       | | | |- worker_func
       | |- mpi_func
+      
+      Vérifier ce que me retourne MSG_get_host_by_name(name).
+      
+    - Est-ce que les segments mémoires (segment_index) rattachés sont bien corrects?
 
-    - Est-ce que les segments mémoires rattachés sont bien corrects?
+    - Remonter à la source
+      smx_process.c:208
+      #+BEGIN_EXAMPLE
+      (gdb) p *simcall->issuer->smx_host
+      $21 = {key = 0x64e040 "StarPU-MPI0-MAIN", key_len = 16, hash_code = 157978233, content = 0x64e010, next = 0x0}
+      (gdb) p hostname
+      $22 = 0x654a90 "StarPU-MPI1-CPU0"
+      #+END_EXAMPLE
+      
+      simcalls_generated_case.c:218
+      #+BEGIN_EXAMPLE
+      (gdb) p *simcall->issuer->smx_host
+      $24 = {key = 0x64e040 "StarPU-MPI0-MAIN", key_len = 16, hash_code = 157978233, content = 0x64e010, next = 0x0}
+      (gdb) p simcall->args[4].cc
+      $25 = 0x654a90 "StarPU-MPI1-CPU0"
+      #+END_EXAMPLE
+
+      smx_global.c:401
+      #+BEGIN_EXAMPLE
+      (gdb) p *process->simcall->issuer->smx_host
+      $28 = {key = 0x64e040 "StarPU-MPI0-MAIN", key_len = 16, hash_code = 157978233, content = 0x64e010, next = 0x0}
+      #+END_EXAMPLE
+      
+      xbt_dynar_foreach est juste une macro qui permet de parcourir un tableau dynamique.
