@@ -5582,5 +5582,6 @@ SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s
       Piste vérifier les pid des process "mpi" créés sur chacun des noeuds.
 
 
-      Hypothèse : switch effectué mais au mauvais moment? (ça parait absurde)
-      
+      Hypothèses : 
+      - switch effectué mais au mauvais moment? (ça parait absurde)
+      - mauvais pointeur passé quelque part...
