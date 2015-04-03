@@ -1,6 +1,6 @@
 #+OPTIONS: ^:nil
 
-* TODO A faire [9/12]
+* TODO A faire [8/12]
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
@@ -34,9 +34,10 @@
       * [X] Set de la valeur côté SMPI et SIMIX
     * [X] Fonction de switch côté SIMIX
     * [X] Trouver pourquoi ça ne marche pas
-  * [X] Problème de parent host
+  * [-] Problème de parent host[2/3]
     * [X] Jetter un oeil a xbt_dynar_foreach
     * [ ] Comprendre le fonctionnement de SIMIX_run
+    * [X] Tester avec au moins 3 noeuds et voir ce qu'il se passe 
 * Memo
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
@@ -5581,7 +5582,48 @@ SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s
       Est-ce que simix nous a bien retourné ce à quoi on s'attendais? 
       Piste vérifier les pid des process "mpi" créés sur chacun des noeuds.
 
-
       Hypothèses : 
       - switch effectué mais au mauvais moment? (ça parait absurde)
       - mauvais pointeur passé quelque part...
+
+*** 2015-04-03 vendredi
+    J'ai rajouté un noeud au test (on en est à 3). Je n'ai pas encore vérifié si les rank sont bien retournés par les bons noeud, 
+    mais il y a le bon nombre de rang attendu. Par contre j'ai une autre erreur:
+    #+BEGIN_EXAMPLE
+    I'm 0/3
+    I'm 1/3
+    I'm 2/3
+    My rank from nested : 2
+    My rank from nested : 0
+    My rank from nested : 1
+    My rank from nested : 2
+    My rank from nested : 0
+    My rank from nested : 1
+    My rank from nested : 2
+    My rank from nested : 0
+    My rank from nested : 1
+    My rank from nested : 2
+    My rank from nested : 0
+    My rank from nested : 1
+    6572048 : my rank is 0
+    6573488 : my rank is 1
+    6572768 : my rank is 2
+    6572768 : my rank is 2
+    6572048 : my rank is 0
+    6573488 : my rank is 1
+    [2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_global.c:462: [simix_kernel/CRITICAL] Oops ! Deadlock or code not perfectly clean.
+    [2.000000] [simix_kernel/INFO] 3 processes are still running, waiting for something.
+    [2.000000] [simix_kernel/INFO] Legend of the following listing: "Process <pid> (<name>@<host>): <status>"
+    [2.000000] [simix_kernel/INFO] Process 1 (0@node-1.acme.org): waiting for synchronization action 0x714720 (synchro) in state 0 to finish
+    [2.000000] [simix_kernel/INFO] Process 2 (1@node-2.acme.org): waiting for synchronization action 0x714540 (synchro) in state 0 to finish
+    [2.000000] [simix_kernel/INFO] Process 3 (2@node-3.acme.org): waiting for communication action 0x714630 ((null)) in state 0 to finish
+    #+END_EXAMPLE
+    
+    Bon j'ai récupéré les infos du process depuis le programme de test de samuel et en fait tout semble correct, le rank correspond
+    au bon host...
+    breakpoint test.c:29 (exemple de Samuel)
+    #+BEGIN_EXAMPLE
+    3: myrank = 1
+    2: *host = {key = 0x654a90 "StarPU-MPI1-CPU0", key_len = 16, hash_code = 196770957, content = 0x654a60, next = 0x0}
+    #+END_EXAMPLE
+    
