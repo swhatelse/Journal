@@ -1,6 +1,6 @@
 #+OPTIONS: ^:nil
 
-* TODO A faire [8/12]
+* TODO A faire [9/13]
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
@@ -25,8 +25,8 @@
   * [X] linker example de samuel avec starpu et simgrid
   * [X] Jeter un oeil au fichier smpi global.c    
   * [X] Refléchir à réorganisation de mon espace de travail
-  * [ ] Attacher thread au processus MPI qui l'a créé
-    * [ ] Comprendre le fonctionnement des MSG_process
+  * [X] Attacher thread au processus MPI qui l'a créé
+    * [X] Comprendre le fonctionnement des MSG_process
   * [X] Implémenter le changement de contexte [3/3] 
     * [X] Tagger les process [3/3]
       * [X] Ajout de l'index du segment data du proc SMPI
@@ -38,6 +38,7 @@
     * [X] Jetter un oeil a xbt_dynar_foreach
     * [ ] Comprendre le fonctionnement de SIMIX_run
     * [X] Tester avec au moins 3 noeuds et voir ce qu'il se passe 
+  * [ ] Apprendre à utiliser StarPu
 * Memo
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
