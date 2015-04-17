@@ -5642,27 +5642,556 @@ SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s
     je me suis fais un script pour de config et d'install, un peu comme le fichier run_inject_StarPUSG.sh de Luka.
     En tentant l'install avec le support Simgrid et MPI activé, j'avais ce genre d'erreur (cf tuto_config.org dans le rep de 
     starpu-simgrid):
+   
     #+BEGIN_EXAMPLE
-      In file included from ../../src/common/thread.c:19:0:
-    ../../src/core/simgrid.h:44:54: attention : ‘struct _starpu_worker’ declared inside parameter list
-    msg_host_t _starpu_simgrid_get_host_by_worker(struct _starpu_worker *worker);
-                                                        ^
-    ../../src/core/simgrid.h:44:54: attention : visible uniquement depuis cette définition ou déclaration, ce qui n'est probablement pas ce que vous désirez
-    ../../libtool: ligne 1766: /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin : est un dossier
-    make[3]: *** [starpu_mpi_collective.lo] Erreur 1
-    make[3]: *** Attente des tâches non terminées....
-    ../../libtool: ligne 1766: /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin : est un dossier
-    make[3]: *** [starpu_mpi_datatype.lo] Erreur 1
-    ../../libtool: ligne 1766: /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin : est un dossier
-    make[3]: *** [starpu_mpi_task_insert.lo] Erreur 1
-    ../../libtool: ligne 1766: /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin : est un dossier
-    make[3]: *** [starpu_mpi_helper.lo] Erreur 1
-    ../../libtool: ligne 1766: /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin : est un dossier
-    make[3]: *** [starpu_mpi.lo] Erreur 1
-    make[2]: *** [all] Erreur 2
-    make[1]: *** [all-recursive] Erreur 1
-    make: *** [all-recursive] Erreur 1
+    Making all in src
+make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/src »
+make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/src »
+  CC       libstarpu_1.3_la-barrier.lo
+  CC       libstarpu_1.3_la-barrier_counter.lo
+  CC       libstarpu_1.3_la-bitmap.lo
+  CC       libstarpu_1.3_la-rwlock.lo
+  CC       libstarpu_1.3_la-hash.lo
+  CC       libstarpu_1.3_la-starpu_spinlock.lo
+  CC       libstarpu_1.3_la-timing.lo
+  CC       libstarpu_1.3_la-utils.lo
+  CC       libstarpu_1.3_la-fxt.lo
+  CC       libstarpu_1.3_la-thread.lo
+  CC       libstarpu_1.3_la-jobs.lo
+  CC       libstarpu_1.3_la-task.lo
+  CC       libstarpu_1.3_la-task_bundle.lo
+  CC       libstarpu_1.3_la-tree.lo
+  CC       libstarpu_1.3_la-workers.lo
+  CC       libstarpu_1.3_la-combined_workers.lo
+  CC       libstarpu_1.3_la-topology.lo
+  CC       libstarpu_1.3_la-disk.lo
+  CC       libstarpu_1.3_la-debug.lo
+  CC       libstarpu_1.3_la-errorcheck.lo
+  CC       libstarpu_1.3_la-progress_hook.lo
+  CC       libstarpu_1.3_la-cg.lo
+  CC       libstarpu_1.3_la-dependencies.lo
+  CC       libstarpu_1.3_la-implicit_data_deps.lo
+  CC       libstarpu_1.3_la-tags.lo
+  CC       libstarpu_1.3_la-task_deps.lo
+  CC       libstarpu_1.3_la-data_concurrency.lo
+  CC       libstarpu_1.3_la-disk_stdio.lo
+  CC       libstarpu_1.3_la-disk_unistd.lo
+  CC       libstarpu_1.3_la-disk_unistd_global.lo
+  CC       libstarpu_1.3_la-perfmodel_history.lo
+  CC       libstarpu_1.3_la-perfmodel_bus.lo
+  CC       libstarpu_1.3_la-perfmodel.lo
+  CC       libstarpu_1.3_la-perfmodel_print.lo
+  CC       libstarpu_1.3_la-perfmodel_nan.lo
+  CC       libstarpu_1.3_la-regression.lo
+  CC       libstarpu_1.3_la-sched_policy.lo
+  CC       libstarpu_1.3_la-simgrid.lo
+  CC       libstarpu_1.3_la-sched_ctx.lo
+  CC       libstarpu_1.3_la-sched_ctx_list.lo
+  CC       libstarpu_1.3_la-parallel_task.lo
+  CC       libstarpu_1.3_la-detect_combined_workers.lo
+  CC       libstarpu_1.3_la-eager_central_policy.lo
+  CC       libstarpu_1.3_la-eager_central_priority_policy.lo
+  CC       libstarpu_1.3_la-work_stealing_policy.lo
+  CC       libstarpu_1.3_la-locality_work_stealing_policy.lo
+  CC       libstarpu_1.3_la-deque_modeling_policy_data_aware.lo
+  CC       libstarpu_1.3_la-random_policy.lo
+  CC       libstarpu_1.3_la-stack_queues.lo
+  CC       libstarpu_1.3_la-deque_queues.lo
+  CC       libstarpu_1.3_la-fifo_queues.lo
+  CC       libstarpu_1.3_la-parallel_heft.lo
+  CC       libstarpu_1.3_la-parallel_eager.lo
+  CC       libstarpu_1.3_la-driver_common.lo
+  CC       libstarpu_1.3_la-driver_disk.lo
+  CC       libstarpu_1.3_la-memory_nodes.lo
+  CC       libstarpu_1.3_la-write_back.lo
+  CC       libstarpu_1.3_la-coherency.lo
+  CC       libstarpu_1.3_la-data_request.lo
+  CC       libstarpu_1.3_la-datawizard.lo
+  CC       libstarpu_1.3_la-copy_driver.lo
+  CC       libstarpu_1.3_la-filters.lo
+  CC       libstarpu_1.3_la-sort_data_handles.lo
+  CC       libstarpu_1.3_la-malloc.lo
+  CC       libstarpu_1.3_la-memory_manager.lo
+  CC       libstarpu_1.3_la-memalloc.lo
+  CC       libstarpu_1.3_la-memstats.lo
+  CC       libstarpu_1.3_la-footprint.lo
+  CC       libstarpu_1.3_la-datastats.lo
+  CC       libstarpu_1.3_la-user_interactions.lo
+  CC       libstarpu_1.3_la-reduction.lo
+  CC       libstarpu_1.3_la-data_interface.lo
+  CC       libstarpu_1.3_la-bcsr_interface.lo
+  CC       libstarpu_1.3_la-coo_interface.lo
+  CC       libstarpu_1.3_la-csr_interface.lo
+  CC       libstarpu_1.3_la-matrix_filters.lo
+  CC       libstarpu_1.3_la-matrix_interface.lo
+  CC       libstarpu_1.3_la-block_filters.lo
+  CC       libstarpu_1.3_la-block_interface.lo
+  CC       libstarpu_1.3_la-vector_interface.lo
+  CC       libstarpu_1.3_la-bcsr_filters.lo
+  CC       libstarpu_1.3_la-csr_filters.lo
+  CC       libstarpu_1.3_la-vector_filters.lo
+  CC       libstarpu_1.3_la-void_interface.lo
+  CC       libstarpu_1.3_la-variable_interface.lo
+  CC       libstarpu_1.3_la-multiformat_interface.lo
+  CC       libstarpu_1.3_la-execute_on_all.lo
+  CC       libstarpu_1.3_la-starpu_create_sync_task.lo
+  CC       libstarpu_1.3_la-file.lo
+  CC       libstarpu_1.3_la-misc.lo
+  CC       libstarpu_1.3_la-openmp_runtime_support.lo
+  CC       libstarpu_1.3_la-openmp_runtime_support_environment.lo
+  CC       libstarpu_1.3_la-openmp_runtime_support_omp_api.lo
+  CC       libstarpu_1.3_la-starpu_data_cpy.lo
+  CC       libstarpu_1.3_la-starpu_task_insert.lo
+  CC       libstarpu_1.3_la-starpu_task_insert_utils.lo
+  CC       libstarpu_1.3_la-starpu_fxt.lo
+  CC       libstarpu_1.3_la-starpu_fxt_mpi.lo
+  CC       libstarpu_1.3_la-starpu_fxt_dag.lo
+  CC       libstarpu_1.3_la-starpu_paje.lo
+  CC       libstarpu_1.3_la-latency.lo
+  CC       libstarpu_1.3_la-profiling.lo
+  CC       libstarpu_1.3_la-structures_size.lo
+  CC       libstarpu_1.3_la-bound.lo
+  CC       libstarpu_1.3_la-profiling_helpers.lo
+  CC       libstarpu_1.3_la-starpu_top.lo
+  CC       libstarpu_1.3_la-starpu_top_task.lo
+  CC       libstarpu_1.3_la-starpu_top_message_queue.lo
+  CC       libstarpu_1.3_la-starpu_top_connection.lo
+  CC       libstarpu_1.3_la-worker_list.lo
+  CC       libstarpu_1.3_la-worker_tree.lo
+  CC       libstarpu_1.3_la-component_worker.lo
+  CC       libstarpu_1.3_la-component_sched.lo
+  CC       libstarpu_1.3_la-component_fifo.lo
+  CC       libstarpu_1.3_la-prio_deque.lo
+  CC       libstarpu_1.3_la-helper_mct.lo
+  CC       libstarpu_1.3_la-component_prio.lo
+  CC       libstarpu_1.3_la-component_random.lo
+  CC       libstarpu_1.3_la-component_eager.lo
+  CC       libstarpu_1.3_la-component_eager_calibration.lo
+  CC       libstarpu_1.3_la-component_mct.lo
+  CC       libstarpu_1.3_la-component_heft.lo
+  CC       libstarpu_1.3_la-component_best_implementation.lo
+  CC       libstarpu_1.3_la-component_perfmodel_select.lo
+  CC       libstarpu_1.3_la-component_composed.lo
+  CC       libstarpu_1.3_la-modular_eager.lo
+  CC       libstarpu_1.3_la-modular_eager_prefetching.lo
+  CC       libstarpu_1.3_la-modular_prio.lo
+  CC       libstarpu_1.3_la-modular_prio_prefetching.lo
+  CC       libstarpu_1.3_la-modular_random.lo
+  CC       libstarpu_1.3_la-modular_random_prefetching.lo
+  CC       libstarpu_1.3_la-modular_heft.lo
+  CC       libstarpu_1.3_la-modular_heft2.lo
+  CC       libstarpu_1.3_la-driver_cpu.lo
+  CC       libstarpu_1.3_la-driver_cuda.lo
+  CC       libstarpu_1.3_la-starpu_cublas.lo
+  CC       libstarpu_1.3_la-driver_opencl.lo
+  CC       libstarpu_1.3_la-disk_unistd_o_direct.lo
+  CXXLD    libstarpu-1.3.la
+make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/src »
+make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/src »
+Making all in tools
+make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+  CC       starpu_perfmodel_display.o
+  CC       starpu_perfmodel_plot-starpu_perfmodel_plot.o
+  CC       starpu_calibrate_bus.o
+  CC       starpu_machine_display.o
+  CC       starpu_lp2paje.o
+  CCLD     starpu_lp2paje
+  CCLD     starpu_calibrate_bus
+  CCLD     starpu_perfmodel_display
+  CCLD     starpu_machine_display
+  CCLD     starpu_perfmodel_plot
+make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+Making all in tests
+make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+make  all-recursive
+make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+make[3] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+  CC       tasks_size_overhead.o
+  CC       local_pingpong.o
+  CC       main_deprecated_func-deprecated_func.o
+  CC       init_run_deinit.o
+  CC       run_driver.o
+  CC       deploop.o
+  CC       restart.o
+  CC       execute_on_a_specific_worker.o
+  CC       execute_schedule.o
+  CC       insert_task.o
+  CC       insert_task_dyn_handles.o
+  CC       insert_task_nullcodelet.o
+  CC       insert_task_array.o
+  CC       multithreaded.o
+  CC       multithreaded_init.o
+  CC       starpu_task_bundle.o
+  CC       starpu_task_wait_for_all.o
+  CC       static_restartable.o
+  CC       starpu_task_wait.o
+  CC       static_restartable_using_initializer.o
+  CC       static_restartable_tag.o
+  CC       regenerate.o
+  CC       regenerate_pipeline.o
+  CC       wait_all_regenerable_tasks.o
+  CC       subgraph_repeat.o
+  CC       subgraph_repeat_tag.o
+  CC       subgraph_repeat_regenerate.o
+  CC       subgraph_repeat_regenerate_tag.o
+  CC       empty_task.o
+  CC       empty_task_sync_point.o
+  CC       empty_task_sync_point_tasks.o
+  CC       empty_task_chain.o
+  CC       tag_wait_api.o
+  CC       task_wait_api.o
+  CC       declare_deps_in_callback.o
+  CC       declare_deps_after_submission.o
+  CC       declare_deps_after_submission_synchronous.o
+  CC       get_current_task.o
+  CC       starpu_init.o
+  CC       starpu_worker_exists.o
+  CC       submit.o
+  CC       pause_resume.o
+  CC       codelet_null_callback.o
+  CC       pack.o
+  CC       allocate.o
+  CC       acquire_cb.o
+  CC       acquire_cb_insert.o
+  CC       acquire_release.o
+  CC       acquire_release2.o
+  CC       cache.o
+  CC       commute2.o
+  CC       commute.o
+  CC       copy.o
+  CC       data_implicit_deps.o
+  CC       data_lookup.o
+  CC       scratch.o
+  CC       sync_and_notify_data.o
+  CC       sync_and_notify_data_implicit.o
+  CC       dsm_stress.o
+  CC       double_parameter.o
+  CC       write_only_tmp_buffer.o
+  CC       data_invalidation.o
+  CC       dining_philosophers.o
+  CC       manual_reduction.o
+  CC       readers_and_writers.o
+  CC       unpartition.o
+  CC       user_interaction_implicit.o
+  CC       sync_with_data_with_mem.o
+  CC       sync_with_data_with_mem_non_blocking.o
+  CC       sync_with_data_with_mem_non_blocking_implicit.o
+  CC       mpi_like.o
+  CC       mpi_like_async.o
+  CC       critical_section_with_void_interface.o
+  CC       increment_init.o
+  CC       increment_redux.o
+  CC       increment_redux_v2.o
+  CC       increment_redux_lazy.o
+  CC       handle_to_pointer.o
+  CC       lazy_allocation.o
+  CC       lazy_unregister.o
+  CC       noreclaim.o
+  CC       copy_interfaces.o
+  CC       test_interfaces.o
+  CC       block_interface.o
+  CC       bcsr_interface.o
+  CC       coo_interface.o
+  CC       csr_interface.o
+  CC       matrix_interface.o
+  CC       multiformat_interface.o
+  CC       multiformat_conversion_codelets.o
+  CC       generic.o
+  CC       multiformat_cuda_opencl.o
+  CC       multiformat_worker.o
+  CC       multiformat_data_release.o
+  CC       multiformat_handle_conversion.o
+  CC       same_handle.o
+  CC       variable_interface.o
+  CC       void_interface.o
+  CC       test_vector_interface.o
+  CC       scal.o
+  CC       in_place_partition.o
+  CC       partition_lazy.o
+  CC       gpu_register.o
+  CC       gpu_ptr_register.o
+  CC       variable_parameters.o
+  CC       wt_host.o
+  CC       wt_broadcast.o
+  CC       readonly.o
+  CC       specific_node.o
+  CC       disk_copy.o
+  CC       disk_compute.o
+  CC       starpu_init_noworker.o
+  CC       disk_pack.o
+  CC       invalid_blocking_calls.o
+  CC       invalid_tasks.o
+  CC       cublas_init.o
+  CC       starpu_data_cpy.o
+  CC       pinned_memory.o
+  CC       execute_on_all.o
+  CC       async_tasks_overhead.o
+  CC       starpu_create_sync_task.o
+  CC       sync_tasks_overhead.o
+  CC       tasks_overhead.o
+  CC       prefetch_data_on_node.o
+  CC       redundant_buffer.o
+  CC       matrix_as_vector.o
+  CC       init_exit_01.o
+  CC       init_exit_02.o
+  CC       environment.o
+  CC       api_01.o
+  CC       parallel_01.o
+  CC       parallel_02.o
+  CC       parallel_03.o
+  CC       parallel_barrier_01.o
+  CC       parallel_master_01.o
+  CC       parallel_master_inline_01.o
+  CC       parallel_single_wait_01.o
+  CC       parallel_single_nowait_01.o
+  CC       parallel_single_inline_01.o
+  CC       parallel_single_copyprivate_01.o
+  CC       parallel_single_copyprivate_inline_01.o
+  CC       parallel_critical_01.o
+  CC       parallel_critical_inline_01.o
+  CC       parallel_critical_named_01.o
+  CC       parallel_critical_named_inline_01.o
+  CC       parallel_simple_lock_01.o
+  CC       parallel_nested_lock_01.o
+  CC       parallel_for_01.o
+  CC       parallel_for_02.o
+  CC       parallel_sections_01.o
+  CC       parallel_for_ordered_01.o
+  CC       parallel_sections_combined_01.o
+  CC       task_01.o
+  CC       task_02.o
+  CC       taskwait_01.o
+  CC       taskgroup_01.o
+  CC       array_slice_01.o
+  CC       taskgroup_02.o
+  CC       cuda_task_01.o
+  CC       overlap.o
+  CC       gpu_concurrency.o
+  CC       explicit_combined_worker.o
+  CC       parallel_kernels.o
+  CC       parallel_kernels_spmd.o
+  CC       spmd_peager.o
+  CC       cuda_only.o
+  CC       regression_based.o
+  CC       non_linear_regression_based.o
+  CC       feed.o
+  CC       user_base.o
+  CC       valid_model.o
+  CC       value_nan.o
+  CC       memory.o
+  CC       data_locality.o
+  CC       execute_all_tasks.o
+  CC       simple_deps.o
+  CC       prio.o
+  CC       simple_cpu_gpu_sched.o
+  CCLD     microbenchs/tasks_size_overhead
+  CCLD     main/deprecated_func
+  CCLD     microbenchs/local_pingpong
+  CCLD     main/driver_api/init_run_deinit
+  CCLD     main/driver_api/run_driver
+  CCLD     main/deploop
+  CCLD     main/restart
+  CCLD     main/execute_on_a_specific_worker
+  CCLD     main/execute_schedule
+  CCLD     main/insert_task
+  CCLD     main/insert_task_dyn_handles
+  CCLD     main/insert_task_nullcodelet
+  CCLD     main/insert_task_array
+  CCLD     main/multithreaded
+  CCLD     main/multithreaded_init
+  CCLD     main/starpu_task_bundle
+  CCLD     main/starpu_task_wait_for_all
+  CCLD     main/starpu_task_wait
+  CCLD     main/static_restartable
+  CCLD     main/static_restartable_using_initializer
+  CCLD     main/static_restartable_tag
+  CCLD     main/regenerate
+  CCLD     main/regenerate_pipeline
+  CCLD     main/wait_all_regenerable_tasks
+  CCLD     main/subgraph_repeat
+  CCLD     main/subgraph_repeat_tag
+  CCLD     main/subgraph_repeat_regenerate
+  CCLD     main/empty_task
+  CCLD     main/subgraph_repeat_regenerate_tag
+  CCLD     main/empty_task_sync_point
+  CCLD     main/empty_task_sync_point_tasks
+  CCLD     main/empty_task_chain
+  CCLD     main/tag_wait_api
+  CCLD     main/task_wait_api
+  CCLD     main/declare_deps_in_callback
+  CCLD     main/declare_deps_after_submission
+  CCLD     main/declare_deps_after_submission_synchronous
+  CCLD     main/get_current_task
+  CCLD     main/starpu_init
+  CCLD     main/starpu_worker_exists
+  CCLD     main/submit
+  CCLD     main/codelet_null_callback
+  CCLD     main/pause_resume
+  CCLD     main/pack
+  CCLD     datawizard/allocate
+  CCLD     datawizard/acquire_cb
+  CCLD     datawizard/acquire_cb_insert
+  CCLD     datawizard/acquire_release
+  CCLD     datawizard/acquire_release2
+  CCLD     datawizard/cache
+  CCLD     datawizard/commute
+  CCLD     datawizard/copy
+  CCLD     datawizard/commute2
+  CCLD     datawizard/data_implicit_deps
+  CCLD     datawizard/data_lookup
+  CCLD     datawizard/scratch
+  CCLD     datawizard/sync_and_notify_data
+  CCLD     datawizard/sync_and_notify_data_implicit
+  CCLD     datawizard/dsm_stress
+  CCLD     datawizard/double_parameter
+  CCLD     datawizard/write_only_tmp_buffer
+  CCLD     datawizard/data_invalidation
+  CCLD     datawizard/dining_philosophers
+  CCLD     datawizard/manual_reduction
+  CCLD     datawizard/readers_and_writers
+  CCLD     datawizard/unpartition
+  CCLD     datawizard/user_interaction_implicit
+  CCLD     datawizard/sync_with_data_with_mem
+  CCLD     datawizard/sync_with_data_with_mem_non_blocking
+  CCLD     datawizard/sync_with_data_with_mem_non_blocking_implicit
+  CCLD     datawizard/mpi_like
+  CCLD     datawizard/mpi_like_async
+  CCLD     datawizard/critical_section_with_void_interface
+  CCLD     datawizard/increment_init
+  CCLD     datawizard/increment_redux
+  CCLD     datawizard/increment_redux_v2
+  CCLD     datawizard/increment_redux_lazy
+  CCLD     datawizard/handle_to_pointer
+  CCLD     datawizard/lazy_allocation
+  CCLD     datawizard/lazy_unregister
+  CCLD     datawizard/noreclaim
+  CCLD     datawizard/interfaces/block/block_interface
+  CCLD     datawizard/interfaces/copy_interfaces
+  CCLD     datawizard/interfaces/bcsr/bcsr_interface
+  CCLD     datawizard/interfaces/coo/coo_interface
+  CCLD     datawizard/interfaces/csr/csr_interface
+  CCLD     datawizard/interfaces/matrix/matrix_interface
+  CCLD     datawizard/interfaces/multiformat/multiformat_interface
+  CCLD     datawizard/interfaces/multiformat/advanced/multiformat_cuda_opencl
+  CCLD     datawizard/interfaces/multiformat/advanced/multiformat_data_release
+  CCLD     datawizard/interfaces/multiformat/advanced/multiformat_worker
+  CCLD     datawizard/interfaces/multiformat/advanced/multiformat_handle_conversion
+  CCLD     datawizard/interfaces/multiformat/advanced/same_handle
+  CCLD     datawizard/interfaces/vector/test_vector_interface
+  CCLD     datawizard/interfaces/variable/variable_interface
+  CCLD     datawizard/interfaces/void/void_interface
+  CCLD     datawizard/in_place_partition
+  CCLD     datawizard/partition_lazy
+  CCLD     datawizard/gpu_register
+  CCLD     datawizard/gpu_ptr_register
+  CCLD     datawizard/variable_parameters
+  CCLD     datawizard/wt_host
+  CCLD     datawizard/wt_broadcast
+  CCLD     datawizard/readonly
+  CCLD     datawizard/specific_node
+  CCLD     disk/disk_copy
+  CCLD     disk/disk_pack
+  CCLD     disk/disk_compute
+  CCLD     errorcheck/starpu_init_noworker
+  CCLD     errorcheck/invalid_blocking_calls
+  CCLD     errorcheck/invalid_tasks
+  CCLD     helper/cublas_init
+  CCLD     helper/starpu_data_cpy
+  CCLD     helper/execute_on_all
+  CCLD     helper/pinned_memory
+  CCLD     helper/starpu_create_sync_task
+  CCLD     microbenchs/async_tasks_overhead
+  CCLD     microbenchs/sync_tasks_overhead
+  CCLD     microbenchs/tasks_overhead
+  CCLD     microbenchs/prefetch_data_on_node
+  CCLD     microbenchs/redundant_buffer
+  CCLD     microbenchs/matrix_as_vector
+  CCLD     openmp/init_exit_01
+  CCLD     openmp/init_exit_02
+  CCLD     openmp/environment
+  CCLD     openmp/api_01
+  CCLD     openmp/parallel_01
+  CCLD     openmp/parallel_02
+  CCLD     openmp/parallel_03
+  CCLD     openmp/parallel_barrier_01
+  CCLD     openmp/parallel_master_01
+  CCLD     openmp/parallel_master_inline_01
+  CCLD     openmp/parallel_single_wait_01
+  CCLD     openmp/parallel_single_nowait_01
+  CCLD     openmp/parallel_single_inline_01
+  CCLD     openmp/parallel_single_copyprivate_01
+  CCLD     openmp/parallel_single_copyprivate_inline_01
+  CCLD     openmp/parallel_critical_01
+  CCLD     openmp/parallel_critical_inline_01
+  CCLD     openmp/parallel_critical_named_01
+  CCLD     openmp/parallel_critical_named_inline_01
+  CCLD     openmp/parallel_simple_lock_01
+  CCLD     openmp/parallel_nested_lock_01
+  CCLD     openmp/parallel_for_01
+  CCLD     openmp/parallel_for_02
+  CCLD     openmp/parallel_for_ordered_01
+  CCLD     openmp/parallel_sections_01
+  CCLD     openmp/task_01
+  CCLD     openmp/parallel_sections_combined_01
+  CCLD     openmp/task_02
+  CCLD     openmp/taskwait_01
+  CCLD     openmp/taskgroup_01
+  CCLD     openmp/taskgroup_02
+  CCLD     openmp/array_slice_01
+  CCLD     openmp/cuda_task_01
+  CCLD     overlap/overlap
+  CCLD     overlap/gpu_concurrency
+  CCLD     parallel_tasks/explicit_combined_worker
+  CCLD     parallel_tasks/parallel_kernels
+  CCLD     parallel_tasks/parallel_kernels_spmd
+  CCLD     parallel_tasks/spmd_peager
+  CCLD     parallel_tasks/cuda_only
+  CCLD     perfmodels/regression_based
+  CCLD     perfmodels/non_linear_regression_based
+  CCLD     perfmodels/feed
+  CCLD     perfmodels/user_base
+  CCLD     perfmodels/valid_model
+  CCLD     perfmodels/value_nan
+  CCLD     perfmodels/memory
+  CCLD     sched_policies/data_locality
+  CCLD     sched_policies/execute_all_tasks
+  CCLD     sched_policies/prio
+  CCLD     sched_policies/simple_deps
+  CCLD     sched_policies/simple_cpu_gpu_sched
+make[3] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+Making all in doc
+make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/doc »
+make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/doc »
+make[2]: rien à faire pour « all-am ».
+make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/doc »
+make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/doc »
+Making all in mpi
+make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi »
+Making all in src
+make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/src »
+make  all-am
+make[3] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/src »
+  CC       starpu_mpi_helper.lo
+  CC       starpu_mpi_datatype.lo
+  CC       starpu_mpi_task_insert.lo
+  CC       starpu_mpi_collective.lo
+  CC       starpu_mpi.lo
+Makefile:640 : la recette pour la cible « starpu_mpi_collective.lo » a échouée
+Makefile:640 : la recette pour la cible « starpu_mpi_datatype.lo » a échouée
+Makefile:640 : la recette pour la cible « starpu_mpi_helper.lo » a échouée
+Makefile:640 : la recette pour la cible « starpu_mpi_task_insert.lo » a échouée
+Makefile:640 : la recette pour la cible « starpu_mpi.lo » a échouée
+make[3] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/src »
+Makefile:534 : la recette pour la cible « all » a échouée
+make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/src »
+Makefile:605 : la recette pour la cible « all-recursive » a échouée
+make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi »
+    Makefile:985 : la recette pour la cible « all-recursive » a échouée
+
     #+END_EXAMPLE
-    
     On a donc essayé avec Luka de voir d'où ça venait. La seul piste que l'on ait est que dans Simgrid les fonctions MPI ne 
     sont pas toutes portées et c'est ce qui causerait ces erreurs de compile.
