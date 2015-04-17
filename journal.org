@@ -1,6 +1,6 @@
 #+OPTIONS: ^:nil
 
-* TODO A faire [9/13]
+* TODO A faire [10/14]
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
@@ -34,11 +34,13 @@
       * [X] Set de la valeur côté SMPI et SIMIX
     * [X] Fonction de switch côté SIMIX
     * [X] Trouver pourquoi ça ne marche pas
-  * [-] Problème de parent host[2/3]
+  * [X] Problème de parent host[3/3]
     * [X] Jetter un oeil a xbt_dynar_foreach
-    * [ ] Comprendre le fonctionnement de SIMIX_run
+    * [X] Comprendre le fonctionnement de SIMIX_run
     * [X] Tester avec au moins 3 noeuds et voir ce qu'il se passe 
   * [ ] Apprendre à utiliser StarPu
+  * [ ] git format-patch pour arnaud
+  * [ ] script de config et de lancement
 * Memo
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
@@ -61,7 +63,7 @@ Entered on [2014-12-15 lun. 12:47]
       #+end_src
 
       #+RESULTS:
-      #+begin_example
+      #+begin_example--disable-build-doc
       checking build system type... x86_64-unknown-linux-gnu
       checking host system type... x86_64-unknown-linux-gnu
       checking target system type... x86_64-unknown-linux-gnu
@@ -5502,6 +5504,7 @@ SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s
     $16 = 0x6545c0 "StarPU-MPI1-MAIN"
     #+END_EXAMPLE
     
+** 2015-04 avril
 *** 2015-04-02 jeudi
     Relevé gdb plus clair du problème soulevé vendredi dernier.
     Ici l'host du parent est StarPU-MPIO* alors que le process enfant est StarPU-MPI1*.
@@ -5628,3 +5631,38 @@ SimGrid-3.11.1.tar. 100%[=====================>]   4,43M   980KB/s   ds 4,6s
     2: *host = {key = 0x654a90 "StarPU-MPI1-CPU0", key_len = 16, hash_code = 196770957, content = 0x654a60, next = 0x0}
     #+END_EXAMPLE
     
+*** 2015-04-09 jeudi
+    Effectivement comme, Arnaud me l'a suggéré, le message d"erreur précédent de Simgrid (deadlock...), n'est pas une erreur de fonctionnement de 
+    Simgrid. Il y avait un process MPI qui attendait un message alors qu'au  message ne lui a été envoyé.
+*** 2015-04-10 vendredi
+    Début d'écriture d'un script pour la configuration de starpu-mpi simgrid. 
+    Utilisation d'un fichier point org pour la construction du scrit
+*** 2015-04-17 vendredi
+    Comme en fait dans la base que j'avais récupéré de Luka, StarPU est compilé avec Simgrid mais sans le support MPI activé,
+    je me suis fais un script pour de config et d'install, un peu comme le fichier run_inject_StarPUSG.sh de Luka.
+    En tentant l'install avec le support Simgrid et MPI activé, j'avais ce genre d'erreur (cf tuto_config.org dans le rep de 
+    starpu-simgrid):
+    #+BEGIN_EXAMPLE
+      In file included from ../../src/common/thread.c:19:0:
+    ../../src/core/simgrid.h:44:54: attention : ‘struct _starpu_worker’ declared inside parameter list
+    msg_host_t _starpu_simgrid_get_host_by_worker(struct _starpu_worker *worker);
+                                                        ^
+    ../../src/core/simgrid.h:44:54: attention : visible uniquement depuis cette définition ou déclaration, ce qui n'est probablement pas ce que vous désirez
+    ../../libtool: ligne 1766: /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin : est un dossier
+    make[3]: *** [starpu_mpi_collective.lo] Erreur 1
+    make[3]: *** Attente des tâches non terminées....
+    ../../libtool: ligne 1766: /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin : est un dossier
+    make[3]: *** [starpu_mpi_datatype.lo] Erreur 1
+    ../../libtool: ligne 1766: /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin : est un dossier
+    make[3]: *** [starpu_mpi_task_insert.lo] Erreur 1
+    ../../libtool: ligne 1766: /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin : est un dossier
+    make[3]: *** [starpu_mpi_helper.lo] Erreur 1
+    ../../libtool: ligne 1766: /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin : est un dossier
+    make[3]: *** [starpu_mpi.lo] Erreur 1
+    make[2]: *** [all] Erreur 2
+    make[1]: *** [all-recursive] Erreur 1
+    make: *** [all-recursive] Erreur 1
+    #+END_EXAMPLE
+    
+    On a donc essayé avec Luka de voir d'où ça venait. La seul piste que l'on ait est que dans Simgrid les fonctions MPI ne 
+    sont pas toutes portées et c'est ce qui causerait ces erreurs de compile.
