@@ -42,7 +42,7 @@
 
 ** Création de threads, XBT MSG?
 
-** Objectif effectué sépération data des MSG_process_create au sein d'un process SMPI?
+** Objectif effectué séparation data des MSG_process_create au sein d'un process SMPI?
 
 ** Data des MSG_process pas déjà séparées, MSG_process en fait des threads?
   Les data ne sont pas séparé entre des MSG_process car ne sont pas effectivement des processus au sens Unix mais sont plutôt vu comme
@@ -52,7 +52,7 @@
   Non car un host peut créer plusieurs processus MPI et dans cas les process des différents processus MPI partagerons le même segment. 
 
 ** Différence entre MSG_process_t et SIMIX_process_t?
-   Semble être des processus SIMIX particulier.
+   Sont des processus SIMIX particulier, facilitant leurs manipulation.
 * Objectifs
 ** Rattacher thread au process MPI qui l'a créé
 *** Axes d'explorations
