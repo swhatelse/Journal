@@ -6307,3 +6307,35 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     . ./flags_simgrid_starpu.sh
     #+END_EXAMPLE
     Les tests passent moins jusqu'à un certain point. 
+*** 2015-05-19 mardi
+    Comparaison entre le make check de l'install sans simgrid et avec:
+    #+begin_src sh :results output :file check_native.txt :exports both 
+      cd ~/Programmation/TER/starpu-simgrid/
+      . ./flags_simgrid_starpu.sh
+      cd ~/Programmation/TER/starpu-simgrid/src/StarPU/build-native
+      make check
+    #+end_src
+
+    Install starpu simgrid avec run_inject_StarPUSG.sh de luka version master
+    #+begin_src sh :results output :file check_simgrid.txt :exports both 
+      cd ~/Programmation/TER/starpu-simgrid/
+      . ./flags_simgrid_starpu.sh
+      cd ~/Programmation/TER/starpu-simgrid/src/StarPU/build-simgrid
+      make check > ~/org/check_simgrid.txt
+    #+end_src
+
+    #+RESULTS:
+    [[file:check_simgrid.txt]]
+
+    Install starpu simgrid avec tuto_config.sh version steven-mpi
+    #+begin_src sh :results output :file check_smpi.txt :exports both 
+      cd ~/Programmation/TER/starpu-simgrid/
+      . ./flags_simgrid_starpu.sh
+      cd ~/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI
+      make check > ~/org/check_smpi.txt
+    #+end_src
+
+    #+RESULTS:
+    [[file:check_smpi.txt]]
+
+

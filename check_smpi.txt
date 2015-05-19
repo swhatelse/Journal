@@ -1,0 +1,424 @@
+Making check in src
+make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/src »
+make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/src »
+make[2]: rien à faire pour « check-am ».
+make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/src »
+make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/src »
+Making check in tools
+make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+make  loader   starpu_machine_display starpu_perfmodel_display starpu_perfmodel_plot
+make[3] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+  CC       loader-loader.o
+  CCLD     loader
+make[3]: « starpu_machine_display » est à jour.
+make[3]: « starpu_perfmodel_display » est à jour.
+make[3]: « starpu_perfmodel_plot » est à jour.
+make[3] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+make  check-TESTS
+make[3] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+make[4] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+PASS: starpu_machine_display
+PASS: starpu_perfmodel_display
+PASS: starpu_perfmodel_plot
+============================================================================
+Testsuite summary for StarPU 1.3.0
+============================================================================
+# TOTAL: 3
+# PASS:  3
+# SKIP:  0
+# XFAIL: 0
+# FAIL:  0
+# XPASS: 0
+# ERROR: 0
+============================================================================
+make[4] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+make[3] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tools »
+Making check in tests
+make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+make  check-recursive
+make[2] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+make[3] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+make  loader main/deprecated_func main/driver_api/init_run_deinit main/driver_api/run_driver main/deploop main/restart main/execute_on_a_specific_worker main/execute_schedule main/insert_task main/insert_task_dyn_handles main/insert_task_nullcodelet main/insert_task_array main/multithreaded main/multithreaded_init main/starpu_task_bundle main/starpu_task_wait_for_all main/starpu_task_wait main/static_restartable main/static_restartable_using_initializer main/static_restartable_tag main/regenerate main/regenerate_pipeline main/wait_all_regenerable_tasks main/subgraph_repeat main/subgraph_repeat_tag main/subgraph_repeat_regenerate main/subgraph_repeat_regenerate_tag main/empty_task main/empty_task_sync_point main/empty_task_sync_point_tasks main/empty_task_chain main/tag_wait_api main/task_wait_api main/declare_deps_in_callback main/declare_deps_after_submission main/declare_deps_after_submission_synchronous main/get_current_task main/starpu_init main/starpu_worker_exists main/submit main/pause_resume main/codelet_null_callback main/pack datawizard/allocate datawizard/acquire_cb datawizard/acquire_cb_insert datawizard/acquire_release datawizard/acquire_release2 datawizard/cache datawizard/commute datawizard/commute2 datawizard/copy datawizard/data_implicit_deps datawizard/data_lookup datawizard/scratch datawizard/sync_and_notify_data datawizard/sync_and_notify_data_implicit datawizard/dsm_stress datawizard/double_parameter datawizard/write_only_tmp_buffer datawizard/data_invalidation datawizard/dining_philosophers datawizard/manual_reduction datawizard/readers_and_writers datawizard/unpartition datawizard/user_interaction_implicit datawizard/sync_with_data_with_mem datawizard/sync_with_data_with_mem_non_blocking datawizard/sync_with_data_with_mem_non_blocking_implicit datawizard/mpi_like datawizard/mpi_like_async datawizard/critical_section_with_void_interface datawizard/increment_init datawizard/increment_redux datawizard/increment_redux_v2 datawizard/increment_redux_lazy datawizard/handle_to_pointer datawizard/lazy_allocation datawizard/lazy_unregister datawizard/noreclaim datawizard/interfaces/copy_interfaces datawizard/interfaces/block/block_interface datawizard/interfaces/bcsr/bcsr_interface datawizard/interfaces/coo/coo_interface datawizard/interfaces/csr/csr_interface datawizard/interfaces/matrix/matrix_interface datawizard/interfaces/multiformat/multiformat_interface datawizard/interfaces/multiformat/advanced/multiformat_cuda_opencl datawizard/interfaces/multiformat/advanced/multiformat_data_release datawizard/interfaces/multiformat/advanced/multiformat_worker datawizard/interfaces/multiformat/advanced/multiformat_handle_conversion datawizard/interfaces/multiformat/advanced/same_handle datawizard/interfaces/variable/variable_interface datawizard/interfaces/vector/test_vector_interface datawizard/interfaces/void/void_interface datawizard/in_place_partition datawizard/partition_lazy datawizard/gpu_register datawizard/gpu_ptr_register datawizard/variable_parameters datawizard/wt_host datawizard/wt_broadcast datawizard/readonly datawizard/specific_node disk/disk_copy disk/disk_compute disk/disk_pack errorcheck/starpu_init_noworker errorcheck/invalid_blocking_calls errorcheck/invalid_tasks helper/cublas_init helper/starpu_data_cpy helper/pinned_memory helper/execute_on_all helper/starpu_create_sync_task microbenchs/async_tasks_overhead microbenchs/sync_tasks_overhead microbenchs/tasks_overhead microbenchs/tasks_size_overhead microbenchs/prefetch_data_on_node microbenchs/redundant_buffer microbenchs/local_pingpong microbenchs/matrix_as_vector openmp/init_exit_01 openmp/init_exit_02 openmp/environment openmp/api_01 openmp/parallel_01 openmp/parallel_02 openmp/parallel_03 openmp/parallel_barrier_01 openmp/parallel_master_01 openmp/parallel_master_inline_01 openmp/parallel_single_wait_01 openmp/parallel_single_nowait_01 openmp/parallel_single_inline_01 openmp/parallel_single_copyprivate_01 openmp/parallel_single_copyprivate_inline_01 openmp/parallel_critical_01 openmp/parallel_critical_inline_01 openmp/parallel_critical_named_01 openmp/parallel_critical_named_inline_01 openmp/parallel_simple_lock_01 openmp/parallel_nested_lock_01 openmp/parallel_for_01 openmp/parallel_for_02 openmp/parallel_for_ordered_01 openmp/parallel_sections_01 openmp/parallel_sections_combined_01 openmp/task_01 openmp/task_02 openmp/taskwait_01 openmp/taskgroup_01 openmp/taskgroup_02 openmp/array_slice_01 openmp/cuda_task_01 overlap/overlap overlap/gpu_concurrency parallel_tasks/explicit_combined_worker parallel_tasks/parallel_kernels parallel_tasks/parallel_kernels_spmd parallel_tasks/spmd_peager parallel_tasks/cuda_only perfmodels/regression_based perfmodels/non_linear_regression_based perfmodels/feed perfmodels/user_base perfmodels/valid_model perfmodels/value_nan perfmodels/memory sched_policies/data_locality sched_policies/execute_all_tasks sched_policies/prio sched_policies/simple_deps sched_policies/simple_cpu_gpu_sched 
+make[4] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+  CC       loader.o
+  CCLD     loader
+make[4]: « main/deprecated_func » est à jour.
+make[4]: « main/driver_api/init_run_deinit » est à jour.
+make[4]: « main/driver_api/run_driver » est à jour.
+make[4]: « main/deploop » est à jour.
+make[4]: « main/restart » est à jour.
+make[4]: « main/execute_on_a_specific_worker » est à jour.
+make[4]: « main/execute_schedule » est à jour.
+make[4]: « main/insert_task » est à jour.
+make[4]: « main/insert_task_dyn_handles » est à jour.
+make[4]: « main/insert_task_nullcodelet » est à jour.
+make[4]: « main/insert_task_array » est à jour.
+make[4]: « main/multithreaded » est à jour.
+make[4]: « main/multithreaded_init » est à jour.
+make[4]: « main/starpu_task_bundle » est à jour.
+make[4]: « main/starpu_task_wait_for_all » est à jour.
+make[4]: « main/starpu_task_wait » est à jour.
+make[4]: « main/static_restartable » est à jour.
+make[4]: « main/static_restartable_using_initializer » est à jour.
+make[4]: « main/static_restartable_tag » est à jour.
+make[4]: « main/regenerate » est à jour.
+make[4]: « main/regenerate_pipeline » est à jour.
+make[4]: « main/wait_all_regenerable_tasks » est à jour.
+make[4]: « main/subgraph_repeat » est à jour.
+make[4]: « main/subgraph_repeat_tag » est à jour.
+make[4]: « main/subgraph_repeat_regenerate » est à jour.
+make[4]: « main/subgraph_repeat_regenerate_tag » est à jour.
+make[4]: « main/empty_task » est à jour.
+make[4]: « main/empty_task_sync_point » est à jour.
+make[4]: « main/empty_task_sync_point_tasks » est à jour.
+make[4]: « main/empty_task_chain » est à jour.
+make[4]: « main/tag_wait_api » est à jour.
+make[4]: « main/task_wait_api » est à jour.
+make[4]: « main/declare_deps_in_callback » est à jour.
+make[4]: « main/declare_deps_after_submission » est à jour.
+make[4]: « main/declare_deps_after_submission_synchronous » est à jour.
+make[4]: « main/get_current_task » est à jour.
+make[4]: « main/starpu_init » est à jour.
+make[4]: « main/starpu_worker_exists » est à jour.
+make[4]: « main/submit » est à jour.
+make[4]: « main/pause_resume » est à jour.
+make[4]: « main/codelet_null_callback » est à jour.
+make[4]: « main/pack » est à jour.
+make[4]: « datawizard/allocate » est à jour.
+make[4]: « datawizard/acquire_cb » est à jour.
+make[4]: « datawizard/acquire_cb_insert » est à jour.
+make[4]: « datawizard/acquire_release » est à jour.
+make[4]: « datawizard/acquire_release2 » est à jour.
+make[4]: « datawizard/cache » est à jour.
+make[4]: « datawizard/commute » est à jour.
+make[4]: « datawizard/commute2 » est à jour.
+make[4]: « datawizard/copy » est à jour.
+make[4]: « datawizard/data_implicit_deps » est à jour.
+make[4]: « datawizard/data_lookup » est à jour.
+make[4]: « datawizard/scratch » est à jour.
+make[4]: « datawizard/sync_and_notify_data » est à jour.
+make[4]: « datawizard/sync_and_notify_data_implicit » est à jour.
+make[4]: « datawizard/dsm_stress » est à jour.
+make[4]: « datawizard/double_parameter » est à jour.
+make[4]: « datawizard/write_only_tmp_buffer » est à jour.
+make[4]: « datawizard/data_invalidation » est à jour.
+make[4]: « datawizard/dining_philosophers » est à jour.
+make[4]: « datawizard/manual_reduction » est à jour.
+make[4]: « datawizard/readers_and_writers » est à jour.
+make[4]: « datawizard/unpartition » est à jour.
+make[4]: « datawizard/user_interaction_implicit » est à jour.
+make[4]: « datawizard/sync_with_data_with_mem » est à jour.
+make[4]: « datawizard/sync_with_data_with_mem_non_blocking » est à jour.
+make[4]: « datawizard/sync_with_data_with_mem_non_blocking_implicit » est à jour.
+make[4]: « datawizard/mpi_like » est à jour.
+make[4]: « datawizard/mpi_like_async » est à jour.
+make[4]: « datawizard/critical_section_with_void_interface » est à jour.
+make[4]: « datawizard/increment_init » est à jour.
+make[4]: « datawizard/increment_redux » est à jour.
+make[4]: « datawizard/increment_redux_v2 » est à jour.
+make[4]: « datawizard/increment_redux_lazy » est à jour.
+make[4]: « datawizard/handle_to_pointer » est à jour.
+make[4]: « datawizard/lazy_allocation » est à jour.
+make[4]: « datawizard/lazy_unregister » est à jour.
+make[4]: « datawizard/noreclaim » est à jour.
+make[4]: « datawizard/interfaces/copy_interfaces » est à jour.
+make[4]: « datawizard/interfaces/block/block_interface » est à jour.
+make[4]: « datawizard/interfaces/bcsr/bcsr_interface » est à jour.
+make[4]: « datawizard/interfaces/coo/coo_interface » est à jour.
+make[4]: « datawizard/interfaces/csr/csr_interface » est à jour.
+make[4]: « datawizard/interfaces/matrix/matrix_interface » est à jour.
+make[4]: « datawizard/interfaces/multiformat/multiformat_interface » est à jour.
+make[4]: « datawizard/interfaces/multiformat/advanced/multiformat_cuda_opencl » est à jour.
+make[4]: « datawizard/interfaces/multiformat/advanced/multiformat_data_release » est à jour.
+make[4]: « datawizard/interfaces/multiformat/advanced/multiformat_worker » est à jour.
+make[4]: « datawizard/interfaces/multiformat/advanced/multiformat_handle_conversion » est à jour.
+make[4]: « datawizard/interfaces/multiformat/advanced/same_handle » est à jour.
+make[4]: « datawizard/interfaces/variable/variable_interface » est à jour.
+make[4]: « datawizard/interfaces/vector/test_vector_interface » est à jour.
+make[4]: « datawizard/interfaces/void/void_interface » est à jour.
+make[4]: « datawizard/in_place_partition » est à jour.
+make[4]: « datawizard/partition_lazy » est à jour.
+make[4]: « datawizard/gpu_register » est à jour.
+make[4]: « datawizard/gpu_ptr_register » est à jour.
+make[4]: « datawizard/variable_parameters » est à jour.
+make[4]: « datawizard/wt_host » est à jour.
+make[4]: « datawizard/wt_broadcast » est à jour.
+make[4]: « datawizard/readonly » est à jour.
+make[4]: « datawizard/specific_node » est à jour.
+make[4]: « disk/disk_copy » est à jour.
+make[4]: « disk/disk_compute » est à jour.
+make[4]: « disk/disk_pack » est à jour.
+make[4]: « errorcheck/starpu_init_noworker » est à jour.
+make[4]: « errorcheck/invalid_blocking_calls » est à jour.
+make[4]: « errorcheck/invalid_tasks » est à jour.
+make[4]: « helper/cublas_init » est à jour.
+make[4]: « helper/starpu_data_cpy » est à jour.
+make[4]: « helper/pinned_memory » est à jour.
+make[4]: « helper/execute_on_all » est à jour.
+make[4]: « helper/starpu_create_sync_task » est à jour.
+make[4]: « microbenchs/async_tasks_overhead » est à jour.
+make[4]: « microbenchs/sync_tasks_overhead » est à jour.
+make[4]: « microbenchs/tasks_overhead » est à jour.
+make[4]: « microbenchs/tasks_size_overhead » est à jour.
+make[4]: « microbenchs/prefetch_data_on_node » est à jour.
+make[4]: « microbenchs/redundant_buffer » est à jour.
+make[4]: « microbenchs/local_pingpong » est à jour.
+make[4]: « microbenchs/matrix_as_vector » est à jour.
+make[4]: « openmp/init_exit_01 » est à jour.
+make[4]: « openmp/init_exit_02 » est à jour.
+make[4]: « openmp/environment » est à jour.
+make[4]: « openmp/api_01 » est à jour.
+make[4]: « openmp/parallel_01 » est à jour.
+make[4]: « openmp/parallel_02 » est à jour.
+make[4]: « openmp/parallel_03 » est à jour.
+make[4]: « openmp/parallel_barrier_01 » est à jour.
+make[4]: « openmp/parallel_master_01 » est à jour.
+make[4]: « openmp/parallel_master_inline_01 » est à jour.
+make[4]: « openmp/parallel_single_wait_01 » est à jour.
+make[4]: « openmp/parallel_single_nowait_01 » est à jour.
+make[4]: « openmp/parallel_single_inline_01 » est à jour.
+make[4]: « openmp/parallel_single_copyprivate_01 » est à jour.
+make[4]: « openmp/parallel_single_copyprivate_inline_01 » est à jour.
+make[4]: « openmp/parallel_critical_01 » est à jour.
+make[4]: « openmp/parallel_critical_inline_01 » est à jour.
+make[4]: « openmp/parallel_critical_named_01 » est à jour.
+make[4]: « openmp/parallel_critical_named_inline_01 » est à jour.
+make[4]: « openmp/parallel_simple_lock_01 » est à jour.
+make[4]: « openmp/parallel_nested_lock_01 » est à jour.
+make[4]: « openmp/parallel_for_01 » est à jour.
+make[4]: « openmp/parallel_for_02 » est à jour.
+make[4]: « openmp/parallel_for_ordered_01 » est à jour.
+make[4]: « openmp/parallel_sections_01 » est à jour.
+make[4]: « openmp/parallel_sections_combined_01 » est à jour.
+make[4]: « openmp/task_01 » est à jour.
+make[4]: « openmp/task_02 » est à jour.
+make[4]: « openmp/taskwait_01 » est à jour.
+make[4]: « openmp/taskgroup_01 » est à jour.
+make[4]: « openmp/taskgroup_02 » est à jour.
+make[4]: « openmp/array_slice_01 » est à jour.
+make[4]: « openmp/cuda_task_01 » est à jour.
+make[4]: « overlap/overlap » est à jour.
+make[4]: « overlap/gpu_concurrency » est à jour.
+make[4]: « parallel_tasks/explicit_combined_worker » est à jour.
+make[4]: « parallel_tasks/parallel_kernels » est à jour.
+make[4]: « parallel_tasks/parallel_kernels_spmd » est à jour.
+make[4]: « parallel_tasks/spmd_peager » est à jour.
+make[4]: « parallel_tasks/cuda_only » est à jour.
+make[4]: « perfmodels/regression_based » est à jour.
+make[4]: « perfmodels/non_linear_regression_based » est à jour.
+make[4]: « perfmodels/feed » est à jour.
+make[4]: « perfmodels/user_base » est à jour.
+make[4]: « perfmodels/valid_model » est à jour.
+make[4]: « perfmodels/value_nan » est à jour.
+make[4]: « perfmodels/memory » est à jour.
+make[4]: « sched_policies/data_locality » est à jour.
+make[4]: « sched_policies/execute_all_tasks » est à jour.
+make[4]: « sched_policies/prio » est à jour.
+make[4]: « sched_policies/simple_deps » est à jour.
+make[4]: « sched_policies/simple_cpu_gpu_sched » est à jour.
+make[4] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+make  check-TESTS
+make[4] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+make[5] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+FAIL: main/deprecated_func
+FAIL: main/driver_api/init_run_deinit
+FAIL: main/driver_api/run_driver
+FAIL: main/deploop
+FAIL: main/restart
+FAIL: main/execute_on_a_specific_worker
+FAIL: main/execute_schedule
+FAIL: main/insert_task
+FAIL: main/insert_task_dyn_handles
+PASS: main/insert_task_nullcodelet
+FAIL: main/insert_task_array
+FAIL: main/multithreaded
+PASS: main/multithreaded_init
+FAIL: main/starpu_task_bundle
+FAIL: main/starpu_task_wait_for_all
+FAIL: main/starpu_task_wait
+FAIL: main/static_restartable
+FAIL: main/static_restartable_using_initializer
+FAIL: main/static_restartable_tag
+FAIL: main/regenerate
+FAIL: main/regenerate_pipeline
+FAIL: main/wait_all_regenerable_tasks
+FAIL: main/subgraph_repeat
+FAIL: main/subgraph_repeat_tag
+FAIL: main/subgraph_repeat_regenerate
+FAIL: main/subgraph_repeat_regenerate_tag
+PASS: main/empty_task
+FAIL: main/empty_task_sync_point
+FAIL: main/empty_task_sync_point_tasks
+PASS: main/empty_task_chain
+FAIL: main/tag_wait_api
+FAIL: main/task_wait_api
+FAIL: main/declare_deps_in_callback
+FAIL: main/declare_deps_after_submission
+FAIL: main/declare_deps_after_submission_synchronous
+FAIL: main/get_current_task
+FAIL: main/starpu_init
+PASS: main/starpu_worker_exists
+FAIL: main/submit
+FAIL: main/pause_resume
+PASS: main/codelet_null_callback
+FAIL: main/pack
+PASS: datawizard/allocate
+PASS: datawizard/acquire_cb
+FAIL: datawizard/acquire_cb_insert
+FAIL: datawizard/acquire_release
+FAIL: datawizard/acquire_release2
+PASS: datawizard/cache
+FAIL: datawizard/commute
+FAIL: datawizard/commute2
+PASS: datawizard/copy
+FAIL: datawizard/data_implicit_deps
+FAIL: datawizard/data_lookup
+FAIL: datawizard/scratch
+FAIL: datawizard/sync_and_notify_data
+FAIL: datawizard/sync_and_notify_data_implicit
+FAIL: datawizard/dsm_stress
+FAIL: datawizard/double_parameter
+FAIL: datawizard/write_only_tmp_buffer
+FAIL: datawizard/data_invalidation
+FAIL: datawizard/dining_philosophers
+FAIL: datawizard/manual_reduction
+FAIL: datawizard/readers_and_writers
+FAIL: datawizard/unpartition
+PASS: datawizard/user_interaction_implicit
+FAIL: datawizard/sync_with_data_with_mem
+FAIL: datawizard/sync_with_data_with_mem_non_blocking
+FAIL: datawizard/sync_with_data_with_mem_non_blocking_implicit
+FAIL: datawizard/mpi_like
+FAIL: datawizard/mpi_like_async
+FAIL: datawizard/critical_section_with_void_interface
+FAIL: datawizard/increment_init
+FAIL: datawizard/increment_redux
+FAIL: datawizard/increment_redux_v2
+FAIL: datawizard/increment_redux_lazy
+FAIL: datawizard/handle_to_pointer
+FAIL: datawizard/lazy_allocation
+FAIL: datawizard/lazy_unregister
+FAIL: datawizard/noreclaim
+PASS: datawizard/interfaces/copy_interfaces
+FAIL: datawizard/interfaces/block/block_interface
+FAIL: datawizard/interfaces/bcsr/bcsr_interface
+FAIL: datawizard/interfaces/coo/coo_interface
+FAIL: datawizard/interfaces/csr/csr_interface
+FAIL: datawizard/interfaces/matrix/matrix_interface
+FAIL: datawizard/interfaces/multiformat/multiformat_interface
+PASS: datawizard/interfaces/multiformat/advanced/multiformat_cuda_opencl
+PASS: datawizard/interfaces/multiformat/advanced/multiformat_data_release
+PASS: datawizard/interfaces/multiformat/advanced/multiformat_worker
+PASS: datawizard/interfaces/multiformat/advanced/multiformat_handle_conversion
+PASS: datawizard/interfaces/multiformat/advanced/same_handle
+FAIL: datawizard/interfaces/variable/variable_interface
+FAIL: datawizard/interfaces/vector/test_vector_interface
+FAIL: datawizard/interfaces/void/void_interface
+FAIL: datawizard/in_place_partition
+FAIL: datawizard/partition_lazy
+PASS: datawizard/gpu_register
+PASS: datawizard/gpu_ptr_register
+FAIL: datawizard/variable_parameters
+FAIL: datawizard/wt_host
+FAIL: datawizard/wt_broadcast
+PASS: datawizard/readonly
+FAIL: datawizard/specific_node
+FAIL: disk/disk_copy
+FAIL: disk/disk_compute
+FAIL: disk/disk_pack
+PASS: errorcheck/starpu_init_noworker
+XFAIL: errorcheck/invalid_blocking_calls
+PASS: errorcheck/invalid_tasks
+PASS: helper/cublas_init
+PASS: helper/starpu_data_cpy
+PASS: helper/pinned_memory
+PASS: helper/execute_on_all
+FAIL: helper/starpu_create_sync_task
+FAIL: microbenchs/async_tasks_overhead
+FAIL: microbenchs/sync_tasks_overhead
+FAIL: microbenchs/tasks_overhead
+FAIL: microbenchs/tasks_size_overhead
+FAIL: microbenchs/prefetch_data_on_node
+FAIL: microbenchs/redundant_buffer
+PASS: microbenchs/local_pingpong
+FAIL: microbenchs/matrix_as_vector
+PASS: openmp/init_exit_01
+PASS: openmp/init_exit_02
+PASS: openmp/environment
+PASS: openmp/api_01
+PASS: openmp/parallel_01
+PASS: openmp/parallel_02
+PASS: openmp/parallel_03
+PASS: openmp/parallel_barrier_01
+PASS: openmp/parallel_master_01
+PASS: openmp/parallel_master_inline_01
+PASS: openmp/parallel_single_wait_01
+PASS: openmp/parallel_single_nowait_01
+PASS: openmp/parallel_single_inline_01
+PASS: openmp/parallel_single_copyprivate_01
+PASS: openmp/parallel_single_copyprivate_inline_01
+PASS: openmp/parallel_critical_01
+PASS: openmp/parallel_critical_inline_01
+PASS: openmp/parallel_critical_named_01
+PASS: openmp/parallel_critical_named_inline_01
+PASS: openmp/parallel_simple_lock_01
+PASS: openmp/parallel_nested_lock_01
+PASS: openmp/parallel_for_01
+PASS: openmp/parallel_for_02
+PASS: openmp/parallel_for_ordered_01
+PASS: openmp/parallel_sections_01
+PASS: openmp/parallel_sections_combined_01
+PASS: openmp/task_01
+PASS: openmp/task_02
+PASS: openmp/taskwait_01
+PASS: openmp/taskgroup_01
+PASS: openmp/taskgroup_02
+PASS: openmp/array_slice_01
+PASS: openmp/cuda_task_01
+FAIL: overlap/overlap
+PASS: overlap/gpu_concurrency
+FAIL: parallel_tasks/explicit_combined_worker
+PASS: parallel_tasks/parallel_kernels
+PASS: parallel_tasks/parallel_kernels_spmd
+FAIL: parallel_tasks/spmd_peager
+PASS: parallel_tasks/cuda_only
+FAIL: perfmodels/regression_based
+FAIL: perfmodels/non_linear_regression_based
+PASS: perfmodels/feed
+PASS: perfmodels/user_base
+PASS: perfmodels/valid_model
+PASS: perfmodels/value_nan
+FAIL: perfmodels/memory
+PASS: sched_policies/data_locality
+FAIL: sched_policies/execute_all_tasks
+FAIL: sched_policies/prio
+FAIL: sched_policies/simple_deps
+FAIL: sched_policies/simple_cpu_gpu_sched
+============================================================================
+Testsuite summary for StarPU 1.3.0
+============================================================================
+# TOTAL: 174
+# PASS:  69
+# SKIP:  0
+# XFAIL: 1
+# FAIL:  104
+# XPASS: 0
+# ERROR: 0
+============================================================================
+See tests/test-suite.log
+Please report to starpu-devel@lists.gforge.inria.fr
+============================================================================
+Makefile:6671 : la recette pour la cible « test-suite.log » a échouée
+make[5] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+Makefile:6777 : la recette pour la cible « check-TESTS » a échouée
+make[4] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+Makefile:8107 : la recette pour la cible « check-am » a échouée
+make[3] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+Makefile:6564 : la recette pour la cible « check-recursive » a échouée
+make[2] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+Makefile:8110 : la recette pour la cible « check » a échouée
+make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/tests »
+Makefile:985 : la recette pour la cible « check-recursive » a échouée
