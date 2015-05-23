@@ -42,6 +42,8 @@
   * [X] git format-patch pour arnaud
   * [ ] script de config et de lancement
 * Memo
+** Links
+   git clone git+ssh://stevenqm@scm.gforge.inria.fr//gitroot/starpu-simgrid/starpu-simgrid.git
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
    C-c C-e : Ouvre menu avec possibilité d'exporter en html, latex, etc...
@@ -6338,4 +6340,25 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     #+RESULTS:
     [[file:check_smpi.txt]]
 
+*** 2015-05-20 mercredi
+    
+    Dans le testcase de Samuel, on voit que la valeur récupèré de la lib n'est pas correct.
+    #+begin_src sh :results output :exports both
+    cd ~/Programmation/TER/starpu-simgrid/src/starpu-mpi
+    make run
+    #+end_src
+
+    
+*** 2015-05-22 vendredi
+    
+    Erreur lorsque je compile le test de Samuel avec la libtest et libsimgrid en statique:
+    #+begin_src sh :results output :file compile_test_static.txt :exports both
+      cd ~/Programmation/TER/starpu-simgrid/
+      . ./flags_simgrid_starpu.sh
+      cd src/starpu-mpi/
+      make &> ~/org/compile_test_static.txt   
+    #+end_src
+
+    #+RESULTS:
+    [[file:compile_test_static.txt]]
 
