@@ -1,7 +1,7 @@
 * Simulation [0/2]
-  * [ ] Sur quels types de machines sont généralement exécuté les simulations? Supercalculateurs?
-  * [ ] Comment la simulation peut-elle être plus rapide que le système réel? Cela s'applique t-il seulement avec l'approche offilne?
+  - [ ] Sur quels types de machines sont généralement exécutées les simulations? Supercalculateurs?
+  - [ ] Comment la simulation peut-elle être plus rapide que le système réel? Cela s'applique t-il seulement avec l'approche offilne?
 * Simgrid [0/1]
-  * [ ] Quels type de programmes MPI sont testé sous Simgrid s'il n'y a pas la privatization entre le processus?
-  
-
+  - [ ] Quels type de programmes MPI sont testé sous Simgrid s'il n'y a pas la privatization entre le processus?
+* StarPU [0/1]
+  - [ ] Où réside la difficulté de programmation des plateformes hybrid?
