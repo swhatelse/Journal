@@ -1,0 +1,43 @@
+* Intro
+  Limite supercalculateur se rapprochent 
+  Envisager changement de methode de programmation
+
+* Contexte / Problèmatique 1
+** StarPU
+   Plate forme hybride compliquée à programmer.
+   Paradigme basée sur les taches.
+   Ordonnancement de tâches.
+   
+** MPI
+   StarPU MPI
+
+** Simgrid
+   Nécessité de simuler pour effectué des mesures, car besoin de pouvoir faire plein de simulation en peu de temps, pas accès au plate
+   forme.
+   Simulateur de systèmes distribués et de grilles de calculs, systèmes peer to peer, cloud.
+   Permettre test
+      
+* Etat de l'art 1
+  - Caractéristiques:
+    Lever les ambiguïtés
+    Quels sont les autres approches possibles?
+    Pourquoi on suit cette piste?
+    Expliquer les choix
+  
+* Methodologies 1
+  Analyse fonctionnement de simgrid.
+  
+* Contribution 2 / 3
+  Privatisation segment des données des processus dans simgrid.
+  
+* Validation 2
+  - Caractéristiques:
+    Resultat expérience + interprétation
+
+  test mpi de starpu simgrid
+
+* Conclusion 
+  - Caractéristiques
+    Conséquences:
+    Travaux futurs:
+    -Test grid5k
