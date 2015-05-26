@@ -1,21 +1,33 @@
 * Intro
-  Limite supercalculateur se rapprochent 
+  Limite supercalculateur se rapprochent, coût energétique
   Envisager changement de methode de programmation
 
 * Contexte / Problèmatique 1
-** StarPU
-   Plate forme hybride compliquée à programmer.
-   Paradigme basée sur les taches.
-   Ordonnancement de tâches.
-   
 ** MPI
-   StarPU MPI
-
+   Standard en HPC.
+   API de haut niveau basé sur l'envoi et la récéption de message. 
+  
+** StarPU
+   Plate-forme hybride très présentes, compliquée à programmer.
+   Paradigme -> tâches.
+   Génération d'un graphe de dépendance -> optimiser ordonnancement des tâches.
+   StarPU MPI -> répartir dynamiquement les tâches en fonction de la
+   charge entre les noeuds.
+   
 ** Simgrid
-   Nécessité de simuler pour effectué des mesures, car besoin de pouvoir faire plein de simulation en peu de temps, pas accès au plate
-   forme.
+   Nécessité de simuler pour effectué des mesures pour valider ou invalider expérimentations.
+   Besoin de :
+   - Tester une plate forme à laquelle on a pas accès.
+   - Effectuer plein de tests en peu de temps.
+   
    Simulateur de systèmes distribués et de grilles de calculs, systèmes peer to peer, cloud.
-   Permettre test
+   
+   Permettre de démontrer l'intérêt changement de methode de
+   prog. Mesurer les performances de StarPU avec mpi
+
+** Problématique : 
+   StarPU peut-il répartir la charge de travail entre les différents noeuds dans un contexte MPI 
+   avec machine hétérogène?
       
 * Etat de l'art 1
   - Caractéristiques:
@@ -23,21 +35,41 @@
     Quels sont les autres approches possibles?
     Pourquoi on suit cette piste?
     Expliquer les choix
-  
+    
+** Approches:
+*** Test sur systèmes réels
+    Difficulté d'accès à la plateforme.
+*** Test sur systèmes émulés
+    Lenteur, mais plus facile pour accéder à la plateforme
+*** Test sur simulateurs
+    Permet d'accéder à plein de plateforme. Scalabilité
+
+** Privatisation de variables des processus dans un context SMPI.
+   Processus modélisé par threads, donc espace d'adressage
+   partagé. Hors des processus SMPI -> propre espace d'adressage.
+   Cependant on veut que les processus créés par un processus SMPI
+   partage le même espace d'adresse.
+
+
 * Methodologies 1
-  Analyse fonctionnement de simgrid.
+  Analyse l'architecture de simgrid.
+  De base, MSG et SMPI pas prévu pour fonctionner ensemble.
+
+  Analyse code de simgrid.
   
 * Contribution 2 / 3
-  Privatisation segment des données des processus dans simgrid.
+  Privatisation segment des données des processus SMPI dans simgrid.
   
 * Validation 2
   - Caractéristiques:
     Resultat expérience + interprétation
-
-  test mpi de starpu simgrid
+    
+  Test d'un cas simplifié d illustrant le comportement recherché
+  Test starpu smpi
 
 * Conclusion 
   - Caractéristiques
     Conséquences:
     Travaux futurs:
     -Test grid5k
+    

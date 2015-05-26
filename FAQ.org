@@ -2,6 +2,7 @@
   - [ ] Sur quels types de machines sont généralement exécutées les simulations? Supercalculateurs?
   - [ ] Comment la simulation peut-elle être plus rapide que le système réel? Cela s'applique t-il seulement avec l'approche offilne?
 * Simgrid [0/1]
-  - [ ] Quels type de programmes MPI sont testé sous Simgrid s'il n'y a pas la privatization entre le processus?
-* StarPU [0/1]
+  - [ ] Acutellement quels types de programmes MPI sont testés sous Simgrid s'il n'y a pas la privatization entre le processus?
+* StarPU [0/2]
   - [ ] Où réside la difficulté de programmation des plateformes hybrid?
+  - [ ] Terme français de runtime?
