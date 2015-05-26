@@ -1,72 +1,173 @@
 * Intro
-  Limite supercalculateur se rapprochent, coût energétique
-  Envisager changement de methode de programmation
+  Supercalculateur -> course à la performance.
+  Mais facteurs limitant coût energétique, chauffe.
+  Envisager changement de methode de programmation visant à optimiser
+  l'utilisation des ressources.
 
 * Contexte / Problèmatique 1
-** MPI
-   Standard en HPC.
-   API de haut niveau basé sur l'envoi et la récéption de message. 
-  
-** StarPU
-   Plate-forme hybride très présentes, compliquée à programmer.
-   Paradigme -> tâches.
-   Génération d'un graphe de dépendance -> optimiser ordonnancement des tâches.
-   StarPU MPI -> répartir dynamiquement les tâches en fonction de la
-   charge entre les noeuds.
-   
-** Simgrid
-   Nécessité de simuler pour effectué des mesures pour valider ou invalider expérimentations.
-   Besoin de :
-   - Tester une plate forme à laquelle on a pas accès.
-   - Effectuer plein de tests en peu de temps.
-   
-   Simulateur de systèmes distribués et de grilles de calculs, systèmes peer to peer, cloud.
-   
-   Permettre de démontrer l'intérêt changement de methode de
-   prog. Mesurer les performances de StarPU avec mpi
+** Programmation "classique": MPI, OpenMP, CUDA
+   De facto Standard en HPC:
+   - MPI: API de "haut niveau" basé sur l'envoi et la récéption de
+     message.
+   - OpenMP: Plus haut niveau que pthread, demande d'annoter les
+     boucles, pas de possibilité de gérer des différences de priorités
+     entre des threads de calcul et des threads de polling réseau par
+     exemple.
+   - CUDA: Déléguer des calculs aux GPUs. Demande de transférer
+     explicitement les données et de faire la synchronisation.
 
-** Problématique : 
-   StarPU peut-il répartir la charge de travail entre les différents noeuds dans un contexte MPI 
-   avec machine hétérogène?
-      
+
+   Compliqué à programmer, à avoir des performances portables:
+   - granularité = difficile d'être portable
+   - équilibrage de charge super difficile à faire statiquement,
+     le dynamique est super pénible (impossible) directement avec ces
+     modèles de programmation.
+   - même si pas de déséquilibrage de charge, une exécution
+     statique/rigide induit artificiellement de l'idle time.
+
+** Programmation "nouvelle génération": StarPU
+   Système runtime qui permet la répartition de charge de travail.
+     - Paradigme -> tâches.
+     - Génération d'un graphe de dépendance -> optimiser ordonnancement des tâches.
+   Première version spécialement conçue pour architectures hybrides.
+
+   Version récente (StarPU MPI) pour bénéficier de
+   l'exécution/ordonnancement dynamique/opportuniste aussi dans le cas
+   du distribué et potentiellement répartir dynamiquement les tâches
+   en fonction de la charge entre les noeuds.
+
+** Des difficultés récurrentes:
+   - Configuration du runtime
+   - Exécution encore moins déterministe qu'avant donc difficile à
+     modéliser. Difficulté de dimensionnement.
+   - Impact de la plate-forme.
+** Problèmatique:
+   Comment évaluer les performances d'applications StarPU MPI?
 * Etat de l'art 1
-  - Caractéristiques:
+  Approches pour l'évaluation de performance d'applications HPC
+
+- Caractéristiques:
     Lever les ambiguïtés
     Quels sont les autres approches possibles?
     Pourquoi on suit cette piste?
     Expliquer les choix
     
-** Approches:
-*** Test sur systèmes réels
-    Difficulté d'accès à la plateforme.
-*** Test sur systèmes émulés
-    Lenteur, mais plus facile pour accéder à la plateforme
-*** Test sur simulateurs
-    Permet d'accéder à plein de plateforme. Scalabilité
+** Test sur systèmes réels
+   Difficulté d'accès à la plateforme, reproductibilité des
+   expériences, coût, extrapolation, ...
 
-** Privatisation de variables des processus dans un context SMPI.
-   Processus modélisé par threads, donc espace d'adressage
-   partagé. Hors des processus SMPI -> propre espace d'adressage.
-   Cependant on veut que les processus créés par un processus SMPI
-   partage le même espace d'adresse.
+   On voudrait une approche moins coûteuse...
+** L'approche par rejeu de trace
+   Classique pour étudier des applications MPI mais inadaptée ici car
+   exécution dynamique.
+** La simulation/émulation
+   L'application et le runtime sont exécutés pour de vrai (émulés)
+   mais l'exécution des kernels de calculs et les transferts de
+   données sont simulés. 
 
+   C'est l'approche suivie dans StarPU/Simgrid et SMPI
+   
+   À la base un Simulateur de systèmes distribués et de grilles de
+  calculs, systèmes peer to peer, cloud.
 
-* Methodologies 1
-  Analyse l'architecture de simgrid.
-  De base, MSG et SMPI pas prévu pour fonctionner ensemble.
+  Récement étendu pour gérer les applications MPI et récemment
+  développement d'un mode "simulation" pour StarPU.
 
-  Analyse code de simgrid.
-  
+  Les deux approches existe mais arrive-t-on à les utiliser
+  ensemble?...
+
+* Analyse du problème 1
+** SG:
+   Plusieurs API, un seul kernel
+** SimGrid/MPI: Architecture générale
+   Principe: smpi fourni l'API MPI. À la compilation (smpicc) compile
+   avec un mpi.h de SimGrid (compatible avec la majeur partie du
+   standard MPI) remplace le main (avec cpp) par smpi_simulated_main et
+   link avec la libsimgrid qui fournit son propre main (en weak).
+
+   Le smpirun prépare l'exécution du simulateur (platform, deploiement
+   des process) et appelle le main de smpi qui créée des threads qui
+   appellement le smpi_simulated_main.
+
+   Si appli avec openMP ou pthread ou CUDA, rien n'est intercepté et
+   ça va faire n'importe quoi. 
+
+   Le code de l'application est exécuté pour de vrai mais les
+   communications passent par MPI et sont donc simulées. À chaque
+   appel MPI, il y a un changement de contexte qui rend la main au
+   simulateur et qui permet de décider quel thread on débloque.
+
+   Attention, Processus modélisé par threads, donc espace d'adressage
+   partagé et donc exécution complètement incorrecte... L'approche
+   suivie par SMPI consiste à privatiser les variables des processus
+   en mmapant le segment data.
+
+   Émulation automatique et complète donc a priori très lent mais
+   possibilité d'annoter le code pour:
+   - diminuer le temps d'exécution: ne pas exécuter certaines portions
+     de code mais insérer à la place un délai simulé.
+   - diminuer l'empreinte mémoire: ne pas allouer toutes les données
+     (ne pas allouer ou bien faire de l'aliasing mémoire).
+** StarPU-SG: Architecture générale
+   Basé sur MSG car API la plus proche (en particulier, création de
+   threads et de synchros).
+   
+   Application exécutée pour de vrai. StarPU a été modifié de façon à:
+   - ne pas faire les allocations mémoires des tâches
+   - ne pas exécuter les codes de calcul des tâches mais insérer un
+     délai simulé à la place
+   - ne pas faire de transferts CUDA (car la machine sur la quelle on
+     fait la simulation peut même ne pas avoir de GPU du tout) mais
+     faire des transferts simulés à la place
+
+   StarPU de base = des threads dans un seul processus donc rien
+   d'aussi compliqué à faire que ce qui avait été nécessaire pour
+   SMPI.
+
+** Ce qui coince
+  De base, MSG et SMPI pas prévus pour fonctionner ensemble. Besoin de
+  - partage de data par les threads StarPU appartenant au même
+    processus MPI. Attention aux librairies dynamiques.
+  - Initialiser correctement à la fois la partie SMPI de SimGrid et la
+    partie MSG
+  - Permettre d'avoir des modèles différents selon qu'on est entre
+    noeuds ou à l'intérieur d'un noeud
+* Méthodologie
+  - Modification de deux code bases complexes. Utilisation de git
+    subrepo comprenant les deux.
+  - Utilisation d'org-mode/github pour cahier de laboratoire.
+  - Utilisation de valgrind, gdb, emacs/etags/cgvg pour exploration du
+    code et déterminer où apporter les modifications
+  - Développements disponibles dans git et bientôt intégrés à SimGrid
+    et à StarPU.
 * Contribution 2 / 3
-  Privatisation segment des données des processus SMPI dans simgrid.
-  
+  - J'ai géré le partage du segment data en rajoutant ce qu'il fallait
+    au niveau du changement de contexte (un indice par processus
+    MPI...). Tout processus créé par MSG hérite du segment data de son
+    père alors que les processus créés par MPI dupliquent le segment
+    data de leur créateur.
+  - Pour les bibliothèques dynamiques, on a simplement linké
+    statiquement celles qui doivent l'être. C'est une limitation car
+    ça demande de changer la chaîne de compilation des applications
+    utilisant starPU mais ça ira bien pour commencer.
+  - La double initialisation de MSG et de SMPI n'a pas posé de
+    problème car elles étaient déjà préparées à celà. Seule difficulté
+    à laquelle on n'a pas répondu: actuellement, on initialise MSG
+    pour toutes les applications MPI, ce qui induit dans le cas
+    général un overhead mémoire. On n'aimerait ne faire
+    l'initialisation de MSG que dans le cas où on exécute StarPU/MPI.
+    - problème du weak main et de rajouter un MSG_init dans cette
+      chaine d'éxécution
+  - Utilisation de modèles de performance différents pour inter et
+    intra noeuds:
+    - Ça demande des modifications complexes dans les couches basses
+      de SimGrid (surf) et on n'a pas regardé pour l'instant.
+
 * Validation 2
   - Caractéristiques:
     Resultat expérience + interprétation
-    
-  Test d'un cas simplifié d illustrant le comportement recherché
-  Test starpu smpi
-
+** Test d'un cas simplifié d illustrant le comportement recherché
+** Test starpu smpi
 * Conclusion 
   - Caractéristiques
     Conséquences:
