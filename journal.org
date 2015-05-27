@@ -44,6 +44,7 @@
 * Memo
 ** Links
    git clone git+ssh://stevenqm@scm.gforge.inria.fr//gitroot/starpu-simgrid/starpu-simgrid.git
+   git submodule add --force git+ssh://stevenqm@scm.gforge.inria.fr//gitroot/simgrid/simgrid.git src/simgrid
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
    C-c C-e : Ouvre menu avec possibilité d'exporter en html, latex, etc...
@@ -6362,3 +6363,18 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     #+RESULTS:
     [[file:compile_test_static.txt]]
 
+*** 2015-05-27 mercredi
+    Solution au problème de compile précédent: dans le Makefile on demandait de tout compiler en statique.
+    
+    J'ai refait une mise à jour et une fusion propre de simgrid pour pouvoir récupérer les modifs fait sur la partie SMPI.
+    Mais souci lors de la compile de simgrid:
+    #+begin_src sh :results output :file report/result_compile_merge_simgrid.txt :exports both 
+      cd ~/Programmation/TER/starpu-simgrid/src/simgrid/
+      make clean
+      make &> ~/org/report/result_compile_merge_simgrid.txt
+    #+end_src
+
+    #+RESULTS:
+    [[file:report/result_compile_merge_simgrid.txt]]
+
+    En fait ma variable (extern) était déclaré mais pas défini
