@@ -4,6 +4,12 @@
   Envisager changement de methode de programmation visant à optimiser
   l'utilisation des ressources.
 
+  Dans le domaine des supercalculateurs, la course à la performance est
+  un point crucial. Actuellement, la calculteur le plus puissant, est
+  capable de calculer environ 33.86 Peta d'opérations flotantes par
+  secondes  Mais acutellement, le coût energétique de ces  machines
+  est devenue tellement élevé au cours des ces dernière années 
+
 * Contexte / Problèmatique 1
 ** Programmation "classique": MPI, OpenMP, CUDA
    De facto Standard en HPC:
@@ -75,7 +81,7 @@
 
   Les deux approches existe mais arrive-t-on à les utiliser
   ensemble?...
-
+  
 * Analyse du problème 1
 ** SG:
    Plusieurs API, un seul kernel

@@ -1,6 +1,6 @@
 #+OPTIONS: ^:nil
 
-* TODO A faire [11/15]
+* TODO A faire [12/15]
   * [X] Installer FxT 
   * [X] Compiler StarPU MPI avec FxT
   * [X] Installation swirl
@@ -40,7 +40,7 @@
     * [X] Tester avec au moins 3 noeuds et voir ce qu'il se passe 
   * [ ] Apprendre à utiliser StarPu
   * [X] git format-patch pour arnaud
-  * [ ] script de config et de lancement
+  * [X] script de config et de lancement
 * Memo
 ** Links
    git clone git+ssh://stevenqm@scm.gforge.inria.fr//gitroot/starpu-simgrid/starpu-simgrid.git
@@ -50,6 +50,8 @@
    C-c C-e : Ouvre menu avec possibilité d'exporter en html, latex, etc...
 ** Usefull types
    . ./script.sh --pour export des variables
+** GDB
+   - watch : break point condition qui permet de surveiller quand une variable change de valeur
 * 2014
 ** 2014-12 décembre
 *** 2014-12-15 lundi
@@ -6378,3 +6380,127 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     [[file:report/result_compile_merge_simgrid.txt]]
 
     En fait ma variable (extern) était déclaré mais pas défini
+*** 2015-05-28 Jeudi
+    Essai avec cholesky:
+    #+begin_src sh :results output :exports both
+      BASE="/home/steven/Programmation/TER/starpu-simgrid"
+      SMPIRUN="$BASE/src/simgrid/SIMGRID/bin/smpirun"
+      PLATFORM="$BASE/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml"
+      HOSTFILE="$BASE/src/starpu-mpi/hostfile"
+      cd $BASE
+      . ./flags_simgrid_starpu.sh
+      cd src/StarPU/StarPU-SMPI/mpi/examples/matrix_decomposition
+      STARPU_SCHED=dmda $SMPIRUN -platform $PLATFORM -hostfile $HOSTFILE ./mpi_cholesky --cfg=smpi/privatize_global_variables:yes
+    #+end_src
+
+    #+RESULTS:
+    #+BEGIN_EXAMPLE
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+    [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+    [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+    [node-1.acme.org:0:(1) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_pmpi.c:3420: [smpi_pmpi/WARNING] Not yet implemented : PMPI_Comm_set_errhandler. Please contact the Simgrid team if support is needed
+    [node-2.acme.org:1:(2) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_pmpi.c:3420: [smpi_pmpi/WARNING] Not yet implemented : PMPI_Comm_set_errhandler. Please contact the Simgrid team if support is needed
+    [node-3.acme.org:2:(3) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_pmpi.c:3420: [smpi_pmpi/WARNING] Not yet implemented : PMPI_Comm_set_errhandler. Please contact the Simgrid team if support is needed
+    Segmentation fault.
+    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun : ligne 461 :  1084 Erreur de segmentation  (core dumped)${EXEC} ${TRACEOPTIONS} ${SIMOPTS} ${PLATFORMTMP} ${APPLICATIONTMP}
+    #+END_EXAMPLE
+    
+    Essai avec ring_async_implicit:
+    #+begin_src sh :results output :exports both
+      BASE="/home/steven/Programmation/TER/starpu-simgrid"
+      SMPIRUN="$BASE/src/simgrid/SIMGRID/bin/smpirun"
+      PLATFORM="$BASE/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml"
+      HOSTFILE="$BASE/src/starpu-mpi/hostfile"
+      cd $BASE
+      . ./flags_simgrid_starpu.sh
+      cd src/StarPU/StarPU-SMPI/mpi/tests
+      STARPU_SCHED=dmda $SMPIRUN -platform $PLATFORM -hostfile $HOSTFILE ./ring_async_implicit --cfg=smpi/privatize_global_variables:yes
+    #+end_src
+
+    #+RESULTS:
+    #+BEGIN_EXAMPLE
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+    [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+    [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+    [node-1.acme.org:0:(1) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_pmpi.c:3420: [smpi_pmpi/WARNING] Not yet implemented : PMPI_Comm_set_errhandler. Please contact the Simgrid team if support is needed
+    [node-2.acme.org:1:(2) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_pmpi.c:3420: [smpi_pmpi/WARNING] Not yet implemented : PMPI_Comm_set_errhandler. Please contact the Simgrid team if support is needed
+    [node-3.acme.org:2:(3) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_pmpi.c:3420: [smpi_pmpi/WARNING] Not yet implemented : PMPI_Comm_set_errhandler. Please contact the Simgrid team if support is needed
+    Segmentation fault.
+    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun : ligne 461 :   939 Erreur de segmentation  (core dumped)${EXEC} ${TRACEOPTIONS} ${SIMOPTS} ${PLATFORMTMP} ${APPLICATIONTMP}
+    #+END_EXAMPLE
+
+    Le problème est que PMPI_Comm_set_errhandler n'est pas encore
+    implémenté dans simgrid.
+
+    Dans mpi/src/starpu_mpi.c il est fait justement appel à cette
+    fonction. Je tente de la mettre en commentaire:
+    #+begin_src sh :results output :exports both
+      cd ~/Programmation/TER/starpu-simgrid/
+      ./run_StarPU_SMPI.sh -t
+    #+end_src
+
+
+    Pour le segfault:
+    Essayer point d'entré -> main de SMPI. Par exemple MPI_Comm_rank...
+    Verifier la valeur de ready_requests entre les différents
+    processus, doit être différente pour chacun.
+    Si c'est le cas surveiller la valeur de cette variable avec watch
+    de gdb.
