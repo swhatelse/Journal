@@ -6504,3 +6504,34 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     processus, doit être différente pour chacun.
     Si c'est le cas surveiller la valeur de cette variable avec watch
     de gdb.
+    Est-ce que watch fonctionne avec les adresses physiques?
+
+*** 2015-05-29 vendredi
+    Break point sur MPI_Comm_rank:
+    #+BEGIN_EXAMPLE
+    Breakpoint 1, MPI_Comm_rank (comm=0x8d8dc0, rank=0x7ffff5dbde80) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_mpi.c:225
+    225       return PMPI_Comm_rank(comm, rank);
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d92e0
+    (gdb) cont
+    Continuing.
+    
+    Breakpoint 1, MPI_Comm_rank (comm=0x8d8dc0, rank=0x7ffff55bae80) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_mpi.c:225
+    225       return PMPI_Comm_rank(comm, rank);
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x0
+    (gdb) 
+    Continuing.
+    
+    Breakpoint 1, MPI_Comm_rank (comm=0x8d8dc0, rank=0x7ffff4db7e80) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_mpi.c:225
+    225       return PMPI_Comm_rank(comm, rank);
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x0
+    (gdb) 
+    Continuing.
+    
+    Program received signal SIGSEGV, Segmentation fault.
+    0x0000000000405196 in _starpu_mpi_req_list_empty (l=0x0) at ../../../mpi/src/starpu_mpi_private.h:99
+    99      LIST_TYPE(_starpu_mpi_req,
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x0
+    (gdb) 
+    #+END_EXAMPLE
+    
+    La chose que ferait passé ready_requests à NULL est starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
