@@ -6534,4 +6534,7 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     (gdb) 
     #+END_EXAMPLE
     
-    La chose que ferait passé ready_requests à NULL est starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
+    La chose que ferait passé ready_requests à NULL est
+    starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
+    Mais quelque chose ne doit pas être correct à l'attribution du
+    segment data.

@@ -5,10 +5,25 @@
   l'utilisation des ressources.
 
   Dans le domaine des supercalculateurs, la course à la performance est
-  un point crucial. Actuellement, la calculteur le plus puissant, est
+  un point crucial. Actuellement, le calculateur le plus puissant (le TianHe-2), est
   capable de calculer environ 33.86 Peta d'opérations flotantes par
-  secondes  Mais acutellement, le coût energétique de ces  machines
-  est devenue tellement élevé au cours des ces dernière années 
+  secondes. Mais cette course est freinée par un facteurs qui est
+  désormais d'une importance capitale, le coût énergétique. En effet,
+  reprennons l'exemple du supercalculateur chinois, la consommation du
+  TianHe-2 atteint presque les 18MW et avec la génération exascale la
+  consommation estimée sera entre 20MW et 40MW. Dans l'état des fait,
+  ce n'est donc pas réalisable et pour pouvoir atteindre l'exaflops,
+  il nécessaire d'optimiser d'autres points que la puissance des
+  puces. Evidement des optimisations peuvent être réalisées au niveau
+  matériel afin de réaliser des composants à hautes efficacités
+  énergétiques, mais nous allons nous concentrer sur un autres aspect
+  qui est l'aspect logiciel.
+  
+
+  Production nucléaire central nucléaire : 900 - 1450 MW
+  source:
+  http://energie.edf.com/nucleaire/comment-ca-marche-y/les-differents-types-de-centrales-nucleaires-48384.html
+
 
 * Contexte / Problèmatique 1
 ** Programmation "classique": MPI, OpenMP, CUDA
