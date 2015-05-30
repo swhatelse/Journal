@@ -35,20 +35,14 @@
   les différents approches pour évaluer les performances
   d'applications HPC et nous justifierons notre choix pour la
   simulation/émulation et en particulier pour l'outils Simgrid. Dans
-  une troisième partie nous examinerons en détail Simgrid StarPU et
-  les différents problèmes que nous avons rencontrés. Dans une
-  quatrième partie, nous verrons les méthodes employées. En cinquième
-  partie, nous verrons les modifications apportés à Simgrid afin de
-  pouvoir effectuer les mesures. Ensuite dans une sixième partie, nous
-  verrons comment ces changements ont été validés. Et pout finir nous
-  conclurons sur les résultats que nous avons réussit à obtenir.
-  
-
-  
-  L'architecture des HPC est une
-  architecture massivement parrallèle et le rendement peut-être
-  améliorer en occupant le plus possible un maximum d'unité de
-  calcul.
+  une troisième partie nous examinerons en détail Simgrid et StarPU
+  ainsi que les différents problèmes que nous avons rencontrés. Dans
+  une quatrième partie, nous verrons les méthodes employées. En
+  cinquième partie, nous verrons les modifications apportés à Simgrid
+  afin de pouvoir effectuer les mesures. Ensuite dans une sixième
+  partie, nous verrons comment ces changements ont été validés. Et
+  pout finir nous conclurons sur les résultats que nous avons réussit
+  à obtenir.
 
   Production nucléaire central nucléaire : 900 - 1450 MW
   source:
@@ -77,6 +71,10 @@
      statique/rigide induit artificiellement de l'idle time.
      
 ** Programmation "nouvelle génération": StarPU
+   L'architecture des HPC est une architecture massivement parrallèle
+   et le rendement peut-être améliorer en occupant le plus possible un
+   maximum d'unité de calcul.
+
    Système runtime qui permet la répartition de charge de travail.
      - Paradigme -> tâches.
      - Génération d'un graphe de dépendance -> optimiser ordonnancement des tâches.
