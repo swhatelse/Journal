@@ -26,15 +26,22 @@
   
   Pour cela nous allons, dans une première partie, voir comment est
   effectuée en générale la programmation en HPC, quels sont différents
-  les standards et pourquoi nous nous sommes concentrés sur MPI. Nous discuterons ensuite du principe et de l'intérêt
-  d'un  nouveau paradigme de programmation. Nous constaterons ensuite que
-  malgrès les apports de cette méthodes des difficultés subsites et
-  les mesures peuvent-être compliquées a effectuées.
-  C'est pourquoi dans une seconde partie, nous étudierons les
-  différents approches pour évaluer les performances d'applications
-  HPC et nous justifierons notre choix pour la simulation/émulation et
-  en particulier pour l'outils Simgrid.
-
+  les standards et pourquoi nous nous sommes concentrés sur MPI. Nous
+  discuterons ensuite du principe et de l'intérêt d'un nouveau
+  paradigme de programmation et de la librairie StarPU. Nous
+  constaterons ensuite que malgrès les apports de cette méthodes des
+  difficultés subsites et les mesures peuvent-être compliquées a
+  effectuées. C'est pourquoi dans une seconde partie, nous étudierons
+  les différents approches pour évaluer les performances
+  d'applications HPC et nous justifierons notre choix pour la
+  simulation/émulation et en particulier pour l'outils Simgrid. Dans
+  une troisième partie nous examinerons en détail Simgrid StarPU et
+  les différents problèmes que nous avons rencontrés. Dans une
+  quatrième partie, nous verrons les méthodes employées. En cinquième
+  partie, nous verrons les modifications apportés à Simgrid afin de
+  pouvoir effectuer les mesures. Ensuite dans une sixième partie, nous
+  verrons comment ces changements ont été validés. Et pout finir nous
+  conclurons sur les résultats que nous avons réussit à obtenir.
   
 
   
