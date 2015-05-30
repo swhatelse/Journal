@@ -1,32 +1,32 @@
-* Intro
+* Intro -> Abstract
   Supercalculateur -> course à la performance.
   Mais facteurs limitant coût energétique, chauffe.
   Envisager changement de methode de programmation visant à optimiser
   l'utilisation des ressources.
 
   Dans le domaine des supercalculateurs, la course à la performance est
-  un point crucial. Actuellement, le calculateur le plus puissant (le
-  TianHe-2) est capable d'effectuer environ 33.86 Peta d'opérations
-  flotantes par secondes. Cependant cette course est freinée par un
-  facteur qui prend désormais d'une importance capitale, le coût
-  énergétique. En effet, reprennons l'exemple du supercalculateur
-  chinois, la consommation du TianHe-2 atteint presque les 18MW et
-  avec la génération exascale la consommation estimée sera entre 20MW
-  et 40MW. Dans l'état des fait, ce n'est pas réalisable et pour
-  pouvoir atteindre l'exaflops, il nécessaire d'optimiser d'autres
+  un point crucial. Actuellement, le supercalculateur le plus puissant (le
+  TianHe-2) est capable d'effectuer environ 33.86 Peta opérations
+  flotantes par secondes. Cependant, cette course est freinée par un
+  facteur qui prend désormais une importance capitale: le coût
+  énergétique. En effet, le supercalculateur chinois TianHe-2 a une
+  consommation qui atteint presque les 18MW et
+  avec la génération exascale, la consommation estimée sera entre 20MW
+  et 40MW. Dans l'état des faits, ce n'est pas réalisable et pour
+  pouvoir atteindre l'exaflops, il est nécessaire d'optimiser d'autres
   points que la puissance des puces. Evidemment des optimisations
   peuvent être faites au niveau matériel afin de réaliser des
-  composants à hautes efficacités énergétiques. On peut également
+  composants à haute efficacité énergétique. On peut également
   optimiser le rendement en utilisant au mieux les capacités du
-  matériel. Cette optimisation ce fait donc du côté logiciel et pour
-  cela il nous faut  envisager un changement de méthode programmation,
-  c'est cette dernière que nous allons étudier. L'objectif de mon
+  matériel. Cette optimisation se fait donc du côté logiciel et pour
+  cela il nous faut  envisager un changement de méthode de programmation.
+  C'est cette dernière approche que nous allons étudier. L'objectif de mon
   stage au sein de l'équipe MESCAL, sous la tutelle d'Arnaud Legrand,
   est donc de tenter de mesurer le gain d'une telle solution. 
   
   Pour cela nous allons, dans une première partie, voir comment est
-  effectuée en générale la programmation en HPC, quels sont différents
-  les standards et pourquoi nous nous sommes concentrés sur MPI. Nous
+  effectuée en générale la programmation en HPC (High Performance computing), quels sont les différents
+  standards et pourquoi nous nous sommes concentrés sur MPI. Nous
   discuterons ensuite du principe et de l'intérêt d'un nouveau
   paradigme de programmation et de la librairie StarPU. Nous
   constaterons ensuite que malgrès les apports de cette méthodes des
@@ -49,7 +49,7 @@
   http://energie.edf.com/nucleaire/comment-ca-marche-y/les-differents-types-de-centrales-nucleaires-48384.html
 
 
-* Contexte / Problèmatique 1
+* Contexte / Problèmatique -> Real Intro 1
 ** Programmation "classique": MPI, OpenMP, CUDA
    De facto Standard en HPC:
    - MPI: API de "haut niveau" basé sur l'envoi et la récéption de
@@ -61,7 +61,6 @@
    - CUDA: Déléguer des calculs aux GPUs. Demande de transférer
      explicitement les données et de faire la synchronisation.
 
-
    Compliqué à programmer, à avoir des performances portables:
    - granularité = difficile d'être portable
    - équilibrage de charge super difficile à faire statiquement,
@@ -69,9 +68,9 @@
      modèles de programmation.
    - même si pas de déséquilibrage de charge, une exécution
      statique/rigide induit artificiellement de l'idle time.
-     
+
 ** Programmation "nouvelle génération": StarPU
-   L'architecture des HPC est une architecture massivement parrallèle
+   L'architecture des HPC est une architecture massivement parallèle
    et le rendement peut-être améliorer en occupant le plus possible un
    maximum d'unité de calcul.
 
@@ -183,7 +182,7 @@
     noeuds ou à l'intérieur d'un noeud
 * Méthodologie
   - Modification de deux code bases complexes. Utilisation de git
-    subrepo comprenant les deux.
+    submodule comprenant les deux.
   - Utilisation d'org-mode/github pour cahier de laboratoire.
   - Utilisation de valgrind, gdb, emacs/etags/cgvg pour exploration du
     code et déterminer où apporter les modifications
