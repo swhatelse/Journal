@@ -1,9 +1,14 @@
 * Intro -> Abstract
+** Draft
   Supercalculateur -> course à la performance.
   Mais facteurs limitant coût energétique, chauffe.
   Envisager changement de methode de programmation visant à optimiser
   l'utilisation des ressources.
+  Production nucléaire central nucléaire : 900 - 1450 MW
+  source:
+  http://energie.edf.com/nucleaire/comment-ca-marche-y/les-differents-types-de-centrales-nucleaires-48384.html
 
+** Pas draft
   Dans le domaine des supercalculateurs, la course à la performance est
   un point crucial. Actuellement, le supercalculateur le plus puissant (le
   TianHe-2) est capable d'effectuer environ 33.86 Peta opérations
@@ -44,13 +49,12 @@
   pout finir nous conclurons sur les résultats que nous avons réussit
   à obtenir.
 
-  Production nucléaire central nucléaire : 900 - 1450 MW
-  source:
-  http://energie.edf.com/nucleaire/comment-ca-marche-y/les-differents-types-de-centrales-nucleaires-48384.html
-
-
 * Contexte / Problèmatique -> Real Intro 1
 ** Programmation "classique": MPI, OpenMP, CUDA
+*** Draft
+   source: http://www.top500.org
+   Système à mémoire distribuée. Cluster, hétérogène.
+
    De facto Standard en HPC:
    - MPI: API de "haut niveau" basé sur l'envoi et la récéption de
      message.
@@ -60,7 +64,7 @@
      exemple.
    - CUDA: Déléguer des calculs aux GPUs. Demande de transférer
      explicitement les données et de faire la synchronisation.
-
+     
    Compliqué à programmer, à avoir des performances portables:
    - granularité = difficile d'être portable
    - équilibrage de charge super difficile à faire statiquement,
@@ -68,8 +72,22 @@
      modèles de programmation.
    - même si pas de déséquilibrage de charge, une exécution
      statique/rigide induit artificiellement de l'idle time.
+*** Pas draft
+     La majorité des supercalculateurs actuels sont des clusters
+     massivement parallèles et souvent de type hétérogènes. De ce fait
+     certains standard ce sont imposés.
+
+     Il y a tout d'abord la norme MPI ( Message Passing Interface),
+     qui est une API de communication basée sur l'envoi et la
+     récéption de message. Elle réputée pour être performante et
+     portable, et elle est de plus haut niveau que les sockets.
+     
+     Ensuite il y a l'API OpenMP qui est une interface de
+     multihreading de plus haut niveau de PThread.
+     
 
 ** Programmation "nouvelle génération": StarPU
+*** Draft
    L'architecture des HPC est une architecture massivement parallèle
    et le rendement peut-être améliorer en occupant le plus possible un
    maximum d'unité de calcul.
@@ -85,11 +103,13 @@
    en fonction de la charge entre les noeuds.
 
 ** Des difficultés récurrentes:
+*** Draft
    - Configuration du runtime
    - Exécution encore moins déterministe qu'avant donc difficile à
      modéliser. Difficulté de dimensionnement.
    - Impact de la plate-forme.
 ** Problèmatique:
+*** Draft
    Comment évaluer les performances d'applications StarPU MPI?
 * Etat de l'art 1
   Approches pour l'évaluation de performance d'applications HPC
@@ -101,14 +121,17 @@
     Expliquer les choix
     
 ** Test sur systèmes réels
+*** Draft
    Difficulté d'accès à la plateforme, reproductibilité des
    expériences, coût, extrapolation, ...
 
    On voudrait une approche moins coûteuse...
 ** L'approche par rejeu de trace
+*** Draft
    Classique pour étudier des applications MPI mais inadaptée ici car
    exécution dynamique.
 ** La simulation/émulation
+*** Draft
    L'application et le runtime sont exécutés pour de vrai (émulés)
    mais l'exécution des kernels de calculs et les transferts de
    données sont simulés. 
@@ -126,8 +149,10 @@
   
 * Analyse du problème 1
 ** SG:
-   Plusieurs API, un seul kernel
+*** Draft
+    Plusieurs API, un seul kernel
 ** SimGrid/MPI: Architecture générale
+*** Draft
    Principe: smpi fourni l'API MPI. À la compilation (smpicc) compile
    avec un mpi.h de SimGrid (compatible avec la majeur partie du
    standard MPI) remplace le main (avec cpp) par smpi_simulated_main et
@@ -157,6 +182,7 @@
    - diminuer l'empreinte mémoire: ne pas allouer toutes les données
      (ne pas allouer ou bien faire de l'aliasing mémoire).
 ** StarPU-SG: Architecture générale
+*** Draft
    Basé sur MSG car API la plus proche (en particulier, création de
    threads et de synchros).
    
@@ -173,6 +199,7 @@
    SMPI.
 
 ** Ce qui coince
+*** Draft
   De base, MSG et SMPI pas prévus pour fonctionner ensemble. Besoin de
   - partage de data par les threads StarPU appartenant au même
     processus MPI. Attention aux librairies dynamiques.
@@ -180,7 +207,8 @@
     partie MSG
   - Permettre d'avoir des modèles différents selon qu'on est entre
     noeuds ou à l'intérieur d'un noeud
-* Méthodologie
+* Méthodologie 1
+*** Draft
   - Modification de deux code bases complexes. Utilisation de git
     submodule comprenant les deux.
   - Utilisation d'org-mode/github pour cahier de laboratoire.
@@ -189,6 +217,7 @@
   - Développements disponibles dans git et bientôt intégrés à SimGrid
     et à StarPU.
 * Contribution 2 / 3
+*** Draft
   - J'ai géré le partage du segment data en rajoutant ce qu'il fallait
     au niveau du changement de contexte (un indice par processus
     MPI...). Tout processus créé par MSG hérite du segment data de son
