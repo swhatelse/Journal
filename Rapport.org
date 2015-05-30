@@ -5,20 +5,32 @@
   l'utilisation des ressources.
 
   Dans le domaine des supercalculateurs, la course à la performance est
-  un point crucial. Actuellement, le calculateur le plus puissant (le TianHe-2), est
-  capable de calculer environ 33.86 Peta d'opérations flotantes par
-  secondes. Mais cette course est freinée par un facteurs qui est
-  désormais d'une importance capitale, le coût énergétique. En effet,
-  reprennons l'exemple du supercalculateur chinois, la consommation du
-  TianHe-2 atteint presque les 18MW et avec la génération exascale la
-  consommation estimée sera entre 20MW et 40MW. Dans l'état des fait,
-  ce n'est donc pas réalisable et pour pouvoir atteindre l'exaflops,
-  il nécessaire d'optimiser d'autres points que la puissance des
-  puces. Evidement des optimisations peuvent être réalisées au niveau
-  matériel afin de réaliser des composants à hautes efficacités
-  énergétiques, mais nous allons nous concentrer sur un autres aspect
-  qui est l'aspect logiciel.
+  un point crucial. Actuellement, le calculateur le plus puissant (le
+  TianHe-2) est capable d'effectuer environ 33.86 Peta d'opérations
+  flotantes par secondes. Cependant cette course est freinée par un
+  facteur qui prend désormais d'une importance capitale, le coût
+  énergétique. En effet, reprennons l'exemple du supercalculateur
+  chinois, la consommation du TianHe-2 atteint presque les 18MW et
+  avec la génération exascale la consommation estimée sera entre 20MW
+  et 40MW. Dans l'état des fait, ce n'est pas réalisable et pour
+  pouvoir atteindre l'exaflops, il nécessaire d'optimiser d'autres
+  points que la puissance des puces. Evidemment des optimisations
+  peuvent être faites au niveau matériel afin de réaliser des
+  composants à hautes efficacités énergétiques. On peut également
+  optimiser le rendement en utilisant au mieux les capacités du
+  matériel. Cette optimisation ce fait donc du côté logiciel et pour
+  cela il nous faut  envisager un changement de  méthode
+  programmation, c'est cette dernière que nous allons étudier.
+  Pour cela nous allons dans une première partie avoir que comment est
+  effectuée la programmation en HPC et quels sont les standards.
+
+  C'est justement cette solution,
+  qui est un aspect logiciel que nous allons étudier. 
   
+  L'architecture des HPC est une
+  architecture massivement parrallèle et le rendement peut-être
+  améliorer en occupant le plus possible un maximum d'unité de
+  calcul.
 
   Production nucléaire central nucléaire : 900 - 1450 MW
   source:
@@ -45,7 +57,7 @@
      modèles de programmation.
    - même si pas de déséquilibrage de charge, une exécution
      statique/rigide induit artificiellement de l'idle time.
-
+     
 ** Programmation "nouvelle génération": StarPU
    Système runtime qui permet la répartition de charge de travail.
      - Paradigme -> tâches.
