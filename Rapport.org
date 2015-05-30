@@ -52,16 +52,18 @@
 * Contexte / Problèmatique -> Real Intro 1
 ** Programmation "classique": MPI, OpenMP, CUDA
 *** Draft
-   source: http://www.top500.org
-   Système à mémoire distribuée. Cluster, hétérogène.
+    source: http://www.top500.org
+    Système à mémoire distribuée. Cluster, hétérogène.
 
-   De facto Standard en HPC:
+    De facto Standard en HPC:
    - MPI: API de "haut niveau" basé sur l'envoi et la récéption de
      message.
+     
    - OpenMP: Plus haut niveau que pthread, demande d'annoter les
      boucles, pas de possibilité de gérer des différences de priorités
      entre des threads de calcul et des threads de polling réseau par
      exemple.
+     
    - CUDA: Déléguer des calculs aux GPUs. Demande de transférer
      explicitement les données et de faire la synchronisation.
      
@@ -74,17 +76,22 @@
      statique/rigide induit artificiellement de l'idle time.
 *** Pas draft
      La majorité des supercalculateurs actuels sont des clusters
-     massivement parallèles et souvent de type hétérogènes. De ce fait
+     massivement parallèles et souvent de type hétérogènes(CPU-GPU). De ce fait
      certains standard ce sont imposés.
 
-     Il y a tout d'abord la norme MPI ( Message Passing Interface),
+     Il y a tout d'abord la norme MPI (Message Passing Interface),
      qui est une API de communication basée sur l'envoi et la
      récéption de message. Elle réputée pour être performante et
      portable, et elle est de plus haut niveau que les sockets.
      
-     Ensuite il y a l'API OpenMP qui est une interface de
-     multihreading de plus haut niveau de PThread.
+     Ensuite, il y a l'API OpenMP qui est une interface de
+     multihreading de plus haut niveau de PThread...
+
+     Enfin, l'API CUDA permet tirer partie de la puissance de calculer
+     des GPU. 
      
+     La compléxité vient que l'on se retrouve utiliser plusieurs
+     paradigme à la fois.
 
 ** Programmation "nouvelle génération": StarPU
 *** Draft
