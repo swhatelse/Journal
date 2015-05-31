@@ -165,25 +165,36 @@
 ** Problèmatique:
 *** Draft
     Comment évaluer les performances d'applications StarPU MPI?
+*** Pas draft
+    Nous allons donc voir comment évaluer les performances
+    d'applications basés sur StarPU MPI.
 * Etat de l'art 1
-  Approches pour l'évaluation de performance d'applications HPC
+*** Draft
+    Approches pour l'évaluation de performance d'applications HPC
 
-- Caractéristiques:
-    Lever les ambiguïtés
-    Quels sont les autres approches possibles?
-    Pourquoi on suit cette piste?
-    Expliquer les choix
-    
+    - Caractéristiques:
+      Lever les ambiguïtés
+      Quels sont les autres approches possibles?
+      Pourquoi on suit cette piste?
+      Expliquer les choix
+*** Pas draft
+  En HPC, il y a trois grandes approches possible pour évaluer les
+  performances d'application.
 ** Test sur systèmes réels
 *** Draft
    Difficulté d'accès à la plateforme, reproductibilité des
    expériences, coût, extrapolation, ...
 
    On voudrait une approche moins coûteuse...
+*** Pas draft
+    La première est de lancer la vrai application sur le système
+    réelle et d'effectuer les mesures. Cependant cette méthode peux se
+    révéler très couteuse.
 ** L'approche par rejeu de trace
 *** Draft
    Classique pour étudier des applications MPI mais inadaptée ici car
    exécution dynamique.
+*** Pas draft
 ** La simulation/émulation
 *** Draft
    L'application et le runtime sont exécutés pour de vrai (émulés)
@@ -201,6 +212,7 @@
   Les deux approches existe mais arrive-t-on à les utiliser
   ensemble?...
   
+*** Pas draft
 * Analyse du problème 1
 ** SG:
 *** Draft
