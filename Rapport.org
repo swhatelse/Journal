@@ -77,7 +77,7 @@
 *** Pas draft
      La majorité des supercalculateurs actuels sont des clusters
      massivement parallèles et souvent de type
-     hétérogènes(CPU-GPU). De ce fait certains standard ce sont
+     hétérogènes(CPU-GPU). De ce fait certains standards ce sont
      imposés. 
 
      Il y a tout d'abord la norme MPI (Message Passing Interface),
@@ -178,8 +178,8 @@
       Pourquoi on suit cette piste?
       Expliquer les choix
 *** Pas draft
-  En HPC, il y a trois grandes approches possible pour évaluer les
-  performances d'application.
+    En HPC, il y a trois grandes approches possible pour évaluer les
+    performances d'application.
 ** Test sur systèmes réels
 *** Draft
    Difficulté d'accès à la plateforme, reproductibilité des
@@ -188,13 +188,27 @@
    On voudrait une approche moins coûteuse...
 *** Pas draft
     La première est de lancer la vrai application sur le système
-    réelle et d'effectuer les mesures. Cependant cette méthode peux se
-    révéler très couteuse.
+    réel afin d'effectuer les mesures. Cependant cette méthode peut se 
+    révéler très couteuse et il n'est pas toujours possible d'avoir
+    accès à la plateforme. De plus comme les expérimentations ne
+    peuvent être effectuées sur que sur un petit nombre de plateforme
+    notamment à cause de coût, on ne peut pas vraiment extrapoler les
+    résultats. Dernier point important, nous n'avons pas de contrôle
+    sur les décisions d'ordonnancements, d'une exécution à l'autre on
+    peut avoir des résultats différents ce qui fait que les
+    expériences ne sont pas reproductibles. 
 ** L'approche par rejeu de trace
 *** Draft
    Classique pour étudier des applications MPI mais inadaptée ici car
    exécution dynamique.
 *** Pas draft
+    Cette méthode consiste à exécuter une première l'application sur
+    un système réel pour ensuite pour ensuite rejouer la trace
+    post-mortem. Elle est couramment employé dans le contexte
+    d'application MPI mais est ici totalement inadaptés car nous avons
+    à faire des programmes qui sont non déterministes. En effet, on ne
+    pourra pas connaitre les autres actions qu'il était possible
+    d'effectuer plutôt qu'un autre, ni leur impact.
 ** La simulation/émulation
 *** Draft
    L'application et le runtime sont exécutés pour de vrai (émulés)
@@ -204,7 +218,7 @@
    C'est l'approche suivie dans StarPU/Simgrid et SMPI
    
    À la base un Simulateur de systèmes distribués et de grilles de
-  calculs, systèmes peer to peer, cloud.
+   calculs, systèmes peer to peer, cloud.
 
   Récement étendu pour gérer les applications MPI et récemment
   développement d'un mode "simulation" pour StarPU.
@@ -213,6 +227,22 @@
   ensemble?...
   
 *** Pas draft
+    Ici le runtime et l'application sont émulés (exécutés réellement)
+    mais l'exécution des kernels de calculs et les transferts de
+    données sont simulés. 
+    Avec cette méthode les expérimentations peuvent être effectuées à
+    partir de n'importe quel système, il n'est plus nécessaire d'avoir
+    accès à la plateforme, ce qui rend cette approche peu
+    coûteuse. Par ailleur il est facile d'extrapoler les résultats car
+    on peut simuler un nombre important de plateformes.  
+    Ensuite la simulation permet d'avoir un temps d'exécution plus
+    court qu'avec des tests réels car on n'effectue que certains 
+    traitements ce qui nous permet pouvoir effectuer un grand nombre
+    de mesures.  
+    Enfin comme la simulation nous permet d'avoir un contrôle sur
+    l'ordonnancement, nous pouvons avoir un système déterministe qui
+    nous permet d'avoir des expériences qui peuvent être reproduites.
+
 * Analyse du problème 1
 ** SG:
 *** Draft
