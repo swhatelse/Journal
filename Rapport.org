@@ -138,16 +138,33 @@
    du distribué et potentiellement répartir dynamiquement les tâches
    en fonction de la charge entre les noeuds.
 *** Pas draft
-    Comme on vient de le voir
+    La librairie StarPU est un système runtime qui permet une
+    répartition des traitements de manière dynamique et opportuniste. 
+    Pour ce faire elle introduit un nouveau paradigme basé sur les
+    tâches. StarPU génère un graphe de dépendance permettant
+    d'optimiser le l'ordonnancement de ces dernières.
+
+    La première version de StarPU a été conçu spécialement pour des
+    architectures hybrides. Une version récente (StarPU MPI) a été
+    réalisée pour bénéficier d'un ordonnance et d'une exécution qui
+    soit à la fois dynamique et opportunistes dans un contexte
+    distribuée afin de répartir la charge entre les différents
+    noeuds.
+
 ** Des difficultés récurrentes:
 *** Draft
    - Configuration du runtime
    - Exécution encore moins déterministe qu'avant donc difficile à
      modéliser. Difficulté de dimensionnement.
    - Impact de la plate-forme.
+*** Pas draft
+    Cependant des difficultés persitent. Comme l'exécution est
+    dynamique et opportuniste, nous sommes très loin d'un modèle
+    déterministe ce qui rend la modélisation difficile.
+    
 ** Problèmatique:
 *** Draft
-   Comment évaluer les performances d'applications StarPU MPI?
+    Comment évaluer les performances d'applications StarPU MPI?
 * Etat de l'art 1
   Approches pour l'évaluation de performance d'applications HPC
 
@@ -276,7 +293,7 @@
     intra noeuds:
     - Ça demande des modifications complexes dans les couches basses
       de SimGrid (surf) et on n'a pas regardé pour l'instant.
-
+      
 * Validation 2
   - Caractéristiques:
     Resultat expérience + interprétation
