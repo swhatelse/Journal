@@ -326,6 +326,8 @@
     code et déterminer où apporter les modifications
   - Développements disponibles dans git et bientôt intégrés à SimGrid
     et à StarPU.
+*** Pas draft
+    
 * Contribution 2 / 3
 *** Draft
   - J'ai géré le partage du segment data en rajoutant ce qu'il fallait
@@ -361,3 +363,4 @@
     Travaux futurs:
     -Test grid5k
     
+
