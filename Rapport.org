@@ -230,18 +230,32 @@
     Ici le runtime et l'application sont émulés (exécutés réellement)
     mais l'exécution des kernels de calculs et les transferts de
     données sont simulés. 
-    Avec cette méthode les expérimentations peuvent être effectuées à
+    
+    On a d'une part la simulation où l'on crée un faux environnement
+    proche de la réalité et où les actions ne sont pas réellement
+    effectués. Dans notre cas on simulerait donc la plateforme de même que l'OS. 
+    Ainsi, les expérimentations peuvent être effectuées à
     partir de n'importe quel système, il n'est plus nécessaire d'avoir
     accès à la plateforme, ce qui rend cette approche peu
-    coûteuse. Par ailleur il est facile d'extrapoler les résultats car
+    coûteuse. 
+    Par ailleur il est facile d'extrapoler les résultats car
     on peut simuler un nombre important de plateformes.  
     Ensuite la simulation permet d'avoir un temps d'exécution plus
     court qu'avec des tests réels car on n'effectue que certains 
     traitements ce qui nous permet pouvoir effectuer un grand nombre
     de mesures.  
-    Enfin comme la simulation nous permet d'avoir un contrôle sur
-    l'ordonnancement, nous pouvons avoir un système déterministe qui
-    nous permet d'avoir des expériences qui peuvent être reproduites.
+    Enfin comme la simulation nous permettrait d'avoir un contrôle sur
+    l'ordonnancement, nous pourrions avoir un système déterministe qui
+    nous permettrait d'avoir des expériences qui peuvent être reproduites.
+    
+    Et d'autre part l'émulation où l'on exécuterait en vrai le programme
+    programme sur le système simulé. 
+    
+    Nous allons tenter de voir si nous pouvons conciller les deux approches.
+
+    Pour cela nous allons utiliser le logiciel Simgrid qui est un simulateur
+    de systèmes distribués, de grilles de calculs, de systèmes peer to
+    peer et cloud.
 
 * Analyse du problème 1
 ** SG:
