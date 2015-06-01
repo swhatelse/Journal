@@ -51,6 +51,7 @@
 ** Usefull types
    . ./script.sh --pour export des variables
    ldd permet de connaître les lib dynamques qui ont été linkées.
+   LD_LIBRARY_PATH: Y pensez car sinon à l'exécution ça ne passe pas.
 ** GDB
    - watch : break point condition qui permet de surveiller quand une variable change de valeur
 * 2014
@@ -6652,3 +6653,8 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     Après vérification les exemples mpi sont bien compilé avec la
     libstarpu en statique.
    
+    Après avoir discuter avec Arnaud du problème, on a vu que l'index
+    du segment data était mis en place mais trop tard. Donc tentons de
+    de faire en sorte que la fonction smpi_process_init soit appelé
+    avant ou au tout debut de _starpu_mpi_simgrid_init.
+    
