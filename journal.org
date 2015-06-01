@@ -50,6 +50,7 @@
    C-c C-e : Ouvre menu avec possibilité d'exporter en html, latex, etc...
 ** Usefull types
    . ./script.sh --pour export des variables
+   ldd permet de connaître les lib dynamques qui ont été linkées.
 ** GDB
    - watch : break point condition qui permet de surveiller quand une variable change de valeur
 * 2014
@@ -6646,5 +6647,8 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     leurs propre segment data. Cependant l'index du segment data est
     égal au pid du processus -1, hors le processus initiateur et le
     processus de pid 1 ont le même index (0). Le problème pourrait
-    venir de là.
+    venir de là. -> Apparemment pas.
+
+    Après vérification les exemples mpi sont bien compilé avec la
+    libstarpu en statique.
    

@@ -331,7 +331,8 @@
    StarPU de base = des threads dans un seul processus donc rien
    d'aussi compliqué à faire que ce qui avait été nécessaire pour
    SMPI.
-
+*** Pas draft
+    À la base StarPU est basé sur MSG. 
 ** Ce qui coince
 *** Draft
   De base, MSG et SMPI pas prévus pour fonctionner ensemble. Besoin de
@@ -341,6 +342,15 @@
     partie MSG
   - Permettre d'avoir des modèles différents selon qu'on est entre
     noeuds ou à l'intérieur d'un noeud
+*** Pas draft
+    La difficulté vient du fait que MSG et SMPI n'ont pas été prévu
+    pour fonctionner en ensemble. Comme en MPI on est dans un contexte
+    d'espace mémoire distribué, les processus MPI d'un même noeud
+    doivent partager les données donc il faut faire en sorte que le
+    segment data d'un processus soit rattaché à celui qui les a crées.
+    Il nous faut arriver à correctement initialiser en la partie MSG
+    et SMPI.
+    
 * Méthodologie 1
 *** Draft
   - Modification de deux code bases complexes. Utilisation de git
