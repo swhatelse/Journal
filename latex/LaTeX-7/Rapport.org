@@ -521,22 +521,25 @@ done
    et SMPI.
    
 * Méthodologie
-  Comme nous travaillons avec Simgrid et StarPU à la fois, afin de
-  pouvoir gérer simplement les mises à jours de ces derniers, nous
+  Comme nous travaillons avec Simgrid et StarPU à la fois, nous
   utilisons un dépôt complexe comprenant les deux et gérer avec
-  l'outils submodule de git. Ce dernier nous
-  
+  l'outils submodule de git. Ce dernier nous de gérer des sous dépôt
+  indépendemment, ainsi il est plus aisé de traiter les mises à jours
+  de ces derniers.
+
   Afin de pouvoir retracer le cheminement de mon travail, mais aussi
   de pouvoir garder le fil d'un jour à l'autre, un cahier de
-  laboratoire est tenu en org-mode et hébergé sur github. Cela permet
+  laboratoire est tenu en org-mode et est hébergé sur github. Cela permet
   également à mon tuteur de stage de savoir chaque jours l'avancement
   du projet.
   
   Comme on l'a vu précédemment il est nécessaire d'apporter quelques
-  modifications au niveau de Simgrid. Il a été dans un premier temps été
-  nécessaire de consulter la documentation afin de comprendre le
+  modifications au niveau du simulateur. Il a été dans un premier
+  temps nécessaire de consulter la documentation afin de comprendre le 
   fonctionnement et l'architecture de Simgrid. Ensuite il a fallut
-  explorer le code afin de déterminer où apporter les modifications
+  explorer le code afin de déterminer où apporter les
+  modifications. Pour cela les outils tels que GDB, valgrind, les
+  etags et cgvg ont été d'une aide précieuse.
 
 * Contribution
 * Validation
