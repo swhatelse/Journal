@@ -6603,3 +6603,48 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d9310
     #+END_EXAMPLE
     
+    À partir du 3e passsage l'adresse pointée ne change pas. 
+    Voyons si l'a privatisation se fait correctement.
+    #+BEGIN_EXAMPLE
+    br smx_process.c:855 if ready_requests != (void*)0
+    #+END_EXAMPLE
+    #+BEGIN_EXAMPLE
+    [node-2.acme.org:1:(2) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:853: [simix_process/DEBUG] Control returned to me: '1'
+    
+    Breakpoint 2, SIMIX_process_yield (self=0x8d8080) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:855
+    855       if (self->new_host) {
+    2: self->segment_index = 0
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d92d0
+    (gdb) cont
+    Continuing.
+    [node-2.acme.org:1:(2) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:847: [simix_process/DEBUG] Yield process '1'
+    [node-3.acme.org:2:(3) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:853: [simix_process/DEBUG] Control returned to me: '2'
+    
+    Breakpoint 2, SIMIX_process_yield (self=0x8d8570) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:855
+    855       if (self->new_host) {
+    2: self->segment_index = 0
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d92f0
+    (gdb) 
+    Continuing.
+    [node-3.acme.org:2:(3) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:847: [simix_process/DEBUG] Yield process '2'
+    [node-1.acme.org:0:(1) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:853: [simix_process/DEBUG] Control returned to me: '0'
+    
+    Breakpoint 2, SIMIX_process_yield (self=0x8d7c60) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:855
+    855       if (self->new_host) {
+    2: self->segment_index = 0
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d9310
+    #+END_EXAMPLE
+    L'index du segment data est le pour les 3 noeuds. Normalement il
+    devrait être différent. 
+    L'index du segment data est défini en fonction du pid du
+    process - 1.
+    
+    Le segment data des process MPI semblent corrects. Ces processus
+    sont créés d'abord par le tout premier processus de simigrd le
+    processus "", à la création il partage le même segment data que
+    lui. C'est un peu plutard les processus sont initialisés avec
+    leurs propre segment data. Cependant l'index du segment data est
+    égal au pid du processus -1, hors le processus initiateur et le
+    processus de pid 1 ont le même index (0). Le problème pourrait
+    venir de là.
+   

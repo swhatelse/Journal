@@ -293,7 +293,28 @@
    - diminuer l'empreinte mémoire: ne pas allouer toutes les données
      (ne pas allouer ou bien faire de l'aliasing mémoire).
 *** Pas draft
-   Simgrid fourni deux API au dessus d'un même noyau. Il y a SMPI
+    Simgrid est composé de plusieurs modules, les principaux sont:
+    - SURF qui simule la partie OS
+    - MSG qui permet de simuler couche classique logiciels???
+    - SMPI est l'API qui permet de simuler la couche
+      MPI. Actuellement, la majeur partie des fonctionnalités MPI 
+      ont été implémentées. 
+      Le fonctionnement est le suivant :
+      - l'application que l'on veut tester est compilée en remplaçant
+        le mpi.h classique par le mpi.h de Simgrid 
+      - à l'édition de lien on remplace le main de l'application par
+        celui de Simgrid.
+      - Ce dernier s'occupera préparer l'éxécution du simulateur
+        en créant la plateforme et en déployant les processus SMPI qui
+        exécuterons chacun le main de l'application MPI.
+      - Ces processus étant modélisés par des threads, l'espace
+        d'adressage est partagé et l'approche suivie par SMPI est de
+        privatiser les variables des processus en faisant un mmap du
+        segment data. 
+
+  
+
+
 ** StarPU-SG: Architecture générale
 *** Draft
    Basé sur MSG car API la plus proche (en particulier, création de
