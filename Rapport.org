@@ -261,6 +261,7 @@
 ** SG:
 *** Draft
     Plusieurs API MSG, SMPI, un seul kernel SIMIX
+*** Pas draft
 ** SimGrid/MPI: Architecture générale
 *** Draft
    Principe: smpi fourni l'API MPI. À la compilation (smpicc) compile
@@ -291,6 +292,8 @@
      de code mais insérer à la place un délai simulé.
    - diminuer l'empreinte mémoire: ne pas allouer toutes les données
      (ne pas allouer ou bien faire de l'aliasing mémoire).
+*** Pas draft
+   Simgrid fourni deux API au dessus d'un même noyau. Il y a SMPI
 ** StarPU-SG: Architecture générale
 *** Draft
    Basé sur MSG car API la plus proche (en particulier, création de

@@ -6538,3 +6538,68 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
     Mais quelque chose ne doit pas être correct à l'attribution du
     segment data.
+** 2015-06 Juin
+*** 2015-06-01 lundi
+    Regardons si l'adresse pointé par ready_requests est correct pour
+    chacun ds process MPI:
+    #+BEGIN_EXAMPLE
+    br smx_process.c:855
+    cond 6 ready_requests != (void*)0    
+    #+END_EXAMPLE
+    #+BEGIN_EXAMPLE
+    [node-1.acme.org:0:(1) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:847: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(2) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:853: [simix_process/DEBUG] Control returned to me: '1'
+    
+    Breakpoint 6, SIMIX_process_yield (self=0x8d8080) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:855
+    855       if (self->new_host) {
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d92d0
+    (gdb) cont
+    Continuing.
+    [node-2.acme.org:1:(2) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:847: [simix_process/DEBUG] Yield process '1'
+    [node-3.acme.org:2:(3) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:853: [simix_process/DEBUG] Control returned to me: '2'
+    
+    Breakpoint 6, SIMIX_process_yield (self=0x8d8570) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:855
+    855       if (self->new_host) {
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d92f0
+    (gdb) 
+    Continuing.
+    [node-3.acme.org:2:(3) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:847: [simix_process/DEBUG] Yield process '2'
+    [node-1.acme.org:0:(1) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:853: [simix_process/DEBUG] Control returned to me: '0'
+    
+    Breakpoint 6, SIMIX_process_yield (self=0x8d7c60) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:855
+    855       if (self->new_host) {
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d9310
+    (gdb) 
+    Continuing.
+    [node-1.acme.org:0:(1) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:847: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(2) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:853: [simix_process/DEBUG] Control returned to me: '1'
+    
+    Breakpoint 6, SIMIX_process_yield (self=0x8d8080) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:855
+    855       if (self->new_host) {
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d9310
+    (gdb) 
+    Continuing.
+    [node-2.acme.org:1:(2) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:847: [simix_process/DEBUG] Yield process '1'
+    [node-3.acme.org:2:(3) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:853: [simix_process/DEBUG] Control returned to me: '2'
+    
+    Breakpoint 6, SIMIX_process_yield (self=0x8d8570) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:855
+    855       if (self->new_host) {
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d9310
+    (gdb) 
+    Continuing.
+    [node-3.acme.org:2:(3) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:847: [simix_process/DEBUG] Yield process '2'
+    [node-1.acme.org:0:(1) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:853: [simix_process/DEBUG] Control returned to me: '0'
+    
+    Breakpoint 6, SIMIX_process_yield (self=0x8d7c60) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:855
+    855       if (self->new_host) {
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d9310
+    (gdb) 
+    Continuing.
+    [node-1.acme.org:0:(1) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:847: [simix_process/DEBUG] Yield process '0'
+    [node-2.acme.org:1:(2) 0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:853: [simix_process/DEBUG] Control returned to me: '1'
+    
+    Breakpoint 6, SIMIX_process_yield (self=0x8d8080) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:855
+    855       if (self->new_host) {
+    1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d9310
+    #+END_EXAMPLE
+    
