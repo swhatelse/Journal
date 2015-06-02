@@ -566,7 +566,22 @@ done
   chaîne de compilation des applications utilisant StarPU, mais cela
   nous sera suffisant pour effectuer nos tests. 
 
+  Ensuite comme nous l'avons évoqué tout à l'heure, MSG et SMPI 
+
 * Validation
+** Test simple
+   Dans le but de tester le bon fonctionnement des modifications
+   apportées, un test illustrant le fonctionnement de StarPU a été
+   fourni. Ce dernier initialise Simgrid comme cela est fait du côté
+   de StarPU et fait appel à une bibliothèque dynamique et manipule
+   des variables globales. Ainsi lors de l'exécution de ce test, on
+   doit pouvoir constater que pour des processus appartenant à un même
+   noeuds, les valeurs des variables globales du programme et des
+   bibliothèques dynamiques sont bien identiques. Ce qui après
+   plusieurs correction a été le cas.
+** Test de StarPU - SMPI
+   StarPU est fourni avec des exemples de programme MPI notamment
+   d'algèbre linéaire tel que l'algorithme de Cholesky.
 * Conclusion
 
 #+Latex:\section*{Acknowledgments}
