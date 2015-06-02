@@ -490,7 +490,23 @@ done
    peer et cloud.
 
 * Analyse du problème
-** Simgrid
+** Simgrid: Les processus
+   Sous Simgrid, les processus sont modélisés par des threads, ce
+   qui signifie que leur espace d'adressage est partagé.
+   Afin que ces derniers ce comportent comme des processus UNIX, il
+   est nécessaire que chaque processus n'ait pas accès aux
+   variables d'un autre, c'est pourquoi un système de
+   privatisation a été mis en place. L'approche est la suivante:
+   pour chaque processus, une zone mémoire est allouée dans le
+   tas grâce à un mmap. Cette zone est le nouveau segment données du
+   processus, et à chaque changement de contexte, on fait pointer
+   vers cette zone. 
+
+   #+ATTR_LATEX: :width 5cm
+   #+CAPTION: Privatisation du segment données
+   #+NAME:   fig:1
+   [[./Img/Memoire.jpg]]
+
 ** SimGrid/MPI: Architecture générale
    Simgrid est composé de plusieurs modules, ceux auxquels nous nous
    intéressons sont les suivant: 
@@ -506,37 +522,19 @@ done
       - Ce dernier a pour rôle de préparer l'éxécution du simulateur
         en créant la plateforme et en déployant les processus SMPI qui
         exécuterons chacun le main de l'application MPI.
-       
-      Sous Simgrid, les processus sont modélisés par des threads, ce
-      qui signifie que leur espace d'adressage est partagé.
-      Afin que ces dernier ce comporte comme de processus UNIX, il
-      est nécessaire que chaque processus n'est pas accès aux
-      variables d'un autre, c'est pourquoi un système de
-      privatisation a été mis en place. L'approche est la suivante:
-      pour chaque processus, une zone mémoire lui est alloué dans le
-      tas grâce a un mmap. Cette zone représente le segment données du
-      processus, et a chaque changement de contexte, on fait pointer
-      vers cette zone. 
-
-      #+ATTR_LATEX: :width 5cm
-      #+CAPTION: Privatisation du segment données
-      #+NAME:   fig:1
-      [[./Img/Memoire.jpg]]
-   
+             
 ** StarPU-SG: Architecture générale   
-** Ce qui coince
-   Comme nous l'avions évoqué un peu plus haut, les processus sont
-   modélisés par des threads, il faut donc un mécanisme de
-   privatisation afin que, comme avec les vrai processus, chacun
-   dispose d'un segment data qui soit propre. Sous Simgrid le
-   mécanisme est le suivant:
+   StarPU a été modifié afin de pouvoir fonctionner au dessus du
+   simulateur Simgrid et est basé sur l'API MSG. L'application est
+   exécutée réellement mais les allocations mémoires des tâches ne
+   sont pas effectuées, les codes de calcul sont simulés et remplacés
+   par un délais de même pour les transferts CUDA.
 
-   Comme en MPI on est dans un contexte
-   d'espace mémoire distribuée, les processus MPI d'un même noeud
-   doivent partager les données donc il faut faire en sorte que le
-   segment data d'un processus soit rattaché à celui qui les a crées.
-   Le schéma ci-dessous illustre le fonctionnement de la privatisation
-   dans Simgrid.
+** Ce qui coince
+   Comme en MPI on est dans un contexte d'espace mémoire distribuée,
+   les processus MPI d'un même noeud doivent partager les données donc
+   il faut faire en sorte que le segment data d'un processus soit
+   rattaché à celui qui les a crées. 
 
    De plus, une autre difficulté vient du fait qu'à la base MSG et
    SMPI n'ont pas été prévus pour fonctionner en ensemble. il nous
