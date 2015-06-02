@@ -493,7 +493,7 @@ done
 ** Simgrid
 ** SimGrid/MPI: Architecture générale
    Simgrid est composé de plusieurs modules, ceux auxquels nous nous
-   intéressons sont: 
+   intéressons sont les suivant: 
     - MSG qui permet de simuler couche classique logiciels???
     - SMPI est l'API qui permet de simuler la couche
       MPI. Actuellement, la majeur partie des fonctionnalités MPI  
@@ -510,16 +510,23 @@ done
         d'adressage est partagé et l'approche suivie par SMPI est de
         privatiser les variables des processus en faisant un mmap du
         segment data. 
+
 ** StarPU-SG: Architecture générale   
 ** Ce qui coince
-   La difficulté vient du fait que MSG et SMPI n'ont pas été prévu
+   La difficulté vient du fait qu'à la base MSG et SMPI n'ont pas été prévus
    pour fonctionner en ensemble. Comme en MPI on est dans un contexte
-   d'espace mémoire distribué, les processus MPI d'un même noeud
+   d'espace mémoire distribuée, les processus MPI d'un même noeud
    doivent partager les données donc il faut faire en sorte que le
    segment data d'un processus soit rattaché à celui qui les a crées.
+   Le schéma ci-dessous illustre le fonctionnement de la privatisation
+   dans Simgrid.
+   #+CAPTION: Figure 1: Privatisation du segment données
+   #+NAME:   fig:1
+   [[./Memoire.jpg]]
+
    De plus, il nous faut arriver à correctement initialiser en la partie MSG
    et SMPI.
-   
+
 * Méthodologie
   Comme nous travaillons avec Simgrid et StarPU à la fois, nous
   utilisons un dépôt complexe comprenant les deux et gérer avec
