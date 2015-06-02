@@ -390,7 +390,7 @@ done
   Ensuite, il y a l'API OpenMP qui est une interface de
   multihreading de plus haut niveau de PThread...
   
-  Enfin, l'API CUDA permet tirer partie de la puissance de calculer
+  Enfin, l'API CUDA permet tirer partie de la puissance de calcul
   des GPU. Mais pour cela il est nécessaire de spécifier
   explicitement de ce que l'on veut envoyer aux GPUs et on doit
   également gérer la synchronisation 
@@ -572,25 +572,35 @@ done
 ** Test simple
    Dans le but de tester le bon fonctionnement des modifications
    apportées, un test illustrant le fonctionnement de StarPU a été
-   fourni. Ce dernier initialise Simgrid comme cela est fait du côté
-   de StarPU et fait appel à une bibliothèque dynamique et manipule
-   des variables globales. Ainsi lors de l'exécution de ce test, on
-   doit pouvoir constater que pour des processus appartenant à un même
-   noeuds, les valeurs des variables globales du programme et des
-   bibliothèques dynamiques sont bien identiques. Ce qui après
-   plusieurs correction a été le cas.
+   fourni et enrichi. Ce dernier permet ainsi d'isoler le problème
+   afin de pouvoir nous concentrer dessus. Ce test, initialise Simgrid
+   et la partie SMPI comme cela est fait du côté de StarPU et fait
+   appel à une bibliothèque dynamique et manipule des variables
+   globales. Ainsi lors de l'exécution de ce test, on doit pouvoir
+   constater que pour des processus appartenant à un même noeuds, les
+   valeurs des variables globales du programme et des bibliothèques
+   dynamiques sont bien identiques. Ce qui après plusieurs correction
+   a été le cas.  
 ** Test de StarPU - SMPI
-   StarPU est fourni avec des exemples de programme MPI notamment
-   d'algèbre linéaire tel que l'algorithme de Cholesky.
+   Comme les résultats du test simples étaient ceux attendu, nous
+   sommes passé à un test utilisant cette fois la vrai bibliothèque
+   StarPU. Cette dernière est fourni avec des exemples de programme MPI
+   notamment d'algèbre linéaire tel que l'algorithme de Cholesky. Nous
+   nous sommes servi de ces dernier afin de valider les
+   modifications. Cependant, malgré les ajouts apportés au test, ce
+   dernier était incomplet et il semble avoir des soucis au niveau de
+   l'initialisation de Simgrid côté StarPU.
+   Malheureusement par manque de temps il n'a pas été possible de
+   corriger le problème et donc les mesures n'ont pas encore pu être
+   effectuées.
+
+
 * Conclusion
+  
+
 
 #+Latex:\section*{Acknowledgments}
-This work is partially supported by the SONGS ANR project
-(11-ANR-INFRA-13). Experiments presented in this paper were carried
-out using the PLAFRIM experimental testbed, being developed under the
-Inria PlaFRIM development action with support from LABRI and IMB and
-other entities: Conseil Régional d'Aquitaine, Université de Bordeaux
-and CNRS.
+Je souhaite remercier...
 
 #+LaTeX: %\nocite{*}
 #+LaTeX: \def\raggedright{}

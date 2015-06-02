@@ -232,11 +232,20 @@
   - Caractéristiques:
     Resultat expérience + interprétation
 ** Test d'un cas simplifié d illustrant le comportement recherché
+   Permet d'isoler le problème.
 ** Test starpu smpi
+   Permet de valider les modifications faites.
 * Conclusion 
   - Caractéristiques
     Conséquences:
-    Travaux futurs:
-    -Test grid5k
+** Travaux futurs:
+   - Modifier simulateur.
+   - Effectuer mesures par simulation avec Simgrid.
+   - Solveur Chameleon https://project.inria.fr/chameleon/.
+   - Vérifier mesures obtenu par simulation avec test grid5k.
+   - Prolongement du stage.
+
+
+
     
 
