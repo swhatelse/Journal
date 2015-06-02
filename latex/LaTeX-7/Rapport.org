@@ -1,4 +1,4 @@
-#+TITLE:
+#+TITLE: 
 #+LANGUAGE:  fr
 #+OPTIONS: H:5 author:nil email:nil creator:nil timestamp:nil skip:nil toc:nil ^:nil
 #+TAGS: Arnaud(a) Luka(l)
@@ -56,7 +56,7 @@
 #+END_LaTeX
 
 #+BEGIN_LaTeX  
-\title{Insert your title here%\thanks{Grants or other notes
+\title{Modelisation et simulation d'applications dynamique pour plateformes Exascale%\thanks{Grants or other notes
 %about the article that should go on the front page should be
 %placed here. General acknowledgments should be placed at the end of the article.}
 }
@@ -64,8 +64,8 @@
 
 %\titlerunning{Short form of title}        % if too long for running head
 
-\author{Steven QUINITO MASNADA  \\ \and \\
-        Supervised by : Arnaud LEGRAND \and Luka STANISIC  %if many names separate them with \and.
+\author{Steven QUINITO MASNADA  \\ \\
+        Encadrants : Arnaud LEGRAND \and Luka STANISIC  %if many names separate them with \and.
 }
 
 %\authorrunning{Short form of author list} % if too long for running head
@@ -494,11 +494,11 @@ done
 ** SimGrid/MPI: Architecture générale
    Simgrid est composé de plusieurs modules, ceux auxquels nous nous
    intéressons sont les suivant: 
-    - MSG qui permet de simuler couche classique logiciels???
-    - SMPI est l'API qui permet de simuler la couche
-      MPI. Actuellement, la majeur partie des fonctionnalités MPI  
-      ont été implémentées. 
-      Le fonctionnement est le suivant :
+*** MSG qui permet de simuler couche classique logiciels???
+*** SMPI 
+    Cette API permet de simuler la couche MPI. Actuellement, la majeur
+    partie des fonctionnalités MPI ont été implémentées. 
+    Le fonctionnement est le suivant :
       - l'application que l'on veut tester est compilée en remplaçant
         le mpi.h classique par le mpi.h de Simgrid 
       - à l'édition de lien on remplace le main de l'application par
@@ -506,27 +506,41 @@ done
       - Ce dernier a pour rôle de préparer l'éxécution du simulateur
         en créant la plateforme et en déployant les processus SMPI qui
         exécuterons chacun le main de l'application MPI.
-      - Ces processus étant modélisés par des threads, l'espace
-        d'adressage est partagé et l'approche suivie par SMPI est de
-        privatiser les variables des processus en faisant un mmap du
-        segment data. 
+       
+      Sous Simgrid, les processus sont modélisés par des threads, ce
+      qui signifie que leur espace d'adressage est partagé.
+      Afin que ces dernier ce comporte comme de processus UNIX, il
+      est nécessaire que chaque processus n'est pas accès aux
+      variables d'un autre, c'est pourquoi un système de
+      privatisation a été mis en place. L'approche est la suivante:
+      pour chaque processus, une zone mémoire lui est alloué dans le
+      tas grâce a un mmap. Cette zone représente le segment données du
+      processus, et a chaque changement de contexte, on fait pointer
+      vers cette zone. 
 
+      #+ATTR_LATEX: :width 5cm
+      #+CAPTION: Privatisation du segment données
+      #+NAME:   fig:1
+      [[./Img/Memoire.jpg]]
+   
 ** StarPU-SG: Architecture générale   
 ** Ce qui coince
-   La difficulté vient du fait qu'à la base MSG et SMPI n'ont pas été prévus
-   pour fonctionner en ensemble. Comme en MPI on est dans un contexte
+   Comme nous l'avions évoqué un peu plus haut, les processus sont
+   modélisés par des threads, il faut donc un mécanisme de
+   privatisation afin que, comme avec les vrai processus, chacun
+   dispose d'un segment data qui soit propre. Sous Simgrid le
+   mécanisme est le suivant:
+
+   Comme en MPI on est dans un contexte
    d'espace mémoire distribuée, les processus MPI d'un même noeud
    doivent partager les données donc il faut faire en sorte que le
    segment data d'un processus soit rattaché à celui qui les a crées.
    Le schéma ci-dessous illustre le fonctionnement de la privatisation
    dans Simgrid.
-   #+ATTR_LATEX: :width 5cm
-   #+CAPTION: Privatisation du segment données
-   #+NAME:   fig:1
-   [[./Img/Memoire.jpg]]
 
-   De plus, il nous faut arriver à correctement initialiser en la partie MSG
-   et SMPI.
+   De plus, une autre difficulté vient du fait qu'à la base MSG et
+   SMPI n'ont pas été prévus pour fonctionner en ensemble. il nous
+   faut arriver à correctement initialiser en la partie MSG et SMPI.
    
 * Méthodologie
   Comme nous travaillons avec Simgrid et StarPU à la fois, nous
