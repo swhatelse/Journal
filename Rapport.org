@@ -206,6 +206,9 @@
   - Développements disponibles dans git et bientôt intégrés à SimGrid
     et à StarPU.
 * Contribution 2 / 3
+  Permettre de différencier ce qui a été fait avant et dans la
+  contribution
+
   - J'ai géré le partage du segment data en rajoutant ce qu'il fallait
     au niveau du changement de contexte (un indice par processus
     MPI...). Tout processus créé par MSG hérite du segment data de son
