@@ -492,18 +492,18 @@ done
 * Analyse du problème
 ** Simgrid
 ** SimGrid/MPI: Architecture générale
-   Simgrid est composé de plusieurs modules, les principaux sont:
-    - SURF qui simule la partie OS
+   Simgrid est composé de plusieurs modules, ceux auxquels nous nous
+   intéressons sont: 
     - MSG qui permet de simuler couche classique logiciels???
     - SMPI est l'API qui permet de simuler la couche
-      MPI. Actuellement, la majeur partie des fonctionnalités MPI 
+      MPI. Actuellement, la majeur partie des fonctionnalités MPI  
       ont été implémentées. 
       Le fonctionnement est le suivant :
       - l'application que l'on veut tester est compilée en remplaçant
         le mpi.h classique par le mpi.h de Simgrid 
       - à l'édition de lien on remplace le main de l'application par
         celui de Simgrid.
-      - Ce dernier s'occupera préparer l'éxécution du simulateur
+      - Ce dernier a pour rôle de préparer l'éxécution du simulateur
         en créant la plateforme et en déployant les processus SMPI qui
         exécuterons chacun le main de l'application MPI.
       - Ces processus étant modélisés par des threads, l'espace
@@ -517,7 +517,7 @@ done
    d'espace mémoire distribué, les processus MPI d'un même noeud
    doivent partager les données donc il faut faire en sorte que le
    segment data d'un processus soit rattaché à celui qui les a crées.
-   Il nous faut arriver à correctement initialiser en la partie MSG
+   De plus, il nous faut arriver à correctement initialiser en la partie MSG
    et SMPI.
    
 * Méthodologie
@@ -531,17 +531,29 @@ done
   de pouvoir garder le fil d'un jour à l'autre, un cahier de
   laboratoire est tenu en org-mode et est hébergé sur github. Cela permet
   également à mon tuteur de stage de savoir chaque jours l'avancement
-  du projet.
+  du projet et des difficultés rencontrées.
   
   Comme on l'a vu précédemment il est nécessaire d'apporter quelques
-  modifications au niveau du simulateur. Il a été dans un premier
+  modifications au niveau du simulateur. Dans ce but, il a été dans un premier
   temps nécessaire de consulter la documentation afin de comprendre le 
   fonctionnement et l'architecture de Simgrid. Ensuite il a fallut
-  explorer le code afin de déterminer où apporter les
-  modifications. Pour cela les outils tels que GDB, valgrind, les
-  etags et cgvg ont été d'une aide précieuse.
+  explorer le code afin de déterminer où et comment apporter les
+  modifications. Pour cela les outils tels que GDB, Valgrind, les
+  etags et CGVG ont été d'une aide précieuse.
 
 * Contribution
+  La toute première chose à réaliser afin de pouvoir effectuer des
+  mesures, a été la gestion du partage du segment de données au niveau
+  du simulateur. Comme la mémoire est partagée au sein d'un noeud, nous
+  avons fait en sorte que les processus d'un même noeud aient leurs
+  segment données en commun. Le principe est le suivant, il y a dans
+  un premier temps, les processus SMPI qui sont créés au lancement de
+  l'application avec leur propre espace de données. Puis ces dernier
+  peuvent à leurs tours créer de nouveau processus. Ceux-ci héritent
+  donc du segment de données du processus qui les a créés.
+
+  Une fois la privatisation mise en place, nous
+
 * Validation
 * Conclusion
 
