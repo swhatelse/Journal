@@ -378,9 +378,8 @@ done
 * Introduction
 
   La majorité des supercalculateurs actuels sont des clusters
-  massivement parallèles et souvent de type
-  hétérogènes(CPU-GPU). De ce fait certains standard ce sont
-  imposés. 
+  massivement parallèles et souvent de type hétérogènes(CPU-GPU). De
+  ce fait certains standard ce sont imposés. 
   
   Il y a tout d'abord la norme MPI (Message Passing Interface),
   qui est une API de communication basée sur l'envoi et la
@@ -395,18 +394,18 @@ done
   explicitement de ce que l'on veut envoyer aux GPUs et on doit
   également gérer la synchronisation 
   
-  L'objectif étant optimiser le rendemment d'une application afin
-  que cette dernière tire partie de toute la puissance disponible, il faut
+  L'objectif étant optimiser le rendemment d'une application afin que
+  cette dernière tire partie de toute la puissance disponible, il faut 
   faire en sorte d'occuper au maximum le plus d'unités de calcul possible.
   Le problème est que l'on se retrouve à devoir utiliser plusieurs
   paradigme à la fois ce qui complique grandement la
   programmation.
   
-  Généralement, on procède soit en délèguant tout 
-  les calculs aux GPUs, laissant les CPUs en idle. Soit on réparti
-  la charge entre les CPUs et les GPUs de manière complètement
-  statique. L'inconvéniant est que la mise en pratique très
-  difficile car il est hardu de trouver un bon équilibrage. 
+  Généralement, on procède soit en délèguant tout les calculs aux
+  GPUs, laissant les CPUs en idle. Soit on réparti la charge entre les
+  CPUs et les GPUs de manière complètement statique. L'inconvénient
+  est que la mise en pratique très difficile car il est hardu de
+  trouver un bon équilibrage.
   
   Cependant même si l'on arrive à équilibrer les charges
   correctemment, on peut avoir des cas où certaines unités de
@@ -488,7 +487,7 @@ done
    Pour cela nous allons utiliser le logiciel Simgrid qui est un simulateur
    de systèmes distribués, de grilles de calculs, de systèmes peer to
    peer et cloud.
-
+   
 * Analyse du problème
 ** Simgrid: Les processus
    Sous Simgrid, les processus sont modélisés par des threads, ce
@@ -515,13 +514,13 @@ done
     Cette API permet de simuler la couche MPI. Actuellement, la majeur
     partie des fonctionnalités MPI ont été implémentées. 
     Le fonctionnement est le suivant :
-      - l'application que l'on veut tester est compilée en remplaçant
-        le mpi.h classique par le mpi.h de Simgrid 
-      - à l'édition de lien on remplace le main de l'application par
-        celui de Simgrid.
-      - Ce dernier a pour rôle de préparer l'éxécution du simulateur
-        en créant la plateforme et en déployant les processus SMPI qui
-        exécuterons chacun le main de l'application MPI.
+    - l'application que l'on veut tester est compilée en remplaçant
+      le mpi.h classique par le mpi.h de Simgrid 
+    - à l'édition de lien on remplace le main de l'application par
+      celui de Simgrid.
+    - Ce dernier a pour rôle de préparer l'éxécution du simulateur
+      en créant la plateforme et en déployant les processus SMPI qui
+      exécuterons chacun le main de l'application MPI.
              
 ** StarPU-SG: Architecture générale   
    StarPU a été modifié afin de pouvoir fonctionner au dessus du
