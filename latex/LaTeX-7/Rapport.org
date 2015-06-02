@@ -552,7 +552,19 @@ done
   peuvent à leurs tours créer de nouveau processus. Ceux-ci héritent
   donc du segment de données du processus qui les a créés.
 
-  Une fois la privatisation mise en place, nous
+  Une fois la privatisation mise en place, nous avons constaté qu'il y
+  avait un cas que nous n'avions pas pris en compte: celui des
+  librairies dynamiques. En effet, nous n'avons privatiser que le
+  segment données des applications or, les variables
+  globales des librairies dynamiques ne se trouvent pas dans le segment
+  données du processus et se retrouvent donc partagées.
+  La solution qui nous avons employé est d'utiliser donc une version
+  statique de la librairie. Ainsi, les variables globales se
+  retrouvent dans le segment données du processus et ainsi la
+  privatisation s'effectue grâce au mécanisme précédent. Cependant
+  cette solution comporte une limitation car elle nécessite de changer la
+  chaîne de compilation des applications utilisant StarPU, mais cela
+  nous sera suffisant pour effectuer nos tests. 
 
 * Validation
 * Conclusion
