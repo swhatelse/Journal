@@ -8,51 +8,9 @@
   source:
   http://energie.edf.com/nucleaire/comment-ca-marche-y/les-differents-types-de-centrales-nucleaires-48384.html
 
-** Pas draft
-  Dans le domaine des supercalculateurs, la course à la performance est
-  un point crucial. Actuellement, le supercalculateur le plus puissant (le
-  TianHe-2) est capable d'effectuer environ 33.86 Peta opérations
-  flotantes par secondes. Cependant, cette course est freinée par un
-  facteur qui prend désormais une importance capitale: le coût
-  énergétique. En effet, le supercalculateur chinois TianHe-2 a une
-  consommation qui atteint presque les 18MW et
-  avec la génération exascale, la consommation estimée sera entre 20MW
-  et 40MW. Dans l'état des faits, ce n'est pas réalisable et pour
-  pouvoir atteindre l'exaflops, il est nécessaire d'optimiser d'autres
-  points que la puissance des puces. Evidemment des optimisations
-  peuvent être faites au niveau matériel afin de réaliser des
-  composants à haute efficacité énergétique. On peut également
-  optimiser le rendement en utilisant au mieux les capacités du
-  matériel. Cette optimisation se fait donc du côté logiciel et pour
-  cela il nous faut  envisager un changement de méthode de programmation.
-  C'est cette dernière approche que nous allons étudier. L'objectif de mon
-  stage au sein de l'équipe MESCAL, sous la tutelle d'Arnaud Legrand,
-  est donc de tenter de mesurer le gain d'une telle solution. 
-  
-  Pour cela nous allons, dans une première partie, voir comment est
-  effectuée en générale la programmation en HPC (High Performance computing), quels sont les différents
-  standards et pourquoi nous nous sommes concentrés sur MPI. Nous
-  discuterons ensuite du principe et de l'intérêt d'un nouveau
-  paradigme de programmation et de la librairie StarPU. Nous
-  constaterons ensuite que malgrès les apports de cette méthodes des
-  difficultés subsites et les mesures peuvent-être compliquées a
-  effectuées. C'est pourquoi dans une seconde partie, nous étudierons
-  les différents approches pour évaluer les performances
-  d'applications HPC et nous justifierons notre choix pour la
-  simulation/émulation et en particulier pour l'outils Simgrid. Dans
-  une troisième partie nous examinerons en détail Simgrid et StarPU
-  ainsi que les différents problèmes que nous avons rencontrés. Dans
-  une quatrième partie, nous verrons les méthodes employées. En
-  cinquième partie, nous verrons les modifications apportés à Simgrid
-  afin de pouvoir effectuer les mesures. Ensuite dans une sixième
-  partie, nous verrons comment ces changements ont été validés. Et
-  pout finir nous conclurons sur les résultats que nous avons réussit
-  à obtenir.
-
 * Contexte / Problèmatique -> Real Intro 1
 ** Programmation "classique": MPI, OpenMP, CUDA
-*** Draft
-    source: http://www.top500.org
+   source: http://www.top500.org
     Système à mémoire distribuée. Cluster, hétérogène.
 
     De facto Standard en HPC:
@@ -74,56 +32,7 @@
      modèles de programmation.
    - même si pas de déséquilibrage de charge, une exécution
      statique/rigide induit artificiellement de l'idle time.
-*** Pas draft
-     La majorité des supercalculateurs actuels sont des clusters
-     massivement parallèles et souvent de type
-     hétérogènes(CPU-GPU). De ce fait certains standards ce sont
-     imposés. 
-
-     Il y a tout d'abord la norme MPI (Message Passing Interface),
-     qui est une API de communication basée sur l'envoi et la
-     récéption de message. Elle réputée pour être performante et
-     portable, et elle est de plus haut niveau que les sockets.
-     
-     Ensuite, il y a l'API OpenMP qui est une interface de
-     multihreading de plus haut niveau de PThread...
-
-     Enfin, l'API CUDA permet tirer partie de la puissance de calculer
-     des GPU. Mais pour cela il est nécessaire de spécifier
-     explicitement de ce que l'on veut envoyer aux GPUs et on doit
-     également gérer la synchronisation 
-
-     L'objectif étant optimiser le rendemment d'une application afin
-     que cette dernière tire partie de toute la puissance disponible, il faut
-     faire en sorte d'occuper au maximum le plus d'unités de calcul possible.
-     Le problème est que l'on se retrouve à devoir utiliser plusieurs
-     paradigme à la fois ce qui complique grandement la
-     programmation.
-
-     Généralement, on procède soit en délèguant tout 
-     les calculs aux GPUs, laissant les CPUs en idle. Soit on réparti
-     la charge entre les CPUs et les GPUs de manière complètement
-     statique. L'inconvéniant est que la mise en pratique très
-     difficile car il est hardu de trouver un bon équilibrage. 
-     
-     Cependant même si l'on arrive à équilibrer les charges
-     correctemment, on peut avoir des cas où certaines unités de
-     caluls ne sont pas occupées alors qu'elles le pourraient. Cela se
-     produit quand par exemple lorsque certaines unités de calculs
-     attendent la terminaisons de certain traitements alors que
-     d'autres auraient put être effectuer en attendant. Cela est dû au
-     fait que l'exécution soit statique et induit un idle time
-     artificiel. De plus cette solution n'est pas portable car le
-     découpage des traitements ce fait en fonction de la plateforme
-     cible.
-
-     La solution serait donc d'avoir une gestion dynamique des
-     charges. Mais cela s'avère bien plus ardue, voir impossible
-     à réaliser directement avec ces méthodes de programmation. Alors
-     essayons en une autre.
-     
 ** Programmation "nouvelle génération": StarPU
-*** Draft
    L'architecture des HPC est une architecture massivement parallèle
    et le rendement peut-être améliorer en occupant le plus possible un
    maximum d'unité de calcul.
@@ -137,37 +46,13 @@
    l'exécution/ordonnancement dynamique/opportuniste aussi dans le cas
    du distribué et potentiellement répartir dynamiquement les tâches
    en fonction de la charge entre les noeuds.
-*** Pas draft
-    La librairie StarPU est un système runtime qui permet une
-    répartition des traitements de manière dynamique et opportuniste. 
-    Pour ce faire elle introduit un nouveau paradigme basé sur les
-    tâches. StarPU génère un graphe de dépendance permettant
-    d'optimiser le l'ordonnancement de ces dernières.
-
-    La première version de StarPU a été conçu spécialement pour des
-    architectures hybrides. Une version récente (StarPU MPI) a été
-    réalisée pour bénéficier d'un ordonnance et d'une exécution qui
-    soit à la fois dynamique et opportunistes dans un contexte
-    distribuée afin de répartir la charge entre les différents
-    noeuds.
-
 ** Des difficultés récurrentes:
-*** Draft
    - Configuration du runtime
    - Exécution encore moins déterministe qu'avant donc difficile à
      modéliser. Difficulté de dimensionnement.
    - Impact de la plate-forme.
-*** Pas draft
-    Cependant des difficultés persitent. Comme l'exécution est
-    dynamique et opportuniste, nous sommes très loin d'un modèle
-    déterministe ce qui rend la modélisation difficile.
-    
 ** Problèmatique:
-*** Draft
     Comment évaluer les performances d'applications StarPU MPI?
-*** Pas draft
-    Nous allons donc voir comment évaluer les performances
-    d'applications basés sur StarPU MPI.
 * Etat de l'art 1
 *** Draft
     Approches pour l'évaluation de performance d'applications HPC
@@ -259,11 +144,8 @@
 
 * Analyse du problème 1
 ** SG:
-*** Draft
     Plusieurs API MSG, SMPI, un seul kernel SIMIX
-*** Pas draft
 ** SimGrid/MPI: Architecture générale
-*** Draft
    Principe: smpi fourni l'API MPI. À la compilation (smpicc) compile
    avec un mpi.h de SimGrid (compatible avec la majeur partie du
    standard MPI) remplace le main (avec cpp) par smpi_simulated_main et
@@ -292,31 +174,7 @@
      de code mais insérer à la place un délai simulé.
    - diminuer l'empreinte mémoire: ne pas allouer toutes les données
      (ne pas allouer ou bien faire de l'aliasing mémoire).
-*** Pas draft
-    Simgrid est composé de plusieurs modules, les principaux sont:
-    - SURF qui simule la partie OS
-    - MSG qui permet de simuler couche classique logiciels???
-    - SMPI est l'API qui permet de simuler la couche
-      MPI. Actuellement, la majeur partie des fonctionnalités MPI 
-      ont été implémentées. 
-      Le fonctionnement est le suivant :
-      - l'application que l'on veut tester est compilée en remplaçant
-        le mpi.h classique par le mpi.h de Simgrid 
-      - à l'édition de lien on remplace le main de l'application par
-        celui de Simgrid.
-      - Ce dernier s'occupera préparer l'éxécution du simulateur
-        en créant la plateforme et en déployant les processus SMPI qui
-        exécuterons chacun le main de l'application MPI.
-      - Ces processus étant modélisés par des threads, l'espace
-        d'adressage est partagé et l'approche suivie par SMPI est de
-        privatiser les variables des processus en faisant un mmap du
-        segment data. 
-
-  
-
-
 ** StarPU-SG: Architecture générale
-*** Draft
    Basé sur MSG car API la plus proche (en particulier, création de
    threads et de synchros).
    
@@ -331,28 +189,15 @@
    StarPU de base = des threads dans un seul processus donc rien
    d'aussi compliqué à faire que ce qui avait été nécessaire pour
    SMPI.
-*** Pas draft
-    À la base StarPU est basé sur MSG. 
 ** Ce qui coince
-*** Draft
-  De base, MSG et SMPI pas prévus pour fonctionner ensemble. Besoin de
+   De base, MSG et SMPI pas prévus pour fonctionner ensemble. Besoin de
   - partage de data par les threads StarPU appartenant au même
     processus MPI. Attention aux librairies dynamiques.
   - Initialiser correctement à la fois la partie SMPI de SimGrid et la
     partie MSG
   - Permettre d'avoir des modèles différents selon qu'on est entre
     noeuds ou à l'intérieur d'un noeud
-*** Pas draft
-    La difficulté vient du fait que MSG et SMPI n'ont pas été prévu
-    pour fonctionner en ensemble. Comme en MPI on est dans un contexte
-    d'espace mémoire distribué, les processus MPI d'un même noeud
-    doivent partager les données donc il faut faire en sorte que le
-    segment data d'un processus soit rattaché à celui qui les a crées.
-    Il nous faut arriver à correctement initialiser en la partie MSG
-    et SMPI.
-    
 * Méthodologie 1
-*** Draft
   - Modification de deux code bases complexes. Utilisation de git
     submodule comprenant les deux.
   - Utilisation d'org-mode/github pour cahier de laboratoire.
@@ -360,10 +205,7 @@
     code et déterminer où apporter les modifications
   - Développements disponibles dans git et bientôt intégrés à SimGrid
     et à StarPU.
-*** Pas draft
-    
 * Contribution 2 / 3
-*** Draft
   - J'ai géré le partage du segment data en rajoutant ce qu'il fallait
     au niveau du changement de contexte (un indice par processus
     MPI...). Tout processus créé par MSG hérite du segment data de son
