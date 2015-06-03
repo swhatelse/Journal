@@ -1,5 +1,4 @@
 * Intro -> Abstract
-** Draft
   Supercalculateur -> course à la performance.
   Mais facteurs limitant coût energétique, chauffe.
   Envisager changement de methode de programmation visant à optimiser
@@ -54,7 +53,6 @@
 ** Problèmatique:
     Comment évaluer les performances d'applications StarPU MPI?
 * Etat de l'art 1
-*** Draft
     Approches pour l'évaluation de performance d'applications HPC
 
     - Caractéristiques:
@@ -62,40 +60,15 @@
       Quels sont les autres approches possibles?
       Pourquoi on suit cette piste?
       Expliquer les choix
-*** Pas draft
-    En HPC, il y a trois grandes approches possible pour évaluer les
-    performances d'application.
 ** Test sur systèmes réels
-*** Draft
    Difficulté d'accès à la plateforme, reproductibilité des
    expériences, coût, extrapolation, ...
 
    On voudrait une approche moins coûteuse...
-*** Pas draft
-    La première est de lancer la vrai application sur le système
-    réel afin d'effectuer les mesures. Cependant cette méthode peut se 
-    révéler très couteuse et il n'est pas toujours possible d'avoir
-    accès à la plateforme. De plus comme les expérimentations ne
-    peuvent être effectuées sur que sur un petit nombre de plateforme
-    notamment à cause de coût, on ne peut pas vraiment extrapoler les
-    résultats. Dernier point important, nous n'avons pas de contrôle
-    sur les décisions d'ordonnancements, d'une exécution à l'autre on
-    peut avoir des résultats différents ce qui fait que les
-    expériences ne sont pas reproductibles. 
 ** L'approche par rejeu de trace
-*** Draft
    Classique pour étudier des applications MPI mais inadaptée ici car
    exécution dynamique.
-*** Pas draft
-    Cette méthode consiste à exécuter une première l'application sur
-    un système réel pour ensuite pour ensuite rejouer la trace
-    post-mortem. Elle est couramment employé dans le contexte
-    d'application MPI mais est ici totalement inadaptés car nous avons
-    à faire des programmes qui sont non déterministes. En effet, on ne
-    pourra pas connaitre les autres actions qu'il était possible
-    d'effectuer plutôt qu'un autre, ni leur impact.
 ** La simulation/émulation
-*** Draft
    L'application et le runtime sont exécutés pour de vrai (émulés)
    mais l'exécution des kernels de calculs et les transferts de
    données sont simulés. 
@@ -111,37 +84,6 @@
   Les deux approches existe mais arrive-t-on à les utiliser
   ensemble?...
   
-*** Pas draft
-    Ici le runtime et l'application sont émulés (exécutés réellement)
-    mais l'exécution des kernels de calculs et les transferts de
-    données sont simulés. 
-    
-    On a d'une part la simulation où l'on crée un faux environnement
-    proche de la réalité et où les actions ne sont pas réellement
-    effectués. Dans notre cas on simulerait donc la plateforme de même que l'OS. 
-    Ainsi, les expérimentations peuvent être effectuées à
-    partir de n'importe quel système, il n'est plus nécessaire d'avoir
-    accès à la plateforme, ce qui rend cette approche peu
-    coûteuse. 
-    Par ailleur il est facile d'extrapoler les résultats car
-    on peut simuler un nombre important de plateformes.  
-    Ensuite la simulation permet d'avoir un temps d'exécution plus
-    court qu'avec des tests réels car on n'effectue que certains 
-    traitements ce qui nous permet pouvoir effectuer un grand nombre
-    de mesures.  
-    Enfin comme la simulation nous permettrait d'avoir un contrôle sur
-    l'ordonnancement, nous pourrions avoir un système déterministe qui
-    nous permettrait d'avoir des expériences qui peuvent être reproduites.
-    
-    Et d'autre part l'émulation où l'on exécuterait en vrai le programme
-    programme sur le système simulé. 
-    
-    Nous allons tenter de voir si nous pouvons conciller les deux approches.
-
-    Pour cela nous allons utiliser le logiciel Simgrid qui est un simulateur
-    de systèmes distribués, de grilles de calculs, de systèmes peer to
-    peer et cloud.
-
 * Analyse du problème 1
 ** SG:
     Plusieurs API MSG, SMPI, un seul kernel SIMIX
