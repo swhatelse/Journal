@@ -123,24 +123,26 @@ récéption de message. Elle réputée pour être performante et
 portable, et elle est de plus haut niveau que les sockets.
 
 Ensuite, il y a l'API OpenMP qui est une interface de
-multihreading de plus haut niveau de PThread\ldots{}
+multihreading de plus haut niveau de PThread. Elle permet de
+découper facilement des traitements mais cependant elle ne permet
+d'avoir de contrôle sur la priorité des threads, comme cela reste à
+la charge de l'ordonnanceur du noyau. 
 
 Enfin, l'API CUDA permet tirer partie de la puissance de calcul
-des GPU. Mais pour cela il est nécessaire de spécifier
-explicitement de ce que l'on veut envoyer aux GPUs et on doit
-également gérer la synchronisation 
+des GPU. Pour cela il est nécessaire de spécifier explicitement de
+ce que l'on veut envoyer aux GPUs et on doit également gérer la
+synchronisation.  
 
-L'objectif étant optimiser le rendemment d'une application afin que
-cette dernière tire partie de toute la puissance disponible, il faut 
-faire en sorte d'occuper au maximum le plus d'unités de calcul possible.
+Si l'on veut optimiser le rendement d'une application afin que
+celle-ci tire partie de toute la puissance disponible, il faut faire
+en sorte d'occuper au maximum le plus d'unités de calculs possible.  
 Le problème est que l'on se retrouve à devoir utiliser plusieurs
-paradigme à la fois ce qui complique grandement la
-programmation.
+paradigme à la fois ce qui complique grandement la programmation.
 
 Généralement, on procède soit en délèguant tout les calculs aux
 GPUs, laissant les CPUs en idle. Soit on réparti la charge entre les
 CPUs et les GPUs de manière complètement statique. L'inconvénient
-est que la mise en pratique très difficile car il est hardu de
+est que la mise en pratique très difficile car il est ardu de
 trouver un bon équilibrage.
 
 Cependant même si l'on arrive à équilibrer les charges
@@ -149,13 +151,13 @@ caluls ne sont pas occupées alors qu'elles le pourraient. Cela se
 produit quand par exemple lorsque certaines unités de calculs
 attendent la terminaisons de certain traitements alors que
 d'autres auraient put être effectuer en attendant. Cela est dû au
-fait que l'exécution soit statique et induit un idle time
+fait que l'exécution soit statique et ce qui induit un idle time
 artificiel. De plus cette solution n'est pas portable car le
 découpage des traitements ce fait en fonction de la plateforme
 cible.
 
 La solution serait donc d'avoir une gestion dynamique des
-charges. Mais cela s'avère bien plus ardue, voir impossible
+charges. Mais cela s'avère bien plus ardu, voir impossible
 à réaliser directement avec ces méthodes de programmation. Alors
 essayons en une autre.
 
@@ -174,6 +176,19 @@ noeuds.
 
 Nous allons donc voir comment évaluer les performances
 d'applications basés sur StarPU MPI.
+
+Pour cela nous verrons, dans une première partie, les différentes
+approches pour l'évaluation de performances d'applications en HPC et
+pourquoi nous avons choisi le simulateur Simgrid. Dans une seconde
+partie, nous examinerons en détail Simgrid et StarPU ainsi que les
+différents problèmes que nous avons rencontrés. Après quoi, dans une
+troisième parte, nous verrons les méthodes employées pour répondre à
+ces problèmes. Dans une quatrième partie, nous aborderons les
+modifications apportées à Simgrid afin de pouvoir effectuer les
+mesures. Ensuite dans une cinquième partie, nous verrons le
+processus de validation de ces changement. Et pout finir, dans une
+sixième partie, nous conclurons sur les résultats que nous avons
+réussit à obtenir. 
 
 \section{État de l'art}
 \label{sec-2}

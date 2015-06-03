@@ -185,7 +185,7 @@
   - Caractéristiques
     Conséquences:
 ** Travaux futurs:
-   - Modifier simulateur.
+   - Modifier simulateur -> correction, privatisation lib dyn.
    - Effectuer mesures par simulation avec Simgrid.
    - Solveur Chameleon https://project.inria.fr/chameleon/.
    - Vérifier mesures obtenu par simulation avec test grid5k.

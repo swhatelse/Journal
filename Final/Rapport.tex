@@ -193,7 +193,7 @@ réussit à obtenir.
 \section{État de l'art}
 \label{sec-2}
 En HPC, il y a trois grandes approches possible pour évaluer les
-performances d'application.
+performances d'applications.
 \subsection{Test sur systèmes réels}
 \label{sec-2-1}
 Cette approche consiste à lancer la vrai application sur le système
@@ -208,40 +208,41 @@ peut avoir des résultats différents ce qui fait que les
 expériences ne sont pas reproductibles. 
 \subsection{L'approche par rejeu de trace}
 \label{sec-2-2}
-Cette méthode consiste à exécuter une première l'application sur
-un système réel pour ensuite pour ensuite rejouer la trace
-post-mortem. Elle est couramment employé dans le contexte
+Cette méthode consiste à exécuter une première fois l'application
+sur un système réel pour ensuite pour ensuite rejouer la trace
+post-mortem. Elle est couramment employé dans le contexte 
 d'application MPI mais est ici totalement inadaptés car nous avons
-à faire des programmes qui sont non déterministes. En effet, on ne
-pourra pas connaitre les autres actions qu'il était possible
-d'effectuer plutôt qu'un autre, ni leur impact.
+à faire à des programmes qui sont non déterministes. En effet, on ne
+pourra pas connaître les autres actions qu'il était possible
+d'effectuer plutôt qu'une autre, ni leurs impacts.
 \subsection{La simulation/émulation}
 \label{sec-2-3}
 On a d'une part la simulation où l'on crée un faux environnement
 proche de la réalité et où les actions ne sont pas réellement
 effectués. Dans notre cas on simulerait donc la plateforme de même que l'OS. 
-Ainsi, les expérimentations peuvent être effectuées à
-partir de n'importe quel système, il n'est plus nécessaire d'avoir
-accès à la plateforme, ce qui rend cette approche peu
-coûteuse. 
-Par ailleur il est facile d'extrapoler les résultats car
-on peut simuler un nombre important de plateformes.  
-Ensuite la simulation permet d'avoir un temps d'exécution plus
-court qu'avec des tests réels car on n'effectue que certains 
-traitements ce qui nous permet pouvoir effectuer un grand nombre
-de mesures.  
+Ainsi, les expérimentations peuvent être effectuées à partir de
+n'importe quel système, il n'est plus nécessaire d'avoir accès à la
+plateforme, ce qui rend cette approche peu coûteuse. 
+Par ailleur il est facile d'extrapoler les résultats car on peut
+simuler un nombre important de plateformes. Ensuite la simulation
+permet d'avoir un temps d'exécution plus court qu'avec des tests
+réels car on n'effectue que certains traitements ce qui nous permet
+pouvoir effectuer un grand nombre de mesures.  
 Enfin comme la simulation nous permettrait d'avoir un contrôle sur
 l'ordonnancement, nous pourrions avoir un système déterministe qui
 nous permettrait d'avoir des expériences qui peuvent être reproduites.
 
-Et d'autre part l'émulation où l'on exécuterait en vrai le programme
-programme sur le système simulé. 
+Et on a d'autre part l'émulation où l'on exécuterait en vrai le
+programme sur le système simulé. Ainsi, seul le runtime de StarPU sera
+réellement exécuté, nous pourrons donc étudier son impact sur le
+performances dans un contexte MPI.
 
-Nous allons tenter de voir si nous pouvons conciller les deux approches.
-
-Pour cela nous allons utiliser le logiciel Simgrid qui est un simulateur
-de systèmes distribués, de grilles de calculs, de systèmes peer to
-peer et cloud.
+C'est pour ses divers avantages que nous avons opter pour la
+simulation / émulation. Le logiciel qui a été choisi est Simgrid, 
+un simulateur de systèmes distribués, de grilles de calculs, de
+systèmes peer to peer et cloud.
+De plus StarPU a récemment été portée au-dessus de Simgrid et
+concilie l'approche simulation /  évaluation.
 
 \section{Analyse du problème}
 \label{sec-3}
@@ -298,7 +299,9 @@ par un délais de même pour les transferts CUDA.
 Comme en MPI on est dans un contexte d'espace mémoire distribuée,
 les processus MPI d'un même noeud doivent partager les données donc
 il faut faire en sorte que le segment data d'un processus soit
-rattaché à celui qui les a crées. 
+rattaché à celui qui les a crées. Or, comment concilier à la fois
+la privatisation du segment données entre les processus de noeud
+différents et le partage entre les processus d'un même noeud?
 
 De plus, une autre difficulté vient du fait qu'à la base MSG et
 SMPI n'ont pas été prévus pour fonctionner en ensemble. il nous
@@ -308,9 +311,9 @@ faut arriver à correctement initialiser en la partie MSG et SMPI.
 \label{sec-4}
 Comme nous travaillons avec Simgrid et StarPU à la fois, nous
 utilisons un dépôt complexe comprenant les deux et gérer avec
-l'outils submodule de git. Ce dernier nous de gérer des sous dépôt
-indépendemment, ainsi il est plus aisé de traiter les mises à jours
-de ces derniers.
+l'outils submodule de git. Ce dernier nous permet de gérer des sous
+dépôt indépendemment, ainsi il est plus aisé de traiter les mises à
+jours de ces derniers.
 
 Afin de pouvoir retracer le cheminement de mon travail, mais aussi
 de pouvoir garder le fil d'un jour à l'autre, un cahier de
@@ -319,33 +322,35 @@ laboratoire est tenu en org-mode et est hébergé sur github. Cela permet
 du projet et des difficultés rencontrées.
 
 Comme on l'a vu précédemment il est nécessaire d'apporter quelques
-modifications au niveau du simulateur. Dans ce but, il a été dans un premier
-temps nécessaire de consulter la documentation afin de comprendre le 
-fonctionnement et l'architecture de Simgrid. Ensuite il a fallut
-explorer le code afin de déterminer où et comment apporter les
-modifications. Pour cela les outils tels que GDB, Valgrind, les
-etags et CGVG ont été d'une aide précieuse.
+modifications au niveau du simulateur. Dans ce but, il a été dans un
+premier temps nécessaire de consulter la documentation afin de
+comprendre le fonctionnement et l'architecture de Simgrid. Ensuite
+il a fallut explorer le code afin de déterminer où et comment
+apporter les modifications. Pour cela les outils tels que GDB,
+Valgrind, les etags et CGVG ont été d'une aide précieuse.
 
 \section{Contribution}
 \label{sec-5}
 La toute première chose à réaliser afin de pouvoir effectuer des
 mesures, a été la gestion du partage du segment de données au niveau
-du simulateur. Comme la mémoire est partagée au sein d'un noeud, nous
-avons fait en sorte que les processus d'un même noeud aient leurs
-segment données en commun. Le principe est le suivant, il y a dans
-un premier temps, les processus SMPI qui sont créés au lancement de
-l'application avec leur propre espace de données. Puis ces dernier
-peuvent à leurs tours créer de nouveau processus. Ceux-ci héritent
-donc du segment de données du processus qui les a créés. Nous avons
-donc fait pointés le segment données des processus fils sur celui du
-père et un switch est effectué au changement de contexte.
+du simulateur dans un contexte SMPI. Comme la mémoire est partagée
+au sein d'un noeud, nous avons fait en sorte que les processus d'un
+même noeud aient leurs segment données en commun. Le principe est le
+suivant, il y a dans un premier temps, les processus SMPI qui sont
+créés au lancement de l'application avec leur propre espace de
+données. Puis ces dernier peuvent à leurs tours créer de nouveau
+processus. Ceux-ci héritent donc du segment de données du processus
+qui les a créés. Nous avons donc fait pointés le segment données des
+processus fils sur celui du père et un échange est effectué au
+changement de contexte.
 
-Une fois la privatisation mise en place, nous avons constaté qu'il y
-avait un cas que nous n'avions pas pris en compte: celui des
-librairies dynamiques. En effet, nous n'avons privatiser que le
-segment données des applications or, les variables
-globales des librairies dynamiques ne se trouvent pas dans le segment
-données du processus et se retrouvent donc partagées.
+Une fois la gestion du partage mise en place, nous avons constaté
+qu'il y avait un cas que nous n'avions pas pris en compte: celui des
+librairies dynamiques. En effet, nous n'avons privatisé que le
+segment données des processus or, les variables globales des
+librairies dynamiques (DSO sur le schéma ci-dessous) ne se trouvent
+pas dans le segment données du processus et se retrouvent donc
+partagées. 
 
 \begin{figure}[htb]
 \centering
@@ -356,12 +361,10 @@ données du processus et se retrouvent donc partagées.
 La solution qui nous avons employé est d'utiliser donc une version
 statique de la librairie. Ainsi, les variables globales se
 retrouvent dans le segment données du processus et ainsi la
-privatisation s'effectue grâce au mécanisme précédent. Cependant
-cette solution comporte une limitation car elle nécessite de changer la
-chaîne de compilation des applications utilisant StarPU, mais cela
-nous sera suffisant pour effectuer nos tests. 
-
-Ensuite comme nous l'avons évoqué tout à l'heure, MSG et SMPI 
+privatisation et le partage s'effectue grâce au mécanisme
+précédent. Cependant cette solution comporte une limitation car elle
+nécessite de changer la chaîne de compilation des applications
+utilisant StarPU, mais cela sera suffisante pour effectuer nos tests. 
 
 \section{Validation}
 \label{sec-6}
@@ -385,16 +388,23 @@ sommes passé à un test utilisant cette fois la vrai bibliothèque
 StarPU. Cette dernière est fourni avec des exemples de programme MPI
 notamment d'algèbre linéaire tel que l'algorithme de Cholesky. Nous
 nous sommes servi de ces dernier afin de valider les
-modifications. Cependant, malgré les ajouts apportés au test, ce
-dernier était incomplet et il semble avoir des soucis au niveau de
-l'initialisation de Simgrid côté StarPU.
-Malheureusement par manque de temps il n'a pas été possible de
-corriger le problème et donc les mesures n'ont pas encore pu être
-effectuées.
-
+modifications. Cependant, malgré les ajouts apportés au test, ce 
+dernier était incomplet et il semble qu'il y a avoir des soucis au
+niveau de  l'initialisation de Simgrid côté StarPU.
 
 \section{Conclusion}
 \label{sec-7}
+Malheureusement par manque de temps il n'a pas encore été possible
+de corriger le problème et donc les mesures prévues n'ont pas encore
+pu être réalisées. Bien qu'aucune expérimentation n'est pu être
+faites, les problèmes rencontrés sont plutôt des problèmes d'ordre
+techniques qui ne nous permettent pas d'invalider l'hypothèse que
+l'approche simulation / émulations est la plus approprié pour
+évaluer les performances d'un runtime dynamique d'application MPI.
+
+En effet il reste a corriger le processus d'initialisation côté
+StarPU afin de pouvoir
+
 
 Afin de pouvoir conclure sur la question de comment évaluer les
 performances de StarPU-MPI et il faudra finir de valider les
