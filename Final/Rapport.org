@@ -62,13 +62,13 @@
 }
 %\subtitle{Do you have a subtitle?\\ If so, write it here}
 
-%\titlerunning{Short form of title}        % if too long for running head
+%\titlerunning{StarPU SMPI}        % if too long for running head
 
 \author{Steven QUINITO MASNADA  \\ \\
         Encadrants : Arnaud LEGRAND \and Luka STANISIC  %if many names separate them with \and.
 }
 
-%\authorrunning{Short form of author list} % if too long for running head
+%\authorrunning{Steven QUINITO MASNADA} % if too long for running head
 
 \institute{F. Author \at
               first address \\
@@ -382,9 +382,10 @@ done
 
 * Introduction
 
-  La majorité des supercalculateurs actuels sont des clusters
-  massivement parallèles et souvent de type hétérogènes(CPU-GPU). De
-  ce fait certains standard ce sont imposés. 
+  La majorité des supercalculateurs actuels, comme le montre le site
+  http://www.top500.org sont des clusters massivement parallèles et
+  souvent de type hétérogènes(CPU-GPU). De ce fait certains standard
+  ce sont imposés.
   
   Il y a tout d'abord la norme MPI (Message Passing Interface),
   qui est une API de communication basée sur l'envoi et la
