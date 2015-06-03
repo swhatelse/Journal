@@ -65,7 +65,7 @@
 %\titlerunning{StarPU SMPI}        % if too long for running head
 
 \author{Steven QUINITO MASNADA  \\ \\
-        Encadrants : Arnaud LEGRAND \and Luka STANISIC  %if many names separate them with \and.
+        Encadrants : Arnaud LEGRAND and Luka STANISIC  %if many names separate them with \and.
 }
 
 %\authorrunning{Steven QUINITO MASNADA} % if too long for running head
@@ -383,14 +383,13 @@ done
 * Introduction
 
   La majorité des supercalculateurs actuels, comme le montre le site
-  http://www.top500.org sont des clusters massivement parallèles et
-  souvent de type hétérogènes(CPU-GPU). De ce fait certains standard
-  ce sont imposés.
+  [[http://www.top500.org][top500]] sont des clusters massivement parallèles et souvent de type
+  hétérogènes(CPU-GPU). De ce fait certains standard ce sont imposés.
   
   Il y a tout d'abord la norme MPI (Message Passing Interface),
   qui est une API de communication basée sur l'envoi et la
   récéption de message. Elle réputée pour être performante et
-  portable, et elle est de plus haut niveau que les sockets.
+  portable. Elle est de plus haut niveau que les sockets.
   
   Ensuite, il y a l'API OpenMP qui est une interface de
   multihreading de plus haut niveau de PThread. Elle permet de
@@ -412,7 +411,7 @@ done
   Généralement, on procède soit en déléguant tous les calculs aux
   GPUs, laissant les CPUs en idle. Soit on réparti la charge entre les
   CPUs et les GPUs de manière complètement statique. L'inconvénient
-  est que la mise en pratique très difficile car il est ardu de
+  est que la mise en pratique est très difficile car il est ardu de
   trouver un bon équilibrage.
   
   Cependant même si l'on arrive à équilibrer les charges
@@ -427,22 +426,21 @@ done
   cible.
   
   La solution serait donc d'avoir une gestion dynamique des
-  charges. Mais cela s'avère bien plus ardu, voir impossible
+  charges. Mais cela s'avère bien plus compliqué, voir impossible
   à réaliser directement avec ces méthodes de programmation. Alors
   essayons en une autre.
 
-  La librairie StarPU est un système runtime qui permet une
-  répartition des traitements de manière dynamique et opportuniste. 
-  Pour ce faire elle introduit un nouveau paradigme basé sur les
-  tâches. StarPU génère un graphe de dépendance permettant
-  d'optimiser le l'ordonnancement de ces dernières.
+  La librairie StarPU\cite{StarPU} est un système runtime qui permet
+  une répartition des traitements de manière dynamique et
+  opportuniste. Pour ce faire elle introduit un nouveau paradigme basé
+  sur les tâches. StarPU génère un graphe de dépendance permettant
+  d'optimiser l'ordonnancement de ces dernières. 
   
   La première version de StarPU a été conçu spécialement pour des
   architectures hybrides. Une version récente (StarPU MPI) a été
-  réalisée pour bénéficier d'un ordonnance et d'une exécution qui
-  soit à la fois dynamique et opportunistes dans un contexte
-  distribuée afin de répartir la charge entre les différents
-  noeuds.
+  réalisée pour bénéficier d'un ordonnancement et d'une exécution qui
+  soit à la fois dynamique et opportuniste dans un contexte distribuée,
+  afin de répartir la charge entre les différents noeuds.
 
   Nous allons donc voir comment évaluer les performances
   d'applications basés sur StarPU MPI.
