@@ -1,0 +1,291 @@
+\documentclass[smallextended]{svjour3} 
+ \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+%\usepackage{fixltx2e}
+\usepackage{ifthen,figlatex}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{xspace}
+\usepackage{amsmath,amssymb}
+\usepackage[french, frenchb]{babel}
+\AtBeginDocument{
+\definecolor{pdfurlcolor}{rgb}{0,0,0.6}
+\definecolor{pdfcitecolor}{rgb}{0,0.6,0}
+\definecolor{pdflinkcolor}{rgb}{0.6,0,0}
+\definecolor{light}{gray}{.85}
+\definecolor{vlight}{gray}{.95}
+}
+%\usepackage[paper=letterpaper,margin=1.61in]{geometry}
+\usepackage{url} \urlstyle{sf}
+\usepackage[normalem]{ulem}
+\usepackage{todonotes}
+\usepackage[colorlinks=true,citecolor=pdfcitecolor,urlcolor=pdfurlcolor,linkcolor=pdflinkcolor,pdfborder={0 0 0}]{hyperref}
+\usepackage[round-precision=3,round-mode=figures,scientific-notation=true]{siunitx}
+% \usepackage{minted}
+% \usepackage{verbments}
+% \usepackage{verbatim}
+% \usepackage{alltt}
+
+  \usepackage{graphicx}
+  \usepackage{hyperref}
+\date{\today}
+\title{}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={}}
+\begin{document}
+
+\newcommand{\AL}[2][inline]{\todo[color=green!50,#1]{\sf \textbf{AL:} #2}\xspace}
+\newcommand{\LS}[2][inline]{\todo[color=green!50,#1]{\sf \textbf{LS:} #2}\xspace}
+
+\let\oldcite=\cite
+\renewcommand\cite[2][]{~\ifthenelse{\equal{#1}{}}{\oldcite{#2}}{\oldcite[#1]{#2}}\xspace}
+\let\oldref=\ref
+\def\ref#1{~\oldref{#1}\xspace}
+\def\ie{i.e.,\xspace}
+\def\eg{e.g.,\xspace}
+\def\qrmspu{\texttt{QRM\_StarPU}\xspace}
+\sloppy
+
+\title{Insert your title here%\thanks{Grants or other notes
+%about the article that should go on the front page should be
+%placed here. General acknowledgments should be placed at the end of the article.}
+}
+%\subtitle{Do you have a subtitle?\\ If so, write it here}
+
+%\titlerunning{Short form of title}        % if too long for running head
+
+\author{Steven QUINITO MASNADA  \\ \and \\
+        Supervised by : Arnaud LEGRAND \and Luka STANISIC  %if many names separate them with \and.
+}
+
+%\authorrunning{Short form of author list} % if too long for running head
+
+\institute{F. Author \at
+              first address \\
+              Tel.: +123-45-678910\\
+              Fax: +123-45-678910\\
+              \email{fauthor@example.com}           %  \\
+%             \emph{Present address:} of F. Author  %  if needed
+           \and
+           S. Author \at
+              second address
+}
+
+\date{June 2015}
+% The correct dates will be entered by the editor
+
+\maketitle
+
+
+\begin{abstract}
+Dans le domaine des supercalculateurs, la course à la performance est
+un point crucial. Actuellement, le calculateur le plus puissant (le
+TianHe-2) est capable d'effectuer environ 33.86 Peta d'opérations
+flotantes par secondes. Cependant cette course est freinée par un
+facteur qui prend désormais d'une importance capitale, le coût
+énergétique. En effet, reprennons l'exemple du supercalculateur
+chinois, la consommation du TianHe-2 atteint presque les 18MW et
+avec la génération exascale la consommation estimée sera entre 20MW
+et 40MW. Dans l'état des fait, ce n'est pas réalisable et pour
+pouvoir atteindre l'exaflops, il nécessaire d'optimiser d'autres
+points que la puissance des puces. Evidemment des optimisations
+peuvent être faites au niveau matériel afin de réaliser des
+composants à hautes efficacités énergétiques. On peut également
+optimiser le rendement en utilisant au mieux les capacités du
+matériel. Cette optimisation ce fait donc du côté logiciel et pour
+cela il nous faut  envisager un changement de méthode programmation,
+c'est cette dernière que nous allons étudier. L'objectif de mon
+stage au sein de l'équipe MESCAL, sous la tutelle d'Arnaud Legrand,
+est donc de tenter de mesurer le gain d'une telle solution. 
+
+Pour cela nous allons, dans une première partie, voir comment est
+effectuée en générale la programmation en HPC, quels sont différents
+les standards et pourquoi nous nous sommes concentrés sur MPI. Nous
+discuterons ensuite du principe et de l'intérêt d'un nouveau
+paradigme de programmation et de la librairie StarPU. Nous
+constaterons ensuite que malgrès les apports de cette méthodes des
+difficultés subsites et les mesures peuvent-être compliquées a
+effectuées. C'est pourquoi dans une seconde partie, nous étudierons
+les différents approches pour évaluer les performances
+d'applications HPC et nous justifierons notre choix pour la
+simulation/émulation et en particulier pour l'outils Simgrid. Dans
+une troisième partie nous examinerons en détail Simgrid et StarPU
+ainsi que les différents problèmes que nous avons rencontrés. Dans
+une quatrième partie, nous verrons les méthodes employées. En
+cinquième partie, nous verrons les modifications apportés à Simgrid
+afin de pouvoir effectuer les mesures. Ensuite dans une sixième
+partie, nous verrons comment ces changements ont été validés. Et
+pout finir nous conclurons sur les résultats que nous avons réussit
+à obtenir.
+\end{abstract}
+
+\section{Introduction}
+\label{sec-1}
+
+La majorité des supercalculateurs actuels sont des clusters
+massivement parallèles et souvent de type
+hétérogènes(CPU-GPU). De ce fait certains standard ce sont
+imposés. 
+
+Il y a tout d'abord la norme MPI (Message Passing Interface),
+qui est une API de communication basée sur l'envoi et la
+récéption de message. Elle réputée pour être performante et
+portable, et elle est de plus haut niveau que les sockets.
+
+Ensuite, il y a l'API OpenMP qui est une interface de
+multihreading de plus haut niveau de PThread\ldots{}
+
+Enfin, l'API CUDA permet tirer partie de la puissance de calculer
+des GPU. Mais pour cela il est nécessaire de spécifier
+explicitement de ce que l'on veut envoyer aux GPUs et on doit
+également gérer la synchronisation 
+
+L'objectif étant optimiser le rendemment d'une application afin
+que cette dernière tire partie de toute la puissance disponible, il faut
+faire en sorte d'occuper au maximum le plus d'unités de calcul possible.
+Le problème est que l'on se retrouve à devoir utiliser plusieurs
+paradigme à la fois ce qui complique grandement la
+programmation.
+
+Généralement, on procède soit en délèguant tout 
+les calculs aux GPUs, laissant les CPUs en idle. Soit on réparti
+la charge entre les CPUs et les GPUs de manière complètement
+statique. L'inconvéniant est que la mise en pratique très
+difficile car il est hardu de trouver un bon équilibrage. 
+
+Cependant même si l'on arrive à équilibrer les charges
+correctemment, on peut avoir des cas où certaines unités de
+caluls ne sont pas occupées alors qu'elles le pourraient. Cela se
+produit quand par exemple lorsque certaines unités de calculs
+attendent la terminaisons de certain traitements alors que
+d'autres auraient put être effectuer en attendant. Cela est dû au
+fait que l'exécution soit statique et induit un idle time
+artificiel. De plus cette solution n'est pas portable car le
+découpage des traitements ce fait en fonction de la plateforme
+cible.
+
+La solution serait donc d'avoir une gestion dynamique des
+charges. Mais cela s'avère bien plus ardue, voir impossible
+à réaliser directement avec ces méthodes de programmation. Alors
+essayons en une autre.
+
+La librairie StarPU est un système runtime qui permet une
+répartition des traitements de manière dynamique et opportuniste. 
+Pour ce faire elle introduit un nouveau paradigme basé sur les
+tâches. StarPU génère un graphe de dépendance permettant
+d'optimiser le l'ordonnancement de ces dernières.
+
+La première version de StarPU a été conçu spécialement pour des
+architectures hybrides. Une version récente (StarPU MPI) a été
+réalisée pour bénéficier d'un ordonnance et d'une exécution qui
+soit à la fois dynamique et opportunistes dans un contexte
+distribuée afin de répartir la charge entre les différents
+noeuds.
+
+Nous allons donc voir comment évaluer les performances
+d'applications basés sur StarPU MPI.
+
+\section{État de l'art}
+\label{sec-2}
+\subsection{sparse solvers}
+\label{sec-2-1}
+MUMPS, QR-MUMPS, \ldots{}.
+\subsection{Runtimes}
+\label{sec-2-2}
+\begin{itemize}
+\item Dague, Quark, StarSS
+\item StarPU has the right level of abstraction and organization
+(synchronization, software architecture), is stable and has good
+performances
+\end{itemize}
+\subsection{Simulation for HPC}
+\label{sec-2-3}
+Most tools focud on simulation of MPI applications and
+are based on trace replay. SimGrid provides thread-like API, which
+simplifies application porting.
+\subsection{Conclusion, we use the best of these three domains}
+\label{sec-2-4}
+\section{Presentation of SimGrid/StarPU/Qrm\_Starpu}
+\label{sec-3}
+\subsection{Qrm\_Starpu}
+\label{sec-3-1}
+How does it work. DAG, eliminition tree, main kernels (INIT, CLEAN,
+DO\_SUBTREE, GEQRT). A priori complexity of some of the kernels known by
+the developpers.
+\subsection{StarPU/SimGrid}
+\label{sec-3-2}
+Emulation/simulation/\ldots{} based on Europar and CCPE.
+\section{Coarse grain Porting qrm\_starpu on top of StarPU/SimGrid:}
+\label{sec-4}
+
+Intro..
+
+In order to run it with SimGrid, we had to do only few changes to
+the initial qrm\_starpu code. Compilation process along with the
+necessary environment variables had to be adapted to the simulation
+mode of StarPU. Main \texttt{qrm\_test} program used to execute factorization
+with qrm\_starpu had to be changed for the \texttt{starpu\_main} subroutine,
+as SimGrid has its own main function and this is the easiest way to
+avoid problems with having two mains.
+
+This solution includes several major differences comparing to the
+already published study of StarPU and SimGrid on dense linear
+algebra applications\cite{Stanisic_CCPE}. Most notably, in
+qrm\_starpu code there is a bigger number of different StarPU tasks
+(also named \emph{kernels} in the rest of this paper) called with wide
+variety of input parameters. When solving dense matrices, during an
+application run, one kernel type (e.g., \emph{dgemm}) is always working
+with the same block size, which makes its duration on the same
+processing unit very stable. In qrm\_starpu factorization, the
+amount of work that has to be done by a kernel depends hugely on its
+input parameters and thus the duration will greatly vary. Hence, we
+had to rework the task submission model to make sure all kernel
+parameters are explicitly given to the StarPU so that they can be
+propagated to SimGrid. Additionally, we were required to extend
+tracing so that such kernel parameters are traced as well. This was
+indispensable for analyzing and comparing traces for both real and
+simulation executions.
+
+On the other hand, so far we had worked with the qrm\_starpu
+implementation that does not involve code running on GPUs, which
+facilitates the simulation. The reason is that as there are no
+critical need to model PCI contention and heterogeneity, thus there
+are less elements and approximations to take into account with
+SimGrid. Still, following very good results on hybrid machines with
+dense linear algebra applications, we believe that it would not be
+so difficult to extend this qrm\_starpu study to the fully
+heterogeneous architectures.
+
+Explain current memory allocation shortcoming..
+
+\section{Conclusion}
+\label{sec-5}
+\begin{itemize}
+\item Previous work for dense with GPUs with different schedulers but the
+current version of the code is not ready yet and schedulers barely
+matter for CPU only executions.
+\item Still goes faster than real executions and does not require actual
+machines.
+\item Still allows for extrapolation, which can be useful
+\item Open the path to performance studies that were not possible earlier
+\end{itemize}
+
+\section*{Acknowledgments}
+This work is partially supported by the SONGS ANR project
+(11-ANR-INFRA-13). Experiments presented in this paper were carried
+out using the PLAFRIM experimental testbed, being developed under the
+Inria PlaFRIM development action with support from LABRI and IMB and
+other entities: Conseil Régional d'Aquitaine, Université de Bordeaux
+and CNRS.
+
+%\nocite{*}
+\def\raggedright{}
+\bibliographystyle{IEEEtran}
+\bibliography{biblio}
+\end{document}

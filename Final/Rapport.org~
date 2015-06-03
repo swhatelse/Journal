@@ -1,0 +1,566 @@
+#+TITLE:
+#+LANGUAGE:  fr
+#+OPTIONS: H:5 author:nil email:nil creator:nil timestamp:nil skip:nil toc:nil ^:nil
+#+TAGS: Arnaud(a) Luka(l)
+#+TAGS: noexport(n) deprecated(d)
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LATEX_CLASS: svjour3
+# #+LaTeX_CLASS: article
+# #+LaTeX_CLASS: acm-proc-article-sp
+#+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: %\usepackage{fixltx2e}
+#+LATEX_HEADER: \usepackage{ifthen,figlatex}
+#+LATEX_HEADER: \usepackage{longtable}
+#+LATEX_HEADER: \usepackage{float}
+#+LATEX_HEADER: \usepackage{wrapfig}
+#+LATEX_HEADER: \usepackage{subfigure}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage[export]{adjustbox}
+#+LATEX_HEADER: \usepackage{xspace}
+#+LATEX_HEADER: \usepackage{amsmath,amssymb}
+#+LATEX_HEADER: \usepackage[french]{babel}
+#+LATEX_HEADER: \AtBeginDocument{
+#+LATEX_HEADER:   \definecolor{pdfurlcolor}{rgb}{0,0,0.6}
+#+LATEX_HEADER:   \definecolor{pdfcitecolor}{rgb}{0,0.6,0}
+#+LATEX_HEADER:   \definecolor{pdflinkcolor}{rgb}{0.6,0,0}
+#+LATEX_HEADER:   \definecolor{light}{gray}{.85}
+#+LATEX_HEADER:   \definecolor{vlight}{gray}{.95}
+#+LATEX_HEADER: }
+#+LATEX_HEADER: %\usepackage[paper=letterpaper,margin=1.61in]{geometry}
+#+LATEX_HEADER: \usepackage{url} \urlstyle{sf}
+#+LATEX_HEADER: \usepackage[normalem]{ulem}
+#+LATEX_HEADER: \usepackage{todonotes}
+#+LATEX_HEADER: \usepackage[colorlinks=true,citecolor=pdfcitecolor,urlcolor=pdfurlcolor,linkcolor=pdflinkcolor,pdfborder={0 0 0}]{hyperref}
+#+LATEX_HEADER: \usepackage[round-precision=3,round-mode=figures,scientific-notation=true]{siunitx}
+
+#+LaTeX_HEADER: % \usepackage{minted}
+#+LaTeX_HEADER: % \usepackage{verbments}
+#+LATEX_HEADER: % \usepackage{verbatim}
+#+LATEX_HEADER: % \usepackage{alltt}
+
+#+BEGIN_LaTeX
+\newcommand{\AL}[2][inline]{\todo[color=green!50,#1]{\sf \textbf{AL:} #2}\xspace}
+\newcommand{\LS}[2][inline]{\todo[color=green!50,#1]{\sf \textbf{LS:} #2}\xspace}
+
+\let\oldcite=\cite
+\renewcommand\cite[2][]{~\ifthenelse{\equal{#1}{}}{\oldcite{#2}}{\oldcite[#1]{#2}}\xspace}
+\let\oldref=\ref
+\def\ref#1{~\oldref{#1}\xspace}
+\def\ie{i.e.,\xspace}
+\def\eg{e.g.,\xspace}
+\def\qrmspu{\texttt{QRM\_StarPU}\xspace}
+\sloppy
+#+END_LaTeX
+
+#+BEGIN_LaTeX  
+\title{Insert your title here%\thanks{Grants or other notes
+%about the article that should go on the front page should be
+%placed here. General acknowledgments should be placed at the end of the article.}
+}
+%\subtitle{Do you have a subtitle?\\ If so, write it here}
+
+%\titlerunning{Short form of title}        % if too long for running head
+
+\author{Steven QUINITO MASNADA  \\ \and \\
+        Supervised by : Arnaud LEGRAND \and Luka STANISIC  %if many names separate them with \and.
+}
+
+%\authorrunning{Short form of author list} % if too long for running head
+
+\institute{F. Author \at
+              first address \\
+              Tel.: +123-45-678910\\
+              Fax: +123-45-678910\\
+              \email{fauthor@example.com}           %  \\
+%             \emph{Present address:} of F. Author  %  if needed
+           \and
+           S. Author \at
+              second address
+}
+
+\date{Juin 2015}
+% The correct dates will be entered by the editor
+
+\maketitle
+
+#+END_LaTeX
+
+
+#+BEGIN_abstract
+  Dans le domaine des supercalculateurs, la course à la performance est
+  un point crucial. Actuellement, le calculateur le plus puissant (le
+  TianHe-2) est capable d'effectuer environ 33.86 Peta d'opérations
+  flotantes par secondes. Cependant cette course est freinée par un
+  facteur qui prend désormais d'une importance capitale, le coût
+  énergétique. En effet, reprennons l'exemple du supercalculateur
+  chinois, la consommation du TianHe-2 atteint presque les 18MW et
+  avec la génération exascale la consommation estimée sera entre 20MW
+  et 40MW. Dans l'état des fait, ce n'est pas réalisable et pour
+  pouvoir atteindre l'exaflops, il nécessaire d'optimiser d'autres
+  points que la puissance des puces. Evidemment des optimisations
+  peuvent être faites au niveau matériel afin de réaliser des
+  composants à hautes efficacités énergétiques. On peut également
+  optimiser le rendement en utilisant au mieux les capacités du
+  matériel. Cette optimisation ce fait donc du côté logiciel et pour
+  cela il nous faut  envisager un changement de méthode programmation,
+  c'est cette dernière que nous allons étudier. L'objectif de mon
+  stage au sein de l'équipe MESCAL, sous la tutelle d'Arnaud Legrand,
+  est donc de tenter de mesurer le gain d'une telle solution. 
+  
+  Pour cela nous allons, dans une première partie, voir comment est
+  effectuée en générale la programmation en HPC, quels sont différents
+  les standards et pourquoi nous nous sommes concentrés sur MPI. Nous
+  discuterons ensuite du principe et de l'intérêt d'un nouveau
+  paradigme de programmation et de la librairie StarPU. Nous
+  constaterons ensuite que malgrès les apports de cette méthodes des
+  difficultés subsites et les mesures peuvent-être compliquées a
+  effectuées. C'est pourquoi dans une seconde partie, nous étudierons
+  les différents approches pour évaluer les performances
+  d'applications HPC et nous justifierons notre choix pour la
+  simulation/émulation et en particulier pour l'outils Simgrid. Dans
+  une troisième partie nous examinerons en détail Simgrid et StarPU
+  ainsi que les différents problèmes que nous avons rencontrés. Dans
+  une quatrième partie, nous verrons les méthodes employées. En
+  cinquième partie, nous verrons les modifications apportés à Simgrid
+  afin de pouvoir effectuer les mesures. Ensuite dans une sixième
+  partie, nous verrons comment ces changements ont été validés. Et
+  pout finir nous conclurons sur les résultats que nous avons réussit
+  à obtenir.
+#+END_abstract
+
+* Questions:							   :noexport:
+    - Which conference?
+      - General conference ?
+      - Possibly IPDPS, but it is only in October
+
+    - Which journal: JPDC, ParCo, TPDS ?
+* Extracting traces from data files				   :noexport:
+  For fourmi machine:
+#+begin_src sh :results output :exports none
+mkdir -p tmp
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SoloStarpuData0.org tmp/native_fourmi_tp6
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SimgridStarpuData0.org tmp/simgrid_fourmi_tp6
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SoloStarpuData1.org tmp/native_fourmi_karted
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SimgridStarpuData1.org tmp/simgrid_fourmi_karted
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SoloStarpuData2.org tmp/native_fourmi_EternityII_E
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SimgridStarpuData2.org tmp/simgrid_fourmi_EternityII_E
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SoloStarpuData3.org tmp/native_fourmi_degme
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SimgridStarpuData3.org tmp/simgrid_fourmi_degme
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SoloStarpuData4.org tmp/native_fourmi_cat_ears_4_4
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SimgridStarpuData4.org tmp/simgrid_fourmi_cat_ears_4_4
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SoloStarpuData5.org tmp/native_fourmi_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SimgridStarpuData5.org tmp/simgrid_fourmi_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SoloStarpuData6.org tmp/native_fourmi_hirlam
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SimgridStarpuData6.org tmp/simgrid_fourmi_hirlam
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SoloStarpuData7.org tmp/native_fourmi_TF16
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou3/SimgridStarpuData7.org tmp/simgrid_fourmi_TF16
+#+end_src
+
+#+RESULTS:
+
+
+  For riri machine with 10 CPUs:
+#+begin_src sh :results output :exports none
+mkdir -p tmp
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData0.org tmp/native_riri10_tp6
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData0.org tmp/simgrid_riri10_tp6
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData1.org tmp/native_riri10_karted
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData1.org tmp/simgrid_riri10_karted
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData2.org tmp/native_riri10_EternityII_E
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData2.org tmp/simgrid_riri10_EternityII_E
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData3.org tmp/native_riri10_degme
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData3.org tmp/simgrid_riri10_degme
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData4.org tmp/native_riri10_cat_ears_4_4
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData4.org tmp/simgrid_riri10_cat_ears_4_4
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData5.org tmp/native_riri10_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData5.org tmp/simgrid_riri10_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData6.org tmp/native_riri10_hirlam
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData6.org tmp/simgrid_riri10_hirlam
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData7.org tmp/native_riri10_TF16
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData7.org tmp/simgrid_riri10_TF16
+#+end_src
+
+#+RESULTS:
+
+  For riri machine with 40 CPUs:
+#+begin_src sh :results output :exports none
+mkdir -p tmp
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData8.org tmp/native_riri40_tp6
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData8.org tmp/simgrid_riri40_tp6
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData9.org tmp/native_riri40_karted
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData9.org tmp/simgrid_riri40_karted
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData10.org tmp/native_riri40_EternityII_E
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData10.org tmp/simgrid_riri40_EternityII_E
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData11.org tmp/native_riri40_degme
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData11.org tmp/simgrid_riri40_degme
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData12.org tmp/native_riri40_cat_ears_4_4
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData12.org tmp/simgrid_riri40_cat_ears_4_4
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData13.org tmp/native_riri40_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData13.org tmp/simgrid_riri40_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData14.org tmp/native_riri40_hirlam
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData14.org tmp/simgrid_riri40_hirlam
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SoloStarpuData15.org tmp/native_riri40_TF16
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData15.org tmp/simgrid_riri40_TF16
+#+end_src
+
+#+RESULTS:
+
+  For extrapolated riri machine with 100 and 400 CPUs:
+#+begin_src sh :results output :exports none
+mkdir -p tmp
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData16.org tmp/simgrid_riri100_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataTou4/SimgridStarpuData17.org tmp/simgrid_riri400_e18
+#+end_src
+
+#+RESULTS:
+
+  Extracting makespan for all traces:
+#+begin_src sh :shebang "#!/bin/bash" :results output :exports none
+output="tmp/makespans.out"
+matrices=(tp-6 karted EternityII_E degme cat_ears_4_4 e18 hirlam TF16)
+echo "Matrix, Nthreads, Native Time [ms], SimGrid Time [ms], Diff Time" > $output
+
+i=0
+#matrices=(tp-6 karted EternityII_E degme cat_ears_4_4 e18 hirlam TF16 cat_ears_4_4_ownmodel)
+nthreads=8
+datafolder="starpu-simgrid/data/dataTou3"
+for matrix in ${matrices[@]}
+do
+   native_time=$(tail -1 $datafolder/SoloStarpuData$i.org)
+   simgrid_time=$(tail -1 $datafolder/SimgridStarpuData$i.org)
+   diff_time=$(bc -l <<< "(1 - ($simgrid_time / $native_time)) * 100" | sed 's/\(-\?[0-9]*\.[0-9]\?\)[0-9]*/\1/')
+   echo "$matrix, $nthreads,  $native_time, $simgrid_time, $diff_time" >> $output
+   i=`expr $i + 1`
+done
+
+i=0
+nthreads=10
+datafolder="starpu-simgrid/data/dataTou4"
+for matrix in ${matrices[@]}
+do
+   native_time=$(tail -1 $datafolder/SoloStarpuData$i.org)
+   simgrid_time=$(tail -1 $datafolder/SimgridStarpuData$i.org)
+   diff_time=$(bc -l <<< "(1 - ($simgrid_time / $native_time)) * 100" | sed 's/\(-\?[0-9]*\.[0-9]\?\)[0-9]*/\1/')
+   echo "$matrix, $nthreads,  $native_time, $simgrid_time, $diff_time" >> $output
+   i=`expr $i + 1`
+done
+
+nthreads=40
+datafolder="starpu-simgrid/data/dataTou4"
+for matrix in ${matrices[@]}
+do
+   native_time=$(tail -1 $datafolder/SoloStarpuData$i.org)
+   simgrid_time=$(tail -1 $datafolder/SimgridStarpuData$i.org)
+   diff_time=$(bc -l <<< "(1 - ($simgrid_time / $native_time)) * 100" | sed 's/\(-\?[0-9]*\.[0-9]\?\)[0-9]*/\1/')
+   echo "$matrix, $nthreads,  $native_time, $simgrid_time, $diff_time" >> $output
+   i=`expr $i + 1`
+done
+
+# For extrapolated data
+simgrid_100_time=$(tail -1 $datafolder/SimgridStarpuData16.org)
+echo "e18, 100,  0, $simgrid_100_time, 0" >> $output
+simgrid_400_time=$(tail -1 $datafolder/SimgridStarpuData17.org)
+echo "e18, 400,  0, $simgrid_400_time, 0" >> $output
+#+end_src
+
+#+RESULTS:
+
+  Extracting traces with memory consumption
+#+begin_src sh :results output :exports none
+mkdir -p tmp
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataQMem/SoloStarpuData0.org tmp/native_hirlam_1_memcon
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataQMem/SoloStarpuData1.org tmp/native_hirlam_2_memcon
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataQMem/SoloStarpuData2.org tmp/native_hirlam_3_memcon
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataQMem/SimgridStarpuData0.org tmp/simgrid_hirlam_memcon
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataQMem/SoloStarpuData3.org tmp/native_e18_1_memcon
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataQMem/SoloStarpuData4.org tmp/native_e18_2_memcon
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataQMem/SoloStarpuData5.org tmp/native_e18_3_memcon
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataQMem/SimgridStarpuData1.org tmp/simgrid_e18_memcon
+#+end_src
+
+#+RESULTS:
+
+
+  Extracting extrapolation data on riri machine with e18 and sls matrices:
+#+begin_src sh :results output :exports none
+mkdir -p tmp
+# e18 matrix
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData1.org tmp/native_extrapol_2_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData1.org tmp/simgrid_extrapol_2_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData2.org tmp/native_extrapol_4_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData2.org tmp/simgrid_extrapol_4_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData3.org tmp/native_extrapol_5_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData3.org tmp/simgrid_extrapol_5_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData4.org tmp/native_extrapol_8_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData4.org tmp/simgrid_extrapol_8_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData5.org tmp/native_extrapol_10_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData5.org tmp/simgrid_extrapol_10_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData6.org tmp/native_extrapol_40_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData6.org tmp/simgrid_extrapol_40_e18
+# sls matrix
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData8.org tmp/native_extrapol_2_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData8.org tmp/simgrid_extrapol_2_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData9.org tmp/native_extrapol_4_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData9.org tmp/simgrid_extrapol_4_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData10.org tmp/native_extrapol_5_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData10.org tmp/simgrid_extrapol_5_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData11.org tmp/native_extrapol_8_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData11.org tmp/simgrid_extrapol_8_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData12.org tmp/native_extrapol_10_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData12.org tmp/simgrid_extrapol_10_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SoloStarpuData13.org tmp/native_extrapol_40_sls
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData13.org tmp/simgrid_extrapol_40_sls
+# Extrapolated data
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData14.org tmp/simgrid_extrapol_100_e18
+./starpu-simgrid/get_trace.sh starpu-simgrid/data/dataExtrapol/SimgridStarpuData15.org tmp/simgrid_extrapol_400_e18
+#+end_src
+
+#+RESULTS:
+
+
+  Extracting makespan for extrapolated e18 and sls matrices:
+#+begin_src sh :shebang "#!/bin/bash" :results output :exports none
+output="tmp/makespans_extrapol.out"
+echo "Matrix, Nthreads, Native Time [ms], SimGrid Time [ms], Diff Time" > $output
+
+i=0
+matrices="e18"
+nthreads=(1 2 4 5 8 10 40)
+datafolder="starpu-simgrid/data/dataExtrapol"
+for thread in ${nthreads[@]}
+do
+   native_time=$(tail -1 $datafolder/SoloStarpuData$i.org)
+   simgrid_time=$(tail -1 $datafolder/SimgridStarpuData$i.org)
+   diff_time=$(bc -l <<< "(1 - ($simgrid_time / $native_time)) * 100" | sed 's/\(-\?[0-9]*\.[0-9]\?\)[0-9]*/\1/')
+   echo "$matrices, $thread,  $native_time, $simgrid_time, $diff_time" >> $output
+   i=`expr $i + 1`
+done
+
+matrices="sls"
+nthreads=(1 2 4 5 8 10 40)
+datafolder="starpu-simgrid/data/dataExtrapol"
+for thread in ${nthreads[@]}
+do
+   native_time=$(tail -1 $datafolder/SoloStarpuData$i.org)
+   simgrid_time=$(tail -1 $datafolder/SimgridStarpuData$i.org)
+   diff_time=$(bc -l <<< "(1 - ($simgrid_time / $native_time)) * 100" | sed 's/\(-\?[0-9]*\.[0-9]\?\)[0-9]*/\1/')
+   echo "$matrices, $thread,  $native_time, $simgrid_time, $diff_time" >> $output
+   i=`expr $i + 1`
+done
+
+matrices="e18"
+nthreads=(100 400)
+datafolder="starpu-simgrid/data/dataExtrapol"
+for thread in ${nthreads[@]}
+do
+   simgrid_time=$(tail -1 $datafolder/SimgridStarpuData$i.org)
+   echo "$matrices, $thread,  0, $simgrid_time, 0" >> $output
+   i=`expr $i + 1`
+done
+
+matrices="sls"
+nthreads=(100 400)
+datafolder="starpu-simgrid/data/dataExtrapol"
+for thread in ${nthreads[@]}
+do
+   simgrid_time=$(tail -1 $datafolder/SimgridStarpuData$i.org)
+   echo "$matrices, $thread,  0, $simgrid_time, 0" >> $output
+   i=`expr $i + 1`
+done
+#+end_src
+
+#+RESULTS:
+
+
+* Introduction
+
+  La majorité des supercalculateurs actuels sont des clusters
+  massivement parallèles et souvent de type
+  hétérogènes(CPU-GPU). De ce fait certains standard ce sont
+  imposés. 
+  
+  Il y a tout d'abord la norme MPI (Message Passing Interface),
+  qui est une API de communication basée sur l'envoi et la
+  récéption de message. Elle réputée pour être performante et
+  portable, et elle est de plus haut niveau que les sockets.
+  
+  Ensuite, il y a l'API OpenMP qui est une interface de
+  multihreading de plus haut niveau de PThread...
+  
+  Enfin, l'API CUDA permet tirer partie de la puissance de calculer
+  des GPU. Mais pour cela il est nécessaire de spécifier
+  explicitement de ce que l'on veut envoyer aux GPUs et on doit
+  également gérer la synchronisation 
+  
+  L'objectif étant optimiser le rendemment d'une application afin
+  que cette dernière tire partie de toute la puissance disponible, il faut
+  faire en sorte d'occuper au maximum le plus d'unités de calcul possible.
+  Le problème est que l'on se retrouve à devoir utiliser plusieurs
+  paradigme à la fois ce qui complique grandement la
+  programmation.
+  
+  Généralement, on procède soit en délèguant tout 
+  les calculs aux GPUs, laissant les CPUs en idle. Soit on réparti
+  la charge entre les CPUs et les GPUs de manière complètement
+  statique. L'inconvéniant est que la mise en pratique très
+  difficile car il est hardu de trouver un bon équilibrage. 
+  
+  Cependant même si l'on arrive à équilibrer les charges
+  correctemment, on peut avoir des cas où certaines unités de
+  caluls ne sont pas occupées alors qu'elles le pourraient. Cela se
+  produit quand par exemple lorsque certaines unités de calculs
+  attendent la terminaisons de certain traitements alors que
+  d'autres auraient put être effectuer en attendant. Cela est dû au
+  fait que l'exécution soit statique et induit un idle time
+  artificiel. De plus cette solution n'est pas portable car le
+  découpage des traitements ce fait en fonction de la plateforme
+  cible.
+  
+  La solution serait donc d'avoir une gestion dynamique des
+  charges. Mais cela s'avère bien plus ardue, voir impossible
+  à réaliser directement avec ces méthodes de programmation. Alors
+  essayons en une autre.
+
+  La librairie StarPU est un système runtime qui permet une
+  répartition des traitements de manière dynamique et opportuniste. 
+  Pour ce faire elle introduit un nouveau paradigme basé sur les
+  tâches. StarPU génère un graphe de dépendance permettant
+  d'optimiser le l'ordonnancement de ces dernières.
+  
+  La première version de StarPU a été conçu spécialement pour des
+  architectures hybrides. Une version récente (StarPU MPI) a été
+  réalisée pour bénéficier d'un ordonnance et d'une exécution qui
+  soit à la fois dynamique et opportunistes dans un contexte
+  distribuée afin de répartir la charge entre les différents
+  noeuds.
+
+  Nous allons donc voir comment évaluer les performances
+  d'applications basés sur StarPU MPI.
+
+* État de l'art
+** sparse solvers
+MUMPS, QR-MUMPS, ....
+** Runtimes
+- Dague, Quark, StarSS
+- StarPU has the right level of abstraction and organization
+  (synchronization, software architecture), is stable and has good
+  performances
+** Simulation for HPC
+Most tools focud on simulation of MPI applications and
+are based on trace replay. SimGrid provides thread-like API, which
+simplifies application porting.
+** Conclusion, we use the best of these three domains 
+* Presentation of SimGrid/StarPU/Qrm_Starpu
+** Qrm_Starpu
+How does it work. DAG, eliminition tree, main kernels (INIT, CLEAN,
+DO_SUBTREE, GEQRT). A priori complexity of some of the kernels known by
+the developpers.
+** StarPU/SimGrid
+Emulation/simulation/... based on Europar and CCPE.
+* Coarse grain Porting qrm_starpu on top of StarPU/SimGrid:
+
+  Intro..
+
+  In order to run it with SimGrid, we had to do only few changes to
+  the initial qrm_starpu code. Compilation process along with the
+  necessary environment variables had to be adapted to the simulation
+  mode of StarPU. Main =qrm_test= program used to execute factorization
+  with qrm_starpu had to be changed for the =starpu_main= subroutine,
+  as SimGrid has its own main function and this is the easiest way to
+  avoid problems with having two mains.
+
+  This solution includes several major differences comparing to the
+  already published study of StarPU and SimGrid on dense linear
+  algebra applications\cite{Stanisic_CCPE}. Most notably, in
+  qrm_starpu code there is a bigger number of different StarPU tasks
+  (also named /kernels/ in the rest of this paper) called with wide
+  variety of input parameters. When solving dense matrices, during an
+  application run, one kernel type (e.g., /dgemm/) is always working
+  with the same block size, which makes its duration on the same
+  processing unit very stable. In qrm_starpu factorization, the
+  amount of work that has to be done by a kernel depends hugely on its
+  input parameters and thus the duration will greatly vary. Hence, we
+  had to rework the task submission model to make sure all kernel
+  parameters are explicitly given to the StarPU so that they can be
+  propagated to SimGrid. Additionally, we were required to extend
+  tracing so that such kernel parameters are traced as well. This was
+  indispensable for analyzing and comparing traces for both real and
+  simulation executions.
+
+  On the other hand, so far we had worked with the qrm_starpu
+  implementation that does not involve code running on GPUs, which
+  facilitates the simulation. The reason is that as there are no
+  critical need to model PCI contention and heterogeneity, thus there
+  are less elements and approximations to take into account with
+  SimGrid. Still, following very good results on hybrid machines with
+  dense linear algebra applications, we believe that it would not be
+  so difficult to extend this qrm_starpu study to the fully
+  heterogeneous architectures.
+
+  Explain current memory allocation shortcoming..
+
+** Draft:							   :noexport:
+- dealing with main/library
+- compilation process
+- memory allocation: not cleanly handled so far as it uses its own
+  memory management mechanism but could rely on the one of StarPU,
+  which would minimize the memory usage during simulation as well.
+
+Main difference compared to dense setting:
+- A wide variety of computation kernels called with a wide variety of
+  parameters. Hence need to rework on task submission model to make
+  sure all kernel parameters are explicitely given to StarPU so that
+  they can be given to SimGrid
+- Required to extend tracing so that such kernels parameters are
+  traced as well and so that real execution traces and simulated
+  execution traces can be compared.
+- No GPU so a priori no critical need to model PCI contention and
+  heterogeneity
+
+* Conclusion
+- Previous work for dense with GPUs with different schedulers but the
+  current version of the code is not ready yet and schedulers barely
+  matter for CPU only executions.
+- Still goes faster than real executions and does not require actual
+  machines.
+- Still allows for extrapolation, which can be useful
+- Open the path to performance studies that were not possible earlier
+
+#+Latex:\section*{Acknowledgments}
+This work is partially supported by the SONGS ANR project
+(11-ANR-INFRA-13). Experiments presented in this paper were carried
+out using the PLAFRIM experimental testbed, being developed under the
+Inria PlaFRIM development action with support from LABRI and IMB and
+other entities: Conseil Régional d'Aquitaine, Université de Bordeaux
+and CNRS.
+
+#+LaTeX: %\nocite{*}
+#+LaTeX: \def\raggedright{}
+\bibliographystyle{IEEEtran}
+\bibliography{biblio}
+
+
+* Emacs Setup 							   :noexport:
+  This document has local variables in its postembule, which should
+  allow Org-mode to work seamlessly without any setup. If you're
+  uncomfortable using such variables, you can safely ignore them at
+  startup. Exporting may require that you copy them in your .emacs.
+
+# Local Variables:
+# eval:    (require 'org-install)
+# eval:    (org-babel-do-load-languages 'org-babel-load-languages '( (sh . t) (R . t) (perl . t) (ditaa . t) ))
+# eval:    (setq org-confirm-babel-evaluate nil)
+# eval:    (unless (boundp 'org-latex-classes) (setq org-latex-classes nil))
+# eval:    (add-to-list 'org-latex-classes '("svjour3" "\\documentclass[smallextended]{svjour3} \n \[NO-DEFAULT-PACKAGES]\n \[EXTRA]\n  \\usepackage{graphicx}\n  \\usepackage{hyperref}"  ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}")                       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")                       ("\\paragraph{%s}" . "\\paragraph*{%s}")                       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+# eval:    (add-to-list 'org-latex-classes '("acm-proc-article-sp" "\\documentclass{acm_proc_article-sp}\n \[NO-DEFAULT-PACKAGES]\n \[EXTRA]\n"  ("\\section{%s}" . "\\section*{%s}") ("\\subsection{%s}" . "\\subsection*{%s}")                       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")                       ("\\paragraph{%s}" . "\\paragraph*{%s}")                       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+# eval:    (setq org-alphabetical-lists t)
+# eval:    (setq org-src-fontify-natively t)
+# eval:   (setq org-export-babel-evaluate nil)
+# eval:   (setq ispell-local-dictionary "french")
+# eval:   (eval (flyspell-mode t))
+# eval:    (setq org-latex-listings 'minted)
+# eval:    (setq org-latex-minted-options '(("bgcolor" "white") ("style" "tango") ("numbers" "left") ("numbersep" "5pt")))
+# End:
