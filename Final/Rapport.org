@@ -529,20 +529,16 @@ done
    [[./Img/Memoire.jpg]]
 
 ** SimGrid/MPI: Architecture générale
-   Simgrid est composé de plusieurs modules, ceux auxquels nous nous
-   intéressons sont les suivant: 
-*** MSG qui permet de simuler couche classique logiciels???
-*** SMPI 
-    Cette API permet de simuler la couche MPI. Actuellement, la majeur
-    partie des fonctionnalités MPI ont été implémentées. 
-    Le fonctionnement est le suivant :
-    - l'application que l'on veut tester est compilée en remplaçant
-      le mpi.h classique par le mpi.h de Simgrid 
-    - à l'édition de lien on remplace le main de l'application par
-      celui de Simgrid.
-    - Ce dernier a pour rôle de préparer l'exécution du simulateur
-      en créant la plateforme et en déployant les processus SMPI qui
-      exécuterons chacun le main de l'application MPI.
+   Cette API permet de simuler la couche MPI. Actuellement, la majeur
+   partie des fonctionnalités MPI ont été implémentées. 
+   Le fonctionnement est le suivant :
+   - l'application que l'on veut tester est compilée en remplaçant
+     le mpi.h classique par le mpi.h de Simgrid 
+   - à l'édition de lien on remplace le main de l'application par
+     celui de Simgrid.
+   - Ce dernier a pour rôle de préparer l'exécution du simulateur
+     en créant la plateforme et en déployant les processus SMPI qui
+     exécuterons chacun le main de l'application MPI.
              
 ** StarPU-SG: Architecture générale   
    StarPU a été modifié afin de pouvoir fonctionner au dessus du
@@ -667,7 +663,7 @@ done
   
   Afin de pouvoir conclure sur la question, il faudra finir de
   corriger la phase d'initialisation côté StarPU et également apporter
-  quelques correctifs à Simgrid. Ensuite nous pourrons effectuer les
+  quelques correctifs à Simgrid\cite{MPI}. Ensuite nous pourrons effectuer les
   simulations et les mesures. Pour ce faire les mesures seront faites
   sur le logiciel Chameleon (un solveur d'algèbre linéaire basé sur
   StarPU). Enfin, dans le but de valider le résultat des
