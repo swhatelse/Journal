@@ -104,25 +104,10 @@ c'est cette dernière que nous allons étudier. L'objectif de mon
 stage au sein de l'équipe MESCAL, sous la tutelle d'Arnaud Legrand,
 est donc de tenter de mesurer le gain d'une telle solution. 
 
-Pour cela nous allons, dans une première partie, voir comment est
-effectuée en générale la programmation en HPC, quels sont différents
-les standards et pourquoi nous nous sommes concentrés sur MPI. Nous
-discuterons ensuite du principe et de l'intérêt d'un nouveau
-paradigme de programmation et de la librairie StarPU. Nous
-constaterons ensuite que malgrès les apports de cette méthodes des
-difficultés subsites et les mesures peuvent-être compliquées a
-effectuées. C'est pourquoi dans une seconde partie, nous étudierons
-les différents approches pour évaluer les performances
-d'applications HPC et nous justifierons notre choix pour la
-simulation/émulation et en particulier pour l'outils Simgrid. Dans
-une troisième partie nous examinerons en détail Simgrid et StarPU
-ainsi que les différents problèmes que nous avons rencontrés. Dans
-une quatrième partie, nous verrons les méthodes employées. En
-cinquième partie, nous verrons les modifications apportés à Simgrid
-afin de pouvoir effectuer les mesures. Ensuite dans une sixième
-partie, nous verrons comment ces changements ont été validés. Et
-pout finir nous conclurons sur les résultats que nous avons réussit
-à obtenir.
+
+Dans cette optique, en nous basant sur les standards de
+programmation en HPC, nous verrons comment nous pourrions évaluer
+les performances d'un nouveau paradigme programmation.
 \end{abstract}
 
 \section{Introduction}
@@ -395,6 +380,17 @@ effectuées.
 
 \section{Conclusion}
 \label{sec-7}
+
+Afin de pouvoir conclure sur la question de comment évaluer les
+performances de StarPU-MPI et il faudra finir de valider les
+modifications de Simgrid afin de pouvoir faire fonctionner StarPU
+SMPI. Ensuite nous pourrons effectuer les simulations et les
+mesures. Pour ce faire les mesures seront faites sur le logiciel
+Chameleon (un solveur d'algèbre linéaire basé sur StarPU).
+Enfin, dans le but de valider le résultat des expérimentations, un test
+grandeur nature sera fait sur Grid5000.
+C'est pour atteindre cet objectif que j'ai choisi de prolonger mon stage.
+
 
 \section*{Acknowledgments}
 Je souhaite remercier\ldots{}

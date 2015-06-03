@@ -19,7 +19,8 @@
    - OpenMP: Plus haut niveau que pthread, demande d'annoter les
      boucles, pas de possibilité de gérer des différences de priorités
      entre des threads de calcul et des threads de polling réseau par
-     exemple.
+     exemple. 
+     - [ ] Quels en sont les tenant et les aboutissants?
      
    - CUDA: Déléguer des calculs aux GPUs. Demande de transférer
      explicitement les données et de faire la synchronisation.
