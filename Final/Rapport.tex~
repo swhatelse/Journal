@@ -129,9 +129,8 @@ pout finir nous conclurons sur les résultats que nous avons réussit
 \label{sec-1}
 
 La majorité des supercalculateurs actuels sont des clusters
-massivement parallèles et souvent de type
-hétérogènes(CPU-GPU). De ce fait certains standard ce sont
-imposés. 
+massivement parallèles et souvent de type hétérogènes(CPU-GPU). De
+ce fait certains standard ce sont imposés. 
 
 Il y a tout d'abord la norme MPI (Message Passing Interface),
 qui est une API de communication basée sur l'envoi et la
@@ -146,18 +145,18 @@ des GPU. Mais pour cela il est nécessaire de spécifier
 explicitement de ce que l'on veut envoyer aux GPUs et on doit
 également gérer la synchronisation 
 
-L'objectif étant optimiser le rendemment d'une application afin
-que cette dernière tire partie de toute la puissance disponible, il faut
+L'objectif étant optimiser le rendemment d'une application afin que
+cette dernière tire partie de toute la puissance disponible, il faut 
 faire en sorte d'occuper au maximum le plus d'unités de calcul possible.
 Le problème est que l'on se retrouve à devoir utiliser plusieurs
 paradigme à la fois ce qui complique grandement la
 programmation.
 
-Généralement, on procède soit en délèguant tout 
-les calculs aux GPUs, laissant les CPUs en idle. Soit on réparti
-la charge entre les CPUs et les GPUs de manière complètement
-statique. L'inconvéniant est que la mise en pratique très
-difficile car il est hardu de trouver un bon équilibrage. 
+Généralement, on procède soit en délèguant tout les calculs aux
+GPUs, laissant les CPUs en idle. Soit on réparti la charge entre les
+CPUs et les GPUs de manière complètement statique. L'inconvénient
+est que la mise en pratique très difficile car il est hardu de
+trouver un bon équilibrage.
 
 Cependant même si l'on arrive à équilibrer les charges
 correctemment, on peut avoir des cas où certaines unités de
@@ -246,8 +245,25 @@ peer et cloud.
 
 \section{Analyse du problème}
 \label{sec-3}
-\subsection{Simgrid}
+\subsection{Simgrid: Les processus}
 \label{sec-3-1}
+Sous Simgrid, les processus sont modélisés par des threads, ce
+qui signifie que leur espace d'adressage est partagé.
+Afin que ces derniers ce comportent comme des processus UNIX, il
+est nécessaire que chaque processus n'ait pas accès aux
+variables d'un autre, c'est pourquoi un système de
+privatisation a été mis en place. L'approche est la suivante:
+pour chaque processus, une zone mémoire est allouée dans le
+tas grâce à un mmap. Cette zone est le nouveau segment données du
+processus, et à chaque changement de contexte, on fait pointer
+vers cette zone. 
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=5cm]{./Img/Memoire.jpg}
+\caption{\label{fig:1}Privatisation du segment données}
+\end{figure}
+
 \subsection{SimGrid/MPI: Architecture générale}
 \label{sec-3-2}
 Simgrid est composé de plusieurs modules, ceux auxquels nous nous
@@ -269,39 +285,20 @@ en créant la plateforme et en déployant les processus SMPI qui
 exécuterons chacun le main de l'application MPI.
 \end{itemize}
 
-Sous Simgrid, les processus sont modélisés par des threads, ce
-qui signifie que leur espace d'adressage est partagé.
-Afin que ces dernier ce comporte comme de processus UNIX, il
-est nécessaire que chaque processus n'est pas accès aux
-variables d'un autre, c'est pourquoi un système de
-privatisation a été mis en place. L'approche est la suivante:
-pour chaque processus, une zone mémoire lui est alloué dans le
-tas grâce a un mmap. Cette zone représente le segment données du
-processus, et a chaque changement de contexte, on fait pointer
-vers cette zone. 
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=5cm]{./Img/Memoire.jpg}
-\caption{\label{fig:1}Privatisation du segment données}
-\end{figure}
-
 \subsection{StarPU-SG: Architecture générale}
 \label{sec-3-3}
+StarPU a été modifié afin de pouvoir fonctionner au dessus du
+simulateur Simgrid et est basé sur l'API MSG. L'application est
+exécutée réellement mais les allocations mémoires des tâches ne
+sont pas effectuées, les codes de calcul sont simulés et remplacés
+par un délais de même pour les transferts CUDA.
+
 \subsection{Ce qui coince}
 \label{sec-3-4}
-Comme nous l'avions évoqué un peu plus haut, les processus sont
-modélisés par des threads, il faut donc un mécanisme de
-privatisation afin que, comme avec les vrai processus, chacun
-dispose d'un segment data qui soit propre. Sous Simgrid le
-mécanisme est le suivant:
-
-Comme en MPI on est dans un contexte
-d'espace mémoire distribuée, les processus MPI d'un même noeud
-doivent partager les données donc il faut faire en sorte que le
-segment data d'un processus soit rattaché à celui qui les a crées.
-Le schéma ci-dessous illustre le fonctionnement de la privatisation
-dans Simgrid.
+Comme en MPI on est dans un contexte d'espace mémoire distribuée,
+les processus MPI d'un même noeud doivent partager les données donc
+il faut faire en sorte que le segment data d'un processus soit
+rattaché à celui qui les a crées. 
 
 De plus, une autre difficulté vient du fait qu'à la base MSG et
 SMPI n'ont pas été prévus pour fonctionner en ensemble. il nous
