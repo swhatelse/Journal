@@ -409,7 +409,7 @@ done
   Le problème est que l'on se retrouve à devoir utiliser plusieurs
   paradigme à la fois ce qui complique grandement la programmation.
   
-  Généralement, on procède soit en délèguant tout les calculs aux
+  Généralement, on procède soit en déléguant tous les calculs aux
   GPUs, laissant les CPUs en idle. Soit on réparti la charge entre les
   CPUs et les GPUs de manière complètement statique. L'inconvénient
   est que la mise en pratique très difficile car il est ardu de
@@ -417,7 +417,7 @@ done
   
   Cependant même si l'on arrive à équilibrer les charges
   correctemment, on peut avoir des cas où certaines unités de
-  caluls ne sont pas occupées alors qu'elles le pourraient. Cela se
+  calculs ne sont pas occupées alors qu'elles le pourraient. Cela se
   produit quand par exemple lorsque certaines unités de calculs
   attendent la terminaisons de certain traitements alors que
   d'autres auraient put être effectuer en attendant. Cela est dû au
@@ -459,14 +459,14 @@ done
   processus de validation de ces changement. Et pout finir, dans une
   sixième partie, nous conclurons sur les résultats que nous avons
   réussit à obtenir. 
-
+  
 * État de l'art
   En HPC, il y a trois grandes approches possible pour évaluer les
   performances d'applications.
 ** Test sur systèmes réels
    Cette approche consiste à lancer la vrai application sur le système
    réel afin d'effectuer les mesures. Cependant cette méthode peut se 
-   révéler très couteuse et il n'est pas toujours possible d'avoir
+   révéler très coûteuse et il n'est pas toujours possible d'avoir
    accès à la plateforme. De plus comme les expérimentations ne
    peuvent être effectuées sur que sur un petit nombre de plateforme
    notamment à cause de coût, on ne peut pas vraiment extrapoler les
@@ -489,7 +489,7 @@ done
    Ainsi, les expérimentations peuvent être effectuées à partir de
    n'importe quel système, il n'est plus nécessaire d'avoir accès à la
    plateforme, ce qui rend cette approche peu coûteuse. 
-   Par ailleur il est facile d'extrapoler les résultats car on peut
+   Par ailleurs il est facile d'extrapoler les résultats car on peut
    simuler un nombre important de plateformes. Ensuite la simulation
    permet d'avoir un temps d'exécution plus court qu'avec des tests
    réels car on n'effectue que certains traitements ce qui nous permet
@@ -540,7 +540,7 @@ done
       le mpi.h classique par le mpi.h de Simgrid 
     - à l'édition de lien on remplace le main de l'application par
       celui de Simgrid.
-    - Ce dernier a pour rôle de préparer l'éxécution du simulateur
+    - Ce dernier a pour rôle de préparer l'exécution du simulateur
       en créant la plateforme et en déployant les processus SMPI qui
       exécuterons chacun le main de l'application MPI.
              
@@ -600,16 +600,18 @@ done
 
   Une fois la gestion du partage mise en place, nous avons constaté
   qu'il y avait un cas que nous n'avions pas pris en compte: celui des
-  librairies dynamiques. En effet, nous n'avons privatisé que le
-  segment données des processus or, les variables globales des
-  librairies dynamiques (DSO sur le schéma ci-dessous) ne se trouvent
-  pas dans le segment données du processus et se retrouvent donc
-  partagées. 
+  librairies dynamiques. Voici comment sont stockés les bibliothèques
+  en mémoire:
 
   #+ATTR_LATEX: :width 5cm
   #+CAPTION: Emplacement en mémoire des bibliothèques
   #+NAME:   fig:2
   [[./Img/StaticDyn.jpg]]
+
+  En effet, nous n'avons privatisé que le segment données des
+  processus or, les variables globales des librairies dynamiques (DSO
+  sur le schéma ci-dessous) ne se trouvent pas dans le segment données
+  du processus et se retrouvent donc accessible à tous les processus. 
 
   La solution qui nous avons employé est d'utiliser donc une version
   statique de la librairie. Ainsi, les variables globales se
@@ -643,23 +645,34 @@ done
    niveau de  l'initialisation de Simgrid côté StarPU.
 
 * Conclusion
-  Malheureusement par manque de temps il n'a pas encore été possible
-  de corriger le problème et donc les mesures prévues n'ont pas encore
-  pu être réalisées. Bien qu'aucune expérimentation n'est pu être
-  faites, les problèmes rencontrés sont plutôt des problèmes d'ordre
-  techniques qui ne nous permettent pas d'invalider l'hypothèse que
-  l'approche simulation / émulations est la plus approprié pour
-  évaluer les performances d'un runtime dynamique d'application MPI.
+  Pour conclure, nous avons voulu voir s'il était possible de mesurer
+  l'influence d'un runtime dynamique sur les performances
+  d'applications MPI. Parmi les différentes techniques de mesures de
+  performances, nous avons fait le choix de la simulation / émulation
+  car elle nous semble la plus avantageuse, en raison de son coût,
+  mais aussi en terme de scalabilité.  
   
-  Afin de pouvoir conclure sur la question de comment évaluer les
-  performances de StarPU-MPI et il faudra finir de corriger la phase
-  d'initialisation côté StarPU et également apporté quelque correctif
-  à Simgrid. Ensuite nous pourrons effectuer les simulations et les
-  mesures. Pour ce faire les mesures seront faites sur le logiciel
-  Chameleon (un solveur d'algèbre linéaire basé sur StarPU).
-  Enfin, dans le but de valider le résultat des expérimentations, un test
-  grandeur nature sera fait sur Grid5000.
-  C'est pour atteindre cet objectif que j'ai choisi de prolonger mon stage.
+  Pour vérifier si cette approche est effectivement possible, nous
+  avons modifié Simgrid afin de pouvoir faire fonctionner StarPU MPI
+  dessus. Nous avons donc mis en place le partage du segment données
+  entre les processus de même noeud et la privatisation entre les
+  processus de noeuds différents. 
+  
+  Malheureusement par manque de temps il n'a pas encore été possible
+  de corriger le problème d'initialisation et donc les mesures prévues
+  n'ont pas encore pu être réalisées. Bien qu'aucune expérimentation
+  n'est pu être faite, les problèmes rencontrés sont plutôt des
+  problèmes d'ordre techniques et ne nous permettent pas d'invalider
+  notre hypothèse. 
+  
+  Afin de pouvoir conclure sur la question, il faudra finir de
+  corriger la phase d'initialisation côté StarPU et également apporter
+  quelques correctifs à Simgrid. Ensuite nous pourrons effectuer les
+  simulations et les mesures. Pour ce faire les mesures seront faites
+  sur le logiciel Chameleon (un solveur d'algèbre linéaire basé sur
+  StarPU). Enfin, dans le but de valider le résultat des
+  expérimentations, un test grandeur nature sera fait sur Grid5000.
+  # C'est pour atteindre cet objectif que j'ai choisi de prolonger mon stage.
   
   
 #+Latex:\section*{Acknowledgments}

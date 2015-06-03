@@ -1,8 +1,21 @@
-* Simulation [0/2]
-  - [ ] Sur quels types de machines sont généralement exécutées les simulations? Supercalculateurs?
-  - [ ] Comment la simulation peut-elle être plus rapide que le système réel? Cela s'applique t-il seulement avec l'approche offilne?
-* Simgrid [0/1]
-  - [ ] Acutellement quels types de programmes MPI sont testés sous Simgrid s'il n'y a pas la privatization entre le processus?
-* StarPU [0/2]
-  - [ ] Où réside la difficulté de programmation des plateformes hybrid?
-  - [ ] Terme français de runtime?
+* DONE Simulation [2/2]
+  - [X] Sur quels types de machines sont généralement exécutées les
+    simulations? Supercalculateurs?
+    Sur n'importe quel type de machine. C'est l'intérêt de la simulation.
+  - [X] Comment la simulation peut-elle être plus rapide que le
+    système réel? Cela s'applique t-il seulement avec l'approche
+    offilne?
+    Parce que tout n'est pas exécutes, certains traitements sont
+    remplacés par un délais.
+* TODO Simgrid [0/1]
+  - [ ] Acutellement quels types de programmes MPI sont testés sous
+    Simgrid s'il n'y a pas la privatization entre le processus?
+  - Pourquoi MSG et Simgrid n'ont pas été prévu pour fonctoinner
+    ensemble. Il n'était pas donc pas possible de simuler de
+    applications MPI multithreadé.
+* DONE StarPU [2/2]
+  - [X] Où réside la difficulté de programmation des plateformes
+    hybrid?
+    Découpage des traitement déjà compliqué sans les GPU, encore pire avec.
+  - [X] Terme français de runtime?
+    Moteur d'exécution

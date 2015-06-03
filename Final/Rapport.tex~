@@ -58,13 +58,13 @@
 }
 %\subtitle{Do you have a subtitle?\\ If so, write it here}
 
-%\titlerunning{Short form of title}        % if too long for running head
+%\titlerunning{StarPU SMPI}        % if too long for running head
 
 \author{Steven QUINITO MASNADA  \\ \\
         Encadrants : Arnaud LEGRAND \and Luka STANISIC  %if many names separate them with \and.
 }
 
-%\authorrunning{Short form of author list} % if too long for running head
+%\authorrunning{Steven QUINITO MASNADA} % if too long for running head
 
 \institute{F. Author \at
               first address \\
@@ -113,9 +113,10 @@ les performances d'un nouveau paradigme programmation.
 \section{Introduction}
 \label{sec-1}
 
-La majorité des supercalculateurs actuels sont des clusters
-massivement parallèles et souvent de type hétérogènes(CPU-GPU). De
-ce fait certains standard ce sont imposés. 
+La majorité des supercalculateurs actuels, comme le montre le site
+\url{http://www.top500.org} sont des clusters massivement parallèles et
+souvent de type hétérogènes(CPU-GPU). De ce fait certains standard
+ce sont imposés.
 
 Il y a tout d'abord la norme MPI (Message Passing Interface),
 qui est une API de communication basée sur l'envoi et la
@@ -139,7 +140,7 @@ en sorte d'occuper au maximum le plus d'unités de calculs possible.
 Le problème est que l'on se retrouve à devoir utiliser plusieurs
 paradigme à la fois ce qui complique grandement la programmation.
 
-Généralement, on procède soit en délèguant tout les calculs aux
+Généralement, on procède soit en déléguant tous les calculs aux
 GPUs, laissant les CPUs en idle. Soit on réparti la charge entre les
 CPUs et les GPUs de manière complètement statique. L'inconvénient
 est que la mise en pratique très difficile car il est ardu de
@@ -147,7 +148,7 @@ trouver un bon équilibrage.
 
 Cependant même si l'on arrive à équilibrer les charges
 correctemment, on peut avoir des cas où certaines unités de
-caluls ne sont pas occupées alors qu'elles le pourraient. Cela se
+calculs ne sont pas occupées alors qu'elles le pourraient. Cela se
 produit quand par exemple lorsque certaines unités de calculs
 attendent la terminaisons de certain traitements alors que
 d'autres auraient put être effectuer en attendant. Cela est dû au
@@ -198,7 +199,7 @@ performances d'applications.
 \label{sec-2-1}
 Cette approche consiste à lancer la vrai application sur le système
 réel afin d'effectuer les mesures. Cependant cette méthode peut se 
-révéler très couteuse et il n'est pas toujours possible d'avoir
+révéler très coûteuse et il n'est pas toujours possible d'avoir
 accès à la plateforme. De plus comme les expérimentations ne
 peuvent être effectuées sur que sur un petit nombre de plateforme
 notamment à cause de coût, on ne peut pas vraiment extrapoler les
@@ -223,7 +224,7 @@ effectués. Dans notre cas on simulerait donc la plateforme de même que l'OS.
 Ainsi, les expérimentations peuvent être effectuées à partir de
 n'importe quel système, il n'est plus nécessaire d'avoir accès à la
 plateforme, ce qui rend cette approche peu coûteuse. 
-Par ailleur il est facile d'extrapoler les résultats car on peut
+Par ailleurs il est facile d'extrapoler les résultats car on peut
 simuler un nombre important de plateformes. Ensuite la simulation
 permet d'avoir un temps d'exécution plus court qu'avec des tests
 réels car on n'effectue que certains traitements ce qui nous permet
@@ -281,7 +282,7 @@ Le fonctionnement est le suivant :
 le mpi.h classique par le mpi.h de Simgrid
 \item à l'édition de lien on remplace le main de l'application par
 celui de Simgrid.
-\item Ce dernier a pour rôle de préparer l'éxécution du simulateur
+\item Ce dernier a pour rôle de préparer l'exécution du simulateur
 en créant la plateforme et en déployant les processus SMPI qui
 exécuterons chacun le main de l'application MPI.
 \end{itemize}
@@ -346,11 +347,8 @@ changement de contexte.
 
 Une fois la gestion du partage mise en place, nous avons constaté
 qu'il y avait un cas que nous n'avions pas pris en compte: celui des
-librairies dynamiques. En effet, nous n'avons privatisé que le
-segment données des processus or, les variables globales des
-librairies dynamiques (DSO sur le schéma ci-dessous) ne se trouvent
-pas dans le segment données du processus et se retrouvent donc
-partagées. 
+librairies dynamiques. Voici comment sont stockés les bibliothèques
+en mémoire:
 
 \begin{figure}[htb]
 \centering
@@ -358,6 +356,11 @@ partagées.
 \caption{\label{fig:2}Emplacement en mémoire des bibliothèques}
 \end{figure}
 
+
+En effet, nous n'avons privatisé que le segment données des
+processus or, les variables globales des librairies dynamiques (DSO
+sur le schéma ci-dessous) ne se trouvent pas dans le segment données
+du processus et se retrouvent donc accessible à tous les processus. 
 La solution qui nous avons employé est d'utiliser donc une version
 statique de la librairie. Ainsi, les variables globales se
 retrouvent dans le segment données du processus et ainsi la
@@ -410,7 +413,6 @@ mesures. Pour ce faire les mesures seront faites sur le logiciel
 Chameleon (un solveur d'algèbre linéaire basé sur StarPU).
 Enfin, dans le but de valider le résultat des expérimentations, un test
 grandeur nature sera fait sur Grid5000.
-C'est pour atteindre cet objectif que j'ai choisi de prolonger mon stage.
 
 
 \section*{Acknowledgments}

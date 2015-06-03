@@ -64,6 +64,7 @@
 ** Test sur systèmes réels
    Difficulté d'accès à la plateforme, reproductibilité des
    expériences, coût, extrapolation, ...
+   Complexité du système -> indeterministe.
 
    On voudrait une approche moins coûteuse...
 ** L'approche par rejeu de trace
@@ -174,6 +175,8 @@
     - Ça demande des modifications complexes dans les couches basses
       de SimGrid (surf) et on n'a pas regardé pour l'instant.
       
+      Repositionner schéma.
+
 * Validation 2
   - Caractéristiques:
     Resultat expérience + interprétation
