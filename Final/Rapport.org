@@ -674,7 +674,7 @@ done
 #+Latex:\section*{Acknowledgments}
 Je souhaite remercier...
 
-#+LaTeX: %\nocite{*}
+#+LaTeX: \nocite{*}
 #+LaTeX: \def\raggedright{}
 \bibliographystyle{IEEEtran}
 \bibliography{biblio}
