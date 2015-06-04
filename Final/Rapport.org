@@ -570,26 +570,36 @@ done
    donc une modèle de performance qui permettra d'estimer la durée des
    calculs et des transferts.
 
-** SimGrid/MPI: Architecture générale
-   Cette API permet de simuler la couche MPI. Actuellement, la majeur
-   partie des fonctionnalités MPI ont été implémentées. 
-   Le fonctionnement est le suivant :
-   - l'application que l'on veut tester est compilée en remplaçant
-     le mpi.h classique par le mpi.h de Simgrid 
-   - à l'édition de lien on remplace le main de l'application par
-     celui de Simgrid.
-   - Ce dernier a pour rôle de préparer l'exécution du simulateur
-     en créant la plateforme et en déployant les processus SMPI qui
-     exécuterons chacun le main de l'application MPI.
+# ** SimGrid/MPI: Architecture générale
+#    Cette API permet de simuler la couche MPI. Actuellement, la majeur
+#    partie des fonctionnalités MPI ont été implémentées. 
+#    Le fonctionnement est le suivant :
+#    - l'application que l'on veut tester est compilée en remplaçant
+#      le mpi.h classique par le mpi.h de Simgrid 
+#    - à l'édition de lien on remplace le main de l'application par
+#      celui de Simgrid.
+#    - Ce dernier a pour rôle de préparer l'exécution du simulateur
+#      en créant la plateforme et en déployant les processus SMPI qui
+#      exécuterons chacun le main de l'application MPI.
              
-** StarPU-SG: Architecture générale   
-   StarPU a été modifié afin de pouvoir fonctionner au dessus du
-   simulateur Simgrid et est basé sur l'API MSG. L'application est
-   exécutée réellement mais les allocations mémoires des tâches ne
-   sont pas effectuées, les codes de calcul sont simulés et remplacés
-   par un délais de même pour les transferts CUDA.
+** StarPU-MSG: Architecture générale   
+   # StarPU a été modifié afin de pouvoir fonctionner au dessus du
+   # simulateur Simgrid et est basé sur l'API MSG. L'application est
+   # exécutée réellement mais les allocations mémoires des tâches ne
+   # sont pas effectuées, les codes de calcul sont simulés et remplacés
+   # par un délais de même pour les transferts CUDA.
 
-** Ce qui coince
+   Comme à la base StarPU visait le modèle CPUs-GPUs, l'API la plus
+   proche était MSG, notamment par rapport à la création de threads et
+   pour la synchronisation. StarPU a donc été modifié pour pouvoir
+   fonctionner au dessus du simulateur SimGrid en se basant sur
+   MSG. Ainsi, l'application (le runtime de StarPU) est réellement
+   exécutée, mais les allocations mémoires des tâches ne sont pas
+   effectuées, les codes de calcul sont simulés et remplacés par un
+   délais de même pour les transferts CUDA. 
+
+
+** StarPU-SMPI:Ce qui coince
    Ici nous sommes dans contexte hybride, car il y a à la fois un
    environnement de mémoire partagée au sein d'un noeud et un
    environnement à mémoire distribuée entre les différents noeuds.  
@@ -605,6 +615,9 @@ done
    SMPI n'ont pas été prévus pour fonctionner en ensemble. il nous
    faut arriver à correctement initialiser en la partie MSG et SMPI.
    
+
+
+
 * Méthodologie
   Comme nous travaillons avec Simgrid et StarPU à la fois, nous
   utilisons un dépôt complexe comprenant les deux et gérer avec

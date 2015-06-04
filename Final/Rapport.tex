@@ -169,7 +169,7 @@ sur les tâches. StarPU génère un graphe de dépendance permettant
 d'optimiser l'ordonnancement de ces dernières. 
 
 La première version de StarPU a été conçu spécialement pour des
-architectures hybrides. Une version récente (StarPU MPI) a été
+architectures hybrides. Une version récente (StarPU MPI)\cite{StarPU-MPI} a été
 réalisée pour bénéficier d'un ordonnancement et d'une exécution qui
 soit à la fois dynamique et opportuniste dans un contexte distribuée,
 afin de répartir la charge entre les différents noeuds.
@@ -234,30 +234,54 @@ nous permettrait d'avoir des expériences qui peuvent être reproduites.
 
 Et on a d'autre part l'émulation où l'on exécuterait en vrai le
 programme sur le système simulé. Ainsi, seul le runtime de StarPU sera
-réellement exécuté, nous pourrons donc étudier son impact sur le
+réellement exécuté\cite{StarPUSG}, nous pourrons donc étudier son impact sur le
 performances dans un contexte MPI.
 
 C'est pour ses divers avantages que nous avons opter pour la
-simulation / émulation. Le logiciel qui a été choisi est Simgrid, 
-un simulateur de systèmes distribués, de grilles de calculs, de
-systèmes peer to peer et cloud.
-De plus StarPU a récemment été portée au-dessus de Simgrid et
-concilie l'approche simulation /  évaluation.
+simulation / émulation. Le logiciel qui a été choisi est
+Simgrid\cite \{Simgrid\}, un simulateur de systèmes distribués, de
+grilles de calculs, de systèmes peer to peer et cloud. De plus
+StarPU a récemment été porté au-dessus de Simgrid et concilie
+l'approche simulation / évaluation. 
 
 \section{Analyse du problème}
 \label{sec-3}
-\subsection{Simgrid: Les processus}
+\subsection{Simgrid}
 \label{sec-3-1}
-Sous Simgrid, les processus sont modélisés par des threads, ce
-qui signifie que leur espace d'adressage est partagé.
-Afin que ces derniers ce comportent comme des processus UNIX, il
-est nécessaire que chaque processus n'ait pas accès aux
-variables d'un autre, c'est pourquoi un système de
-privatisation a été mis en place. L'approche est la suivante:
-pour chaque processus, une zone mémoire est allouée dans le
-tas grâce à un mmap. Cette zone est le nouveau segment données du
-processus, et à chaque changement de contexte, on fait pointer
-vers cette zone. 
+
+
+La structure de SimGrid est composé de plusieurs APIs. Il y a tout
+d'abord l'API SIMIX qui permet de simuler la partie OS. C'est elle
+qui s'occupe notamment de la gestion et de l'ordonnancement des
+processus et également des mécanismes de synchronisation. Sous
+SimGrid, les processus sont modélisés par des threads, ce qui
+signifie que leur espace d'adressage est partagé ce qui nous permet
+de simuler un environnement à mémoire partagée. 
+
+Ensuite, au dessus SIMIX, il y a d'une part l'API MSG. Cette dernière
+permet à l'utilisateur créer et manipuler des processus de manière
+simple. C'est cette API qui est généralement utilisé pour la
+plupart des applications classiques et hybrides. 
+
+Et d'autre part, il y a l'API SMPI qui a été développée
+spécifiquement pour simuler des applications MPI. Actuellement la
+majeure partie des fonctionnalités de MPI ont été implémentées. La
+simulation de code MPI est assez compliquée et SimGrid est un des
+seul simulateur à le permettre. Pour ce faire, on compile
+l'application que l'on veut tester en remplaçant le mpi.h classique
+par le mpi.h de Simgrid. Ensuite, à l'édition de liens on remplace
+le main de l'application par le main de Simgrid. Ce dernier a pour
+rôle de préparer l'exécution du simulateur en créant la plateforme
+et en déployant les processus SMPI qui exécuterons chacun le main
+de l'application MPI. Comme dans le cadre d'applications MPI on est
+dans un environnement à mémoire distribuée et que sous SimGrid les
+processus sont modélisés par des threads, afin que ces derniers
+aient leurs propre espace mémoire, l'approche suivi par SMPI
+consiste à privatiser les variables des processus en créant pour
+chaque processus une nouvelle zone mémoire dans le tas grâce à un
+mmpant, recopiant le segment données dans celui-ci le segment
+données et à chaque changement de contexte faire pointer vers la
+zone correspondant à celle du processus. 
 
 \begin{figure}[htb]
 \centering
@@ -265,31 +289,26 @@ vers cette zone.
 \caption{\label{fig:1}Privatisation du segment données}
 \end{figure}
 
-\subsection{SimGrid/MPI: Architecture générale}
-\label{sec-3-2}
-Cette API permet de simuler la couche MPI. Actuellement, la majeur
-partie des fonctionnalités MPI ont été implémentées. 
-Le fonctionnement est le suivant :
-\begin{itemize}
-\item l'application que l'on veut tester est compilée en remplaçant
-le mpi.h classique par le mpi.h de Simgrid
-\item à l'édition de lien on remplace le main de l'application par
-celui de Simgrid.
-\item Ce dernier a pour rôle de préparer l'exécution du simulateur
-en créant la plateforme et en déployant les processus SMPI qui
-exécuterons chacun le main de l'application MPI.
-\end{itemize}
+Enfin, il l'API SURF qui a pour objectif de décrire les
+caractéristique de la plateforme et de la simuler. On lui fournit
+donc une modèle de performance qui permettra d'estimer la durée des
+calculs et des transferts.
 
-\subsection{StarPU-SG: Architecture générale}
-\label{sec-3-3}
-StarPU a été modifié afin de pouvoir fonctionner au dessus du
-simulateur Simgrid et est basé sur l'API MSG. L'application est
-exécutée réellement mais les allocations mémoires des tâches ne
-sont pas effectuées, les codes de calcul sont simulés et remplacés
-par un délais de même pour les transferts CUDA.
+\subsection{StarPU-MSG: Architecture générale}
+\label{sec-3-2}
+
+Comme à la base StarPU visait le modèle CPUs-GPUs, l'API la plus
+proche était MSG, notamment par rapport à la création de threads et
+pour la synchronisation. StarPU a donc été modifié pour pouvoir
+fonctionner au dessus du simulateur SimGrid en se basant sur
+MSG. Ainsi, l'application (le runtime de StarPU) est réellement
+exécutée, mais les allocations mémoires des tâches ne sont pas
+effectuées, les codes de calcul sont simulés et remplacés par un
+délais de même pour les transferts CUDA. 
+
 
 \subsection{Ce qui coince}
-\label{sec-3-4}
+\label{sec-3-3}
 Ici nous sommes dans contexte hybride, car il y a à la fois un
 environnement de mémoire partagée au sein d'un noeud et un
 environnement à mémoire distribuée entre les différents noeuds.  
