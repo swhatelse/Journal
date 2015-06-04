@@ -471,7 +471,8 @@ done
    notamment à cause de coût, on ne peut pas vraiment extrapoler les
    résultats. Or justement nous voulons pouvoir évaluer les
    performances quelque soit la plateforme et nous avons également
-   besoin de mener un grand nombre de mesures.
+   besoin de mener un grand nombre de mesures afin d'avoir des
+   résultats valides.
 ** Simulation
    Le principe de la simulation est de s'affranchir de la plateforme.
    Ainsi, les expérimentations peuvent être effectuées à partir de
