@@ -52,7 +52,10 @@
      - Génération d'un graphe de dépendance -> optimiser ordonnancement des tâches.
    Première version spécialement conçue pour architectures hybrides.
 
-   Par exemple Version récente (StarPU MPI) pour bénéficier de
+   StarPU est un exemple de ce qui ce fait et c'est celui-ci que nous
+   allons étudions.
+
+   Version récente (StarPU MPI) pour bénéficier de
    l'exécution/ordonnancement dynamique/opportuniste aussi dans le cas
    du distribué et potentiellement répartir dynamiquement les tâches
    en fonction de la charge entre les noeuds.

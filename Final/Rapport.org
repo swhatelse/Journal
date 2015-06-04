@@ -511,22 +511,6 @@ done
    
 * Analyse du problème
 ** Simgrid
-   # Sous Simgrid, les processus sont modélisés par des threads, ce
-   # qui signifie que leur espace d'adressage est partagé.
-   # Afin que ces derniers ce comportent comme des processus UNIX, il
-   # est nécessaire que chaque processus n'ait pas accès aux
-   # variables d'un autre, c'est pourquoi un système de
-   # privatisation a été mis en place. L'approche est la suivante:
-   # pour chaque processus, une zone mémoire est allouée dans le
-   # tas grâce à un mmap. Cette zone est le nouveau segment données du
-   # processus, et à chaque changement de contexte, on fait pointer
-   # vers cette zone. 
-
-   # #+ATTR_LATEX: :width 5cm
-   # #+CAPTION: Privatisation du segment données
-   # #+NAME:   fig:1
-   # [[./Img/Memoire.jpg]]
-
    La structure de SimGrid est composé de plusieurs APIs. Il y a tout
    d'abord l'API SIMIX qui permet de simuler la partie OS. C'est elle
    qui s'occupe notamment de la gestion et de l'ordonnancement des
@@ -570,25 +554,7 @@ done
    donc une modèle de performance qui permettra d'estimer la durée des
    calculs et des transferts.
 
-# ** SimGrid/MPI: Architecture générale
-#    Cette API permet de simuler la couche MPI. Actuellement, la majeur
-#    partie des fonctionnalités MPI ont été implémentées. 
-#    Le fonctionnement est le suivant :
-#    - l'application que l'on veut tester est compilée en remplaçant
-#      le mpi.h classique par le mpi.h de Simgrid 
-#    - à l'édition de lien on remplace le main de l'application par
-#      celui de Simgrid.
-#    - Ce dernier a pour rôle de préparer l'exécution du simulateur
-#      en créant la plateforme et en déployant les processus SMPI qui
-#      exécuterons chacun le main de l'application MPI.
-             
 ** StarPU-MSG: Architecture générale   
-   # StarPU a été modifié afin de pouvoir fonctionner au dessus du
-   # simulateur Simgrid et est basé sur l'API MSG. L'application est
-   # exécutée réellement mais les allocations mémoires des tâches ne
-   # sont pas effectuées, les codes de calcul sont simulés et remplacés
-   # par un délais de même pour les transferts CUDA.
-
    Comme à la base StarPU visait le modèle CPUs-GPUs, l'API la plus
    proche était MSG, notamment par rapport à la création de threads et
    pour la synchronisation. StarPU a donc été modifié pour pouvoir
@@ -600,23 +566,18 @@ done
 
 
 ** StarPU-SMPI:Ce qui coince
-   Ici nous sommes dans contexte hybride, car il y a à la fois un
-   environnement de mémoire partagée au sein d'un noeud et un
-   environnement à mémoire distribuée entre les différents noeuds.  
-  
-   Pour simuler cette environnement, les processus MPI d'un même noeud
-   doivent partager les données donc il faut faire en sorte que le
-   segment data d'un processus soit rattaché à celui qui les a
-   crées. Or, comment concilier à la fois la privatisation du segment
-   données entre les processus de noeud différents et le partage entre
-   les processus d'un même noeud? 
-
-   De plus, une autre difficulté vient du fait qu'à la base MSG et
-   SMPI n'ont pas été prévus pour fonctionner en ensemble. il nous
-   faut arriver à correctement initialiser en la partie MSG et SMPI.
-   
-
-
+   Avec StarPU MPI, la modélisation est différente. On est à la fois
+   un environnement à mémoire partagée (entre les CPU et le GPU
+   d'une même machine) et un environnement à mémoire distribuée
+   (entre les différents noeuds). On doit donc permettre d'avoir des
+   modèles différents selon qu'on est entre noeud où à l'intérieur
+   d'un noeud. Il nous faut donc activer la privatisation de variables
+   entre les noeuds mais également le partage de variables à
+   l'intérieur de chacun noeuds. Pour cela nous avons besoin de faire
+   fonctionner MSG et SMPI ensemble. Or non seulement StarPU est
+   essentiellement basé sur MSG et de plus MSG et SMPI n'ont pas été
+   prévu pour fonctionner ensemble, il nous par ailleurs initialiser
+   correctement la partie MSG et la partie SMPI.
 
 * Méthodologie
   Comme nous travaillons avec Simgrid et StarPU à la fois, nous
