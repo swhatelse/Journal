@@ -125,13 +125,32 @@
     des process) et appelle le main de smpi qui créée des threads qui
     appellement le smpi_simulated_main.
 
+    Le code de l'application est exécuté pour de vrai mais les
+    communications passent par MPI et sont donc simulées. À chaque
+    appel MPI, il y a un changement de contexte qui rend la main au
+    simulateur et qui permet de décider quel thread on débloque.
+
+    Attention, Processus modélisé par threads, donc espace d'adressage
+    partagé et donc exécution complètement incorrecte... L'approche
+    suivie par SMPI consiste à privatiser les variables des processus
+    en mmapant le segment data.
+
+    Copie segment data.
+
+    Émulation automatique et complète donc a priori très lent mais
+    possibilité d'annoter le code pour:
+   - diminuer le temps d'exécution: ne pas exécuter certaines portions
+     de code mais insérer à la place un délai simulé.
+   - diminuer l'empreinte mémoire: ne pas allouer toutes les données
+     (ne pas allouer ou bien faire de l'aliasing mémoire).
+
 *** SURF
     SURF -> description des caractéristique de la machine.
 *** SIMIX
     gestion processus, ordonnancement, synchro 
     processus -> threads donc mémoire partagé.
 
-** StarPU-MSG: Architecture générale
+** StarPU-MSG
    Pour modèle CPU - GPU.
    Basé sur MSG car API la plus proche (en particulier, création de
    threads et de synchros).
@@ -148,31 +167,8 @@
    d'aussi compliqué à faire que ce qui avait été nécessaire pour
    SMPI.
 ** StarPU SMPI
-   
-   
-** Old
-*** SimGrid/MPI: Architecture générale
-
-   Si appli avec openMP ou pthread ou CUDA, rien n'est intercepté et
-   ça va faire n'importe quoi. 
-
-   Le code de l'application est exécuté pour de vrai mais les
-   communications passent par MPI et sont donc simulées. À chaque
-   appel MPI, il y a un changement de contexte qui rend la main au
-   simulateur et qui permet de décider quel thread on débloque.
-
-   Attention, Processus modélisé par threads, donc espace d'adressage
-   partagé et donc exécution complètement incorrecte... L'approche
-   suivie par SMPI consiste à privatiser les variables des processus
-   en mmapant le segment data.
-
-   Émulation automatique et complète donc a priori très lent mais
-   possibilité d'annoter le code pour:
-   - diminuer le temps d'exécution: ne pas exécuter certaines portions
-     de code mais insérer à la place un délai simulé.
-   - diminuer l'empreinte mémoire: ne pas allouer toutes les données
-     (ne pas allouer ou bien faire de l'aliasing mémoire).
-*** Ce qui coince
+   Besoin de faire fonctionner MSG et SMPI ensemble.
+   A là fois contexte mémoire distribués et mémoire partagée.
    De base, MSG et SMPI pas prévus pour fonctionner ensemble. Besoin de
   - partage de data par les threads StarPU appartenant au même
     processus MPI. Attention aux librairies dynamiques.
@@ -180,6 +176,7 @@
     partie MSG
   - Permettre d'avoir des modèles différents selon qu'on est entre
     noeuds ou à l'intérieur d'un noeud
+   
 * Méthodologie 1
   - Modification de deux code bases complexes. Utilisation de git
     submodule comprenant les deux.
