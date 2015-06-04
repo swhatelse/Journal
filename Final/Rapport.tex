@@ -140,10 +140,11 @@ Le problème est que l'on se retrouve à devoir utiliser plusieurs
 paradigme à la fois ce qui complique grandement la programmation.
 
 Généralement, on procède soit en déléguant tous les calculs aux
-GPUs, laissant les CPUs en idle. Soit on réparti la charge entre les
-CPUs et les GPUs de manière complètement statique. L'inconvénient
-est que la mise en pratique est très difficile car il est ardu de
-trouver un bon équilibrage.
+GPUs, et les CPUs sont en idle. Soit on réparti la charge entre les
+CPUs et les GPUs de manière complètement
+statique\cite{StarPU-MPI}. L'inconvénient est que la mise en
+pratique est très difficile car il est ardu de trouver un bon
+équilibrage. 
 
 Cependant même si l'on arrive à équilibrer les charges
 correctemment, on peut avoir des cas où certaines unités de

@@ -409,10 +409,11 @@ done
   paradigme à la fois ce qui complique grandement la programmation.
   
   Généralement, on procède soit en déléguant tous les calculs aux
-  GPUs, laissant les CPUs en idle. Soit on réparti la charge entre les
-  CPUs et les GPUs de manière complètement statique. L'inconvénient
-  est que la mise en pratique est très difficile car il est ardu de
-  trouver un bon équilibrage.
+  GPUs, et les CPUs sont en idle. Soit on réparti la charge entre les
+  CPUs et les GPUs de manière complètement
+  statique\cite{StarPU-MPI}. L'inconvénient est que la mise en
+  pratique est très difficile car il est ardu de trouver un bon
+  équilibrage. 
   
   Cependant même si l'on arrive à équilibrer les charges
   correctemment, on peut avoir des cas où certaines unités de
@@ -437,7 +438,7 @@ done
   d'optimiser l'ordonnancement de ces dernières. 
   
   La première version de StarPU a été conçu spécialement pour des
-  architectures hybrides. Une version récente (StarPU MPI) a été
+  architectures hybrides. Une version récente (StarPU MPI)\cite{StarPU-MPI} a été
   réalisée pour bénéficier d'un ordonnancement et d'une exécution qui
   soit à la fois dynamique et opportuniste dans un contexte distribuée,
   afin de répartir la charge entre les différents noeuds.
@@ -498,15 +499,15 @@ done
    
    Et on a d'autre part l'émulation où l'on exécuterait en vrai le
    programme sur le système simulé. Ainsi, seul le runtime de StarPU sera
-   réellement exécuté, nous pourrons donc étudier son impact sur le
+   réellement exécuté\cite{StarPUSG}, nous pourrons donc étudier son impact sur le
    performances dans un contexte MPI.
 
    C'est pour ses divers avantages que nous avons opter pour la
-   simulation / émulation. Le logiciel qui a été choisi est Simgrid, 
-   un simulateur de systèmes distribués, de grilles de calculs, de
-   systèmes peer to peer et cloud.
-   De plus StarPU a récemment été portée au-dessus de Simgrid et
-   concilie l'approche simulation /  évaluation.
+   simulation / émulation. Le logiciel qui a été choisi est
+   Simgrid\cite {Simgrid}, un simulateur de systèmes distribués, de
+   grilles de calculs, de systèmes peer to peer et cloud. De plus
+   StarPU a récemment été porté au-dessus de Simgrid et concilie
+   l'approche simulation / évaluation. 
    
 * Analyse du problème
 ** Simgrid: Les processus

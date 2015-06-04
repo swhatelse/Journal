@@ -141,9 +141,10 @@ paradigme à la fois ce qui complique grandement la programmation.
 
 Généralement, on procède soit en déléguant tous les calculs aux
 GPUs, laissant les CPUs en idle. Soit on réparti la charge entre les
-CPUs et les GPUs de manière complètement statique. L'inconvénient
-est que la mise en pratique est très difficile car il est ardu de
-trouver un bon équilibrage.
+CPUs et les GPUs de manière complètement
+statique\cite{StarPU-MPI}. L'inconvénient est que la mise en
+pratique est très difficile car il est ardu de trouver un bon
+équilibrage. 
 
 Cependant même si l'on arrive à équilibrer les charges
 correctemment, on peut avoir des cas où certaines unités de
@@ -289,12 +290,16 @@ par un délais de même pour les transferts CUDA.
 
 \subsection{Ce qui coince}
 \label{sec-3-4}
-Comme en MPI on est dans un contexte d'espace mémoire distribuée,
-les processus MPI d'un même noeud doivent partager les données donc
-il faut faire en sorte que le segment data d'un processus soit
-rattaché à celui qui les a crées. Or, comment concilier à la fois
-la privatisation du segment données entre les processus de noeud
-différents et le partage entre les processus d'un même noeud?
+Ici nous sommes dans contexte hybride, car il y a à la fois un
+environnement de mémoire partagée au sein d'un noeud et un
+environnement à mémoire distribuée entre les différents noeuds.  
+
+Pour simuler cette environnement, les processus MPI d'un même noeud
+doivent partager les données donc il faut faire en sorte que le
+segment data d'un processus soit rattaché à celui qui les a
+crées. Or, comment concilier à la fois la privatisation du segment
+données entre les processus de noeud différents et le partage entre
+les processus d'un même noeud? 
 
 De plus, une autre difficulté vient du fait qu'à la base MSG et
 SMPI n'ont pas été prévus pour fonctionner en ensemble. il nous
