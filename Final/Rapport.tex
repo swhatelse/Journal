@@ -84,30 +84,17 @@
 
 
 \begin{abstract}
-Dans le domaine des supercalculateurs, la course à la performance est
-un point crucial. Actuellement, le calculateur le plus puissant (le
-TianHe-2) est capable d'effectuer environ 33.86 Peta d'opérations
-flotantes par secondes. Cependant cette course est freinée par un
-facteur qui prend désormais d'une importance capitale, le coût
-énergétique. En effet, reprennons l'exemple du supercalculateur
-chinois, la consommation du TianHe-2 atteint presque les 18MW et
-avec la génération exascale la consommation estimée sera entre 20MW
-et 40MW. Dans l'état des fait, ce n'est pas réalisable et pour
-pouvoir atteindre l'exaflops, il nécessaire d'optimiser d'autres
-points que la puissance des puces. Evidemment des optimisations
-peuvent être faites au niveau matériel afin de réaliser des
-composants à hautes efficacités énergétiques. On peut également
-optimiser le rendement en utilisant au mieux les capacités du
-matériel. Cette optimisation ce fait donc du côté logiciel et pour
-cela il nous faut  envisager un changement de méthode programmation,
-c'est cette dernière que nous allons étudier. L'objectif de mon
-stage au sein de l'équipe MESCAL, sous la tutelle d'Arnaud Legrand,
-est donc de tenter de mesurer le gain d'une telle solution. 
 
-
-Dans cette optique, en nous basant sur les standards de
-programmation en HPC, nous verrons comment nous pourrions évaluer
-les performances d'un nouveau paradigme programmation.
+Les supercalcultateurs actuellement sont des noeuds composés de
+machines hybrides. Afin de pouvoir tirer partie de toute la
+puissance disponible, il est indispensable d'avoir une approche qui
+soit dynamique mais également facile à mettre en oeuvre. Le méthode
+de programmation classique ne le permettent pas c'est pour cela
+qu'une nouvelle approche a été envisage. Le paradigme de
+programmation par tâches couplé à un système dynamques. Ce rapport
+montre les intérêts de cette méthodes et comme on peut évaluer les
+performances. 
+\newpage
 \end{abstract}
 
 \section{Introduction}
@@ -115,80 +102,80 @@ les performances d'un nouveau paradigme programmation.
 
 La majorité des supercalculateurs actuels, comme le montre le site
 \href{http://www.top500.org}{top500} sont des clusters massivement parallèles et souvent de type
-hétérogènes(CPU-GPU). De ce fait certains standard ce sont imposés.
-
-Il y a tout d'abord la norme MPI (Message Passing Interface),
+hétérogènes(CPU-GPU), et il y a certains standards permettant de
+les programmer. Il y a tout d'abord la norme MPI (Message Passing Interface),
 qui est une API de communication basée sur l'envoi et la
-récéption de message. Elle réputée pour être performante et
-portable. Elle est de plus haut niveau que les sockets.
-
-Ensuite, il y a l'API OpenMP qui est une interface de
-multihreading de plus haut niveau de PThread. Elle permet de
-découper facilement des traitements mais cependant elle ne permet
-d'avoir de contrôle sur la priorité des threads, comme cela reste à
-la charge de l'ordonnanceur du noyau. 
-
-Enfin, l'API CUDA permet tirer partie de la puissance de calcul
-des GPU. Pour cela il est nécessaire de spécifier explicitement de
-ce que l'on veut envoyer aux GPUs et on doit également gérer la
-synchronisation.  
+récéption de message. Elle a pour objectif d'être performante et
+portable.  Elle est de plus haut niveau que les sockets et apporte
+des mécanismes comme des fonctions de communications collectives
+(exemple broadcast). Ensuite, il y a l'API OpenMP qui est une
+interface de multihreading de plus haut niveau de PThread. Elle
+permet de découper facilement des traitements et d'exploiter les
+architectures multicoeurs. Enfin, il y a l'API CUDA qui permet de tirer partie de
+la puissance de calcul des GPUs. Pour cela il est nécessaire de
+spécifier explicitement de ce que l'on veut envoyer aux GPUs et on
+doit également gérer la synchronisation entre les CPUs et les GPUs.   
 
 Si l'on veut optimiser le rendement d'une application afin que
-celle-ci tire partie de toute la puissance disponible, il faut faire
-en sorte d'occuper au maximum le plus d'unités de calculs possible.  
-Le problème est que l'on se retrouve à devoir utiliser plusieurs
-paradigme à la fois ce qui complique grandement la programmation.
-
+celle-ci tire partie de toute la puissance disponible, il est
+nécessaire d'utiliser plusieurs paradigmes à la fois ce qui complique
+grandement la programmation. Ceci est un problème de programmation
+classique où l'on doit, avec les APIs précédentes, indiquer explicitement où et
+quand chacun des calculs doit être réalisé. Par exemple pour exploiter
+efficacement un GPU, on doit transférer explicitement les données du
+CPU vers le GPU, lancer l'exécution du calcul sur le GPU, gérer la
+synchronisation sur l'attente du résultat, récupérer le résultat et
+pendant ce temps continuer à occuper le CPU avec un autre calcul.
+Cette exemple n'illustre que la répartition de charge qu'au niveau
+d'une seule et même machine. Cela ce complique davantage lorsque
+l'on veut également répartir la charge entre plusieurs machine.
 Généralement, on procède soit en déléguant tous les calculs aux
 GPUs, et les CPUs sont en idle. Soit on réparti la charge entre les
 CPUs et les GPUs de manière complètement
-statique\cite{StarPU-MPI}. L'inconvénient est que la mise en
+statique\cite{StarPU-MPI}. L'inconvénient est que la mise en 
 pratique est très difficile car il est ardu de trouver un bon
-équilibrage. 
-
-Cependant même si l'on arrive à équilibrer les charges
-correctemment, on peut avoir des cas où certaines unités de
-calculs ne sont pas occupées alors qu'elles le pourraient. Cela se
-produit quand par exemple lorsque certaines unités de calculs
-attendent la terminaisons de certain traitements alors que
-d'autres auraient put être effectuer en attendant. Cela est dû au
-fait que l'exécution soit statique et ce qui induit un idle time
-artificiel. De plus cette solution n'est pas portable car le
+équilibrage. Cependant même si l'on arrive à équilibrer les charges
+correctement, cette solution est difficilement portable car le
 découpage des traitements ce fait en fonction de la plateforme
-cible.
+cible. 
 
 La solution serait donc d'avoir une gestion dynamique des
 charges. Mais cela s'avère bien plus compliqué, voir impossible
-à réaliser directement avec ces méthodes de programmation. Alors
-essayons en une autre.
-
-La librairie StarPU\cite{StarPU} est un système runtime qui permet
-une répartition des traitements de manière dynamique et
-opportuniste. Pour ce faire elle introduit un nouveau paradigme basé
-sur les tâches. StarPU génère un graphe de dépendance permettant
-d'optimiser l'ordonnancement de ces dernières. 
-
+à réaliser directement avec ces méthodes de
+programmation. L'alternative est la programmation par tâches. Ce    
+paradigme fournit une abstraction à la notion d'exécution de calculs sur CPU,
+GPU et sur d'autres machines. Ainsi le développeur n'a plus à se
+soucier de sur quoi le calcul est effectué, mais seulement en
+combien de tâche le calcul doit être découpé. De plus avec un système de
+répartition dynamique l'utilisateur n'aurait également plus de
+besoin de soucier de quand les traitements doivent être effectués.
+La librairie StarPU\cite{StarPU} est un exemple utilisant cette
+approche, c'est cette dernière que nous allons utiliser. C'est un
+système runtime qui permet une répartition des traitements de
+manière dynamique et opportuniste. Pour ce faire, StarPU génère un
+graphe de dépendance permettant d'optimiser l'ordonnancement des tâches. 
 La première version de StarPU a été conçu spécialement pour des
 architectures hybrides. Une version récente (StarPU MPI)\cite{StarPU-MPI} a été
 réalisée pour bénéficier d'un ordonnancement et d'une exécution qui
 soit à la fois dynamique et opportuniste dans un contexte distribuée,
 afin de répartir la charge entre les différents noeuds.
 
-Nous allons donc voir comment évaluer les performances
-d'applications basés sur StarPU MPI.
+Les performances d'un tel système sont difficiles évaluées pour
+plusieurs raisons. Tout d'abord, la configuration du runtime
+est un paramètre à prendre en compte, on peut choisir des
+heuristiques et des politiques d'ordonnancements différentes.
+Ensuite, il y a les réglages au niveau de l'application qu'il faut
+prendre en compte, notamment la répartition des ressources et le
+découpage des tâches, qui entraîne la génération d'un graphe de
+tâches différent.
 
-Pour cela nous verrons, dans une première partie, les différentes
-approches pour l'évaluation de performances d'applications en HPC et
-pourquoi nous avons choisi le simulateur Simgrid. Dans une seconde
-partie, nous examinerons en détail Simgrid et StarPU ainsi que les
-différents problèmes que nous avons rencontrés. Après quoi, dans une
-troisième parte, nous verrons les méthodes employées pour répondre à
-ces problèmes. Dans une quatrième partie, nous aborderons les
-modifications apportées à Simgrid afin de pouvoir effectuer les
-mesures. Ensuite dans une cinquième partie, nous verrons le
-processus de validation de ces changement. Et pout finir, dans une
-sixième partie, nous conclurons sur les résultats que nous avons
-réussit à obtenir. 
+Dans cet objectif, la première partie de ce rapport montrera qu'une
+des approches possible est la simulation. La seconde partie
+présentera en détail le fonctionnement de StarPU et SimGrid 
+ainsi que les difficultés rencontrées. La troisième partie sera
+consacrée à la méthodologie employée.  Une quatrième partie montrera la
+contribution à la simulation de telles applications.  Et la
+cinquième partie abordera les résultats obtenus. 
 
 \section{État de l'art}
 \label{sec-2}
@@ -204,7 +191,8 @@ peuvent être effectuées sur que sur un petit nombre de plateforme
 notamment à cause de coût, on ne peut pas vraiment extrapoler les
 résultats. Or justement nous voulons pouvoir évaluer les
 performances quelque soit la plateforme et nous avons également
-besoin de mener un grand nombre de mesures.
+besoin de mener un grand nombre de mesures afin d'avoir des
+résultats valides.
 \subsection{Simulation}
 \label{sec-2-2}
 Le principe de la simulation est de s'affranchir de la plateforme.
@@ -338,8 +326,9 @@ modifications au niveau du simulateur. Dans ce but, il a été dans un
 premier temps nécessaire de consulter la documentation afin de
 comprendre le fonctionnement et l'architecture de Simgrid. Ensuite
 il a fallut explorer le code afin de déterminer où et comment
-apporter les modifications. Pour cela les outils tels que GDB,
-Valgrind, les etags et CGVG ont été d'une aide précieuse.
+apporter les modifications. Pour cela les outils tels que GDB et
+Valgrind ont été d'une aide précieuse et ont permis de vérifier les
+changement de segment mémoire.
 
 \section{Contribution}
 \label{sec-5}

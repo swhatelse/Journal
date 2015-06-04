@@ -202,24 +202,12 @@ révéler très coûteuse et il n'est pas toujours possible d'avoir
 accès à la plateforme. De plus comme les expérimentations ne
 peuvent être effectuées sur que sur un petit nombre de plateforme
 notamment à cause de coût, on ne peut pas vraiment extrapoler les
-résultats. Dernier point important, nous n'avons pas de contrôle
-sur les décisions d'ordonnancements, d'une exécution à l'autre on
-peut avoir des résultats différents ce qui fait que les
-expériences ne sont pas reproductibles. 
-\subsection{L'approche par rejeu de trace}
+résultats. Or justement nous voulons pouvoir évaluer les
+performances quelque soit la plateforme et nous avons également
+besoin de mener un grand nombre de mesures.
+\subsection{Simulation}
 \label{sec-2-2}
-Cette méthode consiste à exécuter une première fois l'application
-sur un système réel pour ensuite pour ensuite rejouer la trace
-post-mortem. Elle est couramment employé dans le contexte 
-d'application MPI mais est ici totalement inadaptés car nous avons
-à faire à des programmes qui sont non déterministes. En effet, on ne
-pourra pas connaître les autres actions qu'il était possible
-d'effectuer plutôt qu'une autre, ni leurs impacts.
-\subsection{La simulation/émulation}
-\label{sec-2-3}
-On a d'une part la simulation où l'on crée un faux environnement
-proche de la réalité et où les actions ne sont pas réellement
-effectués. Dans notre cas on simulerait donc la plateforme de même que l'OS. 
+Le principe de la simulation est de s'affranchir de la plateforme.
 Ainsi, les expérimentations peuvent être effectuées à partir de
 n'importe quel système, il n'est plus nécessaire d'avoir accès à la
 plateforme, ce qui rend cette approche peu coûteuse. 
@@ -229,20 +217,32 @@ permet d'avoir un temps d'exécution plus court qu'avec des tests
 réels car on n'effectue que certains traitements ce qui nous permet
 pouvoir effectuer un grand nombre de mesures.  
 Enfin comme la simulation nous permettrait d'avoir un contrôle sur
-l'ordonnancement, nous pourrions avoir un système déterministe qui
+de nombreux paramètres, nous pouvons avoir un système déterministe qui
 nous permettrait d'avoir des expériences qui peuvent être reproduites.
 
+\subsubsection{L'approche par rejeu de trace}
+\label{sec-2-2-1}
+Cette méthode consiste à exécuter une première fois l'application
+sur un système réel pour ensuite pour ensuite rejouer la trace
+post-mortem. Elle est couramment employé dans le contexte 
+d'applications MPI statiques mais est ici, nous avons à faire à une
+exécution complètement dynamique, ce qui est totalement inadaptés car
+le flot de contrôle du programme est non déterministes. 
+\subsubsection{Couplée avec l'émulation}
+\label{sec-2-2-2}
+On a d'une part la simulation où l'on crée un faux environnement
+proche de la réalité et où les actions ne sont pas réellement
+effectués. Dans notre cas on simulerait donc la plateforme de même que l'OS.  
 Et on a d'autre part l'émulation où l'on exécuterait en vrai le
 programme sur le système simulé. Ainsi, seul le runtime de StarPU sera
 réellement exécuté\cite{StarPUSG}, nous pourrons donc étudier son impact sur le
 performances dans un contexte MPI.
 
-C'est pour ses divers avantages que nous avons opter pour la
-simulation / émulation. Le logiciel qui a été choisi est
-Simgrid\cite \{Simgrid\}, un simulateur de systèmes distribués, de
-grilles de calculs, de systèmes peer to peer et cloud. De plus
-StarPU a récemment été porté au-dessus de Simgrid et concilie
-l'approche simulation / évaluation. 
+L'approche simulation / émulation se révèle donc la plus adaptée.
+Nous avons choisi le simulateur Simgrid qui permet de simuler des
+systèmes distribués, des grilles des calculs, des systèmes peer to
+peer et cloud. De plus StarPU a récemment été porté au-dessus de
+SimGrid et concilie l'approche simulation / évaluation.
 
 \section{Analyse du problème}
 \label{sec-3}

@@ -90,50 +90,30 @@
 
 
 #+BEGIN_abstract
-  Dans le domaine des supercalculateurs, la course à la performance est
-  un point crucial. Actuellement, le calculateur le plus puissant (le
-  TianHe-2) est capable d'effectuer environ 33.86 Peta d'opérations
-  flotantes par secondes. Cependant cette course est freinée par un
-  facteur qui prend désormais d'une importance capitale, le coût
-  énergétique. En effet, reprennons l'exemple du supercalculateur
-  chinois, la consommation du TianHe-2 atteint presque les 18MW et
-  avec la génération exascale la consommation estimée sera entre 20MW
-  et 40MW. Dans l'état des fait, ce n'est pas réalisable et pour
-  pouvoir atteindre l'exaflops, il nécessaire d'optimiser d'autres
-  points que la puissance des puces. Evidemment des optimisations
-  peuvent être faites au niveau matériel afin de réaliser des
-  composants à hautes efficacités énergétiques. On peut également
-  optimiser le rendement en utilisant au mieux les capacités du
-  matériel. Cette optimisation ce fait donc du côté logiciel et pour
-  cela il nous faut  envisager un changement de méthode programmation,
-  c'est cette dernière que nous allons étudier. L'objectif de mon
-  stage au sein de l'équipe MESCAL, sous la tutelle d'Arnaud Legrand,
-  est donc de tenter de mesurer le gain d'une telle solution. 
-  
-  # Pour cela nous allons, dans une première partie, voir comment est
-  # effectuée en générale la programmation en HPC, quels sont différents
-  # les standards et pourquoi nous nous sommes concentrés sur MPI. Nous
-  # discuterons ensuite du principe et de l'intérêt d'un nouveau
-  # paradigme de programmation et de la librairie StarPU. Nous
-  # constaterons ensuite que malgrès les apports de cette méthodes des
-  # difficultés subsites et les mesures peuvent-être compliquées a
-  # effectuées. C'est pourquoi dans une seconde partie, nous étudierons
-  # les différents approches pour évaluer les performances
-  # d'applications HPC et nous justifierons notre choix pour la
-  # simulation/émulation et en particulier pour l'outils Simgrid. Dans
-  # une troisième partie nous examinerons en détail Simgrid et StarPU
-  # ainsi que les différents problèmes que nous avons rencontrés. Dans
-  # une quatrième partie, nous verrons les méthodes employées. En
-  # cinquième partie, nous verrons les modifications apportés à Simgrid
-  # afin de pouvoir effectuer les mesures. Ensuite dans une sixième
-  # partie, nous verrons comment ces changements ont été validés. Et
-  # pout finir nous conclurons sur les résultats que nous avons réussit
-  # à obtenir.
+  # Dans le domaine des supercalculateurs, la course à la performance est
+  # un point crucial. Actuellement, le calculateur le plus puissant (le
+  # TianHe-2) est capable d'effectuer environ 33.86 Peta d'opérations
+  # flotantes par secondes. Cependant cette course est freinée par un
+  # facteur qui prend désormais d'une importance capitale, le coût
+  # énergétique. En effet, reprennons l'exemple du supercalculateur
+  # chinois, la consommation du TianHe-2 atteint presque les 18MW et
+  # avec la génération exascale la consommation estimée sera entre 20MW
+  # et 40MW. Dans l'état des fait, ce n'est pas réalisable et pour
+  # pouvoir atteindre l'exaflops, il nécessaire d'optimiser d'autres
+  # points que la puissance des puces. Evidemment des optimisations
+  # peuvent être faites au niveau matériel afin de réaliser des
+  # composants à hautes efficacités énergétiques. 
 
-  Dans cette optique, en nous basant sur les standards de
-  programmation en HPC, nous verrons comment nous pourrions évaluer
-  les performances d'un nouveau paradigme programmation.
-
+  Les supercalcultateurs actuellement sont des noeuds composés de
+  machines hybrides. Afin de pouvoir tirer partie de toute la
+  puissance disponible, il est indispensable d'avoir une approche qui
+  soit dynamique mais également facile à mettre en oeuvre. Le méthode
+  de programmation classique ne le permettent pas c'est pour cela
+  qu'une nouvelle approche a été envisage. Le paradigme de
+  programmation par tâches couplé à un système dynamques. Ce rapport
+  montre les intérêts de cette méthodes et comme on peut évaluer les
+  performances. 
+  \newpage
 #+END_abstract
 
 * Questions:							   :noexport:
@@ -411,7 +391,6 @@ done
   Cette exemple n'illustre que la répartition de charge qu'au niveau
   d'une seule et même machine. Cela ce complique davantage lorsque
   l'on veut également répartir la charge entre plusieurs machine.
-
   Généralement, on procède soit en déléguant tous les calculs aux
   GPUs, et les CPUs sont en idle. Soit on réparti la charge entre les
   CPUs et les GPUs de manière complètement
@@ -420,40 +399,46 @@ done
   équilibrage. Cependant même si l'on arrive à équilibrer les charges
   correctement, cette solution est difficilement portable car le
   découpage des traitements ce fait en fonction de la plateforme
-  cible. La solution serait donc d'avoir une gestion dynamique des
+  cible. 
+
+  La solution serait donc d'avoir une gestion dynamique des
   charges. Mais cela s'avère bien plus compliqué, voir impossible
-  à réaliser directement avec ces méthodes de programmation.
-
-  
-
-  La librairie StarPU\cite{StarPU} est un système runtime qui permet
-  une répartition des traitements de manière dynamique et
-  opportuniste. Pour ce faire elle introduit un nouveau paradigme basé
-  sur les tâches. StarPU génère un graphe de dépendance permettant
-  d'optimiser l'ordonnancement de ces dernières. 
-  
+  à réaliser directement avec ces méthodes de
+  programmation. L'alternative est la programmation par tâches. Ce    
+  paradigme fournit une abstraction à la notion d'exécution de calculs sur CPU,
+  GPU et sur d'autres machines. Ainsi le développeur n'a plus à se
+  soucier de sur quoi le calcul est effectué, mais seulement en
+  combien de tâche le calcul doit être découpé. De plus avec un système de
+  répartition dynamique l'utilisateur n'aurait également plus de
+  besoin de soucier de quand les traitements doivent être effectués.
+  La librairie StarPU\cite{StarPU} est un exemple utilisant cette
+  approche, c'est cette dernière que nous allons utiliser. C'est un
+  système runtime qui permet une répartition des traitements de
+  manière dynamique et opportuniste. Pour ce faire, StarPU génère un
+  graphe de dépendance permettant d'optimiser l'ordonnancement des tâches. 
   La première version de StarPU a été conçu spécialement pour des
   architectures hybrides. Une version récente (StarPU MPI)\cite{StarPU-MPI} a été
   réalisée pour bénéficier d'un ordonnancement et d'une exécution qui
   soit à la fois dynamique et opportuniste dans un contexte distribuée,
   afin de répartir la charge entre les différents noeuds.
-
-  Nous allons donc voir comment évaluer les performances
-  d'applications basés sur StarPU MPI.
-
-  Pour cela nous verrons, dans une première partie, les différentes
-  approches pour l'évaluation de performances d'applications en HPC et
-  pourquoi nous avons choisi le simulateur Simgrid. Dans une seconde
-  partie, nous examinerons en détail Simgrid et StarPU ainsi que les
-  différents problèmes que nous avons rencontrés. Après quoi, dans une
-  troisième parte, nous verrons les méthodes employées pour répondre à
-  ces problèmes. Dans une quatrième partie, nous aborderons les
-  modifications apportées à Simgrid afin de pouvoir effectuer les
-  mesures. Ensuite dans une cinquième partie, nous verrons le
-  processus de validation de ces changement. Et pout finir, dans une
-  sixième partie, nous conclurons sur les résultats que nous avons
-  réussit à obtenir. 
   
+  Les performances d'un tel système sont difficiles évaluées pour
+  plusieurs raisons. Tout d'abord, la configuration du runtime
+  est un paramètre à prendre en compte, on peut choisir des
+  heuristiques et des politiques d'ordonnancements différentes.
+  Ensuite, il y a les réglages au niveau de l'application qu'il faut
+  prendre en compte, notamment la répartition des ressources et le
+  découpage des tâches, qui entraîne la génération d'un graphe de
+  tâches différent.
+
+  Dans cet objectif, la première partie de ce rapport montrera qu'une
+  des approches possible est la simulation. La seconde partie
+  présentera en détail le fonctionnement de StarPU et SimGrid 
+  ainsi que les difficultés rencontrées. La troisième partie sera
+  consacrée à la méthodologie employée.  Une quatrième partie montrera la
+  contribution à la simulation de telles applications.  Et la
+  cinquième partie abordera les résultats obtenus. 
+
 * État de l'art
   En HPC, il y a trois grandes approches possible pour évaluer les
   performances d'applications.
@@ -592,8 +577,9 @@ done
   premier temps nécessaire de consulter la documentation afin de
   comprendre le fonctionnement et l'architecture de Simgrid. Ensuite
   il a fallut explorer le code afin de déterminer où et comment
-  apporter les modifications. Pour cela les outils tels que GDB,
-  Valgrind, les etags et CGVG ont été d'une aide précieuse.
+  apporter les modifications. Pour cela les outils tels que GDB et
+  Valgrind ont été d'une aide précieuse et ont permis de vérifier les
+  changement de segment mémoire.
 
 * Contribution
   La toute première chose à réaliser afin de pouvoir effectuer des
