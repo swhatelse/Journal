@@ -296,11 +296,16 @@ calculs et des transferts.
 
 \subsection{StarPU-MSG: Architecture générale}
 \label{sec-3-2}
-StarPU a été modifié afin de pouvoir fonctionner au dessus du
-simulateur Simgrid et est basé sur l'API MSG. L'application est
-exécutée réellement mais les allocations mémoires des tâches ne
-sont pas effectuées, les codes de calcul sont simulés et remplacés
-par un délais de même pour les transferts CUDA.
+
+Comme à la base StarPU visait le modèle CPUs-GPUs, l'API la plus
+proche était MSG, notamment par rapport à la création de threads et
+pour la synchronisation. StarPU a donc été modifié pour pouvoir
+fonctionner au dessus du simulateur SimGrid en se basant sur
+MSG. Ainsi, l'application (le runtime de StarPU) est réellement
+exécutée, mais les allocations mémoires des tâches ne sont pas
+effectuées, les codes de calcul sont simulés et remplacés par un
+délais de même pour les transferts CUDA. 
+
 
 \subsection{Ce qui coince}
 \label{sec-3-3}
