@@ -561,8 +561,8 @@ done
 
 * Méthodologie
   Comme nous travaillons avec Simgrid et StarPU à la fois, nous
-  utilisons un dépôt complexe comprenant les deux et gérer avec
-  l'outils submodule de git. Ce dernier nous permet de gérer des sous
+  utilisons un dépôt complexe comprenant les deux et géré avec
+  l'outils submodule de [[https://github.com/swhatelse/Journal][git]]. Ce dernier nous permet de gérer des sous
   dépôt indépendemment, ainsi il est plus aisé de traiter les mises à
   jours de ces derniers.
 
@@ -573,7 +573,7 @@ done
   du projet et des difficultés rencontrées.
   
   Comme on l'a vu précédemment il est nécessaire d'apporter quelques
-  modifications au niveau du simulateur. Dans ce but, il a été dans un
+  modifications au niveau du simulateur et de StarPU. Dans ce but, il a été dans un
   premier temps nécessaire de consulter la documentation afin de
   comprendre le fonctionnement et l'architecture de Simgrid. Ensuite
   il a fallut explorer le code afin de déterminer où et comment
@@ -582,18 +582,16 @@ done
   changement de segment mémoire.
 
 * Contribution
-  La toute première chose à réaliser afin de pouvoir effectuer des
-  mesures, a été la gestion du partage du segment de données au niveau
-  du simulateur dans un contexte SMPI. Comme la mémoire est partagée
-  au sein d'un noeud, nous avons fait en sorte que les processus d'un
-  même noeud aient leurs segment données en commun. Le principe est le
-  suivant, il y a dans un premier temps, les processus SMPI qui sont
+  La toute première chose à réaliser, a été la gestion du partage du
+  segment de données au niveau du simulateur dans un contexte
+  SMPI. Comme la mémoire est partagée au sein d'un noeud, nous avons
+  fait en sorte que les processus d'un même noeud aient leurs segment
+  données en commun. Le principe est le suivant, il y a dans un
+  premier temps, les processus SMPI qui sont 
   créés au lancement de l'application avec leur propre espace de
   données. Puis ces dernier peuvent à leurs tours créer de nouveau
   processus. Ceux-ci héritent donc du segment de données du processus
-  qui les a créés. Nous avons donc fait pointés le segment données des
-  processus fils sur celui du père et un échange est effectué au
-  changement de contexte.
+  qui les a créés. Nous avons donc modifiés SimGrid.
 
   Une fois la gestion du partage mise en place, nous avons constaté
   qu'il y avait un cas que nous n'avions pas pris en compte: celui des
@@ -614,10 +612,10 @@ done
   statique de la librairie. Ainsi, les variables globales se
   retrouvent dans le segment données du processus et ainsi la
   privatisation et le partage s'effectue grâce au mécanisme
-  précédent. Cependant cette solution comporte une limitation car elle
+  précédent. Cependant cette solution est relativement intrusive car elle
   nécessite de changer la chaîne de compilation des applications
-  utilisant StarPU, mais cela sera suffisante pour effectuer nos tests. 
-
+  utilisant StarPU, mais cela sera suffisants dans un premier temps. 
+  
 * Validation
 ** Test simple
    Dans le but de tester le bon fonctionnement des modifications
@@ -637,17 +635,15 @@ done
    StarPU. Cette dernière est fourni avec des exemples de programme MPI
    notamment d'algèbre linéaire tel que l'algorithme de Cholesky. Nous
    nous sommes servi de ces dernier afin de valider les
-   modifications. Cependant, malgré les ajouts apportés au test, ce 
-   dernier était incomplet et il semble qu'il y a avoir des soucis au
-   niveau de  l'initialisation de Simgrid côté StarPU.
+   modifications.
 
 * Conclusion
   Pour conclure, nous avons voulu voir s'il était possible de mesurer
   l'influence d'un runtime dynamique sur les performances
   d'applications MPI. Parmi les différentes techniques de mesures de
   performances, nous avons fait le choix de la simulation / émulation
-  car elle nous semble la plus avantageuse, en raison de son coût,
-  mais aussi en terme de scalabilité.  
+  car elle nous semble la plus avantageuse, en raison de son coût, de
+  sa flexibilité mais aussi en terme de scalabilité.  
   
   Pour vérifier si cette approche est effectivement possible, nous
   avons modifié Simgrid afin de pouvoir faire fonctionner StarPU MPI
@@ -655,12 +651,11 @@ done
   entre les processus de même noeud et la privatisation entre les
   processus de noeuds différents. 
   
-  Malheureusement par manque de temps il n'a pas encore été possible
-  de corriger le problème d'initialisation et donc les mesures prévues
-  n'ont pas encore pu être réalisées. Bien qu'aucune expérimentation
-  n'est pu être faite, les problèmes rencontrés sont plutôt des
-  problèmes d'ordre techniques et ne nous permettent pas d'invalider
-  notre hypothèse. 
+  Il reste encore de corriger le problème d'initialisation et donc les
+  mesures prévues n'ont pas encore pu être réalisées. Bien qu'aucune
+  expérimentation n'est pu être faite, les problèmes rencontrés sont
+  plutôt des problèmes d'ordre techniques et ne nous permettent pas
+  d'invalider notre hypothèse. 
   
   Afin de pouvoir conclure sur la question, il faudra finir de
   corriger la phase d'initialisation côté StarPU et également apporter
