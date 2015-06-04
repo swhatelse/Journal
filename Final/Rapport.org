@@ -510,22 +510,65 @@ done
    l'approche simulation / évaluation. 
    
 * Analyse du problème
-** Simgrid: Les processus
-   Sous Simgrid, les processus sont modélisés par des threads, ce
-   qui signifie que leur espace d'adressage est partagé.
-   Afin que ces derniers ce comportent comme des processus UNIX, il
-   est nécessaire que chaque processus n'ait pas accès aux
-   variables d'un autre, c'est pourquoi un système de
-   privatisation a été mis en place. L'approche est la suivante:
-   pour chaque processus, une zone mémoire est allouée dans le
-   tas grâce à un mmap. Cette zone est le nouveau segment données du
-   processus, et à chaque changement de contexte, on fait pointer
-   vers cette zone. 
+** Simgrid
+   # Sous Simgrid, les processus sont modélisés par des threads, ce
+   # qui signifie que leur espace d'adressage est partagé.
+   # Afin que ces derniers ce comportent comme des processus UNIX, il
+   # est nécessaire que chaque processus n'ait pas accès aux
+   # variables d'un autre, c'est pourquoi un système de
+   # privatisation a été mis en place. L'approche est la suivante:
+   # pour chaque processus, une zone mémoire est allouée dans le
+   # tas grâce à un mmap. Cette zone est le nouveau segment données du
+   # processus, et à chaque changement de contexte, on fait pointer
+   # vers cette zone. 
+
+   # #+ATTR_LATEX: :width 5cm
+   # #+CAPTION: Privatisation du segment données
+   # #+NAME:   fig:1
+   # [[./Img/Memoire.jpg]]
+
+   La structure de SimGrid est composé de plusieurs APIs. Il y a tout
+   d'abord l'API SIMIX qui permet de simuler la partie OS. C'est elle
+   qui s'occupe notamment de la gestion et de l'ordonnancement des
+   processus et également des mécanismes de synchronisation. Sous
+   SimGrid, les processus sont modélisés par des threads, ce qui
+   signifie que leur espace d'adressage est partagé ce qui nous permet
+   de simuler un environnement à mémoire partagée. 
+   
+   Ensuite, au dessus SIMIX, il y a d'une part l'API MSG. Cette dernière
+   permet à l'utilisateur créer et manipuler des processus de manière
+   simple. C'est cette API qui est généralement utilisé pour la
+   plupart des applications classiques et hybrides. 
+
+   Et d'autre part, il y a l'API SMPI qui a été développée
+   spécifiquement pour simuler des applications MPI. Actuellement la
+   majeure partie des fonctionnalités de MPI ont été implémentées. La
+   simulation de code MPI est assez compliquée et SimGrid est un des
+   seul simulateur à le permettre. Pour ce faire, on compile
+   l'application que l'on veut tester en remplaçant le mpi.h classique
+   par le mpi.h de Simgrid. Ensuite, à l'édition de liens on remplace
+   le main de l'application par le main de Simgrid. Ce dernier a pour
+   rôle de préparer l'exécution du simulateur en créant la plateforme
+   et en déployant les processus SMPI qui exécuterons chacun le main
+   de l'application MPI. Comme dans le cadre d'applications MPI on est
+   dans un environnement à mémoire distribuée et que sous SimGrid les
+   processus sont modélisés par des threads, afin que ces derniers
+   aient leurs propre espace mémoire, l'approche suivi par SMPI
+   consiste à privatiser les variables des processus en créant pour
+   chaque processus une nouvelle zone mémoire dans le tas grâce à un
+   mmpant, recopiant le segment données dans celui-ci le segment
+   données et à chaque changement de contexte faire pointer vers la
+   zone correspondant à celle du processus. 
 
    #+ATTR_LATEX: :width 5cm
    #+CAPTION: Privatisation du segment données
    #+NAME:   fig:1
    [[./Img/Memoire.jpg]]
+   
+   Enfin, il l'API SURF qui a pour objectif de décrire les
+   caractéristique de la plateforme et de la simuler. On lui fournit
+   donc une modèle de performance qui permettra d'estimer la durée des
+   calculs et des transferts.
 
 ** SimGrid/MPI: Architecture générale
    Cette API permet de simuler la couche MPI. Actuellement, la majeur
