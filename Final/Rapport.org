@@ -104,15 +104,15 @@
   # peuvent être faites au niveau matériel afin de réaliser des
   # composants à hautes efficacités énergétiques. 
 
-  Les supercalcultateurs actuellement sont des noeuds composés de
-  machines hybrides. Afin de pouvoir tirer partie de toute la
-  puissance disponible, il est indispensable d'avoir une approche qui
-  soit dynamique mais également facile à mettre en oeuvre. Les méthodes
-  de programmation classiques ne le permettent pas, c'est pour cela
-  qu'une nouvelle approche a été envisage. Le paradigme de
-  programmation par tâches couplé à un système dynamques. Ce rapport
-  relate les intérêts de cette méthode et comme on peut évaluer les
-  performances. 
+  Actuellement, la majorité des supercalcultateurs sont des noeuds
+  composés des plusieurs CPUs et GPUs. Afin de pouvoir tirer partie de
+  toute la puissance disponible, il est indispensable d'avoir une
+  approche qui soit dynamique mais également facile à mettre en
+  oeuvre. Les méthodes de programmation classiques ne le permettent
+  pas, c'est pour cela qu'une nouvelle approche a été envisage: le
+  paradigme de programmation par tâches couplé à un système
+  dynamique. L'objet de notre étude est de tenter de simuler un tel
+  système dans le but d'évaluer d'en évaluer les performances. 
   \newpage
 #+END_abstract
 
