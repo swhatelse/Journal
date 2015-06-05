@@ -315,7 +315,7 @@ permettre le partage de variables à l'intérieur de chacun noeuds.
 \begin{center}
 \includegraphics[width=5cm]{./Img/Dyn.pdf}
 \end{center}
-\caption{\label{fig:2}Emplacement en mémoire des bibliothèques}
+\caption{\label{fig:3}Emplacement en mémoire des bibliothèques dynamiques}
 \end{wrapfigure}
 
 Pour cela nous avons besoin de faire fonctionner MSG et SMPI
@@ -330,7 +330,7 @@ celui des librairies dynamiques.
 
 Dans SimGrid seul le segment données est privatisé, comme les
 variables globales des librairies dynamiques ne se trouvent pas
-dans ce dernier(DSO sur le schéma ci-dessus), elles restent donc
+dans ce dernier(DSO sur la figure\ref{fig:3}), elles restent donc
 accessible accessibles à tous les processus SimGrid. Nous devrons donc
 également faire en sorte de privatiser les variables globales des
 librairies externes entre les noeuds. 
@@ -382,7 +382,7 @@ avons décidé d'utiliser une version statique de la bibliothèque.
 \begin{figure}[htb]
 \centering
 \includegraphics[width=5cm]{./Img/StaticDyn.jpg}
-\caption{\label{fig:3}Emplacement en mémoire des bibliothèques}
+\caption{\label{fig:4}Emplacement en mémoire des bibliothèques}
 \end{figure}
 
 Ainsi avec une bibliothèque statique, les variables globales de

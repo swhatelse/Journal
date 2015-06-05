@@ -330,7 +330,7 @@ celui des librairies dynamiques.
 
 Dans SimGrid seul le segment données est privatisé, comme les
 variables globales des librairies dynamiques ne se trouvent pas
-dans ce dernier(DSO sur le schéma ci-dessus), elles restent donc
+dans ce dernier (DSO sur la figure\ref{fig:3}), elles restent donc
 accessible accessibles à tous les processus SimGrid. Nous devrons donc
 également faire en sorte de privatiser les variables globales des
 librairies externes entre les noeuds. 
@@ -382,7 +382,7 @@ avons décidé d'utiliser une version statique de la bibliothèque.
 \begin{figure}[htb]
 \centering
 \includegraphics[width=5cm]{./Img/StaticDyn.jpg}
-\caption{\label{fig:3}Emplacement en mémoire des bibliothèques}
+\caption{\label{fig:4}Emplacement en mémoire des bibliothèques}
 \end{figure}
 
 Ainsi avec une bibliothèque statique, les variables globales de
@@ -435,14 +435,16 @@ linéaire basé sur StarPU. Dans le but de valider le résultat des
 expérimentations, un test grandeur nature sera fait sur Grid5000.  
 
 \section*{Acknowledgments}
-Je souhaite tout d'abord remercier Arnaud LEGRAND, mon tuteur de stage
-(notre gourou) pour avoir été aussi disponible et pour sa patience, pour
-avoir su me guider tout au long de ce TER, et également pour m'avoir
-tellement appris. Sans lui cette expérience n'aurait pas été possible
-et grâce à cela j'ai trouvé un domaine qui me plaît particulièrement.
-Je souhaite également remercier Luka STANISIC pour m'avoir aidé
-lorsque je bloquais et donné des astuces très utiles.
-Et je remercie également Thibaud BUCHS pour ces pauses cafés.
+Je souhaite remercier Bruno GAUJAL pour m'avoir permis de faire mon
+stage dans son équipe. Ensuite, je souhaite tout d'abord remercier
+Arnaud LEGRAND, mon tuteur de stage (notre gourou) pour avoir été
+aussi disponible et pour sa patience, pour avoir su me guider tout
+au long de ce TER, et également pour m'avoir tellement appris. Sans
+lui cette expérience n'aurait pas été possible et grâce à cela j'ai
+trouvé un domaine qui me plaît particulièrement. Je souhaite
+également remercier Luka STANISIC pour m'avoir aidé lorsque je
+bloquais et donné des astuces très utiles. Et je remercie également
+Thibaud BUCHS pour ces pauses cafés. 
 \nocite{*}
 \def\raggedright{}
 \bibliographystyle{IEEEtran}
