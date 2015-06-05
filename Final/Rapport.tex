@@ -203,7 +203,6 @@ changer les paramètres du modèle. Enfin la simulation
 permet d'avoir un temps d'exécution plus court qu'avec des tests
 réels car on n'effectue que certains traitements ce qui nous permet
 pouvoir effectuer un grand nombre de mesures.  
-
 \subsubsection{Approche par rejeu de trace}
 \label{sec-2-2-1}
 Cette méthode consiste à exécuter une première fois l'application
@@ -234,8 +233,14 @@ SimGrid et concilie l'approche simulation et évaluation.
 \label{sec-3}
 \subsection{SimGrid}
 \label{sec-3-1}
+\begin{figure}[tbh]
+\centering
+\includegraphics[width=.8\linewidth]{./Img/Simgrid.pdf}
+\caption{\label{fig:1}Structure de Simgrid}
+\end{figure}
+
 SimGrid est propose de plusieurs APIs et est composé de plusieurs
-modules. Il y a tout d'abord l'API SURF qui a pour objectif de
+modules (voir figure\ref{fig:1}). Il y a tout d'abord l'API SURF qui a pour objectif de
 décrire les caractéristiques de la plateforme et de la simuler. On
 lui fournit donc une modèle de performance qui permettra d'estimer
 la durée des calculs et des transferts.
@@ -261,17 +266,17 @@ seul simulateurs à le permettre.
   \centering
   \begin{minipage}{.45\linewidth}
     \includegraphics[width=\linewidth]{./Img/Compile.pdf}
-    \caption{\label{fig:1}Construction de l'application simulée}
+    \caption{\label{fig:2}Construction de l'application simulée}
   \end{minipage}
   \begin{minipage}{.45\linewidth}
     \includegraphics[width=\linewidth]{./Img/Memoire.pdf}
-    \caption{\label{fig:2}Privatisation du segment de données}
+    \caption{\label{fig:3}Privatisation du segment de données}
   \end{minipage}
 \end{figure}
 
 Pour ce faire, on compile l'application que l'on veut tester en
 remplaçant le mpi.h classique par le mpi.h de SimGrid (voir
-figure\ref{fig:1}). Ensuite, à l'édition de liens on remplace 
+figure\ref{fig:2}). Ensuite, à l'édition de liens on remplace 
 le main de l'application par le main de SimGrid. Ce dernier a pour
 rôle de préparer l'exécution du simulateur en créant la plateforme
 et en déployant les processus SMPI qui exécuterons chacun le main
@@ -280,7 +285,7 @@ dans un environnement à mémoire distribuée et que sous SimGrid les
 processus sont modélisés par des threads, afin de simuler le fait
 que chacun ait un espace d'adresse séparé, l'approche suivi par SMPI
 consiste à privatiser les variables des processus en créant pour
-chacun un segment de données virtuel (voir figure\ref{fig:2}). Pour
+chacun un segment de données virtuel (voir figure\ref{fig:3}). Pour
 cela, pour chaque processus une nouvelle zone mémoire est créée
 dans le tas grâce à un mmap, puis le segment de données est recopié
 dans cette zone et à chaque changement de contexte on fait pointer
@@ -301,6 +306,14 @@ transferts CUDA.
 \subsection{StarPU-SMPI:Ce qui coince}
 \label{sec-3-3}
 
+\begin{wrapfigure}{r}{40mm}
+\vspace{-15mm}
+\begin{center}
+\includegraphics[width=5cm]{./Img/Dyn.pdf}
+\end{center}
+\caption{\label{fig:4}Emplacement en mémoire des bibliothèques dynamiques}
+\end{wrapfigure}
+
 Avec StarPU MPI, la modélisation est différente. On est à la fois
 un environnement à mémoire partagée (entre les CPUs et les GPUs
 d'une même machine) et un environnement à mémoire distribuée
@@ -309,14 +322,6 @@ modèles de performances différents selon qu'on est entre noeud où à
 l'intérieur d'un nœud. Il nous faut également activer la
 privatisation de variables entre les noeuds mais également
 permettre le partage de variables à l'intérieur de chacun noeuds. 
-
-\begin{wrapfigure}{r}{40mm}
-\vspace{-15mm}
-\begin{center}
-\includegraphics[width=5cm]{./Img/Dyn.pdf}
-\end{center}
-\caption{\label{fig:3}Emplacement en mémoire des bibliothèques dynamiques}
-\end{wrapfigure}
 
 Pour cela nous avons besoin de faire fonctionner MSG et SMPI
 ensemble. Or non seulement StarPU est essentiellement basé sur MSG
@@ -330,7 +335,7 @@ celui des librairies dynamiques.
 
 Dans SimGrid seul le segment données est privatisé, comme les
 variables globales des librairies dynamiques ne se trouvent pas
-dans ce dernier (DSO sur la figure\ref{fig:3}), elles restent donc
+dans ce dernier (DSO sur la figure\ref{fig:4}), elles restent donc
 accessible accessibles à tous les processus SimGrid. Nous devrons donc
 également faire en sorte de privatiser les variables globales des
 librairies externes entre les noeuds. 
@@ -372,6 +377,13 @@ ailleurs été nécessaire d'initialiser MSG et SMPI
 correctement afin que les deux puissent fonctionner
 ensemble. SimGrid a donc été modifié en conséquences. 
 
+\begin{wrapfigure}{r}{40mm}
+\begin{center}
+\includegraphics[width=5cm]{./Img/StaticDyn.pdf}
+\end{center}
+\caption{\label{fig:5}Emplacement en mémoire des bibliothèques}
+\end{wrapfigure}
+
 Une fois la gestion du partage mise en place, nous nous sommes
 penchés sur le cas des bibliothèques dynamiques. Nous avons vu
 précédemment que malgré le mécanisme de privatisation, les variables
@@ -379,16 +391,10 @@ globales présentes dans ces dernières sont partagés entre les
 différents processus SimGrid. Pour contourner ce problème, nous
 avons décidé d'utiliser une version statique de la bibliothèque.  
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=5cm]{./Img/StaticDyn.jpg}
-\caption{\label{fig:4}Emplacement en mémoire des bibliothèques}
-\end{figure}
-
 Ainsi avec une bibliothèque statique, les variables globales de
 celle-ci se retrouvent dans le segment données du processus et la
 gestion du partage / privatisation est géré par le mécanisme
-précédent. Cette solution est relativement intrusive car
+précédent (voir figure\ref{fig:5}) . Cette solution est relativement intrusive car
 elle nécessite de changer la chaîne de compilation des applications
 utilisant StarPU, mais cela sera suffisants dans un premier temps. 
 
@@ -436,15 +442,14 @@ expérimentations, un test grandeur nature sera fait sur Grid5000.
 
 \section*{Acknowledgments}
 Je souhaite remercier Bruno GAUJAL pour m'avoir permis de faire mon
-stage dans son équipe. Ensuite, je souhaite tout d'abord remercier
-Arnaud LEGRAND, mon tuteur de stage (notre gourou) pour avoir été
+stage dans son équipe. Ensuite, je souhaite  remercier
+Arnaud LEGRAND, mon tuteur de stage pour avoir été
 aussi disponible et pour sa patience, pour avoir su me guider tout
-au long de ce TER, et également pour m'avoir tellement appris. Sans
-lui cette expérience n'aurait pas été possible et grâce à cela j'ai
-trouvé un domaine qui me plaît particulièrement. Je souhaite
+au long de ce TER, et également pour m'avoir tellement appris. Grâce
+à cela j'ai trouvé un domaine qui me plaît particulièrement. Je souhaite
 également remercier Luka STANISIC pour m'avoir aidé lorsque je
 bloquais et donné des astuces très utiles. Et je remercie également
-Thibaud BUCHS pour ces pauses cafés. 
+Thibaud BUCHS pour ces pauses cafés et pour son aide également. 
 \nocite{*}
 \def\raggedright{}
 \bibliographystyle{IEEEtran}
