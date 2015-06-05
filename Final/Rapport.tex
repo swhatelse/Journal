@@ -94,7 +94,7 @@ Le paradigme de programmation par tâches couplé à un système
 dynamique permet de répondre à ce problème, mais il est difficile
 d'en évaluer les performances. L'objectif de notre étude est donc de
 mettre en place les dispositifs nécessaire à l'évaluation de
-performances du système. 
+performances d'un tel système. 
 \newpage
 \end{abstract}
 
@@ -102,35 +102,35 @@ performances du système.
 \label{sec-1}
 
 La majorité des supercalculateurs actuels, comme le montre le site
-\href{http://www.top500.org}{top500} sont des clusters massivement parallèles et composés de
-noeuds hybrides (CPU-GPU). Pour les programmer, il existe certains
-standards. Il y a tout d'abord la norme MPI (Message Passing
-Interface), qui est une API de communication basée sur l'envoi et la  
-réception de message. Elle a pour objectif d'être performante et
-portable.  Elle est de plus haut niveau que les sockets et apporte
-des mécanismes comme des fonctions de communications collectives
-(exemple broadcast). Ensuite, il y a l'API OpenMP qui est une
-interface de multihreading de plus haut niveau de PThread. Elle
-permet de découper facilement des traitements et d'exploiter les
-architectures multicoeurs. Enfin, il y a l'API CUDA qui permet de
-tirer partie de la puissance de calcul des GPUs. Pour cela il est
-nécessaire de spécifier explicitement de ce que l'on veut envoyer
-aux GPUs et on doit également gérer la synchronisation entre les
-CPUs et les GPUs.
+top500\footnote{http://www.top500.org} sont des clusters
+massivement parallèles et composés de noeuds hybrides
+(CPU-GPU). Pour les programmer, il existe certains standards. Il y a
+tout d'abord la norme MPI (Message Passing Interface), qui est une
+API de communication basée sur l'envoi et la réception de
+message. Elle a pour objectif d'être performante et portable.  Elle
+est de plus haut niveau que les sockets et apporte des mécanismes
+comme des fonctions de communications collectives (exemple
+broadcast). Ensuite, il y a l'API OpenMP qui est une interface de
+multihreading de plus haut niveau de PThread. Elle permet de
+découper facilement des traitements et d'exploiter les architectures
+multicoeurs. Enfin, il y a l'API CUDA qui permet de tirer partie de
+la puissance de calcul des GPUs. Pour cela il est nécessaire de
+spécifier explicitement ce que l'on veut envoyer aux GPUs et on doit
+également gérer la synchronisation entre les CPUs et les GPUs. 
 
 Si l'on veut optimiser le rendement d'une application afin que
-celle-ci tire partie de toute la puissance disponible, il est
-nécessaire d'utiliser plusieurs paradigmes à la fois ce qui
-complique grandement la tâches. Nous sommes donc face à un problème
+celle-ci tire partie de toute la puissance de calcul disponible, il
+est nécessaire d'utiliser plusieurs paradigmes à la fois ce qui
+complique grandement la tâches. Nous sommes donc face à un problème 
 de programmation classique où l'on doit, avec les APIs précédentes,
 indiquer explicitement où et quand chacun des calculs doit être 
 réalisé. Par exemple pour exploiter efficacement un GPU, on doit
 transférer explicitement les données du CPU vers le GPU, lancer
 l'exécution du calcul sur le GPU, gérer la synchronisation sur
 l'attente du résultat, récupérer le résultat et pendant ce temps
-continuer à occuper le CPU avec un autre calcul. Cette exemple
+continuer à occuper le CPU avec un autre calcul. Cet exemple
 n'illustre que la difficulté liée à la répartition de charge au
-niveau d'un seul et même noeud. Cela ce complique davantage lorsque
+niveau d'un seul et même noeud. Cela se complique davantage lorsque
 l'on veut également répartir la charge entre plusieurs machines. 
 Cependant même si l'on arrive à équilibrer les charges correctement,
 cette solution est difficilement portable vers une autre machine.  
@@ -183,17 +183,17 @@ réel afin d'effectuer les mesures. Cependant cette méthode peut se
 révéler très coûteuse et il n'est pas toujours possible d'avoir
 accès à la plateforme. De plus comme les exécutions sont non
 déterministes il est indispensable de réaliser un grand nombre
-d'expériences, or à cause du coût il n'est possible que d'effectuer
-qu'un petit nombre de mesure sur un nombre restreint de
-plate-forme. Il est donc difficile d'extrapoler ce qui serait
+d'expériences, or à cause du coût il n'est possible d'effectuer
+qu'un petit nombre de mesures sur un nombre restreint de
+plate-formes. Il est donc difficile d'extrapoler ce qui serait
 pourtant très utile aux développeurs de runtimes et d'applications. 
 \subsection{Simulation}
 \label{sec-2-2}
-La simulation à pour but de définir un modèle et de calculer une
+La simulation a pour but de définir un modèle et de calculer une
 prédiction du comportement du système avec généralement un code
 déterministe et séquentiel. Cela permet ainsi de s'affranchir de la
 plateforme et les expériences peuvent être effectuées à partir de
-n'importe quel système, il n'est plus nécessaire d'avoir accès à la
+n'importe quel système. Il n'est plus nécessaire d'avoir accès à la
 plateforme, ce qui rend cette approche peu coûteuse. Comme la 
 simulation nous permettrait d'avoir un contrôle sur de nombreux
 paramètres, nous pouvons avoir un système déterministe qui 
@@ -213,22 +213,20 @@ exécution complètement dynamique, ce qui est totalement inadaptés car
 le flot de contrôle du programme est non déterministes. 
 \subsubsection{Approche hybride par simulation / émulation}
 \label{sec-2-2-2}
-Pour avoir des simulations qui soient réalistes, nous avons
-d'exécuter le vrai et de ne simuler que les communications et les
-calculs coûteux. Dans notre cas on simulerait donc la plateforme de
-même que l'OS. Et en plus on utiliserait l'émulation où l'on
-exécuterait en vrai, mais de manière contrôlée le programme sur le
-système simulé. Cette approche est suivie dans \cite{StarPUSG} où
-StarPU a été porté sur SimGrid mais avec un noeud seulement. Notre
-objectif est d'utiliser la même approche mais avec plusieurs
-noeuds et avec StarPU MPI. 
+Pour avoir des simulations qui soient réalistes, nous avons besoin
+d'exécuter le vrai code et de ne simuler que les communications et
+les calculs coûteux. Dans notre cas on simulerait donc la
+plateforme de même que l'OS. Et en plus on utiliserait l'émulation
+où l'on exécuterait en vrai, mais de manière contrôlée le
+programme sur le système simulé. Cette approche est suivie dans
+\cite{StarPUSG} où StarPU a été porté sur SimGrid mais avec un
+noeud seulement. Notre objectif est d'utiliser la même approche
+mais avec plusieurs noeuds et avec StarPU MPI. 
 
 L'approche simulation et émulation se révèle donc la plus adaptée.
 Nous avons choisi le simulateur SimGrid qui permet de simuler des
 systèmes distribués, des grilles des calculs, des systèmes peer to
-peer et cloud. De plus StarPU a récemment été porté au-dessus de
-SimGrid et concilie l'approche simulation et évaluation.
-
+peer et cloud. 
 \section{Analyse du problème}
 \label{sec-3}
 \subsection{SimGrid}
@@ -433,7 +431,8 @@ sur StarPU MPI. La difficulté résidait dans le fait de comprendre des
 programmes complexes avec de nombreuses lignes de codes (106350 lignes 
 pour Simgrid et 172251 lignes pour StarPU) et d'arriver à repérer où 
 effectuer les modifications tout en faisant en sorte qu'elles soient 
-minimes.
+minimes (ici une vingtaine de lignes ont été ajoutées à SimGrid et
+StarPU). 
 
 La prochaine étape sera d'effectuer les simulations et les mesures. 
 Pour ce faire les expériences seront faites avec un solveur d'algèbre 
