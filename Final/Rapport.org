@@ -351,11 +351,11 @@ done
 * Introduction
 
   La majorité des supercalculateurs actuels, comme le montre le site
-  [[http://www.top500.org][top500]] sont des clusters massivement parallèles et souvent de type
-  hétérogènes(CPU-GPU), et il y a certains standards permettant de
-  les programmer. Il y a tout d'abord la norme MPI (Message Passing
-  Interface), qui est une API de communication basée sur l'envoi et la 
-  récéption de message. Elle a pour objectif d'être performante et
+  [[http://www.top500.org][top500]] sont des clusters massivement parallèles et composés de
+  noeuds hybrides (CPU-GPU). Pour les programmer, il existe certains
+  standards. Il y a tout d'abord la norme MPI (Message Passing
+  Interface), qui est une API de communication basée sur l'envoi et la  
+  réception de message. Elle a pour objectif d'être performante et
   portable.  Elle est de plus haut niveau que les sockets et apporte
   des mécanismes comme des fonctions de communications collectives
   (exemple broadcast). Ensuite, il y a l'API OpenMP qui est une
@@ -369,64 +369,63 @@ done
   
   Si l'on veut optimiser le rendement d'une application afin que
   celle-ci tire partie de toute la puissance disponible, il est
-  nécessaire d'utiliser plusieurs paradigmes à la fois ce qui complique
-  grandement la tâches. Nous sommes donc face à un problème de
-  programmation classique où l'on doit, avec les APIs précédentes,
-  indiquer explicitement où et quand chacun des calculs doit être
+  nécessaire d'utiliser plusieurs paradigmes à la fois ce qui
+  complique grandement la tâches. Nous sommes donc face à un problème
+  de programmation classique où l'on doit, avec les APIs précédentes,
+  indiquer explicitement où et quand chacun des calculs doit être 
   réalisé. Par exemple pour exploiter efficacement un GPU, on doit
   transférer explicitement les données du CPU vers le GPU, lancer
   l'exécution du calcul sur le GPU, gérer la synchronisation sur
   l'attente du résultat, récupérer le résultat et pendant ce temps
   continuer à occuper le CPU avec un autre calcul. Cette exemple
-  n'illustre que la répartition de charge au niveau d'une seule et
-  même machine. Cela ce complique davantage lorsque l'on veut
-  également répartir la charge entre plusieurs machines. Généralement,
-  on procède soit en déléguant tous les calculs aux GPUs, et les CPUs
-  sont en idle. Soit on réparti la charge entre les CPUs et les GPUs
-  de manière complètement statique\cite{StarPU-MPI}. L'inconvénient
-  est que la mise en pratique est très difficile car trouver un bon
-  équilibrage relève d'un véritable travail d'horloger. Cependant même
-  si l'on arrive à équilibrer les charges correctement, cette solution
-  est difficilement portable car le découpage des traitements ce fait en
-  fonction de la plateforme cible. 
+  n'illustre que la difficulté liée à la répartition de charge au
+  niveau d'un seul et même noeud. Cela ce complique davantage lorsque
+  l'on veut également répartir la charge entre plusieurs machines. 
+  # Généralement, on procède soit en déléguant tous les
+  # calculs aux GPUs, et les CPUs sont en idle. Soit on réparti la
+  # charge entre les CPUs et les GPUs de manière complètement
+  # statique\cite{StarPU-MPI}. L'inconvénient est que la mise en
+  # pratique est très difficile car trouver un bon équilibrage relève
+  # d'un véritable travail d'horloger. 
+  Cependant même si l'on arrive à équilibrer les charges correctement,
+  cette solution est difficilement portable vers une autre machine.  
 
   La solution serait donc d'avoir une gestion dynamique des
   charges. Mais cela s'avère bien plus compliqué, voir impossible
   à réaliser directement avec ces méthodes de
-  programmation. L'alternative est la programmation par tâches. Ce    
+  programmation. L'alternative est la programmation par tâches. Ce     
   paradigme fournit une abstraction à la notion d'exécution de calculs sur CPU,
   GPU et sur d'autres machines. Ainsi le développeur n'a plus à se
-  soucier de sur quoi le calcul est effectué, mais seulement en
-  combien de tâche le calcul doit être découpé. De plus avec un système de
-  répartition dynamique l'utilisateur n'aurait également plus de
-  besoin de soucier de quand les traitements doivent être effectués.
-  La librairie StarPU\cite{StarPU} est un exemple utilisant cette
-  approche, c'est cette dernière que nous allons utiliser. C'est un
-  système runtime qui permet une répartition des traitements de
-  manière dynamique et opportuniste. Pour ce faire, StarPU génère un
-  graphe de dépendance permettant d'optimiser l'ordonnancement des tâches. 
-  La première version de StarPU a été conçu spécialement pour des
-  architectures hybrides. Une version récente (StarPU MPI)\cite{StarPU-MPI} a été
+  soucier de sur quelle ressource le calcul est effectué, mais
+  seulement d'exprimer le calcul sous la forme d'un graphe de
+  tâches. De plus avec un système de répartition dynamique
+  l'utilisateur n'aurait également plus de besoin de soucier de quand
+  les traitements doivent être effectués. La librairie
+  StarPU\cite{StarPU} est un exemple utilisant cette approche, c'est
+  cette dernière que nous allons utiliser. C'est un système runtime
+  qui permet une répartition des traitements de manière dynamique et
+  opportuniste. Pour ce faire, StarPU tient à jour un graphe de dépendance
+  permettant d'optimiser l'ordonnancement des tâches. La première
+  version de StarPU a été conçu spécialement pour des architectures
+  hybrides. Une version récente (StarPU MPI)\cite{StarPU-MPI} a été 
   réalisée pour bénéficier d'un ordonnancement et d'une exécution qui
-  soit à la fois dynamique et opportuniste dans un contexte distribuée,
-  afin de répartir la charge entre les différents noeuds.
+  soit à la fois dynamique et opportuniste dans un contexte distribuée.
   
-  Les performances d'un tel système sont difficiles évaluées pour
+  Les performances d'un tel système sont difficiles à évaluer pour
   plusieurs raisons. Tout d'abord, la configuration du runtime
   est un paramètre à prendre en compte, on peut choisir des
   heuristiques et des politiques d'ordonnancements différentes.
   Ensuite, il y a les réglages au niveau de l'application qu'il faut
-  prendre en compte, notamment la répartition des ressources et le
-  découpage des tâches, qui entraîne la génération d'un graphe de
-  tâches différent.
+  prendre en compte, notamment le découpage des tâches, qui entraîne
+  la génération d'un graphe de tâches différent.
 
-  Dans cet objectif, la première partie de ce rapport montrera qu'une
+  Dans cet objectif, la première partie de ce rapport montre qu'une
   des approches possible est la simulation. La seconde partie
-  présentera en détail le fonctionnement de StarPU et SimGrid 
-  ainsi que les difficultés rencontrées. La troisième partie sera
-  consacrée à la méthodologie employée.  Une quatrième partie montrera la
+  présente en détail le fonctionnement de StarPU et SimGrid 
+  ainsi que les difficultés rencontrées. La troisième partie est
+  consacrée à la méthodologie employée.  Une quatrième partie montre la
   contribution à la simulation de telles applications.  Et la
-  cinquième partie abordera ce que nous avons réussit à mettre en place. 
+  cinquième partie aborde ce que nous avons réussit à mettre en place. 
 
 * État de l'art
   En HPC, il y a trois grandes approches possible pour évaluer les
