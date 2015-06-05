@@ -252,6 +252,14 @@ permet à l'utilisateur créer et manipuler des processus de manière
 simple. C'est cette API qui est généralement utilisé pour la
 plupart des applications classiques et hybrides. 
 
+\begin{wrapfigure}{rb}{40mm}
+\vspace{-15mm}
+\begin{center}
+\includegraphics[width=5cm]{./Img/Memoire.pdf}
+\end{center}
+\caption{\label{fig:1}Privatisation du segment données}
+\end{wrapfigure}
+
 Et d'autre part, il y a l'API SMPI qui a été développée
 spécifiquement pour simuler des applications MPI. Actuellement la
 majeure partie des fonctionnalités de MPI ont été implémentées. La
@@ -273,12 +281,6 @@ segment de données est recopié dans cette zone et à chaque
 changement de contexte on fait pointer vers la zone correspondant à
 celle du processus. 
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=5cm]{./Img/Memoire.pdf}
-\caption{\label{fig:1}Privatisation du segment données}
-\end{figure}
-
 \subsection{StarPU-MSG: Architecture générale}
 \label{sec-3-2}
 Comme à la base StarPU visait le modèle CPUs-GPUs, l'API la plus
@@ -293,6 +295,7 @@ transferts CUDA.
 
 \subsection{StarPU-SMPI:Ce qui coince}
 \label{sec-3-3}
+
 Avec StarPU MPI, la modélisation est différente. On est à la fois
 un environnement à mémoire partagée (entre les CPUs et les GPUs
 d'une même machine) et un environnement à mémoire distribuée
@@ -301,6 +304,14 @@ modèles de performances différents selon qu'on est entre noeud où à
 l'intérieur d'un nœud. Il nous faut également activer la
 privatisation de variables entre les noeuds mais également
 permettre le partage de variables à l'intérieur de chacun noeuds. 
+
+\begin{wrapfigure}{r}{40mm}
+\vspace{-15mm}
+\begin{center}
+\includegraphics[width=5cm]{./Img/Dyn.pdf}
+\end{center}
+\caption{\label{fig:2}Emplacement en mémoire des bibliothèques}
+\end{wrapfigure}
 
 Pour cela nous avons besoin de faire fonctionner MSG et SMPI
 ensemble. Or non seulement StarPU est essentiellement basé sur MSG
@@ -311,12 +322,6 @@ partie SMPI.
 
 Il y a un également un autre point à prendre en considération,
 celui des librairies dynamiques. 
-
-\begin{figure}[htb]
-\centering
-\includegraphics[width=5cm]{./Img/Dyn.pdf}
-\caption{\label{fig:2}Emplacement en mémoire des bibliothèques}
-\end{figure}
 
 Dans SimGrid seul le segment données est privatisé, comme les
 variables globales des librairies dynamiques ne se trouvent pas
@@ -414,9 +419,10 @@ modifications.
 Pour conclure, nous avons apporté les modifications nécessaire à 
 SimGrid et StarPU afin de pouvoir simuler des applications MPI basées 
 sur StarPU MPI. La difficulté résidait dans le fait de comprendre des 
-programmes complexe avec de nombreuses lignes de codes et d'arriver 
-à repérer où effectuer les corrections tout en faisant en sorte 
-qu'elles soient les modifications soient les petites possibles.
+programmes complexes avec de nombreuses lignes de codes (106350 lignes 
+pour Simgrid et 172251 lignes pour StarPU) et d'arriver à repérer où 
+effectuer les modifications tout en faisant en sorte qu'elles soient 
+minimes.
 
 La prochaine étape sera d'effectuer les simulations et les mesures. 
 Pour ce faire les expériences seront faites avec un solveur d'algèbre 
