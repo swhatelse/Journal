@@ -252,7 +252,7 @@ permet à l'utilisateur créer et manipuler des processus de manière
 simple. C'est cette API qui est généralement utilisé pour la
 plupart des applications classiques et hybrides. 
 
-\begin{wrapfigure}{rb}{40mm}
+\begin{wrapfigure}{rbt}{40mm}
 \vspace{-15mm}
 \begin{center}
 \includegraphics[width=5cm]{./Img/Memoire.pdf}
