@@ -252,21 +252,26 @@ permet à l'utilisateur créer et manipuler des processus de manière
 simple. C'est cette API qui est généralement utilisé pour la
 plupart des applications classiques et hybrides. 
 
-\begin{wrapfigure}{rbt}{40mm}
-\vspace{-15mm}
-\begin{center}
-\includegraphics[width=5cm]{./Img/Memoire.pdf}
-\end{center}
-\caption{\label{fig:1}Privatisation du segment données}
-\end{wrapfigure}
-
 Et d'autre part, il y a l'API SMPI qui a été développée
 spécifiquement pour simuler des applications MPI. Actuellement la
 majeure partie des fonctionnalités de MPI ont été implémentées. La
 simulation de code MPI est assez compliquée et SimGrid est un des
-seul simulateurs à le permettre. Pour ce faire, on compile
-l'application que l'on veut tester en remplaçant le mpi.h classique
-par le mpi.h de SimGrid. Ensuite, à l'édition de liens on remplace
+seul simulateurs à le permettre. 
+\begin{figure}[htb]
+  \centering
+  \begin{minipage}{.45\linewidth}
+    \includegraphics[width=\linewidth]{./Img/Compile.pdf}
+    \caption{\label{fig:1}Construction de l'application simulée}
+  \end{minipage}
+  \begin{minipage}{.45\linewidth}
+    \includegraphics[width=\linewidth]{./Img/Memoire.pdf}
+    \caption{\label{fig:2}Privatisation du segment de données}
+  \end{minipage}
+\end{figure}
+
+Pour ce faire, on compile l'application que l'on veut tester en
+remplaçant le mpi.h classique par le mpi.h de SimGrid (voir
+figure\ref{fig:1}). Ensuite, à l'édition de liens on remplace 
 le main de l'application par le main de SimGrid. Ce dernier a pour
 rôle de préparer l'exécution du simulateur en créant la plateforme
 et en déployant les processus SMPI qui exécuterons chacun le main
@@ -275,11 +280,11 @@ dans un environnement à mémoire distribuée et que sous SimGrid les
 processus sont modélisés par des threads, afin de simuler le fait
 que chacun ait un espace d'adresse séparé, l'approche suivi par SMPI
 consiste à privatiser les variables des processus en créant pour
-chacun un segment de données virtuel. Pour cela, pour chaque processus
-une nouvelle zone mémoire est créée dans le tas grâce à un mmap, puis le
-segment de données est recopié dans cette zone et à chaque
-changement de contexte on fait pointer vers la zone correspondant à
-celle du processus. 
+chacun un segment de données virtuel (voir figure\ref{fig:2}). Pour
+cela, pour chaque processus une nouvelle zone mémoire est créée
+dans le tas grâce à un mmap, puis le segment de données est recopié
+dans cette zone et à chaque changement de contexte on fait pointer
+vers la zone correspondant à celle du processus. 
 
 \subsection{StarPU-MSG: Architecture générale}
 \label{sec-3-2}
@@ -430,8 +435,14 @@ linéaire basé sur StarPU. Dans le but de valider le résultat des
 expérimentations, un test grandeur nature sera fait sur Grid5000.  
 
 \section*{Acknowledgments}
-Je souhaite remercier\ldots{}
-
+Je souhaite tout d'abord remercier Arnaud LEGRAND, mon tuteur de stage
+(notre gourou) pour avoir été aussi disponible et pour sa patience, pour
+avoir su me guider tout au long de ce TER, et également pour m'avoir
+tellement appris. Sans lui cette expérience n'aurait pas été possible
+et grâce à cela j'ai trouvé un domaine qui me plaît particulièrement.
+Je souhaite également remercier Luka STANISIC pour m'avoir aidé
+lorsque je bloquais et donné des astuces très utiles.
+Et je remercie également Thibaud BUCHS pour ces pauses cafés.
 \nocite{*}
 \def\raggedright{}
 \bibliographystyle{IEEEtran}
