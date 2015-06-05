@@ -63,7 +63,7 @@ calculs hautes performances%\thanks{Grants or other notes
 }
 %\subtitle{Do you have a subtitle?\\ If so, write it here}
 
-\titlerunning{StarPU SMPI}        % if too long for running head
+\titlerunning{Simulation d'applications dynamiques HPC}        % if too long for running head
 
 \author{Steven QUINITO MASNADA  \\ \\
         Encadrants : Arnaud LEGRAND \and Luka STANISIC  %if many names separate them with \and.
@@ -480,7 +480,7 @@ done
    \end{figure}
    #+END_LaTeX
 
-   SimGrid est propose de plusieurs APIs et est composé de plusieurs
+   SimGrid propose plusieurs APIs et est composé de plusieurs
    modules (voir figure\ref{fig:1}). Il y a tout d'abord l'API SURF qui a pour objectif de
    décrire les caractéristiques de la plateforme et de la simuler. On
    lui fournit donc une modèle de performance qui permettra d'estimer
@@ -526,7 +526,7 @@ done
    de l'application MPI. Comme dans le cadre d'applications MPI on est
    dans un environnement à mémoire distribuée et que sous SimGrid les
    processus sont modélisés par des threads, afin de simuler le fait
-   que chacun ait un espace d'adresse séparé, l'approche suivi par SMPI
+   que chacun ait un espace d'adressage séparé, l'approche suivi par SMPI
    consiste à privatiser les variables des processus en créant pour
    chacun un segment de données virtuel (voir figure\ref{fig:3}). Pour
    cela, pour chaque processus une nouvelle zone mémoire est créée
@@ -536,14 +536,14 @@ done
     
 ** StarPU-MSG: Architecture générale   
    Comme à la base StarPU visait le modèle CPUs-GPUs, l'API la plus
-   proche était MSG, notamment car le modèle de performances des
-   communications entre noeuds est différents de celui entre CPUs et
-   GPUs. StarPU a donc été modifié pour pouvoir fonctionner au dessus
-   du simulateur SimGrid en se basant sur MSG. Ainsi, l'application
-   (le runtime de StarPU) est réellement exécutée, mais les
-   allocations mémoires des tâches ne sont pas effectuées, les codes
-   de calcul sont simulés et remplacés par un délais de même pour les
-   transferts CUDA.  
+   proche était MSG plutôt que SMPI, notamment car le modèle de
+   performances des communications entre noeuds est différents de
+   celui entre CPUs et GPUs. StarPU a donc été modifié pour pouvoir
+   fonctionner au dessus du simulateur SimGrid en se basant sur
+   MSG. Ainsi, l'application (le runtime de StarPU) est réellement
+   exécutée, mais les allocations mémoires des tâches ne sont pas
+   effectuées, les codes de calcul sont simulés et remplacés par un
+   délais de même pour les transferts CUDA.  
 
 ** StarPU-SMPI:Ce qui coince
 
@@ -559,7 +559,7 @@ done
 
    Avec StarPU MPI, la modélisation est différente. On est à la fois
    un environnement à mémoire partagée (entre les CPUs et les GPUs
-   d'une même machine) et un environnement à mémoire distribuée
+   d'une même noeud) et un environnement à mémoire distribuée
    (entre les différents nœuds). On doit donc permettre d'avoir des
    modèles de performances différents selon qu'on est entre noeud où à
    l'intérieur d'un nœud. Il nous faut également activer la
@@ -574,25 +574,25 @@ done
    partie SMPI.  
 
    Il y a un également un autre point à prendre en considération,
-   celui des librairies dynamiques. 
-   
-   Dans SimGrid seul le segment données est privatisé, comme les
-   variables globales des librairies dynamiques ne se trouvent pas
-   dans ce dernier (DSO sur la figure\ref{fig:4}), elles restent donc
-   accessible accessibles à tous les processus SimGrid. Nous devrons donc
-   également faire en sorte de privatiser les variables globales des
-   librairies externes entre les noeuds. 
+   celui des librairies dynamiques. Dans SimGrid seul le segment
+   données est privatisé, comme les variables globales des librairies
+   dynamiques ne se trouvent pas dans ce dernier (DSO sur la
+   figure\ref{fig:4}), elles restent donc accessible accessibles à
+   tous les processus SimGrid. Nous devrons donc également faire en
+   sorte de privatiser les variables globales des librairies externes
+   entre les noeuds.  
    
 * Méthodologie
   Comme nous travaillons avec SimGrid et StarPU à la fois, nous
   utilisons un dépôt complexe comprenant les deux et géré avec
-  l'outils submodule de [[https://github.com/swhatelse/Journal][git]]. Ce dernier nous permet de gérer des sous
+  l'outils submodule de git. Ce dernier nous permet de gérer des sous
   dépôt indépendemment, ainsi il est plus aisé de traiter les mises à
-  jours de ces derniers.
+  jours de ces derniers. 
 
   Afin de pouvoir retracer le cheminement de mon travail, mais aussi
   de pouvoir garder le fil d'un jour à l'autre, un cahier de
-  laboratoire est tenu en org-mode et est hébergé sur github.
+  laboratoire est tenu en org-mode et est hébergé sur
+  github\footnote{https://github.com/swhatelse/Journal}. 
   
   Comme on l'a vu précédemment il est nécessaire d'apporter quelques
   modifications au niveau du simulateur et de StarPU. Dans ce but, il
@@ -630,13 +630,13 @@ done
   Une fois la gestion du partage mise en place, nous nous sommes
   penchés sur le cas des bibliothèques dynamiques. Nous avons vu
   précédemment que malgré le mécanisme de privatisation, les variables
-  globales présentes dans ces dernières sont partagés entre les
+  globales présentes dans ces dernières sont partagées entre les
   différents processus SimGrid. Pour contourner ce problème, nous
   avons décidé d'utiliser une version statique de la bibliothèque.  
   
   Ainsi avec une bibliothèque statique, les variables globales de
   celle-ci se retrouvent dans le segment données du processus et la
-  gestion du partage / privatisation est géré par le mécanisme
+  gestion du partage et de la privatisation est gérée par le mécanisme
   précédent (voir figure\ref{fig:5}) . Cette solution est relativement intrusive car
   elle nécessite de changer la chaîne de compilation des applications
   utilisant StarPU, mais cela sera suffisants dans un premier temps. 
@@ -688,8 +688,9 @@ done
   au long de ce TER, et également pour m'avoir tellement appris. Grâce
   à cela j'ai trouvé un domaine qui me plaît particulièrement. Je souhaite
   également remercier Luka STANISIC pour m'avoir aidé lorsque je
-  bloquais et donné des astuces très utiles. Et je remercie également
+  bloquais et donné des astuces très utiles. Je remercie également
   Thibaud BUCHS pour ces pauses cafés et pour son aide également. 
+  Et enfin je remercie toutes les personnes qui auront lu ce rapport.
 #+LaTeX: \nocite{*}
 #+LaTeX: \def\raggedright{}
 \bibliographystyle{IEEEtran}
