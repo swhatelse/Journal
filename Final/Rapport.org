@@ -365,41 +365,42 @@ done
   La majorité des supercalculateurs actuels, comme le montre le site
   [[http://www.top500.org][top500]] sont des clusters massivement parallèles et souvent de type
   hétérogènes(CPU-GPU), et il y a certains standards permettant de
-  les programmer. Il y a tout d'abord la norme MPI (Message Passing Interface),
-  qui est une API de communication basée sur l'envoi et la
+  les programmer. Il y a tout d'abord la norme MPI (Message Passing
+  Interface), qui est une API de communication basée sur l'envoi et la 
   récéption de message. Elle a pour objectif d'être performante et
   portable.  Elle est de plus haut niveau que les sockets et apporte
   des mécanismes comme des fonctions de communications collectives
   (exemple broadcast). Ensuite, il y a l'API OpenMP qui est une
   interface de multihreading de plus haut niveau de PThread. Elle
   permet de découper facilement des traitements et d'exploiter les
-  architectures multicoeurs. Enfin, il y a l'API CUDA qui permet de tirer partie de
-  la puissance de calcul des GPUs. Pour cela il est nécessaire de
-  spécifier explicitement de ce que l'on veut envoyer aux GPUs et on
-  doit également gérer la synchronisation entre les CPUs et les GPUs.   
+  architectures multicoeurs. Enfin, il y a l'API CUDA qui permet de
+  tirer partie de la puissance de calcul des GPUs. Pour cela il est
+  nécessaire de spécifier explicitement de ce que l'on veut envoyer
+  aux GPUs et on doit également gérer la synchronisation entre les
+  CPUs et les GPUs.
   
   Si l'on veut optimiser le rendement d'une application afin que
   celle-ci tire partie de toute la puissance disponible, il est
   nécessaire d'utiliser plusieurs paradigmes à la fois ce qui complique
-  grandement la programmation. Ceci est un problème de programmation
-  classique où l'on doit, avec les APIs précédentes, indiquer explicitement où et
-  quand chacun des calculs doit être réalisé. Par exemple pour exploiter
-  efficacement un GPU, on doit transférer explicitement les données du
-  CPU vers le GPU, lancer l'exécution du calcul sur le GPU, gérer la
-  synchronisation sur l'attente du résultat, récupérer le résultat et
-  pendant ce temps continuer à occuper le CPU avec un autre calcul.
-  Cette exemple n'illustre que la répartition de charge qu'au niveau
-  d'une seule et même machine. Cela ce complique davantage lorsque
-  l'on veut également répartir la charge entre plusieurs machine.
-  Généralement, on procède soit en déléguant tous les calculs aux
-  GPUs, et les CPUs sont en idle. Soit on réparti la charge entre les
-  CPUs et les GPUs de manière complètement
-  statique\cite{StarPU-MPI}. L'inconvénient est que la mise en 
-  pratique est très difficile car il est ardu de trouver un bon
-  équilibrage. Cependant même si l'on arrive à équilibrer les charges
-  correctement, cette solution est difficilement portable car le
-  découpage des traitements ce fait en fonction de la plateforme
-  cible. 
+  grandement la tâches. Nous sommes donc face à un problème de
+  programmation classique où l'on doit, avec les APIs précédentes,
+  indiquer explicitement où et quand chacun des calculs doit être
+  réalisé. Par exemple pour exploiter efficacement un GPU, on doit
+  transférer explicitement les données du CPU vers le GPU, lancer
+  l'exécution du calcul sur le GPU, gérer la synchronisation sur
+  l'attente du résultat, récupérer le résultat et pendant ce temps
+  continuer à occuper le CPU avec un autre calcul. Cette exemple
+  n'illustre que la répartition de charge au niveau d'une seule et
+  même machine. Cela ce complique davantage lorsque l'on veut
+  également répartir la charge entre plusieurs machines. Généralement,
+  on procède soit en déléguant tous les calculs aux GPUs, et les CPUs
+  sont en idle. Soit on réparti la charge entre les CPUs et les GPUs
+  de manière complètement statique\cite{StarPU-MPI}. L'inconvénient
+  est que la mise en pratique est très difficile car trouver un bon
+  équilibrage relève d'un véritable travail d'horloger. Cependant même
+  si l'on arrive à équilibrer les charges correctement, cette solution
+  est difficilement portable car le découpage des traitements ce fait en
+  fonction de la plateforme cible. 
 
   La solution serait donc d'avoir une gestion dynamique des
   charges. Mais cela s'avère bien plus compliqué, voir impossible
@@ -437,7 +438,7 @@ done
   ainsi que les difficultés rencontrées. La troisième partie sera
   consacrée à la méthodologie employée.  Une quatrième partie montrera la
   contribution à la simulation de telles applications.  Et la
-  cinquième partie abordera les résultats obtenus. 
+  cinquième partie abordera ce que nous avons réussit à mettre en place. 
 
 * État de l'art
   En HPC, il y a trois grandes approches possible pour évaluer les
@@ -447,11 +448,11 @@ done
    réel afin d'effectuer les mesures. Cependant cette méthode peut se 
    révéler très coûteuse et il n'est pas toujours possible d'avoir
    accès à la plateforme. De plus comme les expérimentations ne
-   peuvent être effectuées sur que sur un petit nombre de plateforme
+   peuvent être effectuées que sur un petit nombre de plateformes
    notamment à cause de coût, on ne peut pas vraiment extrapoler les
    résultats. Or justement nous voulons pouvoir évaluer les
    performances quelque soit la plateforme et nous avons également
-   besoin de mener un grand nombre de mesures afin d'avoir des
+   besoin d'effectuer un grand nombre de mesures afin d'avoir des
    résultats valides.
 ** Simulation
    Le principe de la simulation est de s'affranchir de la plateforme.
@@ -470,18 +471,19 @@ done
 *** L'approche par rejeu de trace
     Cette méthode consiste à exécuter une première fois l'application
     sur un système réel pour ensuite pour ensuite rejouer la trace
-    post-mortem. Elle est couramment employé dans le contexte 
+    post-mortem. Elle est couramment employée dans le contexte 
     d'applications MPI statiques mais est ici, nous avons à faire à une
     exécution complètement dynamique, ce qui est totalement inadaptés car
     le flot de contrôle du programme est non déterministes. 
 *** Couplée avec l'émulation
-    On a d'une part la simulation où l'on crée un faux environnement
-    proche de la réalité et où les actions ne sont pas réellement
-    effectués. Dans notre cas on simulerait donc la plateforme de même que l'OS.  
-    Et on a d'autre part l'émulation où l'on exécuterait en vrai le
-    programme sur le système simulé. Ainsi, seul le runtime de StarPU sera
-    réellement exécuté\cite{StarPUSG}, nous pourrons donc étudier son impact sur le
-    performances dans un contexte MPI.
+    Ici, nous avons la simulation où l'on crée un faux environnement
+    proche de la réalité et où les actions ne sont pas réellement 
+    effectués. Dans notre cas on simulerait donc la plateforme de même
+    que l'OS. Et en plus on utiliserait l'émulation où l'on exécuterait en
+    vrai, mais de manière contrôlée le programme sur le système
+    simulé. Ainsi, seul le runtime de StarPU sera réellement
+    exécuté\cite{StarPUSG}, nous pourrons donc étudier son impact sur
+    le performances dans un contexte MPI. 
 
     L'approche simulation / émulation se révèle donc la plus adaptée.
     Nous avons choisi le simulateur SimGrid qui permet de simuler des
@@ -508,7 +510,7 @@ done
    spécifiquement pour simuler des applications MPI. Actuellement la
    majeure partie des fonctionnalités de MPI ont été implémentées. La
    simulation de code MPI est assez compliquée et SimGrid est un des
-   seul simulateur à le permettre. Pour ce faire, on compile
+   seul simulateurs à le permettre. Pour ce faire, on compile
    l'application que l'on veut tester en remplaçant le mpi.h classique
    par le mpi.h de SimGrid. Ensuite, à l'édition de liens on remplace
    le main de l'application par le main de SimGrid. Ce dernier a pour
@@ -516,13 +518,14 @@ done
    et en déployant les processus SMPI qui exécuterons chacun le main
    de l'application MPI. Comme dans le cadre d'applications MPI on est
    dans un environnement à mémoire distribuée et que sous SimGrid les
-   processus sont modélisés par des threads, afin que ces derniers
-   aient leurs propre espace mémoire, l'approche suivi par SMPI
+   processus sont modélisés par des threads, afin de simuler le fait
+   que chacun ait un espace d'adresse séparé, l'approche suivi par SMPI
    consiste à privatiser les variables des processus en créant pour
-   chaque processus une nouvelle zone mémoire dans le tas grâce à un
-   mmpant, recopiant le segment données dans celui-ci le segment
-   données et à chaque changement de contexte faire pointer vers la
-   zone correspondant à celle du processus. 
+   chacun un segment de données virtuel. Pour cela, pour chaque processus
+   une nouvelle zone mémoire est créée dans le tas grâce à un mmap, puis le
+   segment de données est recopié dans cette zone et à chaque
+   changement de contexte on fait pointer vers la zone correspondant à
+   celle du processus. 
 
    #+ATTR_LATEX: :width 5cm
    #+CAPTION: Privatisation du segment données
@@ -546,7 +549,7 @@ done
 
 ** StarPU-SMPI:Ce qui coince
    Avec StarPU MPI, la modélisation est différente. On est à la fois
-   un environnement à mémoire partagée (entre les CPU et le GPU
+   un environnement à mémoire partagée (entre les CPUs et les GPUs
    d'une même machine) et un environnement à mémoire distribuée
    (entre les différents noeuds). On doit donc permettre d'avoir des
    modèles différents selon qu'on est entre noeud où à l'intérieur
@@ -571,7 +574,7 @@ done
    Dans SimGrid seul le segment données est privatisé, comme les
    variables globales des librairies dynamiques ne se trouvent pas
    dans ce dernier(DSO sur le schéma ci-dessus), elles restent donc
-   accessible accessibles à tous les processus. Nous devrons donc
+   accessible accessibles à tous les processus SimGrid. Nous devrons donc
    également faire en sorte de privatiser les variables globales des
    librairies externes entre les noeuds. 
    
@@ -585,7 +588,7 @@ done
   Afin de pouvoir retracer le cheminement de mon travail, mais aussi
   de pouvoir garder le fil d'un jour à l'autre, un cahier de
   laboratoire est tenu en org-mode et est hébergé sur github. Cela permet
-  également à mon tuteur de stage de savoir chaque jours l'avancement
+  également à mon tuteur de stage de connaître chaque jours l'avancement
   du projet et des difficultés rencontrées.
   
   Comme on l'a vu précédemment il est nécessaire d'apporter quelques
@@ -594,8 +597,9 @@ done
   afin de comprendre le fonctionnement et l'architecture de
   SimGrid. Ensuite il a fallut explorer le code afin de déterminer où
   et comment apporter les modifications. Pour cela les outils tels que
-  GDB et Valgrind ont été d'une aide précieuse et ont permis de
-  vérifier les changements de segment mémoire.
+  GDB et Valgrind ont été d'une aide précieuse et ont permis de notamment
+  vérifier que les changements de segment mémoire s'effectuent bien au
+  bon moment.
 
 * Contribution
   La toute première chose à réaliser, a été la gestion du partage du
@@ -609,14 +613,14 @@ done
   donc du segment de données du processus qui les a créés. Il a par
   ailleurs été nécessaire d'initialiser MSG et SMPI
   correctement afin que les deux puissent fonctionner
-  ensemble. SimGrid a donc été modifié en conséquences.
+  ensemble. SimGrid a donc été modifié en conséquences. 
 
   Une fois la gestion du partage mise en place, nous nous sommes
   penchés sur le cas des bibliothèques dynamiques. Nous avons vu
   précédemment que malgré le mécanisme de privatisation, les variables
   globales présentes dans ces dernières sont partagés entre les
   différents processus SimGrid. Pour contourner ce problème, nous
-  avons décidé d'utiliser une version statique de la bibliothèques.  
+  avons décidé d'utiliser une version statique de la bibliothèque.  
   
   #+ATTR_LATEX: :width 5cm
   #+CAPTION: Emplacement en mémoire des bibliothèques
@@ -653,9 +657,9 @@ done
    sommes passé à un test utilisant cette fois la vrai bibliothèque
    StarPU. Cette dernière est fourni avec des exemples de programme MPI
    notamment d'algèbre linéaire tel que l'algorithme de Cholesky. Nous
-   nous sommes servi de ces dernier afin de valider les
-   modifications. Aux vues du résultat des tests, un problème persiste
-   pour au niveau de l'initialisation de StarPU.
+   nous sommes servi de ces derniers afin de valider les
+   modifications. Cependant au cours des tests nous avons constaté
+   qu'un problème persistait au niveau de l'initialisation de StarPU.
 
 * Conclusion
   Pour conclure, nous avons voulu voir s'il était possible de mesurer
@@ -671,17 +675,16 @@ done
   entre les processus de même noeud et la privatisation entre les
   processus de noeuds différents. 
   
-  Il reste encore de corriger le problème d'initialisation et donc les
-  mesures prévues n'ont pas encore pu être réalisées. Bien qu'aucune
-  expérimentation n'est pu être faite, les problèmes rencontrés sont
-  plutôt des problèmes d'ordre techniques et ne nous permettent pas
-  d'invalider notre hypothèse. Afin de pouvoir conclure sur la
-  question, il faudra finir de corriger la phase d'initialisation côté
-  StarPU et également apporter quelques correctifs à SimGrid. Ensuite
-  nous pourrons effectuer les simulations et les mesures. Pour ce
-  faire les mesures seront faites sur un solveur d'algèbre linéaire
-  basé sur StarPU. Enfin, dans le but de valider le résultat des
-  expérimentations, un test grandeur nature sera fait sur Grid5000. 
+  Bien qu'aucune expérimentation n'est pu être faite, les problèmes
+  rencontrés sont plutôt des problèmes d'ordre techniques et ne nous
+  permettent pas d'invalider notre hypothèse. Afin de pouvoir conclure
+  sur la question, il faudra finir de corriger la phase
+  d'initialisation côté StarPU et également apporter quelques
+  correctifs à SimGrid. Ensuite nous pourrons effectuer les
+  simulations et les mesures. Pour ce faire les mesures seront faites
+  sur un solveur d'algèbre linéaire basé sur StarPU. Enfin, dans le
+  but de valider le résultat des expérimentations, un test grandeur
+  nature sera fait sur Grid5000.  
   
 #+Latex:\section*{Acknowledgments}
 Je souhaite remercier...
