@@ -107,11 +107,11 @@
   Les supercalcultateurs actuellement sont des noeuds composés de
   machines hybrides. Afin de pouvoir tirer partie de toute la
   puissance disponible, il est indispensable d'avoir une approche qui
-  soit dynamique mais également facile à mettre en oeuvre. Le méthode
-  de programmation classique ne le permettent pas c'est pour cela
+  soit dynamique mais également facile à mettre en oeuvre. Les méthodes
+  de programmation classiques ne le permettent pas, c'est pour cela
   qu'une nouvelle approche a été envisage. Le paradigme de
   programmation par tâches couplé à un système dynamques. Ce rapport
-  montre les intérêts de cette méthodes et comme on peut évaluer les
+  relate les intérêts de cette méthode et comme on peut évaluer les
   performances. 
   \newpage
 #+END_abstract
@@ -484,13 +484,13 @@ done
     performances dans un contexte MPI.
 
     L'approche simulation / émulation se révèle donc la plus adaptée.
-    Nous avons choisi le simulateur Simgrid qui permet de simuler des
+    Nous avons choisi le simulateur SimGrid qui permet de simuler des
     systèmes distribués, des grilles des calculs, des systèmes peer to
     peer et cloud. De plus StarPU a récemment été porté au-dessus de
     SimGrid et concilie l'approche simulation / évaluation.
 
 * Analyse du problème
-** Simgrid
+** SimGrid
    La structure de SimGrid est composé de plusieurs APIs. Il y a tout
    d'abord l'API SIMIX qui permet de simuler la partie OS. C'est elle
    qui s'occupe notamment de la gestion et de l'ordonnancement des
@@ -510,8 +510,8 @@ done
    simulation de code MPI est assez compliquée et SimGrid est un des
    seul simulateur à le permettre. Pour ce faire, on compile
    l'application que l'on veut tester en remplaçant le mpi.h classique
-   par le mpi.h de Simgrid. Ensuite, à l'édition de liens on remplace
-   le main de l'application par le main de Simgrid. Ce dernier a pour
+   par le mpi.h de SimGrid. Ensuite, à l'édition de liens on remplace
+   le main de l'application par le main de SimGrid. Ce dernier a pour
    rôle de préparer l'exécution du simulateur en créant la plateforme
    et en déployant les processus SMPI qui exécuterons chacun le main
    de l'application MPI. Comme dans le cadre d'applications MPI on est
@@ -527,9 +527,9 @@ done
    #+ATTR_LATEX: :width 5cm
    #+CAPTION: Privatisation du segment données
    #+NAME:   fig:1
-   [[./Img/Memoire.jpg]]
+   [[./Img/Memoire.pdf]]
    
-   Enfin, il l'API SURF qui a pour objectif de décrire les
+   Enfin, il y a l'API SURF qui a pour objectif de décrire les
    caractéristique de la plateforme et de la simuler. On lui fournit
    donc une modèle de performance qui permettra d'estimer la durée des
    calculs et des transferts.
@@ -544,7 +544,6 @@ done
    effectuées, les codes de calcul sont simulés et remplacés par un
    délais de même pour les transferts CUDA. 
 
-
 ** StarPU-SMPI:Ce qui coince
    Avec StarPU MPI, la modélisation est différente. On est à la fois
    un environnement à mémoire partagée (entre les CPU et le GPU
@@ -553,14 +552,32 @@ done
    modèles différents selon qu'on est entre noeud où à l'intérieur
    d'un noeud. Il nous faut donc activer la privatisation de variables
    entre les noeuds mais également le partage de variables à
-   l'intérieur de chacun noeuds. Pour cela nous avons besoin de faire
-   fonctionner MSG et SMPI ensemble. Or non seulement StarPU est
-   essentiellement basé sur MSG et de plus MSG et SMPI n'ont pas été
-   prévu pour fonctionner ensemble, il nous par ailleurs initialiser
-   correctement la partie MSG et la partie SMPI.
+   l'intérieur de chacun noeuds. 
 
+   Pour cela nous avons besoin de faire fonctionner MSG et SMPI
+   ensemble. Or non seulement StarPU est essentiellement basé sur MSG
+   et de plus MSG et SMPI n'ont pas été prévu pour fonctionner
+   ensemble. Il faudra donc initialiser correctement à la fois la
+   partie MSG et la partie SMPI. 
+   
+   Il y a un également un autre point à prendre en considération,
+   celui des librairies dynamiques. 
+   
+   #+ATTR_LATEX: :width 5cm
+   #+CAPTION: Emplacement en mémoire des bibliothèques
+   #+NAME:   fig:2
+   [[./Img/Dyn.pdf]]
+
+   Dans SimGrid seul le segment
+   données est privatisé, comme les variables globales des librairies
+   dynamiques ne se trouvent pas dans ce dernier, elles restent donc
+   accessible accessibles à tous les processus. Nous devrons donc
+   également faire en sorte de privatiser les variables globales des
+   librairies externes entre les noeuds.
+
+   
 * Méthodologie
-  Comme nous travaillons avec Simgrid et StarPU à la fois, nous
+  Comme nous travaillons avec SimGrid et StarPU à la fois, nous
   utilisons un dépôt complexe comprenant les deux et géré avec
   l'outils submodule de [[https://github.com/swhatelse/Journal][git]]. Ce dernier nous permet de gérer des sous
   dépôt indépendemment, ainsi il est plus aisé de traiter les mises à
@@ -573,13 +590,13 @@ done
   du projet et des difficultés rencontrées.
   
   Comme on l'a vu précédemment il est nécessaire d'apporter quelques
-  modifications au niveau du simulateur et de StarPU. Dans ce but, il a été dans un
-  premier temps nécessaire de consulter la documentation afin de
-  comprendre le fonctionnement et l'architecture de Simgrid. Ensuite
-  il a fallut explorer le code afin de déterminer où et comment
-  apporter les modifications. Pour cela les outils tels que GDB et
-  Valgrind ont été d'une aide précieuse et ont permis de vérifier les
-  changement de segment mémoire.
+  modifications au niveau du simulateur et de StarPU. Dans ce but, il
+  a été dans un premier temps nécessaire de consulter la documentation
+  afin de comprendre le fonctionnement et l'architecture de
+  SimGrid. Ensuite il a fallut explorer le code afin de déterminer où
+  et comment apporter les modifications. Pour cela les outils tels que
+  GDB et Valgrind ont été d'une aide précieuse et ont permis de
+  vérifier les changements de segment mémoire.
 
 * Contribution
   La toute première chose à réaliser, a été la gestion du partage du
@@ -591,7 +608,7 @@ done
   créés au lancement de l'application avec leur propre espace de
   données. Puis ces dernier peuvent à leurs tours créer de nouveau
   processus. Ceux-ci héritent donc du segment de données du processus
-  qui les a créés. Nous avons donc modifiés SimGrid.
+  qui les a créés. SimGrid a donc été modifié en conséquences.
 
   Une fois la gestion du partage mise en place, nous avons constaté
   qu'il y avait un cas que nous n'avions pas pris en compte: celui des
@@ -600,7 +617,7 @@ done
 
   #+ATTR_LATEX: :width 5cm
   #+CAPTION: Emplacement en mémoire des bibliothèques
-  #+NAME:   fig:2
+  #+NAME:   fig:3
   [[./Img/StaticDyn.jpg]]
 
   En effet, nous n'avons privatisé que le segment données des
@@ -608,7 +625,7 @@ done
   sur le schéma ci-dessous) ne se trouvent pas dans le segment données
   du processus et se retrouvent donc accessible à tous les processus. 
 
-  La solution qui nous avons employé est d'utiliser donc une version
+  La solution qui nous avons employée est d'utiliser donc une version
   statique de la librairie. Ainsi, les variables globales se
   retrouvent dans le segment données du processus et ainsi la
   privatisation et le partage s'effectue grâce au mécanisme
@@ -621,7 +638,7 @@ done
    Dans le but de tester le bon fonctionnement des modifications
    apportées, un test illustrant le fonctionnement de StarPU a été
    fourni et enrichi. Ce dernier permet ainsi d'isoler le problème
-   afin de pouvoir nous concentrer dessus. Ce test, initialise Simgrid
+   afin de pouvoir nous concentrer dessus. Ce test, initialise SimGrid
    et la partie SMPI comme cela est fait du côté de StarPU et fait
    appel à une bibliothèque dynamique et manipule des variables
    globales. Ainsi lors de l'exécution de ce test, on doit pouvoir
@@ -646,7 +663,7 @@ done
   sa flexibilité mais aussi en terme de scalabilité.  
   
   Pour vérifier si cette approche est effectivement possible, nous
-  avons modifié Simgrid afin de pouvoir faire fonctionner StarPU MPI
+  avons modifié SimGrid afin de pouvoir faire fonctionner StarPU MPI
   dessus. Nous avons donc mis en place le partage du segment données
   entre les processus de même noeud et la privatisation entre les
   processus de noeuds différents. 
@@ -659,13 +676,11 @@ done
   
   Afin de pouvoir conclure sur la question, il faudra finir de
   corriger la phase d'initialisation côté StarPU et également apporter
-  quelques correctifs à Simgrid. Ensuite nous pourrons effectuer les
+  quelques correctifs à SimGrid. Ensuite nous pourrons effectuer les
   simulations et les mesures. Pour ce faire les mesures seront faites
   sur le logiciel Chameleon (un solveur d'algèbre linéaire basé sur
   StarPU). Enfin, dans le but de valider le résultat des
   expérimentations, un test grandeur nature sera fait sur Grid5000.
-  # C'est pour atteindre cet objectif que j'ai choisi de prolonger mon stage.
-  
   
 #+Latex:\section*{Acknowledgments}
 Je souhaite remercier...
