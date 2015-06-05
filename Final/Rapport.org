@@ -428,55 +428,58 @@ done
   cinquième partie aborde ce que nous avons réussit à mettre en place. 
 
 * État de l'art
-  En HPC, il y a trois grandes approches possible pour évaluer les
+  En HPC, il y a deux grandes approches possibles pour évaluer les
   performances d'applications.
 ** Test sur systèmes réels
    Cette approche consiste à lancer la vrai application sur le système
    réel afin d'effectuer les mesures. Cependant cette méthode peut se 
    révéler très coûteuse et il n'est pas toujours possible d'avoir
-   accès à la plateforme. De plus comme les expérimentations ne
-   peuvent être effectuées que sur un petit nombre de plateformes
-   notamment à cause de coût, on ne peut pas vraiment extrapoler les
-   résultats. Or justement nous voulons pouvoir évaluer les
-   performances quelque soit la plateforme et nous avons également
-   besoin d'effectuer un grand nombre de mesures afin d'avoir des
-   résultats valides.
+   accès à la plateforme. De plus comme les exécutions sont non
+   déterministes il est indispensable de réaliser un grand nombre
+   d'expériences, or à cause du coût il n'est possible que d'effectuer
+   qu'un petit nombre de mesure sur un nombre restreint de
+   plate-forme. Il est donc difficile d'extrapoler ce qui serait
+   pourtant très utile aux développeurs de runtimes et d'applications. 
 ** Simulation
+   La simulation à pour but de définir un modèle et de calculer une
+   prédiction du comportement du système
+
    Le principe de la simulation est de s'affranchir de la plateforme.
    Ainsi, les expérimentations peuvent être effectuées à partir de
    n'importe quel système, il n'est plus nécessaire d'avoir accès à la
-   plateforme, ce qui rend cette approche peu coûteuse. 
+   plateforme, ce qui rend cette approche peu coûteuse. Comme la
+   simulation nous permettrait d'avoir un contrôle sur de nombreux
+   paramètres, nous pouvons avoir un système déterministe qui 
+   nous permettrait d'avoir des expériences qui peuvent être reproduites. 
    Par ailleurs il est facile d'extrapoler les résultats car on peut
-   simuler un nombre important de plateformes. Ensuite la simulation
+   changer les paramètres du modèle. Enfin la simulation
    permet d'avoir un temps d'exécution plus court qu'avec des tests
    réels car on n'effectue que certains traitements ce qui nous permet
    pouvoir effectuer un grand nombre de mesures.  
-   Enfin comme la simulation nous permettrait d'avoir un contrôle sur
-   de nombreux paramètres, nous pouvons avoir un système déterministe qui
-   nous permettrait d'avoir des expériences qui peuvent être reproduites.
   
 *** L'approche par rejeu de trace
     Cette méthode consiste à exécuter une première fois l'application
     sur un système réel pour ensuite pour ensuite rejouer la trace
     post-mortem. Elle est couramment employée dans le contexte 
-    d'applications MPI statiques mais est ici, nous avons à faire à une
+    d'applications MPI statiques. Ici, nous avons à faire à une
     exécution complètement dynamique, ce qui est totalement inadaptés car
     le flot de contrôle du programme est non déterministes. 
-*** Couplée avec l'émulation
+*** Hybride simulation / émulation
     Ici, nous avons la simulation où l'on crée un faux environnement
     proche de la réalité et où les actions ne sont pas réellement 
     effectués. Dans notre cas on simulerait donc la plateforme de même
     que l'OS. Et en plus on utiliserait l'émulation où l'on exécuterait en
     vrai, mais de manière contrôlée le programme sur le système
-    simulé. Ainsi, seul le runtime de StarPU sera réellement
-    exécuté\cite{StarPUSG}, nous pourrons donc étudier son impact sur
-    le performances dans un contexte MPI. 
+    simulé. Cette approche est suivie dans \cite{StarPUSG} où StarPU a
+    été porté sur SimGrid mais avec un noeud seulement. Notre objectif
+    est d'utiliser la même approche mais avec plusieurs noeuds et avec
+    StarPU MPI. 
 
-    L'approche simulation / émulation se révèle donc la plus adaptée.
+    L'approche simulation et émulation se révèle donc la plus adaptée.
     Nous avons choisi le simulateur SimGrid qui permet de simuler des
     systèmes distribués, des grilles des calculs, des systèmes peer to
     peer et cloud. De plus StarPU a récemment été porté au-dessus de
-    SimGrid et concilie l'approche simulation / évaluation.
+    SimGrid et concilie l'approche simulation et évaluation.
 
 * Analyse du problème
 ** SimGrid
@@ -624,7 +627,7 @@ done
   Comme StarPU a été porté au dessus de MSG, il a également été
   nécessaire d'apporter quelques modifications au niveau de
   l'initialisation. Car le mécanisme de gestion de la privatisation et
-  de partage n'était activé que de manière tardive. 
+  de partage n'était activée que de manière tardive. 
 
 * Validation
 ** Test simple
