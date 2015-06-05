@@ -91,29 +91,16 @@ calculs hautes performances%\thanks{Grants or other notes
 
 
 #+BEGIN_abstract
-  # Dans le domaine des supercalculateurs, la course à la performance est
-  # un point crucial. Actuellement, le calculateur le plus puissant (le
-  # TianHe-2) est capable d'effectuer environ 33.86 Peta d'opérations
-  # flotantes par secondes. Cependant cette course est freinée par un
-  # facteur qui prend désormais d'une importance capitale, le coût
-  # énergétique. En effet, reprennons l'exemple du supercalculateur
-  # chinois, la consommation du TianHe-2 atteint presque les 18MW et
-  # avec la génération exascale la consommation estimée sera entre 20MW
-  # et 40MW. Dans l'état des fait, ce n'est pas réalisable et pour
-  # pouvoir atteindre l'exaflops, il nécessaire d'optimiser d'autres
-  # points que la puissance des puces. Evidemment des optimisations
-  # peuvent être faites au niveau matériel afin de réaliser des
-  # composants à hautes efficacités énergétiques. 
-
   Actuellement, la majorité des supercalcultateurs sont des noeuds
-  composés des plusieurs CPUs et GPUs. Afin de pouvoir tirer partie de
-  toute la puissance disponible, il est indispensable d'avoir une
-  approche qui soit dynamique mais également facile à mettre en
-  oeuvre. Les méthodes de programmation classiques ne le permettent
-  pas, c'est pour cela qu'une nouvelle approche a été envisage: le
-  paradigme de programmation par tâches couplé à un système
-  dynamique. L'objet de notre étude est de tenter de simuler un tel
-  système dans le but d'évaluer d'en évaluer les performances. 
+  composés de machines hybrides. Pour tirer partie de toute la
+  puissance de calcul disponible, il est indispensable d'avoir un
+  programme qui soit dynamique. Cependant, les APIs de programmation
+  classiques conduisent à une mise en oeuvre très complexe.
+  Le paradigme de programmation par tâches couplé à un système
+  dynamique permet de répondre à ce problème, mais il est difficile
+  d'en évaluer les performances. L'objectif de notre étude est donc de
+  mettre en place les dispositifs nécessaire à l'évaluation de
+  performances du système. 
   \newpage
 #+END_abstract
 
