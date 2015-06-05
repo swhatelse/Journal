@@ -483,13 +483,18 @@ done
 
 * Analyse du problème
 ** SimGrid
-   La structure de SimGrid est composé de plusieurs APIs. Il y a tout
-   d'abord l'API SIMIX qui permet de simuler la partie OS. C'est elle
+   SimGrid est propose de plusieurs APIs et est composé de plusieurs
+   modules. Il y a tout d'abord l'API SURF qui a pour objectif de
+   décrire les caractéristiques de la plateforme et de la simuler. On
+   lui fournit donc une modèle de performance qui permettra d'estimer
+   la durée des calculs et des transferts.
+
+   Ensuite, le module SIMIX permet de simuler la partie OS. C'est lui
    qui s'occupe notamment de la gestion et de l'ordonnancement des
    processus et également des mécanismes de synchronisation. Sous
    SimGrid, les processus sont modélisés par des threads, ce qui
-   signifie que leur espace d'adressage est partagé ce qui nous permet
-   de simuler un environnement à mémoire partagée. 
+   signifie que leur espace d'adressage est partagé et nous permet
+   de simuler un environnement à mémoire partagée facilement. 
    
    Ensuite, au dessus SIMIX, il y a d'une part l'API MSG. Cette dernière
    permet à l'utilisateur créer et manipuler des processus de manière
@@ -522,11 +527,6 @@ done
    #+NAME:   fig:1
    [[./Img/Memoire.pdf]]
    
-   Enfin, il y a l'API SURF qui a pour objectif de décrire les
-   caractéristique de la plateforme et de la simuler. On lui fournit
-   donc une modèle de performance qui permettra d'estimer la durée des
-   calculs et des transferts.
-
 ** StarPU-MSG: Architecture générale   
    Comme à la base StarPU visait le modèle CPUs-GPUs, l'API la plus
    proche était MSG, notamment par rapport à la création de threads et
