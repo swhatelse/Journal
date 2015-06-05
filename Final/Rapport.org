@@ -466,7 +466,7 @@ done
 *** Hybride simulation / émulation
     Pour avoir des simulations qui soient réalistes, nous avons
     d'exécuter le vrai et de ne simuler que les communications et les
-    calculs coûteux.Dans notre cas on simulerait donc la plateforme de
+    calculs coûteux. Dans notre cas on simulerait donc la plateforme de
     même que l'OS. Et en plus on utiliserait l'émulation où l'on
     exécuterait en vrai, mais de manière contrôlée le programme sur le
     système simulé. Cette approche est suivie dans \cite{StarPUSG} où
@@ -550,7 +550,7 @@ done
    Pour cela nous avons besoin de faire fonctionner MSG et SMPI
    ensemble. Or non seulement StarPU est essentiellement basé sur MSG
    mais MSG et SMPI n'ont par ailleurs pas été prévu pour fonctionner
-   ensemble même si dans le principe rien ne l'empêchait. Il
+   ensemble même si dans le principe rien ne l'interdit. Il
    faudra donc initialiser correctement à la fois la partie MSG et la
    partie SMPI.  
    
@@ -578,9 +578,7 @@ done
 
   Afin de pouvoir retracer le cheminement de mon travail, mais aussi
   de pouvoir garder le fil d'un jour à l'autre, un cahier de
-  laboratoire est tenu en org-mode et est hébergé sur github. Cela permet
-  également à mon tuteur de stage de connaître chaque jours l'avancement
-  du projet et des difficultés rencontrées.
+  laboratoire est tenu en org-mode et est hébergé sur github.
   
   Comme on l'a vu précédemment il est nécessaire d'apporter quelques
   modifications au niveau du simulateur et de StarPU. Dans ce but, il
