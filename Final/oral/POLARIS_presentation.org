@@ -1,0 +1,327 @@
+# -*- coding: utf-8 -*-
+# -*- mode: org -*-
+#+startup: beamer
+#+STARTUP: overview
+#+STARTUP: indent
+#+TAGS: noexport(n)
+
+#+Title: \textbf{POLARIS} \\ \Large Performance analysis and Optimization of LARge Infrastructures and Systems\bigskip\\ \large Joint Inria / CNRS / Univ. Grenoble Alpes Project Team Proposal
+#+Author: Arnaud Legrand
+#+DATE: Grenoble, May 22 2015
+
+#+EPRESENT_FRAME_LEVEL: 2
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [11pt,xcolor=dvipsnames,presentation]
+#+OPTIONS:   H:2 num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t
+
+#+LATEX_HEADER: \usedescriptionitemofwidthas{bl}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+LATEX_HEADER: \usepackage[american]{babel}
+#+LATEX_HEADER: \usepackage{ifthen,figlatex,amsmath,amstext,gensymb,amssymb}
+#+LATEX_HEADER: \usepackage{boxedminipage,xspace,multicol}
+#+LATEX_HEADER: %%%%%%%%% Begin of Beamer Layout %%%%%%%%%%%%%
+#+LATEX_HEADER: \ProcessOptionsBeamer
+#+LATEX_HEADER: \usecolortheme{whale}
+#+LATEX_HEADER: \usecolortheme[named=BrickRed]{structure}
+#+LATEX_HEADER: \useinnertheme{rounded}
+#+LATEX_HEADER: \useoutertheme{infolines}
+#+LATEX_HEADER: \setbeamertemplate{footline}[frame number]
+#+LATEX_HEADER: \setbeamertemplate{headline}[default]
+#+LATEX_HEADER: \setbeamertemplate{navigation symbols}{}
+#+LATEX_HEADER: \defbeamertemplate*{headline}{info theme}{}
+#+LATEX_HEADER: \defbeamertemplate*{footline}{info theme}{\leavevmode%
+#+LATEX_HEADER:   \hbox{%
+#+LATEX_HEADER:     \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+#+LATEX_HEADER:       \usebeamerfont{author in head/foot}\insertshortauthor
+#+LATEX_HEADER:     \end{beamercolorbox}%
+#+LATEX_HEADER:   \begin{beamercolorbox}[wd=.71\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+#+LATEX_HEADER:     \usebeamerfont{title in head/foot}\insertsectionhead
+#+LATEX_HEADER:   \end{beamercolorbox}%
+#+LATEX_HEADER:   \begin{beamercolorbox}[wd=.09\paperwidth,ht=2.25ex,dp=1ex,right]{section in head/foot}%
+#+LATEX_HEADER:     \usebeamerfont{section in head/foot}\insertframenumber{}~/~\inserttotalframenumber\hspace*{2ex} 
+#+LATEX_HEADER:   \end{beamercolorbox}
+#+LATEX_HEADER:   }\vskip0pt}
+#+LATEX_HEADER: \setbeamertemplate{footline}[info theme]
+#+LATEX_HEADER: %%%%%%%%% End of Beamer Layout %%%%%%%%%%%%%
+#+LATEX_HEADER: \usepackage{verbments}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{url} \urlstyle{sf}
+
+#+LATEX_HEADER: \let\alert=\structure % to make sure the org * * works of tools
+
+
+# Bah on veut tout, mais surtout la problematique scientifique,
+# le *pourquoi* on veut creer une equipe Inria sur ce sujet.
+# Donc oui pour les infos factuelles (perimetre humain en
+# particulier), mais pas plus de 2 minutes sur les 15 prevues.
+
+* General Presentation 
+** Project-Team Composition
+- *\textit{Natural} evolution* of the MESCAL team.\vspace{-1em}
+
+#+BEGIN_LaTeX
+  \null\hspace{-1em}\hbox{\scalebox{.82}{
+  \begin{tabular}{llll}
+    Name & Affiliation & Provenance & Expertise\\
+    \hline
+    V. Danjean & MdC UJF & MOAIS & HPC, Tracing, Experimental Methodology\\
+    N. Gast & CR2 Inria & MESCAL & Optimization, Stochastic Modeling\\
+    B. Gaujal & DR1 Inria & MESCAL & Modeling, Optimization, Game Theory\\
+    G. Huard & MdC UJF & MOAIS & HPC, Tracing, Visualization\\
+    A. Legrand & CR1 CNRS & MESCAL & HPC, Simulation, Visualization, Optimization\\
+    F. Perronnin & MdC UJF & MESCAL & Simulation, Stochastic and fluid models\\
+    P. Mertikopoulos & CR2 CNRS & MESCAL & Optimization, Game/Information Theory\\
+    J.M. Vincent & MdC UJF & MESCAL & HPC, Modeling, Simulation, Visualization\\
+  \end{tabular}
+  }\hspace{-2em}}
+#+END_LaTeX
+
+- *Inria field / theme:* 
+  - Network, Systems and Services
+  - Distributed Computing / Distributed and High Performance Computing
+- *Keywords*: HPC/large distributed systems, performance analysis,
+  distributed and stochastic optimization, ...
+
+# - *Keywords*: HPC, large distributed systems, performance evaluation,
+#   simulation, visualization, distributed and stochastic optimization,
+#   game theory, ...
+
+** Context and Objectives
+- *Large distributed infrastructures*
+  #+LaTeX: \vspace{-1em}\begin{multicols}{2}
+  - \textbf{HPC/cloud/...}
+  - Wireless networks
+  - Smart grids
+  - Transportation systems
+  #+LaTeX: \end{multicols}
+  #+BEGIN_LaTeX
+    \hbox{\hspace{-.7cm}%
+      \includegraphics[height=2.15cm]{img/plat_titan.jpg}
+      \includegraphics[height=2.15cm]{img/plat_wireless.jpg}
+      \includegraphics[height=2.15cm]{img/plat_smartgrid.jpg}
+      \includegraphics[height=2.15cm]{img/plat_bikesharing.jpg}%
+    }
+  #+END_LaTeX
+- *Common questions* scalability, resilience, adaptability, capacity
+  planning, energy consumption, \dots
+- *Common characteristics* ever growing size, distributed,
+  heterogeneous, user-centric $\leadsto$ *stochastic nature*
+# - Many *invalid hypothesis*, which requires *involved tools and
+#   techniques* on which other teams from the D&HPC theme cannot
+#   afford to invest
+- This requires *involved tools and new techniques* that will be useful
+  to the D&HPC community
+
+** Scientific Foundations: POLARIS in a Nutshell
+#+BEGIN_QUOTE
+*Contribute to the understanding* (from the *observation*, *modeling and
+analysis* to the *optimization* through adapted algorithms) *of
+performances of very large scale distributed computing systems* by
+applying original ideas from *other research fields and application
+domains*.
+#+END_QUOTE
+#+LaTeX: {\bf
+POLARIS = *Team* of people with the right spectrum of *skills*
+#+LaTeX: }
+- Experiment design :: 
+     measuring/monitoring/tracing tools, experimental methodology
+     (design, control, reproducibility) 
+- Modeling and Simulation :: discrete event simulation, emulation,
+     Markov chains, perfect sampling, Monte Carlo methods, ...
+- Visualization and Statistical Analysis :: 
+     workload characterization (failures, parallel systems),
+     visualization and analysis of parallel applications
+- Optimization :: stochastic approximations, mean field limits, game
+                  theory, mean field games, primal dual optimization,
+                  learning, information theory
+
+** Research Methodology
+A continuum of 5 research areas
+#+BEGIN_LaTeX
+  \begin{columns}
+    \begin{column}{.05\linewidth}
+     \vspace{.8em}
+     \includegraphics[height=4.6cm]{img/arrow.pdf}
+    \end{column}
+    \begin{column}{.9\linewidth}
+#+END_LaTeX
+- 
+  #+LaTeX: \textbf<2>{\alert{Measurement}}
+  design of experiments, observation
+  overhead control, reproducible research
+- *Visualization* performance qualification and debugging, multi-scale
+  visualization, trace comparison
+- 
+  #+LaTeX: \textbf<2>{\alert{Simulation}}
+  faithful simulation of HPC systems, sensibility/robustness,
+  trajectory coupling
+- *Fluid Modeling* local interactions, transient analysis
+- *Optimization* learning algorithms in continuous nonlinear games,
+  online and distributed optimization
+#+BEGIN_LaTeX
+  \end{column}
+\end{columns}
+#+END_LaTeX
+* Research Direction
+** \textbf{Measurement:} Reproducible Experimental Methodology
+Real experiments are *costly*, *difficult* to *control* and to *reproduce*
+- \small Cannot be studied anymore like artificial systems. Need to
+  *inspire from other experimental fields*
+
+\textbf{Research directions}:
+- *Design of experiments*: involved statistical technique widely used in
+  all fields where experiments are expensive but CS
+  - *Bridge* this *gap* and *favor its adoption* in the D&HPC theme
+- *Monitoring and tracing*: need for multi-scale
+  (application/space/time) observation where intrusiveness is
+  controlled
+  - Evaluate the *observation/analysis quality trade-off*
+- *Open science and reproducibility*: complexity and rapid technological
+  evolution = excuse for not taking care of results reproducibility
+  - Monitor/document the whole process (design, execution, data
+    gathering, filtering, analysis)
+  - Investigate/design *pragmatic workflows* to alleviate this flaw
+** \textbf{Visualization:} "Performance Driver" Identification
+Traditional approach: display *everything*\\
+  #+BEGIN_LaTeX
+    \only<2>{$\leadsto$ harmful \alert{biases} (\emph{more information than what fits on your screen})}
+      \begin{overlayarea}{\linewidth}{3.7cm}
+        \only<1>{\includegraphics[width=\linewidth]{img/trace_zoom.pdf}}%
+        \pause%
+        \vspace{-.5em}
+        \begin{center}
+          \begin{tabular}{cc}
+            \includegraphics[width=.3\textwidth]{img/r_gantt_evince.pdf} & 
+            \includegraphics[width=.3\textwidth]{img/r_gantt_acroread.pdf} \\
+            Evince & Acroread
+          \end{tabular}
+        \end{center}
+        \vspace{-1em}
+       \hbox{$\leadsto$ \emph{overenthusiastic} use of \emph{clustering}, pattern \emph{mining}, \emph{sequence alignment}}
+      \end{overlayarea}
+  #+END_LaTeX
+# - Well familiar with such problems (Paje started 20 years ago)
+  # to understand their application/runtimes
+\textbf{Research Directions}:
+- Performance *qualification* and *debugging*
+  - Colleagues from D&HPC theme in deep need of new approaches/tools 
+- *Multi-scale* analysis (space/time/application) resilient to *noise*
+  - *Entropy-based Aggregation* applied to embedded/HPC systems
+- Trace *comparison*\smallskip
+** \textbf{Simulation:} Very Large Stochastic Systems
+- Simulation circumvents some of the previous experimental issues
+  - cost/screening, extrapolation, capacity planning, ...
+- Traditional approach: simplistic models to study large-scale
+  systems, developed by D&HPC experts who know little about simulation
+  - *Short-lived* tools with *no intent of predicting* anything. At best
+    grossly indicates trend but no more expectation
+\textbf{Research directions}:
+- Accurately *reproduce the dynamic of real systems*
+  # modeling, confidence, 
+  - *SimGrid*: Versatile simulation of large-scale distributed systems \\
+    *coarse-grain fluid models*, mix *emulation/simulation*, *invalidation*
+  - Used is RUNTIME/HIEPACS, ASCOLA, KERDATA, AVALON, \dots
+- Provide *sensibility* analysis and *robustness* indicators
+- Trajectory *coupling* for discrete event simulations
+  - *PSI$^2$*: Perfect sampling for Markovian systems
+#+BEGIN_LaTeX
+  \uncover<2>{
+  \begin{overlayarea}{\linewidth}{0cm}
+    \vspace{-7.5cm}
+    \begin{center}
+      \begin{minipage}{\linewidth}
+        \begin{exampleblock}{Simulation of Cholesky/StarPU on a hybrid platform}
+          \begin{center}
+            \includegraphics[width=.8\linewidth]{img/comparing_hybrid_mkl-crop.pdf}
+          \end{center}
+        \end{exampleblock}
+      \end{minipage}
+    \end{center}
+  \end{overlayarea}}\medskip
+#+END_LaTeX
+
+** \textbf{Analysis:} Local Interactions and Transient Analysis 
+# in Adaptive Dynamic Systems
+Analysis of *stochastic* systems is particularly difficult
+but *mean-field* approximation is suited to *large systems*
+- *Key hypothesis*: the dynamic solely depends
+  on the entity state (not on their identity nor on their spatial
+  location) and state space does not scale
+
+\textbf{Research directions}:
+- *Locality is essential*: possible approaches
+  - pair approximation from statistical physics
+  - fixed interaction graphs and a multi-scale approach
+  - /never used for distributed computing systems and high potential/
+
+- *Transient behavior*:
+  - Finite horizon: OK (discrete system is uniformly close to
+    its continuous limit)
+  - Infinite time horizon when the continuous limit is globally
+    stable: OK
+  - Trajectory dependent stopping time: ???
+  - /Could be used to analyze the complexity of distributed algorithms/
+** Optimization
+#+LaTeX: \frametitle{\textbf{Optimization:} \scalebox{.92}{\hbox{Game Theory, On-line Distributed~Optimization\hspace{-1em}}}}
+*** Modeling interactions through *game theory*
+\vspace{-.5em}
+Nash equilibrium often inefficient but *efficient equilibrium* can be
+*learned* \small\vspace{-.6em}
+- Finite set of strategies = OK. \textbf{In}finite set = ???\vspace{-.6em}
+  - Examples: routing packet flows, power control in wireless
+    networks, \dots
+  - Discretizing is not an viable option (state space explosion
+    exponentially hard to analyze, mixed strategy space is irrelevant)
+    \vspace{-.8em}
+- \textbf{Goal}: Design learning algorithms in continuous nonlinear
+  games that can be applied to realistic network scenarios
+\null\vspace{-1cm}
+\normalsize
+*** Online and distributed optimization
+\small\vspace{-.8em}
+- Common unsatisfactory use of greedy approaches based on offline
+  heuristics\vspace{-.6em}
+- Each agent is faced with an *unknown and evolving loss function* and
+  seeks to minimize his cumulative loss via the *use of past
+  observations*\vspace{-.6em}
+  # (Bayesian-like prior belief on his environment)
+- *Regret minimization*: notion at the interface of game theory,
+  optimization, statistics and theoretical computer science\vspace{-.8em}
+- \textbf{Goal}: Develop and apply such techniques to actual systems
+#+BEGIN_LaTeX
+  \begin{boxedminipage}{\linewidth}
+    Ensure that key \alert{practical properties are met} (asynchronous
+    operations, numerical stability, robustness to noisy or delayed
+    inputs, low overhead)
+  \end{boxedminipage}
+
+#+END_LaTeX
+* Positionning
+** Within Inria and National
+- Distributed and H.P. Computing/Distributed Systems and Middleware ::
+     #+LaTeX: ~\\
+   /Potential/ or *ongoing* collaborations with: *DATA-MOVE*, (*CORSE*),
+     *AVALON*, /ROMA/, *STORM*, *HIEPACS*, (/REALOPT/), /TADAAM/, /KERDATA/,
+     *MYRIADS*, ASAP, REGAL
+- Other Inria themes :: 
+     #+LaTeX: ~
+  - Optimization of  and control of dynamic systems: BIBOP, NECS
+  - Networks and Telecommunications: MAESTRO, DIOGENE, \\
+    DIONYSOS, RAP, SOCRATE
+- Other groups :: Game theory (LSS/supelec, Ceremade/Dauphine, HEC),\\
+                  Stochastic optimization (Toulouse)
+** International
+- International collaborations ::
+     #+LaTeX: ~
+  - Inria JLESC (NCSA/UIUC, BSC, Jülich)
+  - Inria@SiliconValley/Berkeley (BOINC)
+  - LICIA (UFRGS)
+  - EPFL
+  - Univ. of Athens
+- Connexion with Grenoble industry through CIFRE contracts ::
+     #+LaTeX: ~
+  - Bull/ATOS, STMicroelectronics, HP, Orange, CEA
+  - Alcatel, Huawei
