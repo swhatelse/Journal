@@ -1,4 +1,4 @@
-% Created 2015-06-05 ven. 15:12
+% Created 2015-06-06 sam. 14:59
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -52,9 +52,9 @@
 \usepackage{url} \urlstyle{sf}
 \let\alert=\structure % to make sure the org * * works of tools
 \usetheme{default}
-\author{Arnaud Legrand}
-\date{Grenoble, May 22 2015}
-\title{\textbf{POLARIS} \\ \Large Performance analysis and Optimization of LARge Infrastructures and Systems\bigskip\\ \large Joint Inria / CNRS / Univ. Grenoble Alpes Project Team Proposal}
+\author{Steven QUINITO MASNADA}
+\date{Grenoble, 8 Juin 2015}
+\title{\textbf{TER} \\ Simulation d'application dynamiques pour plateformes de calculs hautes performances \bigskip\\ \large Équipe MESCAL}
 \hypersetup{
   pdfkeywords={},
   pdfsubject={},
@@ -63,9 +63,126 @@
 
 \maketitle
 
-\section{General Presentation}
+
+\section{Présentation générale}
 \label{sec-1}
-\begin{frame}[label=sec-1-1]{Project-Team Composition}
+\begin{frame}[label=sec-1-1]{Présentation générale}
+TER dans l'équipe MESCAL, encadré par Arnaud LEGRAND et Luka STANISIC 
+\end{frame}
+\section{Contexte et problèmatique}
+\label{sec-2}
+\begin{frame}[label=sec-2-1]{Architecture et standard HPC}
+\begin{figure}[tbh]
+\centering
+\vspace{-1.5mm}
+\includegraphics[width=\linewidth]{./Slides/Archi.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[label=sec-2-2]{Limites des approches classiques}
+\begin{itemize}
+\item Utiliser \alert{plusieurs paradigmes} $\leadsto$ \alert{programmation complexe}
+\item Exemple pour exploiter efficacement un GPU sur \alert{un seul noeud}:
+\begin{itemize}
+\item \alert{transférer données} du CPU au GPU,
+\item \alert{lancer le calcul} sur le GPU
+\item \alert{gérer synchronisation} pendant attente résultat
+\item \alert{occuper} CPU
+\item \alert{récupérer} résultat.
+\end{itemize}
+\item Et avec \alert{plusieurs noeuds}?
+\item \alert{Statique}, système réglé comme un horloge $\leadsto$ pas portable.
+\item Solution: \alert{Dynamique} mais presque \alert{impossible avec APIs classiques}.
+\end{itemize}
+\end{frame}
+\begin{frame}[label=sec-2-3]{Nouvelle approche: Paradigme de tâches}
+\begin{columns}
+  \begin{column}{.55\linewidth}
+\begin{itemize}
+\item Nouvelle abstraction: les tâches
+\begin{itemize}
+\item \alert{Plus besoin de se soucier de la ressource} sur laquelle le
+traitement est effectué.
+\item Exprimer calcul en \alert{graphe de tâches} $\leadsto$ système dynamique
+plus simple.
+\end{itemize}
+\end{itemize}
+
+  \end{column}
+  \begin{column}{.35\linewidth}
+    \includegraphics[width=.45\linewidth]{img/task_graph.jpg}%
+  \end{column}
+\end{columns}
+
+\begin{itemize}
+\item Librairie StarPU:
+\begin{itemize}
+\item Système \alert{runtime}
+\item basé sur le paradigme de tâches $\leadsto$ graphe de dépendances.
+\item Ordonnancemment \alert{dynamique et opportuniste}.
+\end{itemize}
+\item Problèmatique : Performances difficiles à évaluer
+\begin{itemize}
+\item Configuration \alert{runtinme}, heuristique, politique ordonnancement.
+\item Configuration \alert{application}, découpage des tâches.
+\end{itemize}
+\end{itemize}
+\end{frame}
+\section{État de l'art}
+\label{sec-3}
+\begin{frame}[label=sec-3-1]{Test sur systèmes réels}
+\begin{itemize}
+\item Exécution réelle sur la plateforme cible $\leadsto$ \alert{coûteux}
+\item Exéuction \alert{non déterministe} nécessite de réaliser beaucoup
+d'expériences $\leadsto$ extrapolations difficiles.
+\end{itemize}
+\end{frame}
+\begin{frame}[label=sec-3-2]{Simulation}
+\begin{block}{Généralités}
+\begin{itemize}
+\item Utilisation de \alert{modèles} pour \alert{prédire} comportements.
+\item Permet s'affranchir de la plateforme $\leadsto$ peu coûteux.
+\item Contrôle paramètres $\leadsto$ \alert{systèmes déterministes}.
+\item Extrapolation simplifiée.
+\item Exécution plus courte.
+\end{itemize}
+\end{block}
+
+\begin{block}{Simulation par rejeu de trace}
+Exécution post-mortem: pas adapté ici car \alert{flot de contrôle non
+déterministe}.
+\end{block}
+\begin{block}{Hybride simulation / émulation}
+\begin{itemize}
+\item Simuler plateforme et OS.
+\item Emuler de l'application.
+\end{itemize}
+\end{block}
+\begin{block}{Choix}
+\end{block}
+\end{frame}
+\section{Analyse du problème}
+\label{sec-4}
+\begin{frame}[label=sec-4-1]{SimGrid}
+\end{frame}
+\begin{frame}[label=sec-4-2]{StarPU MSG}
+\end{frame}
+\begin{frame}[label=sec-4-3]{StarPU SMPI}
+\end{frame}
+
+\section{Méthodologie}
+\label{sec-5}
+\section{Contribution}
+\label{sec-6}
+\section{Validation}
+\label{sec-7}
+\section{Conclusion}
+\label{sec-8}
+
+
+\section{General Presentation}
+\label{sec-9}
+\begin{frame}[label=sec-9-1]{Project-Team Composition}
 \begin{itemize}
 \item \alert{\textit{Natural} evolution} of the MESCAL team.\vspace{-1em}
 \end{itemize}
@@ -88,7 +205,7 @@
 \begin{itemize}
 \item \alert{Inria field / theme:} 
 \begin{itemize}
-\item Network,lO Systems and Services
+\item Network, Systems and Services
 \item Distributed Computing / Distributed and High Performance Computing
 \end{itemize}
 \item \alert{Keywords}: HPC/large distributed systems, performance analysis,
@@ -96,7 +213,7 @@ distributed and stochastic optimization, \ldots{}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label=sec-1-2]{Context and Objectives}
+\begin{frame}[label=sec-9-2]{Context and Objectives}
 \begin{itemize}
 \item \alert{Large distributed infrastructures}
 \vspace{-1em}\begin{multicols}{2}
@@ -124,7 +241,7 @@ to the D\&HPC community
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label=sec-1-3]{Scientific Foundations: POLARIS in a Nutshell}
+\begin{frame}[label=sec-9-3]{Scientific Foundations: POLARIS in a Nutshell}
 \begin{quote}
 \alert{Contribute to the understanding} (from the \alert{observation}, \alert{modeling and
 analysis} to the \alert{optimization} through adapted algorithms) \alert{of
@@ -148,7 +265,7 @@ learning, information theory
 \end{description}
 \end{frame}
 
-\begin{frame}[label=sec-1-4]{Research Methodology}
+\begin{frame}[label=sec-9-4]{Research Methodology}
 A continuum of 5 research areas
 \begin{columns}
   \begin{column}{.05\linewidth}
@@ -173,8 +290,8 @@ online and distributed optimization
 \end{columns}
 \end{frame}
 \section{Research Direction}
-\label{sec-2}
-\begin{frame}[label=sec-2-1]{\textbf{Measurement:} Reproducible Experimental Methodology}
+\label{sec-10}
+\begin{frame}[label=sec-10-1]{\textbf{Measurement:} Reproducible Experimental Methodology}
 Real experiments are \alert{costly}, \alert{difficult} to \alert{control} and to \alert{reproduce}
 \begin{itemize}
 \item \small Cannot be studied anymore like artificial systems. Need to
@@ -203,7 +320,7 @@ gathering, filtering, analysis)
 \end{itemize}
 \end{itemize}
 \end{frame}
-\begin{frame}[label=sec-2-2]{\textbf{Visualization:} "Performance Driver" Identification}
+\begin{frame}[label=sec-10-2]{\textbf{Visualization:} "Performance Driver" Identification}
 Traditional approach: display \alert{everything}\\
 \only<2>{$\leadsto$ harmful \alert{biases} (\emph{more information than what fits on your screen})}
   \begin{overlayarea}{\linewidth}{3.7cm}
@@ -233,7 +350,7 @@ Traditional approach: display \alert{everything}\\
 \item Trace \alert{comparison}\smallskip
 \end{itemize}
 \end{frame}
-\begin{frame}[label=sec-2-3]{\textbf{Simulation:} Very Large Stochastic Systems}
+\begin{frame}[label=sec-10-3]{\textbf{Simulation:} Very Large Stochastic Systems}
 \begin{itemize}
 \item Simulation circumvents some of the previous experimental issues
 \begin{itemize}
@@ -275,7 +392,7 @@ grossly indicates trend but no more expectation
 \end{overlayarea}}\medskip
 \end{frame}
 
-\begin{frame}[label=sec-2-4]{\textbf{Analysis:} Local Interactions and Transient Analysis}
+\begin{frame}[label=sec-10-4]{\textbf{Analysis:} Local Interactions and Transient Analysis}
 Analysis of \alert{stochastic} systems is particularly difficult
 but \alert{mean-field} approximation is suited to \alert{large systems}
 \begin{itemize}
@@ -304,7 +421,7 @@ stable: OK
 \end{itemize}
 \end{itemize}
 \end{frame}
-\begin{frame}[label=sec-2-5]{Optimization}
+\begin{frame}[label=sec-10-5]{Optimization}
 \frametitle{\textbf{Optimization:} \scalebox{.92}{\hbox{Game Theory, On-line Distributed~Optimization\hspace{-1em}}}}
 \begin{block}{Modeling interactions through \alert{game theory}}
 \vspace{-.5em}
@@ -345,8 +462,8 @@ optimization, statistics and theoretical computer science\vspace{-.8em}
 \end{block}
 \end{frame}
 \section{Positionning}
-\label{sec-3}
-\begin{frame}[label=sec-3-1]{Within Inria and National}
+\label{sec-11}
+\begin{frame}[label=sec-11-1]{Within Inria and National}
 \begin{description}
 \item[{Distributed and H.P. Computing/Distributed Systems and Middleware}] ~\\
 \emph{Potential} or \alert{ongoing} collaborations with: \alert{DATA-MOVE}, (\alert{CORSE}),
@@ -362,7 +479,7 @@ optimization, statistics and theoretical computer science\vspace{-.8em}
                   Stochastic optimization (Toulouse)
 \end{description}
 \end{frame}
-\begin{frame}[label=sec-3-2]{International}
+\begin{frame}[label=sec-11-2]{International}
 \begin{description}
 \item[{International collaborations}] ~
 \begin{itemize}

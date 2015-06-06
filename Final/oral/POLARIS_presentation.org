@@ -5,9 +5,9 @@
 #+STARTUP: indent
 #+TAGS: noexport(n)
 
-#+Title: \textbf{POLARIS} \\ \Large Performance analysis and Optimization of LARge Infrastructures and Systems\bigskip\\ \large Joint Inria / CNRS / Univ. Grenoble Alpes Project Team Proposal
-#+Author: Arnaud Legrand
-#+DATE: Grenoble, May 22 2015
+#+Title: \textbf{TER} \\ Simulation d'application dynamiques pour plateformes de calculs hautes performances \bigskip\\ \large Équipe MESCAL
+#+Author: Steven QUINITO MASNADA
+#+DATE: Grenoble, 8 Juin 2015
 
 #+EPRESENT_FRAME_LEVEL: 2
 
@@ -57,6 +57,87 @@
 # le *pourquoi* on veut creer une equipe Inria sur ce sujet.
 # Donc oui pour les infos factuelles (perimetre humain en
 # particulier), mais pas plus de 2 minutes sur les 15 prevues.
+
+
+* Présentation générale
+** Présentation générale
+TER dans l'équipe MESCAL, encadré par Arnaud LEGRAND et Luka STANISIC 
+* Contexte et problèmatique
+** Architecture et standard HPC
+   #+BEGIN_LaTeX
+   \begin{figure}[tbh]
+   \centering
+   \vspace{-1.5mm}
+   \includegraphics[width=\linewidth]{./Slides/Archi.pdf}
+   \end{figure}
+   #+END_LaTeX
+
+** Limites des approches classiques
+- Utiliser *plusieurs paradigmes* $\leadsto$ *programmation complexe*
+- Exemple pour exploiter efficacement un GPU sur *un seul noeud*:
+  - *transférer données* du CPU au GPU,
+  - *lancer le calcul* sur le GPU
+  - *gérer synchronisation* pendant attente résultat
+  - *occuper* CPU
+  - *récupérer* résultat.
+- Et avec *plusieurs noeuds*?
+- *Statique*, système réglé comme un horloge $\leadsto$ pas portable.
+- Solution: *Dynamique* mais presque *impossible avec APIs classiques*.
+** Nouvelle approche: Paradigme de tâches
+#+BEGIN_LaTeX
+  \begin{columns}
+    \begin{column}{.55\linewidth}
+#+END_LaTeX
+- Nouvelle abstraction: les tâches
+  - *Plus besoin de se soucier de la ressource* sur laquelle le
+    traitement est effectué.
+  - Exprimer calcul en *graphe de tâches* $\leadsto$ système dynamique
+    plus simple.
+
+#+BEGIN_LaTeX
+    \end{column}
+    \begin{column}{.35\linewidth}
+      \includegraphics[width=.45\linewidth]{img/task_graph.jpg}%
+    \end{column}
+  \end{columns}
+#+END_LaTeX
+
+- Librairie StarPU:
+  - Système *runtime*
+  - basé sur le paradigme de tâches $\leadsto$ graphe de dépendances.
+  - Ordonnancemment *dynamique et opportuniste*. 
+- Problèmatique : Performances difficiles à évaluer
+  - Configuration *runtinme*, heuristique, politique ordonnancement.
+  - Configuration *application*, découpage des tâches.
+* État de l'art
+** Test sur systèmes réels
+- Exécution réelle sur la plateforme cible $\leadsto$ *coûteux*
+- Exéuction *non déterministe* nécessite de réaliser beaucoup
+  d'expériences $\leadsto$ extrapolations difficiles. 
+** Simulation
+*** Généralités
+- Utilisation de *modèles* pour *prédire* comportements.
+- Permet s'affranchir de la plateforme $\leadsto$ peu coûteux.
+- Contrôle paramètres $\leadsto$ *systèmes déterministes*.
+- Extrapolation simplifiée.
+- Exécution plus courte.
+
+*** Simulation par rejeu de trace
+Exécution post-mortem: pas adapté ici car *flot de contrôle non
+déterministe*.
+*** Hybride simulation / émulation
+- Simuler plateforme et OS.
+- Emuler de l'application.
+* Analyse du problème
+** SimGrid
+** StarPU MSG 
+** StarPU SMPI
+
+* Méthodologie
+* Contribution
+* Validation
+* Conclusion
+
 
 * General Presentation 
 ** Project-Team Composition
@@ -325,3 +406,5 @@ Nash equilibrium often inefficient but *efficient equilibrium* can be
      #+LaTeX: ~
   - Bull/ATOS, STMicroelectronics, HP, Orange, CEA
   - Alcatel, Huawei
+
+
