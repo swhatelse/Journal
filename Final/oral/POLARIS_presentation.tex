@@ -1,4 +1,4 @@
-% Created 2015-06-06 sam. 14:17
+% Created 2015-06-06 sam. 14:59
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -64,8 +64,11 @@
 \maketitle
 
 
-\section{Présentation}
+\section{Présentation générale}
 \label{sec-1}
+\begin{frame}[label=sec-1-1]{Présentation générale}
+TER dans l'équipe MESCAL, encadré par Arnaud LEGRAND et Luka STANISIC 
+\end{frame}
 \section{Contexte et problèmatique}
 \label{sec-2}
 \begin{frame}[label=sec-2-1]{Architecture et standard HPC}
@@ -128,12 +131,34 @@ plus simple.
 \section{État de l'art}
 \label{sec-3}
 \begin{frame}[label=sec-3-1]{Test sur systèmes réels}
+\begin{itemize}
+\item Exécution réelle sur la plateforme cible $\leadsto$ \alert{coûteux}
+\item Exéuction \alert{non déterministe} nécessite de réaliser beaucoup
+d'expériences $\leadsto$ extrapolations difficiles.
+\end{itemize}
 \end{frame}
-
 \begin{frame}[label=sec-3-2]{Simulation}
-\begin{block}{Rejeu de trace}
+\begin{block}{Généralités}
+\begin{itemize}
+\item Utilisation de \alert{modèles} pour \alert{prédire} comportements.
+\item Permet s'affranchir de la plateforme $\leadsto$ peu coûteux.
+\item Contrôle paramètres $\leadsto$ \alert{systèmes déterministes}.
+\item Extrapolation simplifiée.
+\item Exécution plus courte.
+\end{itemize}
+\end{block}
+
+\begin{block}{Simulation par rejeu de trace}
+Exécution post-mortem: pas adapté ici car \alert{flot de contrôle non
+déterministe}.
 \end{block}
 \begin{block}{Hybride simulation / émulation}
+\begin{itemize}
+\item Simuler plateforme et OS.
+\item Emuler de l'application.
+\end{itemize}
+\end{block}
+\begin{block}{Choix}
 \end{block}
 \end{frame}
 \section{Analyse du problème}
