@@ -1,4 +1,4 @@
-% Created 2015-06-06 sam. 19:44
+% Created 2015-06-06 sam. 21:57
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -34,10 +34,10 @@
 \defbeamertemplate*{headline}{info theme}{}
 \defbeamertemplate*{footline}{info theme}{\leavevmode%
 \hbox{%
-\begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+\begin{beamercolorbox}[wd=.3\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
 \usebeamerfont{author in head/foot}\insertshortauthor
 \end{beamercolorbox}%
-\begin{beamercolorbox}[wd=.71\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+\begin{beamercolorbox}[wd=.61\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
 \usebeamerfont{title in head/foot}\insertsectionhead
 \end{beamercolorbox}%
 \begin{beamercolorbox}[wd=.09\paperwidth,ht=2.25ex,dp=1ex,right]{section in head/foot}%
@@ -110,7 +110,7 @@ plus simple.
 
   \end{column}
   \begin{column}{.35\linewidth}
-    \includegraphics[width=.45\linewidth]{img/task_graph.jpg}%
+    \includegraphics[width=.8\linewidth]{../Img/task_graph.pdf}%
   \end{column}
 \end{columns}
 
@@ -128,7 +128,7 @@ plus simple.
 \end{itemize}
 \end{itemize}
 \end{frame}
-\section{État de l'art}
+\section{Évaluation des performances en HPC}
 \label{sec-3}
 \begin{frame}[label=sec-3-1]{Test sur systèmes réels}
 \begin{itemize}
@@ -225,15 +225,84 @@ correctement les 2.
 \end{columns}
 \end{frame}
 
-
-
 \section{Méthodologie}
 \label{sec-5}
+\begin{itemize}
+\item Dépôt git submobules:
+\begin{itemize}
+\item StarPU SMPI:
+\begin{itemize}
+\item SimGrid
+\item StarPU
+\end{itemize}
+\end{itemize}
+\item Suivi:
+\begin{itemize}
+\item Journal org mode github.
+\end{itemize}
+\item Compréhension:
+\begin{itemize}
+\item SimgGrid = 106 350 lignes de codes.
+\item StarPU = 172 251 lignes de codes.
+\item "Code mining" et vérifications: GDB, Valgrind.
+\end{itemize}
+\end{itemize}
 \section{Contribution}
 \label{sec-6}
+\begin{frame}[label=sec-6-1]{Contribution}
+\begin{columns}
+  \begin{column}{.6\linewidth}
+\begin{itemize}
+\item Modification SimGrid:
+\begin{itemize}
+\item Gestion segment data
+\item Initialisation MSG + SMPI
+\end{itemize}
+\item Librairies dynamiques:
+\begin{itemize}
+\item Utilisation librairies statiques.
+\end{itemize}
+\item Modification StarPU:
+\begin{itemize}
+\item Initialisation
+\end{itemize}
+\end{itemize}
+  \end{column}
+  \begin{column}{.35\linewidth}
+    \includegraphics[width=\linewidth]{../Img/StaticDyn.pdf}
+  \end{column}
+\end{columns}
+\end{frame}
+
 \section{Validation}
 \label{sec-7}
+\begin{frame}[label=sec-7-1]{Validation}
+\begin{itemize}
+\item Test simple: Modèle simplifié de StarPU $\leadsto$ isoler problèmes.
+\item Test StarPU: MPI, Cholesky $\leadsto$ valider modifications
+\end{itemize}
+\end{frame}
 \section{Conclusion}
 \label{sec-8}
+\begin{frame}[label=sec-8-1]{Conclusion}
+\begin{block}{Bilan}
+\begin{itemize}
+\item \alert{StarPU + SimGrid modifié} pour simuler StarPU MPI.
+\item Difficulté: apporter \alert{modifications minimes} dans un code \alert{non trivial}.
+\end{itemize}
+\end{block}
+\begin{block}{Prochaine étape}
+\begin{itemize}
+\item \alert{Simulation et mesures} avec solveur d'algèbre linéaire.
+\item \alert{Vérifications système réel}: Grid5000.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Fin}
+\label{sec-9}
+\begin{frame}[label=sec-9-1]{Fin}
+Merci pour votre attention.
+\end{frame}
 % Emacs 24.5.1 (Org mode 8.2.10)
 \end{document}
