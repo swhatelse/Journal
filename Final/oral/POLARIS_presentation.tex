@@ -1,4 +1,4 @@
-% Created 2015-06-06 sam. 15:59
+% Created 2015-06-06 sam. 19:44
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -183,8 +183,7 @@ déterministe}.
 \begin{itemize}
 \item Dans SimGrid les \alert{processus} sont \alert{modélisés par des threads} $\leadsto$
   espace adressage partagé.
-\item Mécanisme de privatisation:
-\alert{ségment virtuel} (mmap)
+\item Mécanisme de privatisation: \alert{ségment virtuel} (mmap)
 \end{itemize}
 
 
@@ -195,14 +194,38 @@ déterministe}.
 \end{columns}
 \end{frame}
 
-
 \begin{frame}[label=sec-4-4]{StarPU MSG}
 \begin{itemize}
-\item Basé sur MSG car modèle de performance plus prohe (communications).
+\item Basé sur \alert{MSG} car \alert{modèle de performance plus proche} (communications,
+environnement mémoire partagé), CPUs GPUs.
+\item Simulation: calculs, allocations mémoire des tâches, transfert
+CUDA.
 \end{itemize}
 \end{frame}
-\begin{frame}[label=sec-4-5]{StarPU SMPI}
+\begin{frame}[label=sec-4-5]{StarPU SMPI: Difficultés de mise en oeuvre}
+\begin{itemize}
+\item Besoin de \alert{2 modèles de performances} différents à la fois:
+\begin{itemize}
+\item \alert{MSG} Intra noeuds $\leadsto$ mémoire partagée $\leadsto$ partage.
+\item \alert{SMPI} extra noeuds $\leadsto$ mémoire distribuée $\leadsto$
+   privatisation.
+\end{itemize}
+\item MSG et SMPI normalement pas utilisés ensemble $\leadsto$ initialiser
+correctement les 2.
+\end{itemize}
+\begin{columns}[]
+  \begin{column}{.55\linewidth}
+\begin{itemize}
+\item Problème des librairies dynamiques.
+\end{itemize}
+  \end{column}
+  \begin{column}{.35\linewidth}
+ \includegraphics[width=.7\linewidth]{../Img/Dyn.pdf}
+  \end{column}
+\end{columns}
 \end{frame}
+
+
 
 \section{Méthodologie}
 \label{sec-5}
