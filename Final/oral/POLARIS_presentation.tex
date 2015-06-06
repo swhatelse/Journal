@@ -1,4 +1,4 @@
-% Created 2015-06-06 sam. 12:23
+% Created 2015-06-06 sam. 14:17
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -79,14 +79,57 @@
 \begin{frame}[label=sec-2-2]{Limites des approches classiques}
 \begin{itemize}
 \item Utiliser \alert{plusieurs paradigmes} $\leadsto$ \alert{programmation complexe}
+\item Exemple pour exploiter efficacement un GPU sur \alert{un seul noeud}:
+\begin{itemize}
+\item \alert{transférer données} du CPU au GPU,
+\item \alert{lancer le calcul} sur le GPU
+\item \alert{gérer synchronisation} pendant attente résultat
+\item \alert{occuper} CPU
+\item \alert{récupérer} résultat.
+\end{itemize}
+\item Et avec \alert{plusieurs noeuds}?
+\item \alert{Statique}, système réglé comme un horloge $\leadsto$ pas portable.
+\item Solution: \alert{Dynamique} mais presque \alert{impossible avec APIs classiques}.
 \end{itemize}
 \end{frame}
 \begin{frame}[label=sec-2-3]{Nouvelle approche: Paradigme de tâches}
+\begin{columns}
+  \begin{column}{.55\linewidth}
+\begin{itemize}
+\item Nouvelle abstraction: les tâches
+\begin{itemize}
+\item \alert{Plus besoin de se soucier de la ressource} sur laquelle le
+traitement est effectué.
+\item Exprimer calcul en \alert{graphe de tâches} $\leadsto$ système dynamique
+plus simple.
+\end{itemize}
+\end{itemize}
+
+  \end{column}
+  \begin{column}{.35\linewidth}
+    \includegraphics[width=.45\linewidth]{img/task_graph.jpg}%
+  \end{column}
+\end{columns}
+
+\begin{itemize}
+\item Librairie StarPU:
+\begin{itemize}
+\item Système \alert{runtime}
+\item basé sur le paradigme de tâches $\leadsto$ graphe de dépendances.
+\item Ordonnancemment \alert{dynamique et opportuniste}.
+\end{itemize}
+\item Problèmatique : Performances difficiles à évaluer
+\begin{itemize}
+\item Configuration \alert{runtinme}, heuristique, politique ordonnancement.
+\item Configuration \alert{application}, découpage des tâches.
+\end{itemize}
+\end{itemize}
 \end{frame}
 \section{État de l'art}
 \label{sec-3}
 \begin{frame}[label=sec-3-1]{Test sur systèmes réels}
 \end{frame}
+
 \begin{frame}[label=sec-3-2]{Simulation}
 \begin{block}{Rejeu de trace}
 \end{block}
@@ -95,7 +138,7 @@
 \end{frame}
 \section{Analyse du problème}
 \label{sec-4}
-\begin{frame}[label=sec-4-1]{Simgrid}
+\begin{frame}[label=sec-4-1]{SimGrid}
 \end{frame}
 \begin{frame}[label=sec-4-2]{StarPU MSG}
 \end{frame}

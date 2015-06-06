@@ -72,14 +72,49 @@
 
 ** Limites des approches classiques
 - Utiliser *plusieurs paradigmes* $\leadsto$ *programmation complexe*
+- Exemple pour exploiter efficacement un GPU sur *un seul noeud*:
+  - *transférer données* du CPU au GPU,
+  - *lancer le calcul* sur le GPU
+  - *gérer synchronisation* pendant attente résultat
+  - *occuper* CPU
+  - *récupérer* résultat.
+- Et avec *plusieurs noeuds*?
+- *Statique*, système réglé comme un horloge $\leadsto$ pas portable.
+- Solution: *Dynamique* mais presque *impossible avec APIs classiques*.
 ** Nouvelle approche: Paradigme de tâches
+#+BEGIN_LaTeX
+  \begin{columns}
+    \begin{column}{.55\linewidth}
+#+END_LaTeX
+- Nouvelle abstraction: les tâches
+  - *Plus besoin de se soucier de la ressource* sur laquelle le
+    traitement est effectué.
+  - Exprimer calcul en *graphe de tâches* $\leadsto$ système dynamique
+    plus simple.
+
+#+BEGIN_LaTeX
+    \end{column}
+    \begin{column}{.35\linewidth}
+      \includegraphics[width=.45\linewidth]{img/task_graph.jpg}%
+    \end{column}
+  \end{columns}
+#+END_LaTeX
+
+- Librairie StarPU:
+  - Système *runtime*
+  - basé sur le paradigme de tâches $\leadsto$ graphe de dépendances.
+  - Ordonnancemment *dynamique et opportuniste*. 
+- Problèmatique : Performances difficiles à évaluer
+  - Configuration *runtinme*, heuristique, politique ordonnancement.
+  - Configuration *application*, découpage des tâches.
 * État de l'art
 ** Test sur systèmes réels
+
 ** Simulation
 *** Rejeu de trace
 *** Hybride simulation / émulation
 * Analyse du problème
-** Simgrid
+** SimGrid
 ** StarPU MSG 
 ** StarPU SMPI
 
