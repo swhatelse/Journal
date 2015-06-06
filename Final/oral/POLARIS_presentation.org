@@ -5,9 +5,9 @@
 #+STARTUP: indent
 #+TAGS: noexport(n)
 
-#+Title: \textbf{POLARIS} \\ \Large Performance analysis and Optimization of LARge Infrastructures and Systems\bigskip\\ \large Joint Inria / CNRS / Univ. Grenoble Alpes Project Team Proposal
-#+Author: Arnaud Legrand
-#+DATE: Grenoble, May 22 2015
+#+Title: \textbf{TER} \\ Simulation d'application dynamiques pour plateformes de calculs hautes performances \bigskip\\ \large Équipe MESCAL
+#+Author: Steven QUINITO MASNADA
+#+DATE: Grenoble, 8 Juin 2015
 
 #+EPRESENT_FRAME_LEVEL: 2
 
@@ -57,6 +57,37 @@
 # le *pourquoi* on veut creer une equipe Inria sur ce sujet.
 # Donc oui pour les infos factuelles (perimetre humain en
 # particulier), mais pas plus de 2 minutes sur les 15 prevues.
+
+
+* Présentation
+* Contexte et problèmatique
+** Architecture et standard HPC
+   #+BEGIN_LaTeX
+   \begin{figure}[tbh]
+   \centering
+   \vspace{-1.5mm}
+   \includegraphics[width=\linewidth]{./Slides/Archi.pdf}
+   \end{figure}
+   #+END_LaTeX
+
+** Limites des approches classiques
+- Utiliser *plusieurs paradigmes* $\leadsto$ *programmation complexe*
+** Nouvelle approche: Paradigme de tâches
+* État de l'art
+** Test sur systèmes réels
+** Simulation
+*** Rejeu de trace
+*** Hybride simulation / émulation
+* Analyse du problème
+** Simgrid
+** StarPU MSG 
+** StarPU SMPI
+
+* Méthodologie
+* Contribution
+* Validation
+* Conclusion
+
 
 * General Presentation 
 ** Project-Team Composition
@@ -325,3 +356,5 @@ Nash equilibrium often inefficient but *efficient equilibrium* can be
      #+LaTeX: ~
   - Bull/ATOS, STMicroelectronics, HP, Orange, CEA
   - Alcatel, Huawei
+
+
