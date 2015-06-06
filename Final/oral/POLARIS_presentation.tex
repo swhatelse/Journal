@@ -1,4 +1,4 @@
-% Created 2015-06-06 sam. 21:57
+% Created 2015-06-06 sam. 22:39
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -64,14 +64,9 @@
 \maketitle
 
 
-\section{Présentation générale}
-\label{sec-1}
-\begin{frame}[label=sec-1-1]{Présentation générale}
-TER dans l'équipe MESCAL, encadré par Arnaud LEGRAND et Luka STANISIC 
-\end{frame}
 \section{Contexte et problèmatique}
-\label{sec-2}
-\begin{frame}[label=sec-2-1]{Architecture et standard HPC}
+\label{sec-1}
+\begin{frame}[label=sec-1-1]{Architecture et standard HPC}
 \begin{figure}[tbh]
 \centering
 \vspace{-1.5mm}
@@ -79,7 +74,7 @@ TER dans l'équipe MESCAL, encadré par Arnaud LEGRAND et Luka STANISIC
 \end{figure}
 \end{frame}
 
-\begin{frame}[label=sec-2-2]{Limites des approches classiques}
+\begin{frame}[label=sec-1-2]{Limites des approches classiques}
 \begin{itemize}
 \item Utiliser \alert{plusieurs paradigmes} $\leadsto$ \alert{programmation complexe}
 \item Exemple pour exploiter efficacement un GPU sur \alert{un seul noeud}:
@@ -95,7 +90,7 @@ TER dans l'équipe MESCAL, encadré par Arnaud LEGRAND et Luka STANISIC
 \item Solution: \alert{Dynamique} mais presque \alert{impossible avec APIs classiques}.
 \end{itemize}
 \end{frame}
-\begin{frame}[label=sec-2-3]{Nouvelle approche: Paradigme de tâches}
+\begin{frame}[label=sec-1-3]{Nouvelle approche: Paradigme de tâches}
 \begin{columns}
   \begin{column}{.55\linewidth}
 \begin{itemize}
@@ -129,15 +124,15 @@ plus simple.
 \end{itemize}
 \end{frame}
 \section{Évaluation des performances en HPC}
-\label{sec-3}
-\begin{frame}[label=sec-3-1]{Test sur systèmes réels}
+\label{sec-2}
+\begin{frame}[label=sec-2-1]{Test sur systèmes réels}
 \begin{itemize}
 \item Exécution réelle sur la plateforme cible $\leadsto$ \alert{coûteux}
 \item Exéuction \alert{non déterministe} nécessite de réaliser beaucoup
 d'expériences $\leadsto$ extrapolations difficiles.
 \end{itemize}
 \end{frame}
-\begin{frame}[label=sec-3-2]{Simulation}
+\begin{frame}[label=sec-2-2]{Simulation}
 \begin{block}{Généralités}
 \begin{itemize}
 \item Utilisation de \alert{modèles} pour \alert{prédire} comportements.
@@ -160,8 +155,8 @@ déterministe}.
 \end{block}
 \end{frame}
 \section{Analyse du problème}
-\label{sec-4}
-\begin{frame}[label=sec-4-1]{SimGrid: Généralités}
+\label{sec-3}
+\begin{frame}[label=sec-3-1]{SimGrid: Généralités}
 \begin{figure}
 \centering
 \vspace{-4.5mm}
@@ -169,15 +164,15 @@ déterministe}.
 \end{figure}
 \end{frame}
 
-\begin{frame}[label=sec-4-2]{Construction de l'application MPI simulée}
+\begin{frame}[label=sec-3-2]{Construction de l'application MPI simulée}
 \begin{figure}
 \centering
-\vspace{-4.5mm}
-\includegraphics[width=.45\linewidth]{../Img/Compile.pdf}
+\vspace{-3.5mm}
+\includegraphics[width=\linewidth]{./Slides/Compilev2.pdf}
 \end{figure}
 \end{frame}
 
-\begin{frame}[label=sec-4-3]{Privatisation segment data}
+\begin{frame}[label=sec-3-3]{Privatisation segment data}
 \begin{columns}
   \begin{column}{.45\linewidth}
 \begin{itemize}
@@ -194,7 +189,7 @@ déterministe}.
 \end{columns}
 \end{frame}
 
-\begin{frame}[label=sec-4-4]{StarPU MSG}
+\begin{frame}[label=sec-3-4]{StarPU MSG}
 \begin{itemize}
 \item Basé sur \alert{MSG} car \alert{modèle de performance plus proche} (communications,
 environnement mémoire partagé), CPUs GPUs.
@@ -202,7 +197,7 @@ environnement mémoire partagé), CPUs GPUs.
 CUDA.
 \end{itemize}
 \end{frame}
-\begin{frame}[label=sec-4-5]{StarPU SMPI: Difficultés de mise en oeuvre}
+\begin{frame}[label=sec-3-5]{StarPU SMPI: Difficultés de mise en oeuvre}
 \begin{itemize}
 \item Besoin de \alert{2 modèles de performances} différents à la fois:
 \begin{itemize}
@@ -226,7 +221,7 @@ correctement les 2.
 \end{frame}
 
 \section{Méthodologie}
-\label{sec-5}
+\label{sec-4}
 \begin{itemize}
 \item Dépôt git submobules:
 \begin{itemize}
@@ -248,8 +243,8 @@ correctement les 2.
 \end{itemize}
 \end{itemize}
 \section{Contribution}
-\label{sec-6}
-\begin{frame}[label=sec-6-1]{Contribution}
+\label{sec-5}
+\begin{frame}[label=sec-5-1]{Contribution}
 \begin{columns}
   \begin{column}{.6\linewidth}
 \begin{itemize}
@@ -275,16 +270,16 @@ correctement les 2.
 \end{frame}
 
 \section{Validation}
-\label{sec-7}
-\begin{frame}[label=sec-7-1]{Validation}
+\label{sec-6}
+\begin{frame}[label=sec-6-1]{Validation}
 \begin{itemize}
 \item Test simple: Modèle simplifié de StarPU $\leadsto$ isoler problèmes.
 \item Test StarPU: MPI, Cholesky $\leadsto$ valider modifications
 \end{itemize}
 \end{frame}
 \section{Conclusion}
-\label{sec-8}
-\begin{frame}[label=sec-8-1]{Conclusion}
+\label{sec-7}
+\begin{frame}[label=sec-7-1]{Conclusion}
 \begin{block}{Bilan}
 \begin{itemize}
 \item \alert{StarPU + SimGrid modifié} pour simuler StarPU MPI.
@@ -300,8 +295,8 @@ correctement les 2.
 \end{frame}
 
 \section{Fin}
-\label{sec-9}
-\begin{frame}[label=sec-9-1]{Fin}
+\label{sec-8}
+\begin{frame}[label=sec-8-1]{Fin}
 Merci pour votre attention.
 \end{frame}
 % Emacs 24.5.1 (Org mode 8.2.10)

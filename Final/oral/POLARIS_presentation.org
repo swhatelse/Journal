@@ -53,9 +53,6 @@
 #+LATEX_HEADER: \let\alert=\structure % to make sure the org * * works of tools
 
 
-* Présentation générale
-** Présentation générale
-TER dans l'équipe MESCAL, encadré par Arnaud LEGRAND et Luka STANISIC 
 * Contexte et problèmatique
 ** Architecture et standard HPC
    #+BEGIN_LaTeX
@@ -136,8 +133,8 @@ déterministe*.
    #+BEGIN_LaTeX
    \begin{figure}
    \centering
-   \vspace{-4.5mm}
-   \includegraphics[width=.45\linewidth]{../Img/Compile.pdf}
+   \vspace{-3.5mm}
+   \includegraphics[width=\linewidth]{./Slides/Compilev2.pdf}
    \end{figure}
    #+END_LaTeX
 
