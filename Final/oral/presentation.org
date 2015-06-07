@@ -98,7 +98,7 @@
   - Système *runtime*
   - basé sur le paradigme de tâches $\leadsto$ graphe de dépendances.
   - Ordonnancemment *dynamique et opportuniste*. 
-- Problèmatique : Performances difficiles à évaluer
+- *Problèmatique* : Performances difficiles à évaluer
   - Configuration *runtinme*, heuristique, politique ordonnancement.
   - Configuration *application*, découpage des tâches.
 * Évaluation des performances en HPC
@@ -188,12 +188,12 @@ déterministe*.
   - StarPU SMPI:
     - SimGrid
     - StarPU
-- Suivi:
+- *Suivi*:
   - Cahier de laboratoire org mode github.
-- Compréhension:
-  - SimgGrid = 106 350 lignes de codes.
-  - StarPU = 172 251 lignes de codes.
-  - "Code mining" et vérifications: GDB, Valgrind.
+- *Compréhension*:
+  - SimgGrid = *106 350 lignes* de codes.
+  - StarPU = *172 251 lignes* de codes.
+  - "*Code mining*" et vérifications: GDB, Valgrind.
 * Contribution
 ** Modification de SimGrid
 - Gestion segment data
