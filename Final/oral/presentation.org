@@ -105,7 +105,7 @@
 ** Test sur systèmes réels
 - Exécution réelle sur la plateforme cible $\leadsto$ *coûteux,
   difficulté d'accès.*
-- Exéuction *non déterministe* nécessite de réaliser beaucoup
+- Exécution *non déterministe* nécessite de réaliser beaucoup
   d'expériences $\leadsto$ extrapolations difficiles. 
 ** Simulation
 *** Généralités
