@@ -1,4 +1,4 @@
-% Created 2015-06-07 dim. 14:33
+% Created 2015-06-07 dim. 17:22
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -51,11 +51,11 @@
 \usepackage{color}
 \usepackage{url} \urlstyle{sf}
 \let\alert=\structure % to make sure the org * * works of tools
-\AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+\institute{Équipe MESCAL/LIG\\Sous la direction d'A. Legrand}
 \usetheme{default}
 \author{Steven QUINITO MASNADA}
 \date{Grenoble, 8 Juin 2015}
-\title{\textbf{TER} \\ Simulation d'application dynamiques pour plateformes de calculs hautes performances \bigskip\\ \large Équipe MESCAL}
+\title{\textbf{TER} \\ Simulation d'application dynamiques pour plateformes de calculs hautes performances}
 \hypersetup{
   pdfkeywords={},
   pdfsubject={},
@@ -64,7 +64,7 @@
 
 \maketitle
 
-\section{Contexte et problématique}
+\section{Présentation générale}
 \label{sec-1}
 \begin{frame}[label=sec-1-1]{Architecture et standards HPC}
 \begin{figure}[tbh]
@@ -79,86 +79,91 @@
 \item Utiliser \alert{plusieurs paradigmes} $\leadsto$ \alert{programmation complexe}
 \item Exemple pour exploiter efficacement un GPU sur \alert{un seul noeud}:
 \begin{itemize}
-\item \alert{transférer données} du CPU au GPU,
-\item \alert{lancer le calcul} sur le GPU
-\item \alert{gérer synchronisation} pendant attente résultat
-\item \alert{occuper} CPU
-\item \alert{récupérer} résultat.
+\item transférer données du CPU au GPU,
+\item lancer le calcul sur le GPU
+\item gérer synchronisation pendant attente résultat
+\item occuper CPU
+\item récupérer résultat.
 \end{itemize}
-\item Et avec \alert{plusieurs noeuds}?
-\item \alert{Statique}, système réglé comme un horloge $\leadsto$ pas portable.
-\item Solution: \alert{Dynamique} mais presque \alert{impossible avec APIs classiques}.
+\item Et avec \alert{plusieurs noeuds/cores/GPUs} ?
+\begin{itemize}
+\item \alert{Statique}, système réglé comme une horloge $\leadsto$ pas scalable.
+\item Solution: Dynamique mais \alert{très difficile avec APIs classiques}.
+\end{itemize}
 \end{itemize}
 \end{frame}
-\begin{frame}[label=sec-1-3]{Nouvelle approche: Paradigme de tâches}
+\begin{frame}[label=sec-1-3]{Nouvelle approche: paradigme de tâches}
 \begin{columns}
   \begin{column}{.55\linewidth}
 \begin{itemize}
 \item Nouvelle abstraction: les tâches
 \begin{itemize}
 \item \alert{Plus besoin de se soucier de la ressource} sur laquelle le
-traitement est effectué.
-\item Exprimer calcul en \alert{graphe de tâches} $\leadsto$ système dynamique
-plus simple.
+traitement est effectué
+\item Exprimer calcul en terme \alert{graphe de tâches} $\leadsto$ plus de
+\alert{souplesse} et une meilleure \alert{portabilité}
 \end{itemize}
 \end{itemize}
 
   \end{column}
   \begin{column}{.35\linewidth}
-    \includegraphics[width=.8\linewidth]{../Img/task_graph.pdf}%
+    \includegraphics[width=.7\linewidth]{../Img/task_graph.pdf}%
   \end{column}
 \end{columns}
 
 \begin{itemize}
 \item Librairie StarPU:
 \begin{itemize}
-\item Système \alert{runtime}
-\item basé sur le paradigme de tâches $\leadsto$ graphe de dépendances.
-\item Ordonnancemment \alert{dynamique et opportuniste}.
+\item Un runtime développé au LaBRI (RUNTIME/STORM).
+\item Graphe de dépendances $\leadsto$ ordonnancemment \alert{dynamique et opportuniste}
+\item Première version pour système hybrique et récémment StarPU MPI
 \end{itemize}
-\item \alert{Problèmatique} : Performances difficiles à évaluer
+\item \alert{Problèmatique} : Performances difficiles à évaluer car exécution du
+flot de contrôle non déterministe
 \begin{itemize}
-\item Configuration \alert{runtinme}, heuristique, politique ordonnancement.
-\item Configuration \alert{application}, découpage des tâches.
+\item Configuration \alert{runtime}, heuristique d'ordonnancement
+\item Configuration \alert{application}, découpage en tâches
 \end{itemize}
 \end{itemize}
 \end{frame}
-\section{Évaluation des performances en HPC}
-\label{sec-2}
-\begin{frame}[label=sec-2-1]{Test sur systèmes réels}
+\begin{frame}[label=sec-1-4]{Évaluation des performances en HPC: grandes approches}
+\begin{block}{Test sur systèmes réels}
 \begin{itemize}
 \item Exécution réelle sur la plateforme cible $\leadsto$ \alert{coûteux,
-difficulté d'accès.}
+difficulté d'accès}
 \item Exécution \alert{non déterministe} nécessite de réaliser beaucoup
-d'expériences $\leadsto$ extrapolations difficiles.
-\end{itemize}
-\end{frame}
-\begin{frame}[label=sec-2-2]{Simulation}
-\begin{block}{Généralités}
-\begin{itemize}
-\item Utilisation de \alert{modèles} pour \alert{prédire} comportements.
-\item Permet \alert{s'affranchir de la plateforme} $\leadsto$ \alert{peu coûteux}.
-\item Contrôle paramètres $\leadsto$ \alert{systèmes déterministes}, extrapolation
-simplifiée.
-\item Exécution plus courte.
+d'expériences $\leadsto$ extrapolations difficiles
 \end{itemize}
 \end{block}
+\begin{block}{Simulation : Généralités}
+\begin{itemize}
+\item Utilisation de \alert{modèles} pour \alert{prédire} comportements
+\item Permet \alert{s'affranchir de la plateforme} $\leadsto$ \alert{peu coûteux}
+\item Extrapolation simplifiée / simulation très rapide
+\end{itemize}
+\end{block}
+\end{frame}
 
+\begin{frame}[label=sec-1-5]{Simulation: 2 possibilités}
 \begin{block}{Simulation par rejeu de trace}
-Exécution post-mortem: pas adapté ici car \alert{flot de contrôle non
-déterministe}.
+Pas adapté ici car \alert{flot de contrôle non déterministe}
 \end{block}
 \begin{block}{Hybride simulation / émulation}
 \begin{itemize}
-\item Simuler plateforme et OS.
-\item Emuler de l'application.
+\item Simulation réaliste $\leadsto$ \alert{exécuter vrai code}
+\item Simuler \alert{plate-forme et OS}.
+\item Émuler de l'\alert{application}.
 \end{itemize}
-StarPU porté récemment au dessus de Simgrid.
+SimGrid simulateur de systèmes distribués, grilles de calculs,
+systèmes peer to peer et cloud. 
+
+StarPU SimGrid, approche simulation / émulation mais avec  \alert{un seul
+noeud}. 
 \end{block}
 \end{frame}
 \section{Analyse du problème}
-\label{sec-3}
-\begin{frame}[label=sec-3-1]{SimGrid: Généralités}
+\label{sec-2}
+\begin{frame}[label=sec-2-1]{SimGrid: Généralités}
 \begin{figure}
 \centering
 \vspace{-4.5mm}
@@ -166,7 +171,7 @@ StarPU porté récemment au dessus de Simgrid.
 \end{figure}
 \end{frame}
 
-\begin{frame}[label=sec-3-2]{Construction de l'application MPI simulée}
+\begin{frame}[label=sec-2-2]{Construction de l'application MPI simulée}
 \begin{figure}
 \centering
 \vspace{-3.5mm}
@@ -174,7 +179,7 @@ StarPU porté récemment au dessus de Simgrid.
 \end{figure}
 \end{frame}
 
-\begin{frame}[label=sec-3-3]{Privatisation segment data}
+\begin{frame}[label=sec-2-3]{Privatisation du segment data}
 \begin{columns}
   \begin{column}{.45\linewidth}
 \begin{itemize}
@@ -192,30 +197,40 @@ StarPU porté récemment au dessus de Simgrid.
 \end{columns}
 \end{frame}
 
-\begin{frame}[label=sec-3-4]{StarPU MSG}
+\begin{frame}[label=sec-2-4]{StarPU MSG}
 \begin{itemize}
 \item Première version StarPU $\leadsto$ hybride
 \item Basé sur \alert{MSG} car \alert{modèle de performance plus proche} (communications,
 environnement mémoire partagé), CPUs GPUs.
+\item Émulation: le vrai code de l'ordonnanceur de StarPU et de
+l'application sont exécutés
 \item Simulation: calculs, allocations mémoire des tâches, transfert
 CUDA.
 \end{itemize}
 \end{frame}
-\begin{frame}[label=sec-3-5]{StarPU SMPI: Difficultés de mise en oeuvre}
+\begin{frame}[label=sec-2-5]{StarPU SMPI: Difficultés de mise en oeuvre}
 \begin{itemize}
-\item Besoin de \alert{2 modèles de performances} différents à la fois:
+\item Besoin de 2 modèles de programmation différents à la fois:
 \begin{itemize}
-\item \alert{MSG} Intra noeuds $\leadsto$ mémoire partagée $\leadsto$ partage.
-\item \alert{SMPI} extra noeuds $\leadsto$ mémoire distribuée $\leadsto$
-   privatisation.
+\item StarPU intra noeuds: mémoire partagée $\leadsto$ MSG, partage
+\item StarPU inter noeuds: mémoire distribuée $\leadsto$ SMPI, privatisation
 \end{itemize}
+
+\item Besoin de 2 modèles de performance différents à la fois:
+\begin{itemize}
+\item StarPU intra noeuds: CPU-GPU $\leadsto$ MSG ad hoc
+\item StarPU inter noeuds: réseau $\leadsto$ SMPI
+\end{itemize}
+Besoin de modifications un peu complexes dans SURF $\leadsto$ pas
+dans le cadre de ce stage.
 \item MSG et SMPI normalement pas utilisés ensemble $\leadsto$ initialiser
 correctement les 2.
 \end{itemize}
-\begin{columns}[]
-  \begin{column}{.55\linewidth}
+\vspace{-3.5mm}
+  \begin{columns}[]
+    \begin{column}{.55\linewidth}
 \begin{itemize}
-\item Problème des librairies dynamiques.
+\item Problème des bibliothèques dynamiques.
 \end{itemize}
   \end{column}
   \begin{column}{.35\linewidth}
@@ -225,8 +240,9 @@ correctement les 2.
 \end{frame}
 
 \section{Méthodologie}
-\label{sec-4}
-\begin{frame}[label=sec-4-1]{Techniques et étude de l'existant}
+\label{sec-3}
+\begin{frame}[label=sec-3-1]{Techniques et étude de l'existant}
+\begin{block}{Prise en main}
 \begin{itemize}
 \item Dépôt git submobules:
 \begin{itemize}
@@ -248,22 +264,30 @@ correctement les 2.
 \item "\alert{Code mining}" et vérifications: GDB, Valgrind.
 \end{itemize}
 \end{itemize}
+\end{block}
+\begin{block}{Validation}
+\begin{itemize}
+\item Test simple: Modèle simplifié de StarPU MPI $\leadsto$ isoler problèmes.
+\item Test StarPU: MPI, Cholesky $\leadsto$ valider modifications
+\end{itemize}
+\end{block}
 \end{frame}
 \section{Contribution}
-\label{sec-5}
-\begin{frame}[label=sec-5-1]{Modification de SimGrid}
+\label{sec-4}
+\begin{frame}[label=sec-4-1]{Modification de SimGrid}
 \begin{itemize}
 \item Initialisation MSG + SMPI
-\item Gestion segment data
+\item Gestion du segment data: les processus MSG créés par un processus
+SMPI "héritent" du segment de leur père.
 \begin{figure}[tbh]
 \centering
 \vspace{-1.5mm}
-   \includegraphics[height=.8\paperheight]{../Img/Processus.pdf}
+   \includegraphics[height=.7\paperheight]{../Img/Processus.pdf}
 \end{figure}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label=sec-5-2]{Librairie dynamiques et modifications StarPU}
+\begin{frame}[label=sec-4-2]{Librairie dynamiques et modifications StarPU}
 \begin{columns}
   \begin{column}{.6\linewidth}
 
@@ -284,33 +308,27 @@ correctement les 2.
 \end{columns}
 \end{frame}
 
-\section{Validation}
-\label{sec-6}
-\begin{frame}[label=sec-6-1]{Validation}
-\begin{itemize}
-\item Test simple: Modèle simplifié de StarPU MPI $\leadsto$ isoler problèmes.
-\item Test StarPU: MPI, Cholesky $\leadsto$ valider modifications
-\end{itemize}
-\end{frame}
 \section{Conclusion}
-\label{sec-7}
-\begin{frame}[label=sec-7-1]{Pour conclure}
+\label{sec-5}
+\begin{frame}[label=sec-5-1]{Pour conclure}
 \begin{block}{Bilan}
 \begin{itemize}
-\item \alert{StarPU + SimGrid modifié} pour simuler StarPU MPI.
+\item \alert{StarPU + SimGrid modifié} pour simuler StarPU MPI
 \item Difficulté: apporter \alert{modifications minimes} dans un code \alert{non
 trivial}. Environ 20 lignes sur un total de plus de 270 000
 \end{itemize}
 \end{block}
 \begin{block}{Prochaine étape}
 \begin{itemize}
-\item \alert{Simulations et mesures} avec solveur d'algèbre linéaire.
-\item \alert{Vérifications système réel}: Grid5000.
+\item \alert{Simulations et mesures} avec solveur d'algèbre linéaire
+\item \alert{Vérifications système réel}: Grid5000
+\item stabiliser le prototype (intégrer les modifications aux dépots
+principaux de StarPU et de SimGrid)
 \end{itemize}
 \end{block}
 \end{frame}
 
-\begin{frame}[label=sec-7-2]{Fin}
+\begin{frame}[label=sec-5-2]{Fin}
 Merci pour votre attention.
 \end{frame}
 % Emacs 24.5.1 (Org mode 8.2.10)

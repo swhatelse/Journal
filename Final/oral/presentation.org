@@ -5,7 +5,7 @@
 #+STARTUP: indent
 #+TAGS: noexport(n)
 
-#+Title: \textbf{TER} \\ Simulation d'application dynamiques pour plateformes de calculs hautes performances \bigskip\\ \large Équipe MESCAL
+#+Title: \textbf{TER} \\ Simulation d'application dynamiques pour plateformes de calculs hautes performances
 #+Author: Steven QUINITO MASNADA
 #+DATE: Grenoble, 8 Juin 2015
 
@@ -52,9 +52,12 @@
 
 #+LATEX_HEADER: \let\alert=\structure % to make sure the org * * works of tools
 #+BEAMER_FRAME_LEVEL: 2
-#+LATEX_HEADER: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
 
-* Contexte et problématique
+
+#+LATEX_HEADER:   \institute{Équipe MESCAL/LIG\\Sous la direction d'A. Legrand}
+#+LATEX_ATTR: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+
+* Présentation générale
 ** Architecture et standards HPC
    #+BEGIN_LaTeX
    \begin{figure}[tbh]
@@ -67,61 +70,64 @@
 ** Limites des approches classiques
 - Utiliser *plusieurs paradigmes* $\leadsto$ *programmation complexe*
 - Exemple pour exploiter efficacement un GPU sur *un seul noeud*:
-  - *transférer données* du CPU au GPU,
-  - *lancer le calcul* sur le GPU
-  - *gérer synchronisation* pendant attente résultat
-  - *occuper* CPU
-  - *récupérer* résultat.
-- Et avec *plusieurs noeuds*?
-- *Statique*, système réglé comme un horloge $\leadsto$ pas portable.
-- Solution: *Dynamique* mais presque *impossible avec APIs classiques*.
-** Nouvelle approche: Paradigme de tâches
+  - transférer données du CPU au GPU,
+  - lancer le calcul sur le GPU
+  - gérer synchronisation pendant attente résultat
+  - occuper CPU
+  - récupérer résultat.
+- Et avec *plusieurs noeuds/cores/GPUs* ?
+  - *Statique*, système réglé comme une horloge $\leadsto$ pas scalable.
+  - Solution: Dynamique mais *très difficile avec APIs classiques*.
+** Nouvelle approche: paradigme de tâches
 #+BEGIN_LaTeX
   \begin{columns}
     \begin{column}{.55\linewidth}
 #+END_LaTeX
 - Nouvelle abstraction: les tâches
   - *Plus besoin de se soucier de la ressource* sur laquelle le
-    traitement est effectué.
-  - Exprimer calcul en *graphe de tâches* $\leadsto$ système dynamique
-    plus simple.
+    traitement est effectué
+  - Exprimer calcul en terme *graphe de tâches* $\leadsto$ plus de
+    *souplesse* et une meilleure *portabilité*
 
 #+BEGIN_LaTeX
     \end{column}
     \begin{column}{.35\linewidth}
-      \includegraphics[width=.8\linewidth]{../Img/task_graph.pdf}%
+      \includegraphics[width=.7\linewidth]{../Img/task_graph.pdf}%
     \end{column}
   \end{columns}
 #+END_LaTeX
 
 - Librairie StarPU:
-  - Système *runtime*
-  - basé sur le paradigme de tâches $\leadsto$ graphe de dépendances.
-  - Ordonnancemment *dynamique et opportuniste*. 
-- *Problèmatique* : Performances difficiles à évaluer
-  - Configuration *runtinme*, heuristique, politique ordonnancement.
-  - Configuration *application*, découpage des tâches.
-* Évaluation des performances en HPC
-** Test sur systèmes réels
+  - Un runtime développé au LaBRI (RUNTIME/STORM).
+  - Graphe de dépendances $\leadsto$ ordonnancemment *dynamique et opportuniste*
+  - Première version pour système hybrique et récémment StarPU MPI 
+- *Problèmatique* : Performances difficiles à évaluer car exécution du
+  flot de contrôle non déterministe
+  - Configuration *runtime*, heuristique d'ordonnancement
+  - Configuration *application*, découpage en tâches
+** Évaluation des performances en HPC: grandes approches
+*** Test sur systèmes réels
 - Exécution réelle sur la plateforme cible $\leadsto$ *coûteux,
-  difficulté d'accès.*
+  difficulté d'accès*
 - Exécution *non déterministe* nécessite de réaliser beaucoup
-  d'expériences $\leadsto$ extrapolations difficiles. 
-** Simulation
-*** Généralités
-- Utilisation de *modèles* pour *prédire* comportements.
-- Permet *s'affranchir de la plateforme* $\leadsto$ *peu coûteux*.
-- Contrôle paramètres $\leadsto$ *systèmes déterministes*, extrapolation
-  simplifiée. 
-- Exécution plus courte.
+  d'expériences $\leadsto$ extrapolations difficiles 
+*** Simulation : Généralités
+- Utilisation de *modèles* pour *prédire* comportements
+- Permet *s'affranchir de la plateforme* $\leadsto$ *peu coûteux*
+- Extrapolation simplifiée / simulation très rapide
 
+** Simulation: 2 possibilités
 *** Simulation par rejeu de trace
-Exécution post-mortem: pas adapté ici car *flot de contrôle non
-déterministe*.
+Pas adapté ici car *flot de contrôle non déterministe*
 *** Hybride simulation / émulation
-- Simuler plateforme et OS.
-- Emuler de l'application. 
-StarPU porté récemment au dessus de Simgrid.
+- Simulation réaliste $\leadsto$ *exécuter vrai code*
+- Simuler *plate-forme et OS*.
+- Émuler de l'*application*. 
+SimGrid simulateur de systèmes distribués, grilles de calculs,
+systèmes peer to peer et cloud. 
+
+StarPU SimGrid, approche simulation / émulation mais avec  *un seul
+noeud*. 
 * Analyse du problème
 ** SimGrid: Généralités
    #+BEGIN_LaTeX
@@ -141,7 +147,7 @@ StarPU porté récemment au dessus de Simgrid.
    \end{figure}
    #+END_LaTeX
 
-** Privatisation segment data
+** Privatisation du segment data
 #+BEGIN_LaTeX
   \begin{columns}
     \begin{column}{.45\linewidth}
@@ -164,20 +170,28 @@ StarPU porté récemment au dessus de Simgrid.
 - Première version StarPU $\leadsto$ hybride
 - Basé sur *MSG* car *modèle de performance plus proche* (communications,
   environnement mémoire partagé), CPUs GPUs.
+- Émulation: le vrai code de l'ordonnanceur de StarPU et de
+  l'application sont exécutés
 - Simulation: calculs, allocations mémoire des tâches, transfert
   CUDA.
 ** StarPU SMPI: Difficultés de mise en oeuvre
-- Besoin de *2 modèles de performances* différents à la fois:
- - *MSG* Intra noeuds $\leadsto$ mémoire partagée $\leadsto$ partage.
- - *SMPI* extra noeuds $\leadsto$ mémoire distribuée $\leadsto$
-   privatisation.
+- Besoin de 2 modèles de programmation différents à la fois:
+  - StarPU intra noeuds: mémoire partagée $\leadsto$ MSG, partage
+  - StarPU inter noeuds: mémoire distribuée $\leadsto$ SMPI, privatisation
+
+- Besoin de 2 modèles de performance différents à la fois:
+  - StarPU intra noeuds: CPU-GPU $\leadsto$ MSG ad hoc
+  - StarPU inter noeuds: réseau $\leadsto$ SMPI
+  Besoin de modifications un peu complexes dans SURF $\leadsto$ pas
+  dans le cadre de ce stage.
 - MSG et SMPI normalement pas utilisés ensemble $\leadsto$ initialiser
-  correctement les 2.
+  correctement les 2. 
 #+BEGIN_LaTeX
+\vspace{-3.5mm}
   \begin{columns}[]
     \begin{column}{.55\linewidth}
 #+END_LaTeX
-- Problème des librairies dynamiques.  
+- Problème des bibliothèques dynamiques.  
 #+BEGIN_LaTeX
     \end{column}
     \begin{column}{.35\linewidth}
@@ -188,6 +202,7 @@ StarPU porté récemment au dessus de Simgrid.
 
 * Méthodologie
 ** Techniques et étude de l'existant
+*** Prise en main
 - Dépôt git submobules:
   - StarPU SMPI:
     - SimGrid
@@ -199,15 +214,19 @@ StarPU porté récemment au dessus de Simgrid.
   - SimgGrid = *106 350 lignes* de codes.
   - StarPU = *172 251 lignes* de codes.
   - "*Code mining*" et vérifications: GDB, Valgrind.
+*** Validation
+- Test simple: Modèle simplifié de StarPU MPI $\leadsto$ isoler problèmes.
+- Test StarPU: MPI, Cholesky $\leadsto$ valider modifications
 * Contribution
 ** Modification de SimGrid
 - Initialisation MSG + SMPI
-- Gestion segment data
+- Gestion du segment data: les processus MSG créés par un processus
+  SMPI "héritent" du segment de leur père.
    #+BEGIN_LaTeX
    \begin{figure}[tbh]
    \centering
    \vspace{-1.5mm}
-      \includegraphics[height=.8\paperheight]{../Img/Processus.pdf}
+      \includegraphics[height=.7\paperheight]{../Img/Processus.pdf}
    \end{figure}
    #+END_LaTeX
 
@@ -229,19 +248,17 @@ StarPU porté récemment au dessus de Simgrid.
   \end{columns}
 #+END_LaTeX
 
-* Validation
-** Validation
-- Test simple: Modèle simplifié de StarPU MPI $\leadsto$ isoler problèmes.
-- Test StarPU: MPI, Cholesky $\leadsto$ valider modifications
 * Conclusion
 ** Pour conclure
 *** Bilan
-- *StarPU + SimGrid modifié* pour simuler StarPU MPI.
+- *StarPU + SimGrid modifié* pour simuler StarPU MPI
 - Difficulté: apporter *modifications minimes* dans un code *non
   trivial*. Environ 20 lignes sur un total de plus de 270 000
 *** Prochaine étape
-- *Simulations et mesures* avec solveur d'algèbre linéaire.
-- *Vérifications système réel*: Grid5000.
+- *Simulations et mesures* avec solveur d'algèbre linéaire
+- *Vérifications système réel*: Grid5000
+- stabiliser le prototype (intégrer les modifications aux dépots
+  principaux de StarPU et de SimGrid) 
   
 ** Fin
 Merci pour votre attention.
