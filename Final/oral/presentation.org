@@ -260,8 +260,10 @@ noeud*.
 - stabiliser le prototype (intégrer les modifications aux dépots
   principaux de StarPU et de SimGrid) 
   
-** Fin
+** Rermerciements
 Merci pour votre attention.
+Merci à Arnaud LEGRAND pour m'avoir permis de faire une stage dans son
+équipe et pour avoir été autant disponible.
 ** Annexe: Construction de l'application MPI simulée
    #+BEGIN_LaTeX
    \begin{figure}
