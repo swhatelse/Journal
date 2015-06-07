@@ -195,13 +195,14 @@ StarPU porté récemment au dessus de Simgrid.
 - *Suivi*:
   - Cahier de laboratoire org mode github.
 - *Compréhension*:
+  - Documentation.
   - SimgGrid = *106 350 lignes* de codes.
   - StarPU = *172 251 lignes* de codes.
   - "*Code mining*" et vérifications: GDB, Valgrind.
 * Contribution
 ** Modification de SimGrid
-- Gestion segment data
 - Initialisation MSG + SMPI
+- Gestion segment data
    #+BEGIN_LaTeX
    \begin{figure}[tbh]
    \centering
@@ -210,7 +211,7 @@ StarPU porté récemment au dessus de Simgrid.
    \end{figure}
    #+END_LaTeX
 
-** Librairie dynamques et modifications StarPU
+** Librairie dynamiques et modifications StarPU
 #+BEGIN_LaTeX
   \begin{columns}
     \begin{column}{.6\linewidth}
@@ -219,7 +220,7 @@ StarPU porté récemment au dessus de Simgrid.
 - Librairies dynamiques:
   - Utilisation librairies statiques.
 - Modification StarPU:
-  - Initialisation
+  - Initialisation, car privatisation tardive.
 #+BEGIN_LaTeX
     \end{column}
     \begin{column}{.35\linewidth}
@@ -230,15 +231,16 @@ StarPU porté récemment au dessus de Simgrid.
 
 * Validation
 ** Validation
-- Test simple: Modèle simplifié de StarPU $\leadsto$ isoler problèmes.
+- Test simple: Modèle simplifié de StarPU MPI $\leadsto$ isoler problèmes.
 - Test StarPU: MPI, Cholesky $\leadsto$ valider modifications
 * Conclusion
 ** Pour conclure
 *** Bilan
 - *StarPU + SimGrid modifié* pour simuler StarPU MPI.
-- Difficulté: apporter *modifications minimes* dans un code *non trivial*.
+- Difficulté: apporter *modifications minimes* dans un code *non
+  trivial*. Environ 20 lignes sur un total de plus de 270 000
 *** Prochaine étape
-- *Simulation et mesures* avec solveur d'algèbre linéaire.
+- *Simulations et mesures* avec solveur d'algèbre linéaire.
 - *Vérifications système réel*: Grid5000.
   
 ** Fin

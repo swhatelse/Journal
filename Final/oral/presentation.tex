@@ -1,4 +1,4 @@
-% Created 2015-06-07 dim. 10:39
+% Created 2015-06-07 dim. 11:19
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -226,7 +226,7 @@ correctement les 2.
 
 \section{Méthodologie}
 \label{sec-4}
-\begin{frame}[label=sec-4-1]{Techniques et études de l'existant}
+\begin{frame}[label=sec-4-1]{Techniques et étude de l'existant}
 \begin{itemize}
 \item Dépôt git submobules:
 \begin{itemize}
@@ -242,6 +242,7 @@ correctement les 2.
 \end{itemize}
 \item \alert{Compréhension}:
 \begin{itemize}
+\item Documentation.
 \item SimgGrid = \alert{106 350 lignes} de codes.
 \item StarPU = \alert{172 251 lignes} de codes.
 \item "\alert{Code mining}" et vérifications: GDB, Valgrind.
@@ -252,8 +253,8 @@ correctement les 2.
 \label{sec-5}
 \begin{frame}[label=sec-5-1]{Modification de SimGrid}
 \begin{itemize}
-\item Gestion segment data
 \item Initialisation MSG + SMPI
+\item Gestion segment data
 \begin{figure}[tbh]
 \centering
 \vspace{-1.5mm}
@@ -262,7 +263,7 @@ correctement les 2.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label=sec-5-2]{Librairie dynamques et modifications StarPU}
+\begin{frame}[label=sec-5-2]{Librairie dynamiques et modifications StarPU}
 \begin{columns}
   \begin{column}{.6\linewidth}
 
@@ -273,7 +274,7 @@ correctement les 2.
 \end{itemize}
 \item Modification StarPU:
 \begin{itemize}
-\item Initialisation
+\item Initialisation, car privatisation tardive.
 \end{itemize}
 \end{itemize}
   \end{column}
@@ -287,7 +288,7 @@ correctement les 2.
 \label{sec-6}
 \begin{frame}[label=sec-6-1]{Validation}
 \begin{itemize}
-\item Test simple: Modèle simplifié de StarPU $\leadsto$ isoler problèmes.
+\item Test simple: Modèle simplifié de StarPU MPI $\leadsto$ isoler problèmes.
 \item Test StarPU: MPI, Cholesky $\leadsto$ valider modifications
 \end{itemize}
 \end{frame}
@@ -297,12 +298,13 @@ correctement les 2.
 \begin{block}{Bilan}
 \begin{itemize}
 \item \alert{StarPU + SimGrid modifié} pour simuler StarPU MPI.
-\item Difficulté: apporter \alert{modifications minimes} dans un code \alert{non trivial}.
+\item Difficulté: apporter \alert{modifications minimes} dans un code \alert{non
+trivial}. Environ 20 lignes sur un total de plus de 270 000
 \end{itemize}
 \end{block}
 \begin{block}{Prochaine étape}
 \begin{itemize}
-\item \alert{Simulation et mesures} avec solveur d'algèbre linéaire.
+\item \alert{Simulations et mesures} avec solveur d'algèbre linéaire.
 \item \alert{Vérifications système réel}: Grid5000.
 \end{itemize}
 \end{block}
