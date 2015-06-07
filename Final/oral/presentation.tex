@@ -1,4 +1,4 @@
-% Created 2015-06-07 dim. 17:28
+% Created 2015-06-07 dim. 18:14
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -172,15 +172,7 @@ noeud}.
 \end{figure}
 \end{frame}
 
-\begin{frame}[label=sec-2-2]{Construction de l'application MPI simulée}
-\begin{figure}
-\centering
-\vspace{-3.5mm}
-\includegraphics[width=\linewidth]{./Slides/Compilev2.pdf}
-\end{figure}
-\end{frame}
-
-\begin{frame}[label=sec-2-3]{Privatisation du segment data}
+\begin{frame}[label=sec-2-2]{Privatisation du segment data}
 \begin{columns}
   \begin{column}{.45\linewidth}
 \begin{itemize}
@@ -198,7 +190,7 @@ noeud}.
 \end{columns}
 \end{frame}
 
-\begin{frame}[label=sec-2-4]{StarPU MSG}
+\begin{frame}[label=sec-2-3]{StarPU MSG}
 \begin{itemize}
 \item Première version StarPU $\leadsto$ hybride
 \item Basé sur \alert{MSG} car \alert{modèle de performance plus proche} (communications,
@@ -207,9 +199,16 @@ environnement mémoire partagé), CPUs GPUs.
 l'application sont exécutés
 \item Simulation: calculs, allocations mémoire des tâches, transfert
 CUDA.
+
+\begin{figure}
+\centering
+\vspace{-1.5mm}
+\includegraphics[width=\linewidth]{../Img/comparing_paje2-crop.png}
+\end{figure}
 \end{itemize}
 \end{frame}
-\begin{frame}[label=sec-2-5]{StarPU SMPI: Difficultés de mise en oeuvre}
+
+\begin{frame}[label=sec-2-4]{StarPU SMPI: Difficultés de mise en oeuvre}
 \begin{itemize}
 \item Besoin de 2 modèles de programmation différents à la fois:
 \begin{itemize}
@@ -331,6 +330,13 @@ principaux de StarPU et de SimGrid)
 
 \begin{frame}[label=sec-5-2]{Fin}
 Merci pour votre attention.
+\end{frame}
+\begin{frame}[label=sec-5-3]{Annexe: Construction de l'application MPI simulée}
+\begin{figure}
+\centering
+\vspace{-3.5mm}
+\includegraphics[width=\linewidth]{./Slides/Compilev2.pdf}
+\end{figure}
 \end{frame}
 % Emacs 24.5.1 (Org mode 8.2.10)
 \end{document}
