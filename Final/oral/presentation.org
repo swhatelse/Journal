@@ -54,8 +54,8 @@
 #+BEAMER_FRAME_LEVEL: 2
 #+LATEX_HEADER: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
 
-* Contexte et problèmatique
-** Architecture et standard HPC
+* Contexte et problématique
+** Architecture et standards HPC
    #+BEGIN_LaTeX
    \begin{figure}[tbh]
    \centering
@@ -103,15 +103,16 @@
   - Configuration *application*, découpage des tâches.
 * Évaluation des performances en HPC
 ** Test sur systèmes réels
-- Exécution réelle sur la plateforme cible $\leadsto$ *coûteux*
+- Exécution réelle sur la plateforme cible $\leadsto$ *coûteux,
+  difficulté d'accès.*
 - Exéuction *non déterministe* nécessite de réaliser beaucoup
   d'expériences $\leadsto$ extrapolations difficiles. 
 ** Simulation
 *** Généralités
 - Utilisation de *modèles* pour *prédire* comportements.
-- Permet s'affranchir de la plateforme $\leadsto$ peu coûteux.
-- Contrôle paramètres $\leadsto$ *systèmes déterministes*.
-- Extrapolation simplifiée.
+- Permet *s'affranchir de la plateforme* $\leadsto$ *peu coûteux*.
+- Contrôle paramètres $\leadsto$ *systèmes déterministes*, extrapolation
+  simplifiée. 
 - Exécution plus courte.
 
 *** Simulation par rejeu de trace
@@ -119,7 +120,8 @@ Exécution post-mortem: pas adapté ici car *flot de contrôle non
 déterministe*.
 *** Hybride simulation / émulation
 - Simuler plateforme et OS.
-- Emuler de l'application.
+- Emuler de l'application. 
+StarPU porté récemment au dessus de Simgrid.
 * Analyse du problème
 ** SimGrid: Généralités
    #+BEGIN_LaTeX
@@ -146,6 +148,7 @@ déterministe*.
 #+END_LaTeX
 - Dans SimGrid les *processus* sont *modélisés par des threads* $\leadsto$
   espace adressage partagé.
+- MPI environnment à *mémoire distribuée*.
 - Mécanisme de privatisation: *ségment virtuel* (mmap)
   
 
@@ -158,6 +161,7 @@ déterministe*.
 #+END_LaTeX
 
 ** StarPU MSG 
+- Première version StarPU $\leadsto$ hybride
 - Basé sur *MSG* car *modèle de performance plus proche* (communications,
   environnement mémoire partagé), CPUs GPUs.
 - Simulation: calculs, allocations mémoire des tâches, transfert
@@ -183,7 +187,7 @@ déterministe*.
 #+END_LaTeX
 
 * Méthodologie
-** Techniques et études de l'existant
+** Techniques et étude de l'existant
 - Dépôt git submobules:
   - StarPU SMPI:
     - SimGrid

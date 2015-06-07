@@ -1,4 +1,4 @@
-% Created 2015-06-07 dim. 08:08
+% Created 2015-06-07 dim. 10:39
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -64,9 +64,9 @@
 
 \maketitle
 
-\section{Contexte et problèmatique}
+\section{Contexte et problématique}
 \label{sec-1}
-\begin{frame}[label=sec-1-1]{Architecture et standard HPC}
+\begin{frame}[label=sec-1-1]{Architecture et standards HPC}
 \begin{figure}[tbh]
 \centering
 \vspace{-1.5mm}
@@ -127,7 +127,8 @@ plus simple.
 \label{sec-2}
 \begin{frame}[label=sec-2-1]{Test sur systèmes réels}
 \begin{itemize}
-\item Exécution réelle sur la plateforme cible $\leadsto$ \alert{coûteux}
+\item Exécution réelle sur la plateforme cible $\leadsto$ \alert{coûteux,
+difficulté d'accès.}
 \item Exéuction \alert{non déterministe} nécessite de réaliser beaucoup
 d'expériences $\leadsto$ extrapolations difficiles.
 \end{itemize}
@@ -136,9 +137,9 @@ d'expériences $\leadsto$ extrapolations difficiles.
 \begin{block}{Généralités}
 \begin{itemize}
 \item Utilisation de \alert{modèles} pour \alert{prédire} comportements.
-\item Permet s'affranchir de la plateforme $\leadsto$ peu coûteux.
-\item Contrôle paramètres $\leadsto$ \alert{systèmes déterministes}.
-\item Extrapolation simplifiée.
+\item Permet \alert{s'affranchir de la plateforme} $\leadsto$ \alert{peu coûteux}.
+\item Contrôle paramètres $\leadsto$ \alert{systèmes déterministes}, extrapolation
+simplifiée.
 \item Exécution plus courte.
 \end{itemize}
 \end{block}
@@ -152,6 +153,7 @@ déterministe}.
 \item Simuler plateforme et OS.
 \item Emuler de l'application.
 \end{itemize}
+StarPU porté récemment au dessus de Simgrid.
 \end{block}
 \end{frame}
 \section{Analyse du problème}
@@ -178,6 +180,7 @@ déterministe}.
 \begin{itemize}
 \item Dans SimGrid les \alert{processus} sont \alert{modélisés par des threads} $\leadsto$
   espace adressage partagé.
+\item MPI environnment à \alert{mémoire distribuée}.
 \item Mécanisme de privatisation: \alert{ségment virtuel} (mmap)
 \end{itemize}
 
@@ -191,6 +194,7 @@ déterministe}.
 
 \begin{frame}[label=sec-3-4]{StarPU MSG}
 \begin{itemize}
+\item Première version StarPU $\leadsto$ hybride
 \item Basé sur \alert{MSG} car \alert{modèle de performance plus proche} (communications,
 environnement mémoire partagé), CPUs GPUs.
 \item Simulation: calculs, allocations mémoire des tâches, transfert
