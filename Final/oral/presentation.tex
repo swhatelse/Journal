@@ -1,4 +1,4 @@
-% Created 2015-06-06 sam. 22:39
+% Created 2015-06-07 dim. 08:00
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -51,6 +51,7 @@
 \usepackage{color}
 \usepackage{url} \urlstyle{sf}
 \let\alert=\structure % to make sure the org * * works of tools
+\AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
 \usetheme{default}
 \author{Steven QUINITO MASNADA}
 \date{Grenoble, 8 Juin 2015}
@@ -62,7 +63,6 @@
 \begin{document}
 
 \maketitle
-
 
 \section{Contexte et problèmatique}
 \label{sec-1}
@@ -222,6 +222,7 @@ correctement les 2.
 
 \section{Méthodologie}
 \label{sec-4}
+\begin{frame}[label=sec-4-1]{Techniques et études de l'existant}
 \begin{itemize}
 \item Dépôt git submobules:
 \begin{itemize}
@@ -233,7 +234,7 @@ correctement les 2.
 \end{itemize}
 \item Suivi:
 \begin{itemize}
-\item Journal org mode github.
+\item Cahier de laboratoire org mode github.
 \end{itemize}
 \item Compréhension:
 \begin{itemize}
@@ -242,17 +243,26 @@ correctement les 2.
 \item "Code mining" et vérifications: GDB, Valgrind.
 \end{itemize}
 \end{itemize}
+\end{frame}
 \section{Contribution}
 \label{sec-5}
-\begin{frame}[label=sec-5-1]{Contribution}
-\begin{columns}
-  \begin{column}{.6\linewidth}
-\begin{itemize}
-\item Modification SimGrid:
+\begin{frame}[label=sec-5-1]{Modification de SimGrid}
 \begin{itemize}
 \item Gestion segment data
 \item Initialisation MSG + SMPI
+\begin{figure}[tbh]
+\centering
+\vspace{-1.5mm}
+   \includegraphics[height=.8\paperheight]{../Img/Processus.pdf}
+\end{figure}
 \end{itemize}
+\end{frame}
+
+\begin{frame}[label=sec-5-2]{Librairie dynamques et modifications StarPU}
+\begin{columns}
+  \begin{column}{.6\linewidth}
+
+\begin{itemize}
 \item Librairies dynamiques:
 \begin{itemize}
 \item Utilisation librairies statiques.
@@ -279,7 +289,7 @@ correctement les 2.
 \end{frame}
 \section{Conclusion}
 \label{sec-7}
-\begin{frame}[label=sec-7-1]{Conclusion}
+\begin{frame}[label=sec-7-1]{Pour conclure}
 \begin{block}{Bilan}
 \begin{itemize}
 \item \alert{StarPU + SimGrid modifié} pour simuler StarPU MPI.
@@ -294,9 +304,7 @@ correctement les 2.
 \end{block}
 \end{frame}
 
-\section{Fin}
-\label{sec-8}
-\begin{frame}[label=sec-8-1]{Fin}
+\begin{frame}[label=sec-7-2]{Fin}
 Merci pour votre attention.
 \end{frame}
 % Emacs 24.5.1 (Org mode 8.2.10)

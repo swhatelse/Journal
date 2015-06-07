@@ -51,7 +51,8 @@
 #+LATEX_HEADER: \usepackage{url} \urlstyle{sf}
 
 #+LATEX_HEADER: \let\alert=\structure % to make sure the org * * works of tools
-
+#+BEAMER_FRAME_LEVEL: 2
+#+LATEX_HEADER: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
 
 * Contexte et problèmatique
 ** Architecture et standard HPC
@@ -182,25 +183,35 @@ déterministe*.
 #+END_LaTeX
 
 * Méthodologie
+** Techniques et études de l'existant
 - Dépôt git submobules:
   - StarPU SMPI:
     - SimGrid
     - StarPU
 - Suivi:
-  - Journal org mode github.
+  - Cahier de laboratoire org mode github.
 - Compréhension:
   - SimgGrid = 106 350 lignes de codes.
   - StarPU = 172 251 lignes de codes.
   - "Code mining" et vérifications: GDB, Valgrind.
 * Contribution
-** Contribution
+** Modification de SimGrid
+- Gestion segment data
+- Initialisation MSG + SMPI
+   #+BEGIN_LaTeX
+   \begin{figure}[tbh]
+   \centering
+   \vspace{-1.5mm}
+      \includegraphics[height=.8\paperheight]{../Img/Processus.pdf}
+   \end{figure}
+   #+END_LaTeX
+
+** Librairie dynamques et modifications StarPU
 #+BEGIN_LaTeX
   \begin{columns}
     \begin{column}{.6\linewidth}
 #+END_LaTeX
-- Modification SimGrid:
-  - Gestion segment data
-  - Initialisation MSG + SMPI
+
 - Librairies dynamiques:
   - Utilisation librairies statiques.
 - Modification StarPU:
@@ -218,7 +229,7 @@ déterministe*.
 - Test simple: Modèle simplifié de StarPU $\leadsto$ isoler problèmes.
 - Test StarPU: MPI, Cholesky $\leadsto$ valider modifications
 * Conclusion
-** Conclusion
+** Pour conclure
 *** Bilan
 - *StarPU + SimGrid modifié* pour simuler StarPU MPI.
 - Difficulté: apporter *modifications minimes* dans un code *non trivial*.
@@ -226,6 +237,5 @@ déterministe*.
 - *Simulation et mesures* avec solveur d'algèbre linéaire.
 - *Vérifications système réel*: Grid5000.
   
-* Fin
 ** Fin
 Merci pour votre attention.

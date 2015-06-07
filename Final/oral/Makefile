@@ -2,7 +2,7 @@ include LaTeX.mk
 # PDFLATEX="pdflatex" # -shell-escape
 PDFLATEX_OPTIONS=-shell-escape
 ARCHIVE=POLARIS
-all: POLARIS_presentation.tex POLARIS_presentation-gz.pdf
+all: presentation.tex presentation-gz.pdf
 
 %.tex: %.org
 	emacs -batch --eval "(setq enable-local-eval t)" --eval "(setq enable-local-variables t)" $^  --funcall org-beamer-export-to-latex
