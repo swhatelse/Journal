@@ -55,7 +55,7 @@
 
 
 #+LATEX_HEADER:   \institute{Équipe MESCAL/LIG\\Sous la direction d'A. Legrand}
-#+LATEX_ATTR: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
+#+LATEX_HEADER: \AtBeginSection[]{\begin{frame}<beamer>\frametitle{Topic}\tableofcontents[currentsection]\end{frame}}
 
 * Présentation générale
 ** Architecture et standards HPC
