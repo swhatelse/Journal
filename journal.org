@@ -6676,7 +6676,7 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
       ==24054==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
       ==24054==  Address 0x7a557f8 is 24 bytes after a block of size 64 in arena "client"
       #+END_EXAMPLE
-*** 2015-06-09 mardi
+*** TODO 2015-06-09 mardi [0/1]
     - SegFault(suite):
       - Invalid reads trouvés par valgrind:
         #+BEGIN_EXAMPLE
@@ -6763,7 +6763,11 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
         Le process maestro n'est pas créé avec
         SIMIX_process_create, et n'est pas comptabilisé avec 
         SIMIX_process_count.
-        Passage du segment_index du maestro à -1.
-        
+        - Passage du segment_index du maestro à -1. Apparemment cela
+          ne change rien, ce qui est normal si ne maestro n'utilise
+          pas de segment data virtuel...
+    - [ ] Vérifier comment fonctionne le mécanisme de segment
+      virtuel (changement de contexte). Est-ce que le maestro
+      utilise un segment virtuel? 
 
       
