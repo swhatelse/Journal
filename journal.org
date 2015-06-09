@@ -51,6 +51,7 @@
 ** Usefull types
    . ./script.sh --pour export des variables
    ldd permet de connaître les lib dynamques qui ont été linkées.
+   nm donne la liste des fonctions d'un programme.
    LD_LIBRARY_PATH: Y pensez car sinon à l'exécution ça ne passe pas.
 ** GDB
    - watch : break point condition qui permet de surveiller quand une variable change de valeur
@@ -6320,7 +6321,7 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
       cd ~/Programmation/TER/starpu-simgrid/
       . ./flags_simgrid_starpu.sh
       cd ~/Programmation/TER/starpu-simgrid/src/StarPU/build-native
-      make check
+      make check > ~/org/check_native.txt
     #+end_src
 
     Install starpu simgrid avec run_inject_StarPUSG.sh de luka version master
@@ -6536,7 +6537,7 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     (gdb) 
     #+END_EXAMPLE
     
-    La chose que ferait passé ready_requests à NULL est
+    La chose qui ferait passé ready_requests à NULL est
     starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
     Mais quelque chose ne doit pas être correct à l'attribution du
     segment data.
@@ -6636,7 +6637,7 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     2: self->segment_index = 0
     1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d9310
     #+END_EXAMPLE
-    L'index du segment data est le pour les 3 noeuds. Normalement il
+    L'index du segment data est le même pour les 3 noeuds. Normalement il
     devrait être différent. 
     L'index du segment data est défini en fonction du pid du
     process - 1.
@@ -6658,5 +6659,21 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     de faire en sorte que la fonction smpi_process_init soit appelé
     avant ou au tout debut de _starpu_mpi_simgrid_init.
     
-*** 2015-06-02 mardi
-    
+*** 2015-06-08 lundi
+    - Modification de l'initialisation côté StarPU: 
+      l'appel à MPI_Init_thread a été déplacé au début de
+      _starpu_mpi_initialize. Car sinon la privatisation du segment
+      data est effectué trop tard.
+    - Segfault lors de l'exécution de cholesky:
+      Rapport valgrind:
+      #+BEGIN_EXAMPLE
+      ==24054== Invalid read of size 4
+      ==24054==    at 0x582583F: smpi_process_index (smpi_global.c:238)
+      ==24054==    by 0x5822DD0: smpi_comm_rank (smpi_comm.c:167)
+      ==24054==    by 0x5835F39: PMPI_Comm_rank (smpi_pmpi.c:681)
+      ==24054==    by 0x5828190: MPI_Comm_rank (smpi_mpi.c:225)
+      ==24054==    by 0x404FC4: smpi_simulated_main_ (ring_async_implicit.c:69)
+      ==24054==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
+      ==24054==  Address 0x7a557f8 is 24 bytes after a block of size 64 in arena "client"
+      #+END_EXAMPLE
+      

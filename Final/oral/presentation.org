@@ -138,6 +138,14 @@ noeud*.
    \end{figure}
    #+END_LaTeX
 
+** Construction de l'application MPI simulée
+   #+BEGIN_LaTeX
+   \begin{figure}
+   \centering
+   \vspace{-3.5mm}
+   \includegraphics[width=\linewidth]{./Slides/Compilev2.pdf}
+   \end{figure}
+   #+END_LaTeX
 ** Privatisation du segment data
 #+BEGIN_LaTeX
   \begin{columns}
@@ -265,11 +273,4 @@ Merci pour votre attention.
 
 Merci à Arnaud LEGRAND pour m'avoir permis de faire une stage dans son
 équipe et pour avoir été autant disponible.
-** Annexe: Construction de l'application MPI simulée
-   #+BEGIN_LaTeX
-   \begin{figure}
-   \centering
-   \vspace{-3.5mm}
-   \includegraphics[width=\linewidth]{./Slides/Compilev2.pdf}
-   \end{figure}
-   #+END_LaTeX
+

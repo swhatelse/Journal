@@ -1,4 +1,4 @@
-% Created 2015-06-07 dim. 19:47
+% Created 2015-06-08 lun. 08:37
 \documentclass[11pt,xcolor=dvipsnames,presentation]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -172,7 +172,14 @@ noeud}.
 \end{figure}
 \end{frame}
 
-\begin{frame}[label=sec-2-2]{Privatisation du segment data}
+\begin{frame}[label=sec-2-2]{Construction de l'application MPI simulée}
+\begin{figure}
+\centering
+\vspace{-3.5mm}
+\includegraphics[width=\linewidth]{./Slides/Compilev2.pdf}
+\end{figure}
+\end{frame}
+\begin{frame}[label=sec-2-3]{Privatisation du segment data}
 \begin{columns}
   \begin{column}{.45\linewidth}
 \begin{itemize}
@@ -190,7 +197,7 @@ noeud}.
 \end{columns}
 \end{frame}
 
-\begin{frame}[label=sec-2-3]{StarPU MSG}
+\begin{frame}[label=sec-2-4]{StarPU MSG}
 \begin{itemize}
 \item Première version StarPU $\leadsto$ hybride
 \item Basé sur \alert{MSG} car \alert{modèle de performance plus proche} (communications,
@@ -208,7 +215,7 @@ CUDA.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[label=sec-2-4]{StarPU SMPI: Difficultés de mise en oeuvre}
+\begin{frame}[label=sec-2-5]{StarPU SMPI: Difficultés de mise en oeuvre}
 \begin{itemize}
 \item Besoin de 2 modèles de programmation différents à la fois:
 \begin{itemize}
@@ -333,13 +340,6 @@ Merci pour votre attention.
 
 Merci à Arnaud LEGRAND pour m'avoir permis de faire une stage dans son
 équipe et pour avoir été autant disponible.
-\end{frame}
-\begin{frame}[label=sec-5-3]{Annexe: Construction de l'application MPI simulée}
-\begin{figure}
-\centering
-\vspace{-3.5mm}
-\includegraphics[width=\linewidth]{./Slides/Compilev2.pdf}
-\end{figure}
 \end{frame}
 % Emacs 24.5.1 (Org mode 8.2.10)
 \end{document}
