@@ -6647,7 +6647,7 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     processus "", à la création il partage le même segment data que
     lui. C'est un peu plutard les processus sont initialisés avec
     leurs propre segment data. Cependant l'index du segment data est
-    égal au pid du processus -1, hors le processus initiateur et le
+    égal au pid du processus -1, hors le processus maestro et le
     processus de pid 1 ont le même index (0). Le problème pourrait
     venir de là. -> Apparemment pas.
 
@@ -6661,9 +6661,9 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
     
 *** 2015-06-08 lundi
     - Modification de l'initialisation côté StarPU: 
-      l'appel à MPI_Init_thread a été déplacé au début de
-      _starpu_mpi_initialize. Car sinon la privatisation du segment
-      data est effectué trop tard.
+      l'appel à MPI_Init_thread est effectué au début de
+      _starpu_mpi_initialize pour SimGrid. Car sinon la privatisation
+      du segment data est effectué trop tard.
     - Segfault lors de l'exécution de cholesky:
       Rapport valgrind:
       #+BEGIN_EXAMPLE
@@ -6676,4 +6676,94 @@ make[1] : on quitte le répertoire « /home/steven/Programmation/TER/starpu-si
       ==24054==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
       ==24054==  Address 0x7a557f8 is 24 bytes after a block of size 64 in arena "client"
       #+END_EXAMPLE
+*** 2015-06-09 mardi
+    - SegFault(suite):
+      - Invalid reads trouvés par valgrind:
+        #+BEGIN_EXAMPLE
+        ==29290== Invalid read of size 4
+        ==29290==    at 0x582583F: smpi_process_index (smpi_global.c:245)
+        ==29290==    by 0x5822DD0: smpi_comm_rank (smpi_comm.c:167)
+        ==29290==    by 0x5835F39: PMPI_Comm_rank (smpi_pmpi.c:681)
+        ==29290==    by 0x5828190: MPI_Comm_rank (smpi_mpi.c:225)
+        ==29290==    by 0x404FC4: smpi_simulated_main_ (ring_async_implicit.c:69)
+        ==29290==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
+        ==29290==  Address 0x7a557f8 is 24 bytes after a block of size 64 in arena "client"
+
+        ==29290== Invalid read of size 4
+        ==29290==    at 0x58278BF: smpi_group_rank (smpi_group.c:106)
+        ==29290==  Address 0x8a5acc0 is 16 bytes before a block of size 16 alloc'd
+        ==29290==    at 0x4C2C080: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+        ==29290==    by 0x56B2EF0: xbt_malloc0 (sysdep.h:110)
+        ==29290==    by 0x56B2EF0: SIMIX_cond_init (smx_synchro.c:263)
+        ==29290==    by 0x56B7D10: SIMIX_simcall_handle (popping_generated.c:613)
+        ==29290==    by 0x56972ED: simcall_BODY_cond_init (popping_bodies.c:2028)
+        ==29290==    by 0x569C3D7: simcall_cond_init (libsmx.c:1211)
+        ==29290==    by 0x57D17DD: xbt_cond_init (xbt_sg_synchro.c:165)
+        ==29290==    by 0x57D1977: xbt_barrier_init (xbt_sg_synchro.c:207)
+        ==29290==    by 0x582651C: smpi_global_init (smpi_global.c:466)
+        ==29290==    by 0x5826EE0: smpi_main (smpi_global.c:670)
+        ==29290==    by 0x43ED24: main (simgrid.c:195)
+
+        ==29290== Invalid read of size 1
+        ==29290==    at 0x6189DF0: __strcmp_sse2_unaligned (in /usr/lib/libc-2.21.so)
+        ==29290==    by 0x43F4BA: _starpu_simgrid_submit_job (simgrid.c:324)
+        ==29290==    by 0x485A66: execute_job_on_cpu (driver_cpu.c:110)
+        ==29290==    by 0x48618F: _starpu_cpu_driver_run_once (driver_cpu.c:280)
+        ==29290==    by 0x486295: _starpu_cpu_worker (driver_cpu.c:337)
+        ==29290==    by 0x4408DE: _starpu_simgrid_thread_start (simgrid.c:663)
+        ==29290==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
+        ==29290==  Address 0x0 is not stack'd, malloc'd or (recently) free'd        
+        #+END_EXAMPLE
+      - Analyse du premier invalid read:
+        #+BEGIN_EXAMPLE
+        ==29290== Invalid read of size 4
+        ==29290==    at 0x582583F: smpi_process_index (smpi_global.c:245)
+        ==29290==    by 0x5822DD0: smpi_comm_rank (smpi_comm.c:167)
+        ==29290==    by 0x5835F39: PMPI_Comm_rank (smpi_pmpi.c:681)
+        ==29290==    by 0x5828190: MPI_Comm_rank (smpi_mpi.c:225)
+        ==29290==    by 0x404FC4: smpi_simulated_main_ (ring_async_implicit.c:69)
+        ==29290==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
+        ==29290==  Address 0x7a557f8 is 24 bytes after a block of size 64 in arena "client"
+        #+END_EXAMPLE
+        gdb:
+        #+BEGIN_EXAMPLE
+        (gdb) p (SIMIX_process_self())->ppid
+        $6 = 1
+        (gdb) p (SIMIX_process_self())->pid
+        $5 = 4
+        (gdb) p (SIMIX_process_self())->segment_index 
+        $3 = 0
+        (gdb) p (SIMIX_process_self())->data
+        $8 = (void *) 0x7a557a0
+        (gdb) bt
+        #0  0x000000000582583f in smpi_process_index ()
+        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:245
+        #1  0x0000000005822dd1 in smpi_comm_rank (comm=0x8a5ab10)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_comm.c:167
+        #2  0x0000000005835f3a in PMPI_Comm_rank (comm=0x8a5ab10, rank=0x9820fa4)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_pmpi.c:681
+        #3  0x0000000005828191 in MPI_Comm_rank (comm=0x8a5ab10, rank=0x9820fa4)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_mpi.c:225
+        #4  0x0000000000404fc5 in smpi_simulated_main_ (argc=1, argv=0x7173390)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/tests/ring_async_implicit.c:69
+        #5  0x000000000569de11 in smx_ctx_raw_wrapper (context=0x7a55bb0)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+        #6  0x0000000000000000 in ?? ()
+        (gdb) 
+        #+END_EXAMPLE
+        Première remarque, le processus 1 ainsi que tous ceux qu'il
+        crée ont comme index de segment data la valeur 0 (index =
+        pid - 1, cf smpi/private.h:778). Le processus maestro a
+        également pour index 0. Cela pourrait donc poser problème et à
+        mon avis l'maestro ne devrait pas avoir le même index.
+        Que se passe t-il pour le maestro si la privatisation est
+        activé? Est-ce que c'est prévu?
+      - Comment faire pour qu'au process n'est le même segment data
+        que le maestro:
+        Le process maestro n'est pas créé avec
+        SIMIX_process_create, et n'est pas comptabilisé avec 
+        SIMIX_process_count.
+        Passage du segment_index du maestro à -1.
+        
+
       
