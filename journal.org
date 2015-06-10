@@ -1556,47 +1556,6 @@
     #+END_EXAMPLE
 ** 2015-05 mai
 *** 2015-05-18 lundi
-    Je suis persuadé que la commande make check qui permet de lancer les test de starpu marchait la dernière fois.
-    J'ai réessayé avec le script de Luka et le mien mais rien..., même erreur que jeudi 23 avril.
-    Ceci dit le problème de librairie qu'avait évoqué Samuel ressort dans les logs
-    #+BEGIN_EXAMPLE
-    ========================================
-    StarPU 1.3.0: tools/test-suite.log
-    ========================================
-    
-    # TOTAL: 3
-    # PASS:  0
-    # SKIP:  0
-    # XFAIL: 0
-    # FAIL:  3
-    # XPASS: 0
-    # ERROR: 0
-    
-    .. contents:: :depth: 2
-    
-    FAIL: starpu_machine_display
-    ============================
-    
-    /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/build-simgrid/tools/.libs/lt-loader: error while loading shared libraries: libsimgrid.so.3.12: cannot open shared object file: No such file or directory
-    FAIL starpu_machine_display (exit status: 127)
-    
-    FAIL: starpu_perfmodel_display
-    ==============================
-    
-    /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/build-simgrid/tools/.libs/lt-loader: error while loading shared libraries: libsimgrid.so.3.12: cannot open shared object file: No such file or directory
-    FAIL starpu_perfmodel_display (exit status: 127)
-    
-    FAIL: starpu_perfmodel_plot
-    ===========================
-    
-    /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/build-simgrid/tools/.libs/lt-loader: error while loading shared libraries: libsimgrid.so.3.12: cannot open shared object file: No such file or directory
-    FAIL starpu_perfmodel_plot (exit status: 127)
-    
-
-    #+END_EXAMPLE
-    
-    En fait ce qui avait marché la dernière c'était la compilation de starpu avec smpi, pas les tests.
-
     Finalement j'ai également pu lancer le make check, c'est juste qu'il manquait les variables d'environnements
     #+BEGIN_EXAMPLE
     . ./flags_simgrid_starpu.sh
@@ -1651,7 +1610,7 @@
       cd src/starpu-mpi/
       make &> ~/org/compile_test_static.txt   
     #+end_src
-
+    
     #+RESULTS:
     [[file:compile_test_static.txt]]
 
