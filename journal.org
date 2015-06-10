@@ -2001,7 +2001,7 @@
         crée ont comme index de segment data la valeur 0 (index =
         pid - 1, cf smpi/private.h:778). Le processus maestro a
         également pour index 0. Cela pourrait donc poser problème et à
-        mon avis l'maestro ne devrait pas avoir le même index.
+        mon avis le maestro ne devrait pas avoir le même index.
         Que se passe t-il pour le maestro si la privatisation est
         activé? Est-ce que c'est prévu?
       - Comment faire pour qu'au process n'est le même segment data
@@ -2015,5 +2015,6 @@
     - [ ] Vérifier comment fonctionne le mécanisme de segment
       virtuel (changement de contexte). Est-ce que le maestro
       utilise un segment virtuel? 
-
-      
+      Apparement aucun smpi_switch_segment_data n'est effectuée pour
+      le maestro.
+      MSG_process_get_data() != SIMIX_process_get_data() ?
