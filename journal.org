@@ -1922,7 +1922,7 @@
       ==24054==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
       ==24054==  Address 0x7a557f8 is 24 bytes after a block of size 64 in arena "client"
       #+END_EXAMPLE
-*** TODO 2015-06-09 mardi [0/1]
+*** DONE 2015-06-09 mardi [1/1]
     - SegFault(suite):
       - Invalid reads trouvés par valgrind:
         #+BEGIN_EXAMPLE
@@ -2012,9 +2012,59 @@
         - Passage du segment_index du maestro à -1. Apparemment cela
           ne change rien, ce qui est normal si ne maestro n'utilise
           pas de segment data virtuel...
-    - [ ] Vérifier comment fonctionne le mécanisme de segment
+    - [X] Vérifier comment fonctionne le mécanisme de segment
       virtuel (changement de contexte). Est-ce que le maestro
       utilise un segment virtuel? 
       Apparement aucun smpi_switch_segment_data n'est effectuée pour
       le maestro.
       MSG_process_get_data() != SIMIX_process_get_data() ?
+      Privatisation pas correct?
+*** DONE 2015-06-11 jeudi [1/1]
+    Dans smpi_process_init on utilisait un index qui était égal au pid
+    -1 mais j'imagine que c'est le segment index du process que l'on
+    veut utiliser la place. De plus j'ai déplacé l'affectation du
+    segment_index pour les process SMPI dans SIMIX_process_create.
+    
+    - [X] Vérification du segment data:
+      - A l'initialisation (smpi_initialize_global_memory_segments): 
+        - création d'un array pour faire correspondre les différents
+          process avec leur zone de mémoire virtuelle. 
+        - création d'une zone en mémoire(mmap)
+        - copie du segment data courant dans la zone.
+      - Au switch (smpi_really_switch_data_segment):
+        - Etablissement swap de segment data (mmap) 
+      - A coup de gdb, les adresses sont bien corrects:
+        #+BEGIN_EXAMPLE
+        Breakpoint 2, smpi_really_switch_data_segment (dest=0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_bench.c:645
+        645     }
+        5: smpi_privatisation_regions[dest] = {address = 0x7ffff4bcd000, file_descriptor = 3}
+        4: SIMIX_process_self()->segment_index = 0
+        3: SIMIX_process_self()->ppid = 0
+        2: SIMIX_process_self()->pid = 1
+        1: dest = 0
+
+        Breakpoint 2, smpi_really_switch_data_segment (dest=1) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_bench.c:645
+        645     }
+        5: smpi_privatisation_regions[dest] = {address = 0x7ffff49e1000, file_descriptor = 4}
+        4: SIMIX_process_self()->segment_index = 1
+        3: SIMIX_process_self()->ppid = 0
+        2: SIMIX_process_self()->pid = 2
+        1: dest = 1
+        
+        Breakpoint 2, smpi_really_switch_data_segment (dest=0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_bench.c:645
+        645     }
+        5: smpi_privatisation_regions[dest] = {address = 0x7ffff4bcd000, file_descriptor = 3}
+        4: SIMIX_process_self()->segment_index = 0
+        3: SIMIX_process_self()->ppid = 1
+        2: SIMIX_process_self()->pid = 3
+        1: dest = 0
+
+        Breakpoint 2, smpi_really_switch_data_segment (dest=1) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_bench.c:645
+        645     }
+        5: smpi_privatisation_regions[dest] = {address = 0x7ffff49e1000, file_descriptor = 4}
+        4: SIMIX_process_self()->segment_index = 1
+        3: SIMIX_process_self()->ppid = 2
+        2: SIMIX_process_self()->pid = 4
+        1: dest = 1
+        #+END_EXAMPLE
+        
