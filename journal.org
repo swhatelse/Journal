@@ -1905,8 +1905,8 @@
     de faire en sorte que la fonction smpi_process_init soit appelé
     avant ou au tout debut de _starpu_mpi_simgrid_init.
     
-*** 2015-06-08 lundi
-    - Modification de l'initialisation côté StarPU: 
+*** DONE 2015-06-08 lundi [1/1]
+    - [X] Modification de l'initialisation côté StarPU: 
       l'appel à MPI_Init_thread est effectué au début de
       _starpu_mpi_initialize pour SimGrid. Car sinon la privatisation
       du segment data est effectué trop tard.
