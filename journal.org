@@ -2070,5 +2070,190 @@
         1: dest = 1
         #+END_EXAMPLE
         
-*** 2015-06-12 vendredi
-    - Update StarPU version
+*** DONE 2015-06-12 vendredi [3/3]
+    - [X] Update StarPU version :
+      Update in branch steven-starpu-update and merge with steven-mpi.
+      Host name récupéré est incorrect lors de l'appel à
+      MSG_process_create_with_arguments(), la fonction
+      starpu_mpi_world_rank() me retourne 91 donnant ->
+      StarPU-MPI91-MAIN.
+      - Current vesion
+	#+BEGIN_EXAMPLE
+	Breakpoint 2, _starpu_simgrid_get_host_by_name (name=0x4add9d "MAIN") at ../../src/core/simgrid.c:148
+	(gdb) p mpiname
+	$1 = "StarPU-MPI91-MAIN\000\333\365\377\177\000\000\000\000\000\000\000\000\000"
+	(gdb) p SIMIX_process_self()->name
+	$2 = 0x8f8d80 "0"
+	(gdb) p SIMIX_process_self()->smx_host->key
+	$3 = 0x8fd8b0 "node-1.acme.org"
+	(gdb) p MSG_get_host_by_name("StarPU-MPI0-MAIN")
+	$4 = (struct s_xbt_dictelm *) 0x927f50
+	#+END_EXAMPLE
+      - Old version:
+        #+BEGIN_EXAMPLE
+	#0  _starpu_simgrid_get_host_by_name (name=0x49f53d "MAIN") at ../../src/core/simgrid.c:147
+	(gdb) p MSG_get_host_by_name("StarPU-MPI0-MAIN")
+	$5 = (struct s_xbt_dictelm *) 0x90cf50
+	(gdb) p mpiname
+	$6 = "StarPU-MPI0-MAIN\000\336\333\365\377\177\000\000\060\346\215\000\000\000\000"
+	(gdb) p SIMIX_process_self()->name
+	$7 = 0x8ddd80 "0"
+	(gdb) p SIMIX_process_self()->smx_host
+	$8 = (smx_host_t) 0x8d7e60
+	(gdb) p SIMIX_process_self()->smx_host->key
+	$9 = 0x8e28b0 "node-1.acme.org"
+        #+END_EXAMPLE
+      Ok mauvais merge de ma part.
+    - [X] Invalid read:
+      Seems to be fixed with the update of StarPU.
+      - Former version:
+        - Valgrind report:
+	  #+BEGIN_EXAMPLE
+	  [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+	  [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+	  [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+	  [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+	  [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+	  [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+	  ==27987== Invalid read of size 4
+	  ==27987==    at 0x582583F: smpi_process_index (smpi_global.c:238)
+	  ==27987==    by 0x5822DD0: smpi_comm_rank (smpi_comm.c:167)
+	  ==27987==    by 0x5835F39: PMPI_Comm_rank (smpi_pmpi.c:681)
+	  ==27987==    by 0x5828190: MPI_Comm_rank (smpi_mpi.c:225)
+	  ==27987==    by 0x404FC4: smpi_simulated_main_ (ring_async_implicit.c:69)
+	  ==27987==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
+	  ==27987==  Address 0x7a55158 is 24 bytes after a block of size 64 in arena "client"
+	  ==27987== 
+	  ==27987== (action on error) vgdb me ... 
+	  ==27987== Continuing ...
+	  ==27987== Invalid read of size 4
+	  ==27987==    at 0x58278BF: smpi_group_rank (smpi_group.c:106)
+	  ==27987==  Address 0x8257c00 is 16 bytes before a block of size 16 alloc'd
+	  ==27987==    at 0x4C2C080: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+	  ==27987==    by 0x56B2EF0: xbt_malloc0 (sysdep.h:110)
+	  ==27987==    by 0x56B2EF0: SIMIX_cond_init (smx_synchro.c:263)
+	  ==27987==    by 0x56B7D10: SIMIX_simcall_handle (popping_generated.c:613)
+	  ==27987==    by 0x56972ED: simcall_BODY_cond_init (popping_bodies.c:2028)
+	  ==27987==    by 0x569C3D7: simcall_cond_init (libsmx.c:1211)
+	  ==27987==    by 0x57D17DD: xbt_cond_init (xbt_sg_synchro.c:165)
+	  ==27987==    by 0x57D1977: xbt_barrier_init (xbt_sg_synchro.c:207)
+	  ==27987==    by 0x582651C: smpi_global_init (smpi_global.c:459)
+	  ==27987==    by 0x5826EE0: smpi_main (smpi_global.c:663)
+	  ==27987==    by 0x43ED24: main (simgrid.c:195)
+	  ==27987== 
+	  ==27987== (action on error) vgdb me ... 
+	  ==27987== Continuing ...
+	  Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+	  Start with token value 0
+	  ==27987== Invalid read of size 1
+	  ==27987==    at 0x6189DF0: __strcmp_sse2_unaligned (in /usr/lib/libc-2.21.so)
+	  ==27987==    by 0x43F4BA: _starpu_simgrid_submit_job (simgrid.c:324)
+	  ==27987==    by 0x485A66: execute_job_on_cpu (driver_cpu.c:110)
+	  ==27987==    by 0x48618F: _starpu_cpu_driver_run_once (driver_cpu.c:280)
+	  ==27987==    by 0x486295: _starpu_cpu_worker (driver_cpu.c:337)
+	  ==27987==    by 0x4408DE: _starpu_simgrid_thread_start (simgrid.c:663)
+	  ==27987==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
+	  ==27987==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+          #+END_EXAMPLE
+        - GDB report:
+	  #+BEGIN_EXAMPLE
+	  Program received signal SIGTRAP, Trace/breakpoint trap.
+	  0x000000000582583f in smpi_process_index ()
+	  at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:238
+	  warning: Source file is more recent than executable.
+	  238
+	  (gdb) cont
+	  Continuing.
+	  
+	  Program received signal SIGTRAP, Trace/breakpoint trap.
+	  0x00000000058278bf in smpi_group_rank (group=0x8257950, index=128)
+	  at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_group.c:106
+	  106       rank = group->index_to_rank_map[index];
+	  (gdb) 
+	  Continuing.
+	  
+	  Program received signal SIGTRAP, Trace/breakpoint trap.
+	  0x0000000006189df0 in __strcmp_sse2_unaligned () from /usr/lib/libc.so.6
+	  (gdb) cont
+	  Continuing.
+	  
+	  Program received signal SIGSEGV, Segmentation fault.
+	  0x0000000006189df0 in __strcmp_sse2_unaligned () from /usr/lib/libc.so.6
+	  #+END_EXAMPLE
+      - New version:
+	- Valgrind report:
+	  #+BEGIN_EXAMPLE
+	  [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+	  [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+	  [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+	  [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+	  [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+	  [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+	  [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+	  Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+	  ==27622== Invalid read of size 1
+	  ==27622==    at 0x6189DF0: __strcmp_sse2_unaligned (in /usr/lib/libc-2.21.so)
+	  ==27622==    by 0x449753: _starpu_simgrid_submit_job (simgrid.c:327)
+	  ==27622==    by 0x495200: execute_job_on_cpu (driver_cpu.c:110)
+	  ==27622==    by 0x495988: _starpu_cpu_driver_run_once (driver_cpu.c:285)
+	  ==27622==    by 0x495A8E: _starpu_cpu_worker (driver_cpu.c:342)
+	  ==27622==    by 0x44AB15: _starpu_simgrid_thread_start (simgrid.c:663)
+	  ==27622==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
+	  ==27622==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+	  #+END_EXAMPLE
+      SegFault and the message "Error while opening the inputfile"
+      still exitsts.
+    - [X] Segfault, strcmp_sse2_unaligned:
+      Just desactived for now.
+      
