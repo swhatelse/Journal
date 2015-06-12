@@ -5,7 +5,7 @@
 #+STARTUP: indent
 #+TAGS: noexport(n)
 
-#+Title: \textbf{TER} \\ Simulation d'application dynamiques pour plateformes de calculs hautes performances
+#+Title: \textbf{TER} \\ Simulation d'applications dynamiques pour plateformes de calculs hautes performances
 #+Author: Steven QUINITO MASNADA
 #+DATE: Grenoble, 8 Juin 2015
 
@@ -101,7 +101,7 @@
   - Un runtime développé au LaBRI (RUNTIME/STORM).
   - Graphe de dépendances $\leadsto$ ordonnancemment *dynamique et opportuniste*
   - Première version pour système hybrique et récémment StarPU MPI 
-- *Problèmatique* : Performances difficiles à évaluer car exécution du
+- *Problématique* : Performances difficiles à évaluer car exécution du
   flot de contrôle non déterministe
   - Configuration *runtime*, heuristique d'ordonnancement
   - Configuration *application*, découpage en tâches
@@ -145,7 +145,7 @@ noeud*.
 #+END_LaTeX
 - Dans SimGrid les *processus* sont *modélisés par des threads* $\leadsto$
   espace adressage partagé.
-- MPI environnment à *mémoire distribuée*.
+- MPI environnement à *mémoire distribuée*.
 - Mécanisme de privatisation: *ségment virtuel* (mmap)
   
 
@@ -263,7 +263,7 @@ noeud*.
 ** Rermerciements
 Merci pour votre attention.
 
-Merci à Arnaud LEGRAND pour m'avoir permis de faire une stage dans son
+Merci à Arnaud LEGRAND pour m'avoir permis de faire un stage dans son
 équipe et pour avoir été autant disponible.
 ** Annexe: Construction de l'application MPI simulée
    #+BEGIN_LaTeX
