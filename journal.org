@@ -2070,12 +2070,12 @@
         1: dest = 1
         #+END_EXAMPLE
         
-*** DONE 2015-06-12 vendredi [3/3]
+*** DONE 2015-06-12 friday [3/3]
     - [X] Update StarPU version :
       Update in branch steven-starpu-update and merge with steven-mpi.
-      Host name récupéré est incorrect lors de l'appel à
-      MSG_process_create_with_arguments(), la fonction
-      starpu_mpi_world_rank() me retourne 91 donnant ->
+      Host name is incorrect when calling
+      MSG_process_create_with_arguments(), the function 
+      starpu_mpi_world_rank() returns 91 giving ->
       StarPU-MPI91-MAIN.
       - Current vesion
 	#+BEGIN_EXAMPLE
@@ -2103,7 +2103,7 @@
 	(gdb) p SIMIX_process_self()->smx_host->key
 	$9 = 0x8e28b0 "node-1.acme.org"
         #+END_EXAMPLE
-      Ok mauvais merge de ma part.
+      Ok bad merge from my part.
     - [X] Invalid read:
       Seems to be fixed with the update of StarPU.
       - Former version:
