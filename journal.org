@@ -2021,9 +2021,11 @@
       Privatisation pas correct?
 *** DONE 2015-06-11 jeudi [1/1]
     Dans smpi_process_init on utilisait un index qui était égal au pid
-    -1 mais j'imagine que c'est le segment index du process que l'on
-    veut utiliser la place. De plus j'ai déplacé l'affectation du
-    segment_index pour les process SMPI dans SIMIX_process_create.
+    -1 (il n'y avait pas d'héritage de segment data et chacun avait le
+    sien) mais j'imagine que maintenant, c'est le segment_index du
+    process que l'on veut utiliser la place. De plus j'ai déplacé
+    l'affectation du segment_index pour les process SMPI dans
+    SIMIX_process_create. 
     
     - [X] Vérification du segment data:
       - A l'initialisation (smpi_initialize_global_memory_segments): 
@@ -2032,8 +2034,8 @@
         - création d'une zone en mémoire(mmap)
         - copie du segment data courant dans la zone.
       - Au switch (smpi_really_switch_data_segment):
-        - Etablissement swap de segment data (mmap) 
-      - A coup de gdb, les adresses sont bien corrects:
+        - Swap de segment data (mmap) 
+      - A coup de gdb, tout semble correct:
         #+BEGIN_EXAMPLE
         Breakpoint 2, smpi_really_switch_data_segment (dest=0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_bench.c:645
         645     }
@@ -2068,3 +2070,5 @@
         1: dest = 1
         #+END_EXAMPLE
         
+*** 2015-06-12 vendredi
+    - Update StarPU version
