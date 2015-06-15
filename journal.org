@@ -2354,120 +2354,120 @@
 	#+BEGIN_EXAMPLE
 	Starting program: /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/callback --cfg=surf/precision:1e-9 --cfg=network/model:SMPI --cfg=network/TCP_gamma:4194304 --cfg=smpi/privatize_global_variables:yes /home/steven/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml tmpEzjktR
         [Thread debugging using libthread_db enabled]
-    Using host libthread_db library "/usr/lib/libthread_db.so.1".
-    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
-    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
-    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
-    [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
-    [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
-    [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
-    [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
-[0][starpu_mpi][callback] x=40
-[0][starpu_mpi][callback] x=41
-[0][starpu_mpi][prologue_callback] y=12
-[0][starpu_mpi][prologue_callback] y=13
-    Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileWarning: element with specified key does not exist ((null)|00000000)
-    Element (null)|00000000 will take 0 seconds
-*** Error in `/home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/callback': free(): invalid size: 0x00000000008fce90 ***
-    ======= Backtrace: =========
-    /usr/lib/libc.so.6(+0x71bad)[0x7ffff67e6bad]
-    /usr/lib/libc.so.6(+0x770fe)[0x7ffff67ec0fe]
-    /usr/lib/libc.so.6(+0x778db)[0x7ffff67ec8db]
-    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(smx_ctx_base_free+0x49)[0x7ffff73a58b5]
-    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(+0x36dde4)[0x7ffff73a5de4]
-    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(+0x37cdc5)[0x7ffff73b4dc5]
-    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(SIMIX_process_empty_trash+0xa5)[0x7ffff73b54f8]
-    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(SIMIX_run+0xc56)[0x7ffff73a9be1]
-    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(smpi_main+0x1bb)[0x7ffff752ef26]
-    /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/callback(main+0xc8)[0x44b3e7]
-    /usr/lib/libc.so.6(__libc_start_main+0xf0)[0x7ffff6795790]
-    /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/callback[0x404d49]
-    ======= Memory map: ========
-    00400000-004e2000 r-xp 00000000 08:34 9181435                            /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/callback
-    006e2000-008d7000 rw-s 00000000 00:12 404137                             /dev/shm/my-buffer-iblGBH (deleted)
-    008d7000-00bab000 rw-p 00000000 00:00 0                                  [heap]
-    7ffff41cc000-7ffff41cd000 rw-p 00000000 00:00 0 
-    7ffff41cd000-7ffff41ce000 ---p 00000000 00:00 0 
-    7ffff41ce000-7ffff49cf000 rw-p 00000000 00:00 0 
-    7ffff49cf000-7ffff4bc4000 rw-s 00000000 00:12 404137                     /dev/shm/my-buffer-iblGBH (deleted)
-    7ffff4bc4000-7ffff4db9000 rw-s 00000000 00:12 404136                     /dev/shm/my-buffer-QSfIbS (deleted)
-    7ffff5dbf000-7ffff5dc5000 r-xp 00000000 08:33 5024899                    /usr/lib/libcdt.so.5.0.0
-    7ffff5dc5000-7ffff5fc4000 ---p 00006000 08:33 5024899                    /usr/lib/libcdt.so.5.0.0
-    7ffff5fc4000-7ffff5fc5000 r--p 00005000 08:33 5024899                    /usr/lib/libcdt.so.5.0.0
-    7ffff5fc5000-7ffff5fc6000 rw-p 00006000 08:33 5024899                    /usr/lib/libcdt.so.5.0.0
-    7ffff5fc6000-7ffff5fdc000 r-xp 00000000 08:33 4987244                    /usr/lib/libgcc_s.so.1
-    7ffff5fdc000-7ffff61db000 ---p 00016000 08:33 4987244                    /usr/lib/libgcc_s.so.1
-    7ffff61db000-7ffff61dc000 rw-p 00015000 08:33 4987244                    /usr/lib/libgcc_s.so.1
-    7ffff61dc000-7ffff61f2000 r-xp 00000000 08:33 5024900                    /usr/lib/libcgraph.so.6.0.0
-    7ffff61f2000-7ffff63f1000 ---p 00016000 08:33 5024900                    /usr/lib/libcgraph.so.6.0.0
-    7ffff63f1000-7ffff63f2000 r--p 00015000 08:33 5024900                    /usr/lib/libcgraph.so.6.0.0
-    7ffff63f2000-7ffff63f3000 rw-p 00016000 08:33 5024900                    /usr/lib/libcgraph.so.6.0.0
-    7ffff63f3000-7ffff6565000 r-xp 00000000 08:33 5018844                    /usr/lib/libstdc++.so.6.0.21
-    7ffff6565000-7ffff6765000 ---p 00172000 08:33 5018844                    /usr/lib/libstdc++.so.6.0.21
-    7ffff6765000-7ffff676f000 r--p 00172000 08:33 5018844                    /usr/lib/libstdc++.so.6.0.21
-    7ffff676f000-7ffff6771000 rw-p 0017c000 08:33 5018844                    /usr/lib/libstdc++.so.6.0.21
-    7ffff6771000-7ffff6775000 rw-p 00000000 00:00 0 
-    7ffff6775000-7ffff690e000 r-xp 00000000 08:33 4983932                    /usr/lib/libc-2.21.so
-    7ffff690e000-7ffff6b0d000 ---p 00199000 08:33 4983932                    /usr/lib/libc-2.21.so
-    7ffff6b0d000-7ffff6b11000 r--p 00198000 08:33 4983932                    /usr/lib/libc-2.21.so
-    7ffff6b11000-7ffff6b13000 rw-p 0019c000 08:33 4983932                    /usr/lib/libc-2.21.so
-    7ffff6b13000-7ffff6b17000 rw-p 00000000 00:00 0 
-    7ffff6b17000-7ffff6b2f000 r-xp 00000000 08:33 4983971                    /usr/lib/libpthread-2.21.so
-    7ffff6b2f000-7ffff6d2e000 ---p 00018000 08:33 4983971                    /usr/lib/libpthread-2.21.so
-    7ffff6d2e000-7ffff6d2f000 r--p 00017000 08:33 4983971                    /usr/lib/libpthread-2.21.so
-    7ffff6d2f000-7ffff6d30000 rw-p 00018000 08:33 4983971                    /usr/lib/libpthread-2.21.so
-    7ffff6d30000-7ffff6d34000 rw-p 00000000 00:00 0 
-    7ffff6d34000-7ffff6e37000 r-xp 00000000 08:33 4984015                    /usr/lib/libm-2.21.so
-    7ffff6e37000-7ffff7036000 ---p 00103000 08:33 4984015                    /usr/lib/libm-2.21.so
-    7ffff7036000-7ffff7037000 r--p 00102000 08:33 4984015                    /usr/lib/libm-2.21.so
-    7ffff7037000-7ffff7038000 rw-p 00103000 08:33 4984015                    /usr/lib/libm-2.21.so
-    7ffff7038000-7ffff768d000 r-xp 00000000 08:34 9313161                    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12
-    7ffff768d000-7ffff788c000 ---p 00655000 08:34 9313161                    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12
-    7ffff788c000-7ffff78d8000 rw-p 00654000 08:34 9313161                    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12
-    7ffff78d8000-7ffff78e1000 rw-p 00000000 00:00 0 
-    7ffff78e1000-7ffff78e8000 r-xp 00000000 08:33 4983972                    /usr/lib/librt-2.21.so
-    7ffff78e8000-7ffff7ae7000 ---p 00007000 08:33 4983972                    /usr/lib/librt-2.21.so
-    7ffff7ae7000-7ffff7ae8000 r--p 00006000 08:33 4983972                    /usr/lib/librt-2.21.so
-    7ffff7ae8000-7ffff7ae9000 rw-p 00007000 08:33 4983972                    /usr/lib/librt-2.21.so
-    7ffff7ae9000-7ffff7bd9000 r-xp 00000000 08:33 5014440                    /usr/lib/libglpk.so.36.1.2
-    7ffff7bd9000-7ffff7dd9000 ---p 000f0000 08:33 5014440                    /usr/lib/libglpk.so.36.1.2
-    7ffff7dd9000-7ffff7dda000 r--p 000f0000 08:33 5014440                    /usr/lib/libglpk.so.36.1.2
-    7ffff7dda000-7ffff7ddb000 rw-p 000f1000 08:33 5014440                    /usr/lib/libglpk.so.36.1.2
-    7ffff7ddb000-7ffff7dfd000 r-xp 00000000 08:33 4984011                    /usr/lib/ld-2.21.so
-    7ffff7fac000-7ffff7fb3000 rw-p 00000000 00:00 0 
-    7ffff7ff5000-7ffff7ff8000 rw-p 00000000 00:00 0 
-    7ffff7ff8000-7ffff7ffa000 r--p 00000000 00:00 0                          [vvar]
-    7ffff7ffa000-7ffff7ffc000 r-xp 00000000 00:00 0                          [vdso]
-    7ffff7ffc000-7ffff7ffd000 r--p 00021000 08:33 4984011                    /usr/lib/ld-2.21.so
-    7ffff7ffd000-7ffff7ffe000 rw-p 00022000 08:33 4984011                    /usr/lib/ld-2.21.so
-    7ffff7ffe000-7ffff7fff000 rw-p 00000000 00:00 0 
-    7ffffffde000-7ffffffff000 rw-p 00000000 00:00 0                          [stack]
-    ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+        Using host libthread_db library "/usr/lib/libthread_db.so.1".
+        [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+        [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+        [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+        [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+        [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+        [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+        [0][starpu_mpi][callback] x=40
+        [0][starpu_mpi][callback] x=41
+        [0][starpu_mpi][prologue_callback] y=12
+        [0][starpu_mpi][prologue_callback] y=13
+        Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileWarning: element with specified key does not exist ((null)|00000000)
+        Element (null)|00000000 will take 0 seconds
+        *** Error in `/home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/callback': free(): invalid size: 0x00000000008fce90 ***
+        ======= Backtrace: =========
+        /usr/lib/libc.so.6(+0x71bad)[0x7ffff67e6bad]
+        /usr/lib/libc.so.6(+0x770fe)[0x7ffff67ec0fe]
+        /usr/lib/libc.so.6(+0x778db)[0x7ffff67ec8db]
+        /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(smx_ctx_base_free+0x49)[0x7ffff73a58b5]
+        /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(+0x36dde4)[0x7ffff73a5de4]
+        /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(+0x37cdc5)[0x7ffff73b4dc5]
+        /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(SIMIX_process_empty_trash+0xa5)[0x7ffff73b54f8]
+        /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(SIMIX_run+0xc56)[0x7ffff73a9be1]
+        /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12(smpi_main+0x1bb)[0x7ffff752ef26]
+        /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/callback(main+0xc8)[0x44b3e7]
+        /usr/lib/libc.so.6(__libc_start_main+0xf0)[0x7ffff6795790]
+        /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/callback[0x404d49]
+        ======= Memory map: ========
+        00400000-004e2000 r-xp 00000000 08:34 9181435                            /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/callback
+        006e2000-008d7000 rw-s 00000000 00:12 404137                             /dev/shm/my-buffer-iblGBH (deleted)
+        008d7000-00bab000 rw-p 00000000 00:00 0                                  [heap]
+        7ffff41cc000-7ffff41cd000 rw-p 00000000 00:00 0 
+        7ffff41cd000-7ffff41ce000 ---p 00000000 00:00 0 
+        7ffff41ce000-7ffff49cf000 rw-p 00000000 00:00 0 
+        7ffff49cf000-7ffff4bc4000 rw-s 00000000 00:12 404137                     /dev/shm/my-buffer-iblGBH (deleted)
+        7ffff4bc4000-7ffff4db9000 rw-s 00000000 00:12 404136                     /dev/shm/my-buffer-QSfIbS (deleted)
+        7ffff5dbf000-7ffff5dc5000 r-xp 00000000 08:33 5024899                    /usr/lib/libcdt.so.5.0.0
+        7ffff5dc5000-7ffff5fc4000 ---p 00006000 08:33 5024899                    /usr/lib/libcdt.so.5.0.0
+        7ffff5fc4000-7ffff5fc5000 r--p 00005000 08:33 5024899                    /usr/lib/libcdt.so.5.0.0
+        7ffff5fc5000-7ffff5fc6000 rw-p 00006000 08:33 5024899                    /usr/lib/libcdt.so.5.0.0
+        7ffff5fc6000-7ffff5fdc000 r-xp 00000000 08:33 4987244                    /usr/lib/libgcc_s.so.1
+        7ffff5fdc000-7ffff61db000 ---p 00016000 08:33 4987244                    /usr/lib/libgcc_s.so.1
+        7ffff61db000-7ffff61dc000 rw-p 00015000 08:33 4987244                    /usr/lib/libgcc_s.so.1
+        7ffff61dc000-7ffff61f2000 r-xp 00000000 08:33 5024900                    /usr/lib/libcgraph.so.6.0.0
+        7ffff61f2000-7ffff63f1000 ---p 00016000 08:33 5024900                    /usr/lib/libcgraph.so.6.0.0
+        7ffff63f1000-7ffff63f2000 r--p 00015000 08:33 5024900                    /usr/lib/libcgraph.so.6.0.0
+        7ffff63f2000-7ffff63f3000 rw-p 00016000 08:33 5024900                    /usr/lib/libcgraph.so.6.0.0
+        7ffff63f3000-7ffff6565000 r-xp 00000000 08:33 5018844                    /usr/lib/libstdc++.so.6.0.21
+        7ffff6565000-7ffff6765000 ---p 00172000 08:33 5018844                    /usr/lib/libstdc++.so.6.0.21
+        7ffff6765000-7ffff676f000 r--p 00172000 08:33 5018844                    /usr/lib/libstdc++.so.6.0.21
+        7ffff676f000-7ffff6771000 rw-p 0017c000 08:33 5018844                    /usr/lib/libstdc++.so.6.0.21
+        7ffff6771000-7ffff6775000 rw-p 00000000 00:00 0 
+        7ffff6775000-7ffff690e000 r-xp 00000000 08:33 4983932                    /usr/lib/libc-2.21.so
+        7ffff690e000-7ffff6b0d000 ---p 00199000 08:33 4983932                    /usr/lib/libc-2.21.so
+        7ffff6b0d000-7ffff6b11000 r--p 00198000 08:33 4983932                    /usr/lib/libc-2.21.so
+        7ffff6b11000-7ffff6b13000 rw-p 0019c000 08:33 4983932                    /usr/lib/libc-2.21.so
+        7ffff6b13000-7ffff6b17000 rw-p 00000000 00:00 0 
+        7ffff6b17000-7ffff6b2f000 r-xp 00000000 08:33 4983971                    /usr/lib/libpthread-2.21.so
+        7ffff6b2f000-7ffff6d2e000 ---p 00018000 08:33 4983971                    /usr/lib/libpthread-2.21.so
+        7ffff6d2e000-7ffff6d2f000 r--p 00017000 08:33 4983971                    /usr/lib/libpthread-2.21.so
+        7ffff6d2f000-7ffff6d30000 rw-p 00018000 08:33 4983971                    /usr/lib/libpthread-2.21.so
+        7ffff6d30000-7ffff6d34000 rw-p 00000000 00:00 0 
+        7ffff6d34000-7ffff6e37000 r-xp 00000000 08:33 4984015                    /usr/lib/libm-2.21.so
+        7ffff6e37000-7ffff7036000 ---p 00103000 08:33 4984015                    /usr/lib/libm-2.21.so
+        7ffff7036000-7ffff7037000 r--p 00102000 08:33 4984015                    /usr/lib/libm-2.21.so
+        7ffff7037000-7ffff7038000 rw-p 00103000 08:33 4984015                    /usr/lib/libm-2.21.so
+        7ffff7038000-7ffff768d000 r-xp 00000000 08:34 9313161                    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12
+        7ffff768d000-7ffff788c000 ---p 00655000 08:34 9313161                    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12
+        7ffff788c000-7ffff78d8000 rw-p 00654000 08:34 9313161                    /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/lib/libsimgrid.so.3.12
+        7ffff78d8000-7ffff78e1000 rw-p 00000000 00:00 0 
+        7ffff78e1000-7ffff78e8000 r-xp 00000000 08:33 4983972                    /usr/lib/librt-2.21.so
+        7ffff78e8000-7ffff7ae7000 ---p 00007000 08:33 4983972                    /usr/lib/librt-2.21.so
+        7ffff7ae7000-7ffff7ae8000 r--p 00006000 08:33 4983972                    /usr/lib/librt-2.21.so
+        7ffff7ae8000-7ffff7ae9000 rw-p 00007000 08:33 4983972                    /usr/lib/librt-2.21.so
+        7ffff7ae9000-7ffff7bd9000 r-xp 00000000 08:33 5014440                    /usr/lib/libglpk.so.36.1.2
+        7ffff7bd9000-7ffff7dd9000 ---p 000f0000 08:33 5014440                    /usr/lib/libglpk.so.36.1.2
+        7ffff7dd9000-7ffff7dda000 r--p 000f0000 08:33 5014440                    /usr/lib/libglpk.so.36.1.2
+        7ffff7dda000-7ffff7ddb000 rw-p 000f1000 08:33 5014440                    /usr/lib/libglpk.so.36.1.2
+        7ffff7ddb000-7ffff7dfd000 r-xp 00000000 08:33 4984011                    /usr/lib/ld-2.21.so
+        7ffff7fac000-7ffff7fb3000 rw-p 00000000 00:00 0 
+        7ffff7ff5000-7ffff7ff8000 rw-p 00000000 00:00 0 
+        7ffff7ff8000-7ffff7ffa000 r--p 00000000 00:00 0                          [vvar]
+        7ffff7ffa000-7ffff7ffc000 r-xp 00000000 00:00 0                          [vdso]
+        7ffff7ffc000-7ffff7ffd000 r--p 00021000 08:33 4984011                    /usr/lib/ld-2.21.so
+        7ffff7ffd000-7ffff7ffe000 rw-p 00022000 08:33 4984011                    /usr/lib/ld-2.21.so
+        7ffff7ffe000-7ffff7fff000 rw-p 00000000 00:00 0 
+        7ffffffde000-7ffffffff000 rw-p 00000000 00:00 0                          [stack]
+        ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
 	#+END_EXAMPLE
       It seems that SIMIX is trying to free a context that has already
       been free'd. But When I check on gdb if that context has been
