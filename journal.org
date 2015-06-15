@@ -1787,7 +1787,7 @@
     starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
     Mais quelque chose ne doit pas être correct à l'attribution du
     segment data.
-** 2015-06 Juin
+** 2015-06 Juin [3/5]
 *** 2015-06-01 lundi
     Regardons si l'adresse pointé par ready_requests est correct pour
     chacun ds process MPI:
@@ -2070,7 +2070,7 @@
         1: dest = 1
         #+END_EXAMPLE
         
-*** TODO 2015-06-12 friday [3/4]
+*** TODO 2015-06-12 friday [2/4]
     - [X] Update StarPU version :
       Update in branch steven-starpu-update and merge with steven-mpi.
       Host name is incorrect when calling
@@ -2254,8 +2254,9 @@
 	  #+END_EXAMPLE
       SegFault and the message "Error while opening the inputfile"
       still exitsts.
-    - [X] Segfault, strcmp_sse2_unaligned:
+    - [ ] Segfault, strcmp_sse2_unaligned in Luka's inject/benchmark functions:
       Just desactived for now.
+      - [ ] check if it is ok without SimGrid.
     - [ ] Memory error on mpi/tests/callback:
       - Valgrind report:
         #+BEGIN_EXAMPLE
@@ -2478,7 +2479,23 @@
       (gdb) info breakpoints 
       Num     Type           Disp Enb Address            What
       1       breakpoint     keep y   0x00007ffff73a5878 in smx_ctx_base_free 
-                                                   at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_base.c:71
-        stop only if context == 0x8fe090
-        breakpoint already hit 1 time
+      at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_base.c:71
+      stop only if context == 0x8fe090
+      breakpoint already hit 1 time
       #+END_EXAMPLE
+      It seems that this happens at the end in starpu_shutdown.
+      Maybe bad sharing done at the begining, context?
+      #+BEGIN_EXAMPLE
+      [StarPU-MPI1-MAIN:main:(4) 5.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:53: [simix_process/DEBUG] Cleanup process main (0x7a55480), waiting synchro (nil)
+      [StarPU-MPI1-MAIN:main:(4) 5.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:99: [simix_process/DEBUG] 0x7a55480 should not be run anymore
+      [StarPU-MPI1-MAIN:main:(4) 5.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:854: [simix_process/DEBUG] Yield process 'main'
+      [5.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:53: [simix_process/DEBUG] Cleanup process main (0x7a55480), waiting synchro (nil)
+      [5.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:99: [simix_process/DEBUG] 0x7a55480 should not be run anymore
+      [StarPU-MPI1-MAIN:main:(4) 5.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:860: [simix_process/DEBUG] Control returned to me: 'main'
+      #+END_EXAMPLE
+      Same process cleaned twice.
+      - [ ] check SIMIX_process_cleanup:
+*** TODO 2015-06-15 monday [0/1]
+    - [ ] sometime in StarPU MPI_Init can be called twice (in the
+      application and in an initialization function of StarPU). So the
+      second needs to be ignored. 
