@@ -2495,6 +2495,136 @@
       #+END_EXAMPLE
       Same process cleaned twice.
       - [ ] check SIMIX_process_cleanup:
+        - It seems to be called twice each time.
+          #+BEGIN_EXAMPLE
+          Breakpoint 1, SIMIX_process_cleanup (process=0x7173770)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          52        XBT_DEBUG("Cleanup process %s (%p), waiting synchro %p",
+          (gdb) display process->pid
+          4: process->pid = 1
+          (gdb) c
+          Continuing.
+          
+          Breakpoint 1, SIMIX_process_cleanup (process=0x7173770)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          52        XBT_DEBUG("Cleanup process %s (%p), waiting synchro %p",
+          4: process->pid = 1
+          (gdb) 
+          Continuing.
+          
+          Breakpoint 1, SIMIX_process_cleanup (process=0x7a54830)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          52        XBT_DEBUG("Cleanup process %s (%p), waiting synchro %p",
+          4: process->pid = 2
+          (gdb) 
+          Continuing.
+          
+          Breakpoint 1, SIMIX_process_cleanup (process=0x7a54830)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          52        XBT_DEBUG("Cleanup process %s (%p), waiting synchro %p",
+          4: process->pid = 2
+          (gdb) 
+          Continuing.
+          
+          Breakpoint 1, SIMIX_process_cleanup (process=0xb2501b0)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          52        XBT_DEBUG("Cleanup process %s (%p), waiting synchro %p",
+          4: process->pid = 8
+          (gdb) 
+          Continuing.
+          
+          Breakpoint 1, SIMIX_process_cleanup (process=0xb2501b0)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          52        XBT_DEBUG("Cleanup process %s (%p), waiting synchro %p",
+          4: process->pid = 8
+          #+END_EXAMPLE
+        - At two different moment:
+          #+BEGIN_EXAMPLE
+          Breakpoint 1, SIMIX_process_cleanup (process=0x8fcc20)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          52        XBT_DEBUG("Cleanup process %s (%p), waiting synchro %p",
+          4: process->pid = 1
+          (gdb) bt
+          #0  SIMIX_process_cleanup (process=0x8fcc20)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          #1  0x00007ffff73a5912 in smx_ctx_base_stop (context=0x8fcdb0)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_base.c:89
+          #2  0x00007ffff73a5e38 in smx_ctx_raw_stop (context=0x8fcdb0)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:402
+          #3  0x00007ffff73a5e1d in smx_ctx_raw_wrapper (context=0x8fcdb0)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:390
+          #4  0x0000000000000000 in ?? ()
+          (gdb) c
+          Continuing.
+          
+          Breakpoint 1, SIMIX_process_cleanup (process=0x8fcc20)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          52        XBT_DEBUG("Cleanup process %s (%p), waiting synchro %p",
+          4: process->pid = 1
+          (gdb) bt
+          #0  SIMIX_process_cleanup (process=0x8fcc20)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          #1  0x00007ffff73bf466 in SIMIX_simcall_handle (simcall=0x8fccb8, value=0)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_generated.c:398
+          #2  0x00007ffff73a9179 in SIMIX_run ()
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_global.c:424
+          #3  0x00007ffff752ef43 in smpi_main (realmain=0x40bfd5 <_starpu_mpi_simgrid_init>, 
+          argc=3, argv=0x7fffffffda48)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:688
+          #4  0x000000000044b3e7 in main (argc=7, argv=0x7fffffffda48)
+          at ../../src/core/simgrid.c:197
+          #+END_EXAMPLE
+        - They are both called in smx_ctx_base_stop:
+          #+BEGIN_EXAMPLE
+          Breakpoint 2, SIMIX_process_cleanup (process=0x8fcc50) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          52	  XBT_DEBUG("Cleanup process %s (%p), waiting synchro %p",
+          (gdb) bt
+          #0  SIMIX_process_cleanup (process=0x8fcc50) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          #1  0x00007ffff73a5912 in smx_ctx_base_stop (context=0x8fcde0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_base.c:89
+          #2  0x00007ffff73a5e38 in smx_ctx_raw_stop (context=0x8fcde0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:402
+          #3  0x00007ffff73a5e1d in smx_ctx_raw_wrapper (context=0x8fcde0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:390
+          #4  0x0000000000000000 in ?? ()
+          (gdb) c
+          Continuing.
+          [node-1.acme.org:0:(1) 0.000013] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:53: [simix_process/DEBUG] Cleanup process 0 (0x8fcc50), waiting synchro (nil)
+          [node-1.acme.org:0:(1) 0.000013] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:99: [simix_process/DEBUG] 0x8fcc50 should not be run anymore
+          
+          Breakpoint 1, simcall_BODY_process_cleanup (process=0x8fcc50) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_bodies.c:1022
+          1022	    smx_process_t self = SIMIX_process_self();
+          (gdb) bt
+          #0  simcall_BODY_process_cleanup (process=0x8fcc50) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_bodies.c:1022
+          #1  0x00007ffff73a2ad7 in simcall_process_cleanup (process=0x8fcc50) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/libsmx.c:617
+          #2  0x00007ffff73a5942 in smx_ctx_base_stop (context=0x8fcde0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_base.c:92
+          #3  0x00007ffff73a5e38 in smx_ctx_raw_stop (context=0x8fcde0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:402
+          #4  0x00007ffff73a5e1d in smx_ctx_raw_wrapper (context=0x8fcde0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:390
+          #5  0x0000000000000000 in ?? ()
+          (gdb) c
+          Continuing.
+          [node-1.acme.org:0:(1) 0.000013] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:854: [simix_process/DEBUG] Yield process '0'
+          
+          Breakpoint 2, SIMIX_process_cleanup (process=0x8fcc50) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          52	  XBT_DEBUG("Cleanup process %s (%p), waiting synchro %p",
+          (gdb) bt
+          #0  SIMIX_process_cleanup (process=0x8fcc50) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:52
+          #1  0x00007ffff73bf466 in SIMIX_simcall_handle (simcall=0x8fcce8, value=0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_generated.c:398
+          #2  0x00007ffff73a9179 in SIMIX_run () at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_global.c:424
+          #3  0x00007ffff752ef43 in smpi_main (realmain=0x40bfd5 <_starpu_mpi_simgrid_init>, argc=3, argv=0x7fffffffdc68)
+          at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:688
+          #4  0x000000000044b3e7 in main (argc=8, argv=0x7fffffffdc68) at ../../src/core/simgrid.c:197
+          #+END_EXAMPLE
+          #+begin_src C
+            void smx_ctx_base_stop(smx_context_t context)
+            {
+              if (context->cleanup_func)
+          -->   context->cleanup_func(context->process);
+              context->process->suspended = 0;
+              context->iwannadie = 0;
+          --> simcall_process_cleanup(context->process);
+              context->iwannadie = 1;
+            }  
+          #+end_src
+          I try to make the call only once but the original problem is
+          still there, it seems to be not related.  
 *** TODO 2015-06-15 monday [0/1]
     - [ ] sometime in StarPU MPI_Init can be called twice (in the
       application and in an initialization function of StarPU). So the
