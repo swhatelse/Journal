@@ -2623,8 +2623,48 @@
               context->iwannadie = 1;
             }  
           #+end_src
-          I try to make the call only once but the original problem is
+          I tried to make the call only once but the original problem is
           still there, it seems to be not related.  
+        - Context free'd two time:
+          - First here:
+            #+BEGIN_EXAMPLE
+            [0.000020] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:117: [simix_process/DEBUG] Getting rid of 0x8fd410
+            
+        --> Breakpoint 5, smx_ctx_base_free (context=0x8fd5a0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_base.c:71
+            71	  if (context) {
+            1: context->argv = (char **) 0x8fd210
+            (gdb) bt
+            #0  smx_ctx_base_free (context=0x8fd5a0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_base.c:71
+            #1  0x00007ffff74a1d75 in smx_ctx_thread_free (pcontext=0x8fd5a0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_thread.c:131
+            #2  0x00007ffff73b4dc7 in SIMIX_context_free (context=0x8fd5a0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_private.h:277
+            #3  0x00007ffff73b54fa in SIMIX_process_empty_trash () at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:119
+            #4  0x00007ffff73a9be3 in SIMIX_run () at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_global.c:493
+            #5  0x00007ffff752ef45 in smpi_main (realmain=0x40bfd5 <_starpu_mpi_simgrid_init>, argc=3, argv=0x7fffffffdc38)
+            at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:688
+            #6  0x000000000044b3e7 in main (argc=9, argv=0x7fffffffdc38) at ../../src/core/simgrid.c:197
+            (gdb) 
+            #+END_EXAMPLE
+          - And then:
+            #+BEGIN_EXAMPLE
+            [StarPU-MPI1-MAIN:main:(4) 5.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:99: [simix_process/DEBUG] 0x8f7930 should not be run anymore
+            [5.000010] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:820: [simix_process/DEBUG] Destroy synchro 0xa426d0
+            [5.000010] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:117: [simix_process/DEBUG] Getting rid of 0x8f7930
+            [Thread 0x7fffeffff700 (LWP 27896) exited]
+            
+        --> Breakpoint 5, smx_ctx_base_free (context=0x8f7ac0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_base.c:71
+            71	  if (context) {
+            1: context->argv = (char **) 0x8fd210
+            (gdb) bt
+            #0  smx_ctx_base_free (context=0x8f7ac0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_base.c:71
+            #1  0x00007ffff74a1d75 in smx_ctx_thread_free (pcontext=0x8f7ac0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_thread.c:131
+            #2  0x00007ffff73b4dc7 in SIMIX_context_free (context=0x8f7ac0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_private.h:277
+            #3  0x00007ffff73b54fa in SIMIX_process_empty_trash () at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:119
+            #4  0x00007ffff73a9be3 in SIMIX_run () at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_global.c:493
+            #5  0x00007ffff752ef45 in smpi_main (realmain=0x40bfd5 <_starpu_mpi_simgrid_init>, argc=3, argv=0x7fffffffdc38)
+            at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:688
+            #6  0x000000000044b3e7 in main (argc=9, argv=0x7fffffffdc38) at ../../src/core/simgrid.c:197
+            #+END_EXAMPLE
+            The two context reference the same context
 *** TODO 2015-06-15 monday [0/1]
     - [ ] sometime in StarPU MPI_Init can be called twice (in the
       application and in an initialization function of StarPU). So the
