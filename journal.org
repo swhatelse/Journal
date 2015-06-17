@@ -1787,7 +1787,7 @@
     starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
     Mais quelque chose ne doit pas être correct à l'attribution du
     segment data.
-** 2015-06 Juin [3/5]
+** 2015-06 Juin [3/6]
 *** 2015-06-01 lundi
     Regardons si l'adresse pointé par ready_requests est correct pour
     chacun ds process MPI:
@@ -2746,7 +2746,16 @@
           Process 1 and 2 are killed before the others with their
           context->argv. But process 3 and 4 use the context->argv of
           process 1 and 2 and free them too when they have done.
+          Maybe 1 and 2 should terminate after 3 and 4.
+        - [ ] Added a quick fix in SimGrid:
+          In SIMIX_process_empty_trash I just make that only smpi
+          process can free a context.
+          Not correct because not all context are freed. We just want
+          to act on context->argv.
 *** TODO 2015-06-15 monday [0/1]
     - [ ] sometime in StarPU MPI_Init can be called twice (in the
       application and in an initialization function of StarPU). So the
       second needs to be ignored. 
+*** TODO 2015-06-17 wednesday [0/1]
+    - [ ] See with Arnaud if it is preferable that smpi process die at
+      last.
