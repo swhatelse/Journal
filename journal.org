@@ -48,11 +48,13 @@
 ** Commandes emacs
    C-c C-h : raccourcis associé au mode utilisé
    C-c C-e : Ouvre menu avec possibilité d'exporter en html, latex, etc...
-** Usefull types
+** Usefull tips
    . ./script.sh --pour export des variables
    ldd permet de connaître les lib dynamques qui ont été linkées.
    nm donne la liste des fonctions d'un programme.
    LD_LIBRARY_PATH: Y pensez car sinon à l'exécution ça ne passe pas.
+   sloccount: permet de connaitre le nombre de ligne de code (sans les
+   commentaires)
 ** GDB
    - watch : break point condition qui permet de surveiller quand une variable change de valeur
 * 2014
@@ -2070,7 +2072,7 @@
         1: dest = 1
         #+END_EXAMPLE
         
-*** TODO 2015-06-12 friday [2/4]
+*** TODO 2015-06-12 friday [3/4]
     - [X] Update StarPU version :
       Update in branch steven-starpu-update and merge with steven-mpi.
       Host name is incorrect when calling
@@ -2257,7 +2259,7 @@
     - [ ] Segfault, strcmp_sse2_unaligned in Luka's inject/benchmark functions:
       Just desactived for now.
       - [ ] check if it is ok without SimGrid.
-    - [-] Memory error on mpi/tests/callback:
+    - [X] Memory error on mpi/tests/callback:
       - Valgrind report:
         #+BEGIN_EXAMPLE
 	==10471== Invalid read of size 8
@@ -2665,7 +2667,7 @@
             #6  0x000000000044b3e7 in main (argc=9, argv=0x7fffffffdc38) at ../../src/core/simgrid.c:197
             #+END_EXAMPLE
             The two context reference the same argv
-      - [ ] Find how two contexts can reference the same argv:
+      - [X] Find how two contexts can reference the same argv:
         - First time:
           #+BEGIN_EXAMPLE
           [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:286: [simix_process/VERBOSE] Create context 1
@@ -2747,15 +2749,31 @@
           context->argv. But process 3 and 4 use the context->argv of
           process 1 and 2 and free them too when they have done.
           Maybe 1 and 2 should terminate after 3 and 4.
-        - [ ] Added a quick fix in SimGrid:
-          In SIMIX_process_empty_trash I just make that only smpi
-          process can free a context.
-          Not correct because not all context are freed. We just want
-          to act on context->argv.
+        - [X] Added a quick fix in SimGrid:
+          #+NAME: smx_ctx_base_free
+          In smx_ctx_base_free pointers are set to NULL and checked
+          before free. A strange thing is that the value of
+          context->argv[0] changes after the call to
+          free(context->argv).
 *** TODO 2015-06-15 monday [0/1]
     - [ ] sometime in StarPU MPI_Init can be called twice (in the
       application and in an initialization function of StarPU). So the
       second needs to be ignored. 
 *** TODO 2015-06-17 wednesday [0/1]
     - [ ] See with Arnaud if it is preferable that smpi process die at
-      last.
+      last and the [[smx_ctx_base_free][quick fix]].
+*** 2015-06-18 thursday
+    - SegFault surf_resource_get_properties:
+      - Incorrect host value and argv
+        #+BEGIN_EXAMPLE
+        #0  0x0000000000000000 in ?? ()
+        #1  0x00007ffff74401d7 in surf_resource_get_properties (resource=0x7ffff6b11b78 <main_arena+88>)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/surf/surf_c_bindings.cpp:304
+    --> #2  0x00007ffff73ab744 in SIMIX_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_host.c:189
+        #3  0x00007ffff73becab in SIMIX_simcall_handle (simcall=0x8f4cf8, value=0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_generated.c:189
+        #4  0x00007ffff73a91d5 in SIMIX_run () at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_global.c:424
+    --> #5  0x00007ffff752ef9f in smpi_main (realmain=0x40bcfe <_starpu_mpi_simgrid_init>, argc=3, argv=0x7fffffffda18)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:688
+        #6  0x0000000000448dab in main (argc=8, argv=0x7fffffffda18) at ../../src/core/simgrid.c:197      
+        #+END_EXAMPLE
+
