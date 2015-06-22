@@ -55,6 +55,7 @@
    LD_LIBRARY_PATH: Y pensez car sinon à l'exécution ça ne passe pas.
    sloccount: permet de connaitre le nombre de ligne de code (sans les
    commentaires)
+   ./configure --help 2>&1 | less: to get some infos
 ** GDB
    - watch : break point condition qui permet de surveiller quand une variable change de valeur
 * 2014
@@ -1789,7 +1790,7 @@
     starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
     Mais quelque chose ne doit pas être correct à l'attribution du
     segment data.
-** 2015-06 Juin [3/6]
+** 2015-06 Juin [3/7]
 *** 2015-06-01 lundi
     Regardons si l'adresse pointé par ready_requests est correct pour
     chacun ds process MPI:
@@ -2762,9 +2763,9 @@
 *** TODO 2015-06-17 wednesday [0/1]
     - [ ] See with Arnaud if it is preferable that smpi process die at
       last and the [[smx_ctx_base_free][quick fix]].
-*** 2015-06-18 thursday
-    - SegFault surf_resource_get_properties:
-      - Incorrect host value and argv
+*** TODO 2015-06-18 thursday [0/1]
+    - [ ] SegFault surf_resource_get_properties async_ring_implicit:
+      - Incorrect host value and argv:
         #+BEGIN_EXAMPLE
         #0  0x0000000000000000 in ?? ()
         #1  0x00007ffff74401d7 in surf_resource_get_properties (resource=0x7ffff6b11b78 <main_arena+88>)
@@ -2776,4 +2777,97 @@
         at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:688
         #6  0x0000000000448dab in main (argc=8, argv=0x7fffffffda18) at ../../src/core/simgrid.c:197      
         #+END_EXAMPLE
-
+        At this time no argv have been freed.
+      - What happens before the simcall:
+        #+BEGIN_EXAMPLE
+        Breakpoint 3, simcall_BODY_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_bodies.c:105
+        105         smx_process_t self = SIMIX_process_self();
+        (gdb) bt
+        #0  simcall_BODY_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_bodies.c:105
+        #1  0x00007ffff73a1ce2 in simcall_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/libsmx.c:79
+        #2  0x00007ffff7370962 in MSG_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:293
+        #3  0x00007ffff737083b in MSG_host_get_property_value (host=0x7ffff6b11b78 <main_arena+88>, name=0x7ffff756f7b7 "data")
+        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:280
+    --> #4  0x00007ffff7370115 in MSG_host_get_data (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:99
+        #5  0x0000000000420a6e in starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:205
+        #6  0x0000000000462738 in _starpu_memory_node_get_local_key () at ../../src/datawizard/memory_nodes.c:70
+        #7  0x000000000047793c in starpu_data_get_local_ptr (handle=0xb84200) at ../../src/datawizard/interfaces/data_interface.c:476
+        #8  0x0000000000406d3b in _starpu_mpi_isend_size_func (req=0xb9e070) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:370
+        #9  0x000000000040a05e in _starpu_mpi_handle_ready_request (req=0xb9e070) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1124
+        #10 0x000000000040aed6 in _starpu_mpi_progress_thread_func (arg=0x8f5820) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1320
+        #11 0x000000000040bcf7 in _starpu_mpi_initialize (argc=0x7ffff5dbdfbc, argv=0x7ffff5dbdfb0, initialize_mpi=1, comm=0x8f5660)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1577
+        #12 0x000000000040bd2c in _starpu_mpi_simgrid_init (argc=1, argv=0x8ec300) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1596
+        #13 0x00007ffff73a5e6d in smx_ctx_raw_wrapper (context=0x8f4df0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+        #14 0x0000000000000000 in ?? ()
+        (gdb) p SIMIX_process_self()->pid
+        $3 = 1
+        #+END_EXAMPLE
+        The value return by MSG_host_self() is odd.
+        #+BEGIN_EXAMPLE
+        #5  0x0000000000420a6e in starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:205
+        (gdb) p MSG_host_self()
+        $7 = (struct s_xbt_dictelm *) 0x7ffff6b11b78 <main_arena+88>
+        #+END_EXAMPLE
+      - What MSG_host_self() return after the creation of the process
+        of pid 1?
+        #+BEGIN_EXAMPLE
+        Breakpoint 1, SIMIX_process_create (process=0x7ffff5dbdca0, name=0x4aa622 "main", code=0x404f1a <smpi_simulated_main_>, data=0x7ffff00009b0,
+        hostname=0x92d670 "StarPU-MPI0-MAIN", kill_time=-1, argc=1, argv=0x8ec300, properties=0x0, auto_restart=0, parent_process=0x8f4c70)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:238
+        (gdb) p parent_process->pid
+        $2 = 1
+        (gdb) p MSG_host_self()
+        $3 = (struct s_xbt_dictelm *) 0x0
+        #+END_EXAMPLE
+        In the program callback, MSG_host_self() return also null.
+      - At the creation of 1:
+        #+BEGIN_EXAMPLE
+        Breakpoint 4, SIMIX_process_create (process=0x7fffffffd2d0, name=0x8f7450 "0", code=0x40bcfe <_starpu_mpi_simgrid_init>, data=0x8f67f0, hostname=0x8f98e0 "node-1.acme.org", 
+        kill_time=-1, argc=3, argv=0x8ec300, properties=0x0, auto_restart=0, parent_process=0x8ec3c0)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:238
+        238       *process = NULL;
+        (gdb) p ((simdata_process_t*) process->data)->m_host
+        $9 = (msg_host_t) 0x8f98e0
+        (gdb) p process->pid
+        $10 = 1
+        (gdb) p &(((simdata_process_t*) process->data)->m_host)
+        $12 = (msg_host_t *) 0x8eee90
+        #+END_EXAMPLE
+      - It seems the value returned by MSG_host_self is incorrect
+        because the current process is not at MSG process:
+        #+BEGIN_EXAMPLE
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:241: [simix_process/DEBUG] Start process 0 on host 'node-1.acme.org'
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:288: [simix_process/VERBOSE] Create context 0
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:305: [simix_process/DEBUG] Start context '0'
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:309: [simix_process/DEBUG] Inserting 0(node-1.acme.org) in the to_run list
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:241: [simix_process/DEBUG] Start process 1 on host 'node-2.acme.org'
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:288: [simix_process/VERBOSE] Create context 1
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:305: [simix_process/DEBUG] Start context '1'
+        [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:309: [simix_process/DEBUG] Inserting 1(node-2.acme.org) in the to_run list
+        [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+        Breakpoint 1, SIMIX_process_yield (self=0x8f4c60) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:856
+        856       XBT_DEBUG("Yield process '%s'", self->name);
+        (gdb) p SIMIX_process_self()->data
+        $8 = (void *) 0x8ef640
+        (gdb) p ((simdata_process_t*) SIMIX_process_self()->data)->m_host
+        $9 = (msg_host_t) 0x9817d0
+        (gdb) p SIMIX_host_self()
+        $10 = (struct s_xbt_dictelm *) 0x8eee90
+        (gdb) p MSG_host_self()
+        $11 = (struct s_xbt_dictelm *) 0x7ffff6b11b78 <main_arena+88>
+        #+END_EXAMPLE
+        If we use SIMIX_host_self() for SMPI process, it shouldn't be
+        a problem.
+      - Does data remains stable:
+        #+BEGIN_EXAMPLE
+        
+        #+END_EXAMPLE
+      - What can change the value of m_host:
+        - smpi_process_set_user_data
+          #+BEGIN_EXAMPLE
+          
+          #+END_EXAMPLE
+*** 2015-06-22 monday
+    - Compilation problem with libtcmalloc: 
+      Just removed it.
