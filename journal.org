@@ -54,7 +54,7 @@
    . ./script.sh --pour export des variables
    ldd permet de connaître les lib dynamques qui ont été linkées.
    nm donne la liste des fonctions d'un programme.
-   LD_LIBRARY_PATH: Y pensez car sinon à l'exécution ça ne passe pas.
+   LD_LIBRARY_PATH: Y penser car sinon à l'exécution ça ne passe pas.
    sloccount: permet de connaitre le nombre de ligne de code (sans les
    commentaires)
    ./configure --help 2>&1 | less: to get some infos
@@ -2765,9 +2765,11 @@
 *** TODO 2015-06-17 wednesday [0/1]
     - [ ] See with Arnaud if it is preferable that smpi process die at
       last and the [[smx_ctx_base_free][quick fix]].
-*** TODO 2015-06-18 thursday [0/1]
-    - [ ] SegFault surf_resource_get_properties async_ring_implicit:
-      - Incorrect host value and argv:
+*** 2015-06-18 thursday [0/1]
+**** TODO Error in starpu_task_wait_for_all [0/1]
+    - [ ] SegFault surf_resource_get_properties async_ring_implicit
+***** Incorrect host value and argv:
+      - Informations at the segfault:
         #+BEGIN_EXAMPLE
         #0  0x0000000000000000 in ?? ()
         #1  0x00007ffff74401d7 in surf_resource_get_properties (resource=0x7ffff6b11b78 <main_arena+88>)
@@ -2780,7 +2782,10 @@
         #6  0x0000000000448dab in main (argc=8, argv=0x7fffffffda18) at ../../src/core/simgrid.c:197      
         #+END_EXAMPLE
         At this time no argv have been freed.
-      - What happens before the simcall:
+        This function was called in a simcall and we see that the
+        problem happened before the simcall.
+***** Incorrect value returned by MSG_host_self()
+****** Before the simcall
         #+BEGIN_EXAMPLE
         Breakpoint 3, simcall_BODY_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_bodies.c:105
         105         smx_process_t self = SIMIX_process_self();
@@ -2805,25 +2810,17 @@
         (gdb) p SIMIX_process_self()->pid
         $3 = 1
         #+END_EXAMPLE
-        The value return by MSG_host_self() is odd.
+****** MSG_host_self() is odd
+       In gdb when I look the value returned by MSG_host_self() for
+       the process of pid 1 I can see that it is not what we excepect.
         #+BEGIN_EXAMPLE
         #5  0x0000000000420a6e in starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:205
         (gdb) p MSG_host_self()
         $7 = (struct s_xbt_dictelm *) 0x7ffff6b11b78 <main_arena+88>
         #+END_EXAMPLE
-      - What MSG_host_self() return after the creation of the process
-        of pid 1?
-        #+BEGIN_EXAMPLE
-        Breakpoint 1, SIMIX_process_create (process=0x7ffff5dbdca0, name=0x4aa622 "main", code=0x404f1a <smpi_simulated_main_>, data=0x7ffff00009b0,
-        hostname=0x92d670 "StarPU-MPI0-MAIN", kill_time=-1, argc=1, argv=0x8ec300, properties=0x0, auto_restart=0, parent_process=0x8f4c70)
-        at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:238
-        (gdb) p parent_process->pid
-        $2 = 1
-        (gdb) p MSG_host_self()
-        $3 = (struct s_xbt_dictelm *) 0x0
-        #+END_EXAMPLE
-        In the program callback, MSG_host_self() return also null.
-      - At the creation of 1:
+       Maybe it hasn't been set correctly.
+****** Process 1 seems to be correctly created
+       At the creation the host of the process 1 is correct.
         #+BEGIN_EXAMPLE
         Breakpoint 4, SIMIX_process_create (process=0x7fffffffd2d0, name=0x8f7450 "0", code=0x40bcfe <_starpu_mpi_simgrid_init>, data=0x8f67f0, hostname=0x8f98e0 "node-1.acme.org", 
         kill_time=-1, argc=3, argv=0x8ec300, properties=0x0, auto_restart=0, parent_process=0x8ec3c0)
@@ -2836,6 +2833,7 @@
         (gdb) p &(((simdata_process_t*) process->data)->m_host)
         $12 = (msg_host_t *) 0x8eee90
         #+END_EXAMPLE
+****** MSG_host_self doesn't work for SMPI process
       - It seems the value returned by MSG_host_self is incorrect
         because the current process is not at MSG process:
         #+BEGIN_EXAMPLE
@@ -2861,9 +2859,9 @@
         #+END_EXAMPLE
         If we use SIMIX_host_self() for SMPI process, it shouldn't be
         a problem.
+***** Error in starpu_get_specific & starpu_set_specific 
       - Having replaced MSG_host_self by SIMIX_host_self -> still
         having a segfault:
-        It is because SMPI process' don't have 
         #+BEGIN_EXAMPLE
         Program received signal SIGTRAP, Trace/breakpoint trap.                                                                                                                            
         0x0000000005668860 in MSG_host_get_properties (host=0x0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:291                                       
@@ -2903,9 +2901,9 @@
         #+END_EXAMPLE
 *** 2015-06-22 monday [0/1] 
 **** TODO Compilation problem with libtcmalloc [0/1] : 
-     If the libtcmalloc, it will try to use this lib for linking but
-     it fails for static as there is no .a.
-     Just removed it.
+     If the libtcmalloc is installed, it will try to use this lib for
+     linking but it fails for static as there is no .a.      
+     Just removed it for now.
      - [ ] Inform Samuel about this problem.
 * Experiments
 ** TODO [0/3]
