@@ -1,3 +1,5 @@
+#+TITLE:       Lab book StarPU MPI & Simgrid
+#+AUTHOR:      Steven QUINITO MASNADA
 #+OPTIONS: ^:nil
 
 * TODO A faire [12/15]
@@ -2859,15 +2861,56 @@
         #+END_EXAMPLE
         If we use SIMIX_host_self() for SMPI process, it shouldn't be
         a problem.
-      - Does data remains stable:
+      - Having replaced MSG_host_self by SIMIX_host_self -> still
+        having a segfault:
+        It is because SMPI process' don't have 
         #+BEGIN_EXAMPLE
-        
+        Program received signal SIGTRAP, Trace/breakpoint trap.                                                                                                                            
+        0x0000000005668860 in MSG_host_get_properties (host=0x0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:291                                       
+        291       xbt_assert((host != NULL), "Invalid parameters (host is NULL)");                                                                                                         
+        (gdb) bt                                                                                                                                                                           
+        #0  0x0000000005668860 in MSG_host_get_properties (host=0x0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:291                                   
+        #1  0x000000000566883b in MSG_host_get_property_value (host=0x0, name=0x58677b7 "data") at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:280        
+        #2  0x0000000005668115 in MSG_host_get_data (host=0x0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:99                                          
+        #3  0x0000000000420a1a in starpu_pthread_setspecific (key=2, pointer=0x97ee780) at ../../src/common/thread.c:195                                                                   
+        #4  0x000000000042385b in _starpu_set_current_task (task=0x97ee780) at ../../src/core/task.c:1011                                                                                  
+        #5  0x000000000049a2a8 in _starpu_handle_job_termination (j=0x97ef0a0) at ../../src/core/jobs.c:331                                                                                
+        #6  0x0000000000446c31 in _starpu_repush_task (j=0x97ef0a0) at ../../src/core/sched_policy.c:410                                                                                   
+        #7  0x0000000000446a13 in _starpu_push_task (j=0x97ef0a0) at ../../src/core/sched_policy.c:352
+        #8  0x000000000049ad73 in _starpu_enforce_deps_starting_from_task (j=0x97ef0a0) at ../../src/core/jobs.c:596
+        #9  0x000000000049c202 in _starpu_notify_cg (cg=0x97ef6e0) at ../../src/core/dependencies/cg.c:165
+        #10 0x000000000049c409 in _starpu_notify_cg_list (successors=0x97ec098) at ../../src/core/dependencies/cg.c:214
+        #11 0x0000000000435659 in _starpu_notify_task_dependencies (j=0x97ebf10) at ../../src/core/dependencies/task_deps.c:56
+        #12 0x000000000049c6df in _starpu_notify_dependencies (j=0x97ebf10) at ../../src/core/dependencies/dependencies.c:33
+        #13 0x000000000049a135 in _starpu_handle_job_termination (j=0x97ebf10) at ../../src/core/jobs.c:305
+        #14 0x0000000000446c31 in _starpu_repush_task (j=0x97ebf10) at ../../src/core/sched_policy.c:410
+        #15 0x0000000000446a13 in _starpu_push_task (j=0x97ebf10) at ../../src/core/sched_policy.c:352
+        #16 0x000000000049ac18 in _starpu_enforce_deps_and_schedule (j=0x97ebf10) at ../../src/core/jobs.c:573
+        #17 0x0000000000421bb1 in _starpu_submit_job (j=0x97ebf10) at ../../src/core/task.c:363
+        #18 0x00000000004228cd in starpu_task_submit (task=0x97ebd40) at ../../src/core/task.c:664
+        #19 0x0000000000422947 in _starpu_task_submit_internally (task=0x97ebd40) at ../../src/core/task.c:681
+        #20 0x000000000043216c in _starpu_unlock_post_sync_tasks (handle=0x97d3610) at ../../src/core/dependencies/implicit_data_deps.c:518
+        #21 0x00000000004735d4 in starpu_data_release_on_node (handle=0x97d3610, node=0) at ../../src/datawizard/user_interactions.c:345
+        #22 0x0000000000473672 in starpu_data_release (handle=0x97d3610) at ../../src/datawizard/user_interactions.c:360
+        #23 0x0000000000409589 in _starpu_mpi_handle_request_termination (req=0x97eb2a0) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:939
+        #24 0x0000000000409bbf in _starpu_mpi_test_detached_requests () at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1068
+        #25 0x000000000040b01a in _starpu_mpi_progress_thread_func (arg=0x72523c0) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1335
+        #26 0x000000000040bcf7 in _starpu_mpi_initialize (argc=0x7a53fbc, argv=0x7a53fb0, initialize_mpi=1, comm=0x8257a50)
+        at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1577
+        #27 0x000000000040bd2c in _starpu_mpi_simgrid_init (argc=1, argv=0x7173790) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1596
+        #28 0x000000000569de6d in smx_ctx_raw_wrapper (context=0x7173df0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+        #29 0x0000000000000000 in ?? ()
         #+END_EXAMPLE
-      - What can change the value of m_host:
-        - smpi_process_set_user_data
-          #+BEGIN_EXAMPLE
-          
-          #+END_EXAMPLE
-*** 2015-06-22 monday
-    - Compilation problem with libtcmalloc: 
-      Just removed it.
+*** 2015-06-22 monday [0/1] 
+**** TODO Compilation problem with libtcmalloc [0/1] : 
+     If the libtcmalloc, it will try to use this lib for linking but
+     it fails for static as there is no .a.
+     Just removed it.
+     - [ ] Inform Samuel about this problem.
+* Experiments
+** TODO [0/3]
+   - [ ] Prepare all I need for test and check all is ok
+   - [ ] Test on Grid5K
+   - [ ] Test with SimGrid
+** Real
+** Simulation 
