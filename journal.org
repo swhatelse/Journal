@@ -1792,7 +1792,7 @@
     starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
     Mais quelque chose ne doit pas être correct à l'attribution du
     segment data.
-** 2015-06 Juin [3/7]
+** 2015-06 Juin [4/6]
 *** 2015-06-01 lundi
     Regardons si l'adresse pointé par ready_requests est correct pour
     chacun ds process MPI:
@@ -2075,7 +2075,7 @@
         1: dest = 1
         #+END_EXAMPLE
         
-*** TODO 2015-06-12 friday [3/4]
+*** DONE 2015-06-12 friday [4/4]
     - [X] Update StarPU version :
       Update in branch steven-starpu-update and merge with steven-mpi.
       Host name is incorrect when calling
@@ -2259,9 +2259,8 @@
 	  #+END_EXAMPLE
       SegFault and the message "Error while opening the inputfile"
       still exitsts.
-    - [ ] Segfault, strcmp_sse2_unaligned in Luka's inject/benchmark functions:
+    - [X] Segfault, strcmp_sse2_unaligned in Luka's inject/benchmark functions:
       Just desactived for now.
-      - [ ] check if it is ok without SimGrid.
     - [X] Memory error on mpi/tests/callback:
       - Valgrind report:
         #+BEGIN_EXAMPLE
@@ -2907,10 +2906,14 @@
      - [ ] Inform Samuel about this problem.
 * Experiments
 ** TODO [1/3]
-   - [X] Prepare all I need for test and check all is ok
+   - [X] Prepare all I need for test and check all is ok [3/3]
      - [X] Tracing
      - [X] Script for real systems and simulations
+     - [X] Preparing environment
+       - [X] Fxt install
    - [ ] Test on Grid5K
    - [ ] Test with SimGrid
 ** Real
+*** Clusters with GPU
+    - Adonis Grenoble
 ** Simulation 
