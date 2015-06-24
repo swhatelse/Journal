@@ -2906,8 +2906,10 @@
      Just removed it for now.
      - [ ] Inform Samuel about this problem.
 * Experiments
-** TODO [0/3]
-   - [ ] Prepare all I need for test and check all is ok
+** TODO [1/3]
+   - [X] Prepare all I need for test and check all is ok
+     - [X] Tracing
+     - [X] Script for real systems and simulations
    - [ ] Test on Grid5K
    - [ ] Test with SimGrid
 ** Real
