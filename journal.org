@@ -2910,10 +2910,21 @@
      - [X] Tracing
      - [X] Script for real systems and simulations
      - [X] Preparing environment
-       - [X] Fxt install
+       - [X] Fxt install script
+       - [ ] Nodes' config
    - [ ] Test on Grid5K
    - [ ] Test with SimGrid
 ** Real
 *** Clusters with GPU
     - Adonis Grenoble
+*** 2015-06-25 Thursday
+**** Installation StarPU
+    #+BEGIN_EXAMPLE
+    configure: WARNING: Old FxT without fxt.pc file, hoping link will succeed
+    configure: WARNING: GCC plug-ins not supported; StarPU's GCC plug-in will not be built
+    ../configure: line 32672: test: argument expected
+    configure: error: hwloc was not found on your system. If the target machine is hyperthreaded the performance may be impacted a lot.  It is strongly recommended to install hwloc. However, if you really want to use StarPU without enabling hwloc, please restart configure by specifying the option '--without-hwloc'.
+    make: *** No targets specified and no makefile found.  Stop.
+    make: *** No rule to make target `install'.  Stop.
+    #+END_EXAMPLE
 ** Simulation 
