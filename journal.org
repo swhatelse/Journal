@@ -2919,12 +2919,52 @@
     - Adonis Grenoble
 *** 2015-06-25 Thursday
 **** Installation StarPU
-    #+BEGIN_EXAMPLE
-    configure: WARNING: Old FxT without fxt.pc file, hoping link will succeed
-    configure: WARNING: GCC plug-ins not supported; StarPU's GCC plug-in will not be built
-    ../configure: line 32672: test: argument expected
-    configure: error: hwloc was not found on your system. If the target machine is hyperthreaded the performance may be impacted a lot.  It is strongly recommended to install hwloc. However, if you really want to use StarPU without enabling hwloc, please restart configure by specifying the option '--without-hwloc'.
-    make: *** No targets specified and no makefile found.  Stop.
-    make: *** No rule to make target `install'.  Stop.
-    #+END_EXAMPLE
+***** hwloc error
+     Error during the configure, hwloc wasn't found but it has already
+     been installed.
+     #+BEGIN_EXAMPLE
+     configure: WARNING: Old FxT without fxt.pc file, hoping link will succeed
+     configure: WARNING: GCC plug-ins not supported; StarPU's GCC plug-in will not be built
+     ../configure: line 32672: test: argument expected
+     configure: error: hwloc was not found on your system. If the target machine is hyperthreaded the performance may be impacted a lot.  It is strongly recommended to install hwloc. However, if you really want to use StarPU without enabling hwloc, please restart configure by specifying the option '--without-hwloc'.
+     make: *** No targets specified and no makefile found.  Stop.
+     make: *** No rule to make target `install'.  Stop.
+     #+END_EXAMPLE
+***** SegFault
+      It seems to a problem with environment vars.
+      #+BEGIN_EXAMPLE
+      STARPU_SCHED=dmda STARPU_GENERATE_TRACE=1 STARPU_NOPENCL=0 /usr/bin/mpirun -hostfile /root/experiments/hostfile  /root/experiments/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit  
+      [starpu][starpu_initialize] Warning: StarPU was configured with --enable-debug (-O0), and is thus not optimized
+      [starpu][starpu_initialize] Warning: StarPU was configured with --enable-spinlock-check, which slows down a bit
+      [starpu][starpu_initialize] Warning: StarPU was configured with --with-fxt, which slows down a bit
+      [adonis-9:00974] *** Process received signal ***
+      [adonis-9:00974] Signal: Segmentation fault (11)
+      [adonis-9:00974] Signal code: Address not mapped (1)
+      [adonis-9:00974] Failing at address: 0x170
+      [adonis-9:00974] [ 0] /lib/x86_64-linux-gnu/libpthread.so.0(+0xf0a0) [0x7f3194e220a0]
+      [adonis-9:00974] [ 1] /lib/x86_64-linux-gnu/libc.so.6(getenv+0x90) [0x7f319448d130]
+      [adonis-9:00974] [ 2] /root/experiments/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit() [0x483994]
+      [adonis-9:00974] [ 3] /root/experiments/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit() [0x483a39]
+      [adonis-9:00974] [ 4] /root/experiments/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit(starpu_memchunk_tidy+0x43) [0x486360]
+      [adonis-9:00974] [ 5] /root/experiments/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit(__starpu_datawizard_progress+0xa0) [0x47ecfa]
+      [adonis-9:00974] [ 6] /root/experiments/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit(_starpu_cuda_driver_run_once+0x6b7) [0x4b638f]
+      [adonis-9:00974] [ 7] /root/experiments/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit(_starpu_cuda_worker+0x33) [0x4b668c]
+      [adonis-9:00974] [ 8] /lib/x86_64-linux-gnu/libpthread.so.0(+0x6b50) [0x7f3194e19b50]
+      [adonis-9:00974] [ 9] /lib/x86_64-linux-gnu/libc.so.6(clone+0x6d) [0x7f319453295d]
+      [adonis-9:00974] *** End of error message ***
+      --------------------------------------------------------------------------
+      mpirun noticed that process rank 0 with PID 974 on node adonis-9.grenoble.grid5000.fr exited on signal 11 (Segmentation fault).
+      #+END_EXAMPLE
+      Strange thing, the name passed to the function was truncated
+      #+BEGIN_EXAMPLE
+      #1  0x0000000000485dd0 in starpu_get_env_number (str=0x4e7390 "STARPU_TARGET_AVAILABLE_MEM") at ../../include/starpu_util.h:236 
+      236             strval = getenv(str);
+
+      #0  *__GI_getenv (name=0x4e7392 "ARPU_TARGET_AVAILABLE_MEM") at getenv.c:84 
+      84      getenv.c: No such file or directory.
+      (gdb) p name    
+ -->  $1 = 0x4e7392 "ARPU_TARGET_AVAILABLE_MEM"
+      (gdb) p (char*)0x4e7390
+ -->  *$2 = 0x4e7390 "STARPU_TARGET_AVAILABLE_MEM"
+      #+END_EXAMPLE
 ** Simulation 
