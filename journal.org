@@ -2766,7 +2766,13 @@
       last and the [[smx_ctx_base_free][quick fix]].
 *** 2015-06-18 thursday [0/1]
 **** TODO Error in starpu_task_wait_for_all [0/1]
-    - [ ] SegFault surf_resource_get_properties async_ring_implicit
+     This function is called at the end of the programm.
+     Dans StarPU un contexte sert en quelque sorte à regrouper des
+     tâches. Cette fonction va donc pour chaque contexte attendre la
+     fin des tâches.
+
+
+    - [ ] SegFault surf_resource_get_properties ring_async_implicit
 ***** Incorrect host value and argv:
       - Informations at the segfault:
         #+BEGIN_EXAMPLE
@@ -2903,6 +2909,8 @@
      If the libtcmalloc is installed, it will try to use this lib for
      linking but it fails for static as there is no .a.      
      Just removed it for now.
+     This problem seems to happen on archlinux but on debian maybe because
+     the arch version doesn't have .a.
      - [ ] Inform Samuel about this problem.
 * Experiments
 ** TODO [1/3]
