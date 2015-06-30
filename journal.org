@@ -2904,6 +2904,10 @@
      linking but it fails for static as there is no .a.      
      Just removed it for now.
      - [ ] Inform Samuel about this problem.
+*** 2015-06-30 monday
+    - SimGrid Route error:
+      Last commit 0b6f2ace05eb31648ccad6eebac7e65175aa150a
+      Last commit a165070189f9eb79c1ff1ed541ed184e033d350a
 * Experiments
 ** TODO [1/3]
    - [X] Prepare all I need for test and check all is ok [3/3]
