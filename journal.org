@@ -2769,7 +2769,8 @@
      This function is called at the end of the programm.
      Dans StarPU un contexte sert en quelque sorte à regrouper des
      tâches. Cette fonction va donc pour chaque contexte attendre la
-     fin des tâches.
+     fin des tâches. Le problème vient peut-être du fait qu'elle est
+     également appelé pour des processus SMPI.
 
 
     - [ ] SegFault surf_resource_get_properties ring_async_implicit
@@ -2904,6 +2905,52 @@
         #28 0x000000000569de6d in smx_ctx_raw_wrapper (context=0x7173df0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
         #29 0x0000000000000000 in ?? ()
         #+END_EXAMPLE
+	
+***** What
+****** SegFault:
+       #+BEGIN_EXAMPLE
+       #1  0x00007ffff74401d7 in surf_resource_get_properties (resource=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/surf/surf_c_bindings.cpp:304
+       #2  0x00007ffff73ab744 in SIMIX_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_host.c:189
+       #3  0x00007ffff73becab in SIMIX_simcall_handle (simcall=0x8f4cc8, value=0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_generated.c:189
+       #4  0x00007ffff73a91d5 in SIMIX_run () at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_global.c:424
+       #5  0x00007ffff752ef9f in smpi_main (realmain=0x40bcfe <_starpu_mpi_simgrid_init>, argc=3, argv=0x7fffffffe1e8) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:688
+       #6  0x0000000000448dab in main (argc=7, argv=0x7fffffffe1e8) at ../../src/core/simgrid.c:197
+       #+END_EXAMPLE
+***** Who 
+       Called by process of PID 1
+       #+BEGIN_EXAMPLE
+       #1  0x00007ffff74401d7 in surf_resource_get_properties (resource=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/surf/surf_c_bindings.cpp:304
+       #2  0x00007ffff73ab744 in SIMIX_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_host.c:189
+       #3  0x00007ffff73becab in SIMIX_simcall_handle (simcall=0x8f4cc8, value=0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_generated.c:189
+       #4  0x00007ffff73a91d5 in SIMIX_run () at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_global.c:424
+       (gdb) p process->pid
+       $50 = 1
+       #+END_EXAMPLE
+       
+***** When
+      #+BEGIN_EXAMPLE
+      5       breakpoint     keep y   0x00007ffff73972ba in simcall_BODY_host_get_properties at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_bodies.c:105
+        stop only if SIMIX_process_self() == 0x8f4c30
+        breakpoint already hit 1 time
+
+      #+END_EXAMPLE
+      #+BEGIN_EXAMPLE
+      #0  simcall_BODY_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/popping_bodies.c:105
+      #1  0x00007ffff73a1ce2 in simcall_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/libsmx.c:79
+      #2  0x00007ffff7370962 in MSG_host_get_properties (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:293
+      #3  0x00007ffff737083b in MSG_host_get_property_value (host=0x7ffff6b11b78 <main_arena+88>, name=0x7ffff756f7b7 "data") at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:280
+      #4  0x00007ffff7370115 in MSG_host_get_data (host=0x7ffff6b11b78 <main_arena+88>) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/msg/msg_host.c:99
+      #5  0x0000000000420a6e in starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:205
+      #6  0x0000000000462738 in _starpu_memory_node_get_local_key () at ../../src/datawizard/memory_nodes.c:70
+      #7  0x000000000047793c in starpu_data_get_local_ptr (handle=0xb841d0) at ../../src/datawizard/interfaces/data_interface.c:476
+      #8  0x0000000000406d3b in _starpu_mpi_isend_size_func (req=0xb9e040) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:370
+      #9  0x000000000040a05e in _starpu_mpi_handle_ready_request (req=0xb9e040) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1124
+      #10 0x000000000040aed6 in _starpu_mpi_progress_thread_func (arg=0x8f57f0) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1320
+      #11 0x000000000040bcf7 in _starpu_mpi_initialize (argc=0x7ffff5dbdfbc, argv=0x7ffff5dbdfb0, initialize_mpi=1, comm=0x8f5630) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1577
+      #12 0x000000000040bd2c in _starpu_mpi_simgrid_init (argc=1, argv=0x8ec2d0) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1596
+      #13 0x00007ffff73a5e6d in smx_ctx_raw_wrapper (context=0x8f4dc0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+
+      #+END_EXAMPLE
 *** 2015-06-22 monday [0/1] 
 **** TODO Compilation problem with libtcmalloc [0/1] : 
      If the libtcmalloc is installed, it will try to use this lib for
