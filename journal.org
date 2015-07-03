@@ -3054,7 +3054,8 @@
      One process SMPI is created per node. Those process execute the
      _starpu_mpi_progress_thread_func function. I guess it is
      responsible for scheduling charge between nodes.
-**** Lets run untill it crashes
+**** Searching [0/1]
+***** Lets run untill it crashes
       #+BEGIN_EXAMPLE
       #0  0x00007ffff6b11c08 in main_arena () from /usr/lib/libc.so.6
       #1  0x00007ffff74401d7 in surf_resource_get_properties (resource=0x7ffff6b11c18 <main_arena+248>)
@@ -3066,7 +3067,7 @@
       at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:688
       #6  0x0000000000448dab in main (argc=8, argv=0x7fffffffd978) at ../../src/core/simgrid.c:197
       #+END_EXAMPLE
-**** TODO Who is responsible for? [0/1]
+***** TODO Who is responsible for? [0/1]
      - [ ]  Find where and when 1 did this
      It seems it is the pid 1.
      #+BEGIN_EXAMPLE
@@ -3075,7 +3076,7 @@
      (gdb) p simcall->issuer->pid
      $10 = 1
      #+END_EXAMPLE
-**** When simcall_host_get_properties is called by process 1
+***** When simcall_host_get_properties is called by process 1
      - Breakpoint:
        #+BEGIN_EXAMPLE
        (gdb) info breakpoints 
@@ -3105,10 +3106,187 @@
        #14 0x00007ffff6b1e354 in start_thread () from /usr/lib/libpthread.so.0
        #15 0x00007ffff685cbfd in clone () from /usr/lib/libc.so.6
        #+END_EXAMPLE
-**** The request was made by a call to _starpu_mpi_isend_irecv_common
+***** The request was made by a call to _starpu_mpi_isend_irecv_common
+**** What StarPU does
+***** StarPU MPI     
+     #+BEGIN_EXAMPLE
+          STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /usr/bin/mpirun -hostfile hostfile   /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit 
+     #+END_EXAMPLE
+     #+BEGIN_EXAMPLE
+     [starpu][starpu_initialize] Warning: StarPU was configured with --enable-debug (-O0), and is thus not optimized
+     [starpu][starpu_initialize] Warning: StarPU was configured with --enable-spinlock-check, which slows down a bit                                                                    
+     [starpu][starpu_initialize] Warning: StarPU was configured with --enable-verbose, which slows down a bit                                                                           
+     [starpu][starpu_initialize] Warning: StarPU was configured with --with-fxt, which slows down a bit                                                                                 
+     [starpu][starpu_initialize] Warning: StarPU was configured with --enable-debug (-O0), and is thus not optimized                                                                    
+     [starpu][starpu_initialize] Warning: StarPU was configured with --enable-spinlock-check, which slows down a bit                                                                    
+     [starpu][starpu_initialize] Warning: StarPU was configured with --enable-verbose, which slows down a bit                                                                           
+     [starpu][starpu_initialize] Warning: StarPU was configured with --with-fxt, which slows down a bit                                                                                 
+     [starpu][load_bus_latency_file_content] loading latencies from /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency              
+     [starpu][load_bus_latency_file_content] loading latencies from /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency              
+     [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth          
+     [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth          
+     [starpu][_starpu_init_workers_binding] worker 0 type 0 devid 0 bound to cpu 0, STARPU memory node 0                                                                                
+     [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 1 bound to cpu 2, STARPU memory node 0                                                                                
+     [starpu][_starpu_init_workers_binding] worker 0 type 0 devid 0 bound to cpu 0, STARPU memory node 0                                                                                
+     [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 1 bound to cpu 2, STARPU memory node 0                                                                                
+     [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)                                                                                                      
+     [starpu][_starpu_launch_drivers] initialising worker 0/2
+     [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+     [starpu][_starpu_launch_drivers] initialising worker 0/2
+     [starpu][_starpu_driver_start] worker 0x6f7a00 0 for dev 0 is ready on logical cpu 0
+     [starpu][_starpu_driver_start] worker 0x6f7a00 0 cpuset start at 0
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 3937492992
+     [starpu][_starpu_launch_drivers] initialising worker 1/2
+     [starpu][_starpu_driver_start] worker 0x6f7e00 1 for dev 1 is ready on logical cpu 2
+     [starpu][_starpu_driver_start] worker 0x6f7e00 1 cpuset start at 2
+     [starpu][_starpu_launch_drivers] waiting for worker 0 initialization
+     [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+     [starpu][_starpu_launch_drivers] finished launching drivers
+     [starpu][starpu_initialize] Initialisation finished
+     [starpu][_starpu_mpi_progress_thread_func] Calling MPI_Init_thread
+     [starpu][_starpu_driver_start] worker 0x6f7a00 0 for dev 0 is ready on logical cpu 0
+     [starpu][_starpu_driver_start] worker 0x6f7a00 0 cpuset start at 0
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 3937492992
+     [starpu][_starpu_launch_drivers] initialising worker 1/2
+     [starpu][_starpu_driver_start] worker 0x6f7e00 1 for dev 1 is ready on logical cpu 2
+     [starpu][_starpu_driver_start] worker 0x6f7e00 1 cpuset start at 2
+     [starpu][_starpu_launch_drivers] waiting for worker 0 initialization
+     [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+     [starpu][_starpu_launch_drivers] finished launching drivers
+     [starpu][starpu_initialize] Initialisation finished
+     [starpu][_starpu_mpi_progress_thread_func] Calling MPI_Init_thread
+     [starpu][_starpu_mpi_print_thread_level_support] MPI_Init_thread level = MPI_THREAD_SERIALIZED; Multiple threads may make MPI calls, but only one at a time.
+     [starpu][_starpu_mpi_print_thread_level_support] MPI_Init_thread level = MPI_THREAD_SERIALIZED; Multiple threads may make MPI calls, but only one at a time.
+     [starpu][starpu_profiling_set_id] Set id to <1>
+     [starpu][starpu_profiling_set_id] Set id to <0>
+     Start with token value 0
+     [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+     Finished : token value 4096
+     [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+     [starpu][_starpu_deinitialize_registered_performance_models] FREE MODELS !
+     [starpu][_starpu_terminate_workers] wait for worker 0
+     [starpu][_starpu_terminate_workers] wait for worker 1
+     [starpu][_starpu_barrier_destroy] reached_exit 0
+     [starpu][_starpu_barrier_destroy] reached_exit 0
+     [starpu][deinitialize_dmda_policy] total_task_cnt 2048 ready_task_cnt 2048 -> 100.000000
+     [starpu][_starpu_deinitialize_registered_performance_models] FREE MODELS !
+     [starpu][_starpu_terminate_workers] wait for worker 0
+     [starpu][_starpu_terminate_workers] wait for worker 1
+     [starpu][_starpu_barrier_destroy] reached_exit 0
+     [starpu][_starpu_barrier_destroy] reached_exit 0
+     [starpu][deinitialize_dmda_policy] total_task_cnt 2048 ready_task_cnt 2048 -> 100.000000
+     Writing FxT traces into file archeon:/tmp/prof_file_steven_1
+     Writing FxT traces into file archeon:/tmp/prof_file_steven_0
+     [starpu][starpu_shutdown] Shutdown finished
+[1] token = 4096 == 2048 * 2 ?
+     [starpu][starpu_shutdown] Shutdown finished
+
+     #+END_EXAMPLE
+***** StarPU SMPI
+      #+BEGIN_EXAMPLE
+      STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun -hostfile /home/steven/Programmation/TER/starpu-simgrid/src/starpu-mpi/hostfile  -platform /home/steven/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml  /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit  --cfg=smpi/privatize_global_variables:yes
+      #+END_EXAMPLE
+      #+BEGIN_EXAMPLE
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][load_bus_latency_file_content] loading latencies from /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][load_bus_latency_file_content] loading latencies from /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_driver_start] worker 0x6e82b0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6e82b0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_driver_start] worker 0x6e8570 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6e8570 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_driver_start] worker 0x6e8830 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_driver_start] worker 0x6e8830 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_driver_start] worker 0x6e8af0 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_driver_start] worker 0x6e8af0 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][starpu_initialize] Initialisation finished
+      [starpu][starpu_initialize] Initialisation finished
+      Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+      [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+      Warning: element with specified key does not exist ((null)|a10bd9c7)
+      Element (null)|a10bd9c7 will take 0 seconds
+      Segmentation fault.
+      /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun : ligne 461 :  6824 Erreur de segmentation  (core dumped)${EXEC} ${TRACEOPTIONS} ${SIMOPTS} ${PLATFORMTMP} ${APPLICATIONTMP}
+      #+END_EXAMPLE
 *** TODO 2015-07-02 Thursday [0/1]
     - [ ] Update StarPU
+*** 2015-07-03 Friday
+      We calling MPI_Init for the first time I try to see if it was
+      already called. But privatisation has not been activated
+      yet. Maybe that's the problem.
 
+      #+BEGIN_EXAMPLE
+      Program received signal SIGSEGV, Segmentation fault.
+      0x000000000040c67d in _starpu_mpi_progress_thread_func (arg=0xb8c660) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1254
+      warning: Source file is more recent than executable.
+      1254            MSG_process_create_with_arguments("main", smpi_simulated_main_, NULL, _starpu_simgrid_get_host_by_name("MAIN"), *(argc_argv->argc), *(argc_argv->argv));
+      (gdb) bt
+      #0  0x000000000040c67d in _starpu_mpi_progress_thread_func (arg=0xb8c660) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1254
+      #1  0x000000000040e0b9 in _starpu_mpi_initialize (argc=0x0, argv=0x0, initialize_mpi=0, comm=0x8fd630)
+      at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1578
+      #2  0x000000000040e11e in starpu_mpi_init_comm (argc=0x0, argv=0x0, initialize_mpi=0, comm=0x8fd630)
+      at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1604
+      #3  0x000000000040e14d in starpu_mpi_init (argc=0x0, argv=0x0, initialize_mpi=0) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1615
+      #4  0x00000000004050d1 in smpi_simulated_main_ (argc=1, argv=0x8f42d0) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/tests/ring_async.c:81
+      #5  0x00007ffff73a5e6d in smx_ctx_raw_wrapper (context=0x8f7800) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+      #6  0x0000000000000000 in ?? ()
+      (gdb) 
+
+      #+END_EXAMPLE
+
+      - [ ] Did we really need to modify smpi_process_initialized?
+* Changes
+  work in progress
+** SimGrid
+*** Segment data management
+*** Delete shared context only one time 
+*** Many call to MPI_Init
+    In order to be able to call MPI_Init multiple by a same process,
+    now we just check if the smpi process was already initialized by
+    call MPI_Initialized and skipping this initialization if it has
+    already been done.  
+** StarPU
+*** Many call to MPI_Init
 * Experiments
 ** TODO [1/3]
    - [X] Prepare all I need for test and check all is ok [3/3]
