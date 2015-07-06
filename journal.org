@@ -1792,7 +1792,7 @@
     starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
     Mais quelque chose ne doit pas être correct à l'attribution du
     segment data.
-** 2015-06 Juin [4/6]
+** 2015-06 Juin [5/6]
 *** 2015-06-01 lundi
     Regardons si l'adresse pointé par ready_requests est correct pour
     chacun ds process MPI:
@@ -2761,8 +2761,8 @@
     - [ ] sometime in StarPU MPI_Init can be called twice (in the
       application and in an initialization function of StarPU). So the
       second needs to be ignored. 
-*** TODO 2015-06-17 wednesday [0/1]
-    - [ ] See with Arnaud if it is preferable that smpi process die at
+*** DONE 2015-06-17 wednesday [1/1]
+    - [X] See with Arnaud if it is preferable that smpi process die at
       last and the [[smx_ctx_base_free][quick fix]].
 *** 2015-06-18 thursday [0/1]
 **** TODO Error in starpu_task_wait_for_all [0/1]
@@ -3049,6 +3049,8 @@
     New start for the get/setspecific error
     Ce sont les processus SMPI qui executent
     _starpu_mpi_progress_thread_func.
+    *[get/set]specific : attached a data to a thread ( privatisation )*
+
     Request processed by process 1 made the crash
 **** How does StarPU SMPI works
      One process SMPI is created per node. Those process execute the
@@ -3117,7 +3119,7 @@
         The process of rank 0 posted a send request to send to rank 1 and want to call _starpu_mpi_isend_size_func
         #+BEGIN_EXAMPLE
         (gdb) p req->node_tag 
-        $6 = {comm = 0x8fd630, rank = 1, data_tag = 1}
+        $6 = {comm = 0x8fd630, rank = 0, data_tag = 1}
         (gdb) p req->request_type 
         $7 = SEND_REQ
         (gdb) p req->func
@@ -3137,6 +3139,7 @@
         $2 = 2
         #+END_EXAMPLE
 ***** The request was made by a call to _starpu_mpi_isend_irecv_common
+      *Not sure this usefull*
       - Hit 8190 times before the SegFault :
         #+BEGIN_EXAMPLE
         breakpoint     keep y   0x0000000000406d58 in _starpu_mpi_isend_irecv_common at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:286
@@ -3166,6 +3169,14 @@
           - starpu_mpi_issend
           - starpu_mpi_issend_detached
             - _SEND_DATA
+    It seems that we are crashing at the end of the loop.
+    #+BEGIN_EXAMPLE
+    2       breakpoint     keep y   0x0000000000405205 in smpi_simulated_main_ at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/tests/ring_async_implicit.c:114
+        stop only if loop == 2047
+        breakpoint already hit 1 time          
+    #+END_EXAMPLE
+***** Audit Trail
+      setspecific and getspecific must not be based on host but on process.
 **** What StarPU does
 ***** StarPU MPI     
      #+BEGIN_EXAMPLE
@@ -3310,7 +3321,7 @@
 *** TODO 2015-07-02 Thursday [0/1]
     - [ ] Update StarPU
 *** TODO 2015-07-03 Friday [0/1]
-      We calling MPI_Init for the first time I try to see if it was
+      We call MPI_Init for the first time I try to see if it was
       already called. But privatisation has not been activated
       yet. Maybe that's the problem.
 
@@ -3334,6 +3345,43 @@
       #+END_EXAMPLE
 
       - [ ] Did we really need to modify smpi_process_initialized?
+*** TODO 2015-07-06 Monday [0/1]
+    - [ ] Argv must be a copy.
+**** Invalid Read smpi_process_index
+***** Valgrind
+       #+BEGIN_EXAMPLE
+       ==9175== Invalid read of size 4
+       ==9175==    at 0x58258CF: smpi_process_index (smpi_global.c:254)
+       ==9175==    by 0x5825622: smpi_process_initialized (smpi_global.c:181)
+       ==9175==    by 0x583D57D: PMPI_Initialized (smpi_pmpi.c:2597)
+       ==9175==    by 0x5829BCD: MPI_Initialized (smpi_mpi.c:822)
+       ==9175==    by 0x5834723: PMPI_Init (smpi_pmpi.c:30)
+       ==9175==    by 0x5827C17: MPI_Init (smpi_mpi.c:18)
+       ==9175==    by 0x5834A96: PMPI_Init_thread (smpi_pmpi.c:90)
+       ==9175==    by 0x5827C6C: MPI_Init_thread (smpi_mpi.c:33)
+       ==9175==    by 0x40DD2C: _starpu_mpi_initialize (starpu_mpi.c:1535)
+       ==9175==    by 0x40E0A9: _starpu_mpi_simgrid_init (starpu_mpi.c:1597)
+       ==9175==    by 0x569DE6C: smx_ctx_raw_wrapper (smx_context_raw.c:388)
+       ==9175==  Address 0x7a54808 is 24 bytes after a block of size 64 in arena "client"
+       #+END_EXAMPLE
+***** Which process
+       #+BEGIN_EXAMPLE
+       0x00000000058258cf in smpi_process_index () at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:254
+       254       return data ? data->index : MPI_UNDEFINED;
+       (gdb) p SIMIX_process_self()->pid
+       $39 = 2
+       #+END_EXAMPLE
+***** Address of data->index at the initialisation of process 2
+       #+BEGIN_EXAMPLE
+       Breakpoint 2, smpi_process_init (argc=0x7ffff55bafbc, argv=0x7ffff55bafb0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_global.c:75
+       75        int index=-1;
+       (gdb) p &(data->index)
+       $37 = (int *) 0x8fd398
+       (gdb) p SIMIX_process_self()->pid
+       $38 = 2
+       #+END_EXAMPLE
+      Wrong value returned by smpi_process_data?
+      Is data still correct?
 * Changes
   work in progress
 ** SimGrid
