@@ -3250,7 +3250,7 @@
       #+END_EXAMPLE
 *** TODO 2015-07-02 Thursday [0/1]
     - [ ] Update StarPU
-*** 2015-07-03 Friday
+*** TODO 2015-07-03 Friday [0/1]
       We calling MPI_Init for the first time I try to see if it was
       already called. But privatisation has not been activated
       yet. Maybe that's the problem.
