@@ -1792,7 +1792,7 @@
     starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
     Mais quelque chose ne doit pas être correct à l'attribution du
     segment data.
-** 2015-06 Juin [5/6]
+** 2015-06 Juin [6/6]
 *** 2015-06-01 lundi
     Regardons si l'adresse pointé par ready_requests est correct pour
     chacun ds process MPI:
@@ -2757,8 +2757,8 @@
           before free. A strange thing is that the value of
           context->argv[0] changes after the call to
           free(context->argv).
-*** TODO 2015-06-15 monday [0/1]
-    - [ ] sometime in StarPU MPI_Init can be called twice (in the
+*** DONE 2015-06-15 monday [1/1]
+    - [X] sometime in StarPU MPI_Init can be called twice (in the
       application and in an initialization function of StarPU). So the
       second needs to be ignored. 
 *** DONE 2015-06-17 wednesday [1/1]
@@ -3320,11 +3320,11 @@
       #+END_EXAMPLE
 *** TODO 2015-07-02 Thursday [0/1]
     - [ ] Update StarPU
-*** TODO 2015-07-03 Friday [0/1]
-      We call MPI_Init for the first time I try to see if it was
-      already called. But privatisation has not been activated
-      yet. Maybe that's the problem.
-
+*** DONE 2015-07-03 Friday [1/1]
+    We call MPI_Init for the first time I try to see if it was
+    already called. But privatisation has not been activated
+    yet. Maybe that's the problem.
+    
       #+BEGIN_EXAMPLE
       Program received signal SIGSEGV, Segmentation fault.
       0x000000000040c67d in _starpu_mpi_progress_thread_func (arg=0xb8c660) at /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1254
@@ -3344,9 +3344,12 @@
 
       #+END_EXAMPLE
 
-      - [ ] Did we really need to modify smpi_process_initialized?
+      - [X] Did we really need to modify smpi_process_initialized?
 *** TODO 2015-07-06 Monday [0/1]
     - [ ] Argv must be a copy.
+      Is it really necessary. Because the parent doesn't modify it, it
+      use it just to initialize the process SMPI and create a MSG
+      process.
 **** Invalid Read smpi_process_index
 ***** Valgrind
        #+BEGIN_EXAMPLE
@@ -3380,20 +3383,36 @@
        (gdb) p SIMIX_process_self()->pid
        $38 = 2
        #+END_EXAMPLE
-      Wrong value returned by smpi_process_data?
-      Is data still correct?
+      - Wrong value returned by smpi_process_data?
+      - Is data still correct? 
+        Check at the initialization
+        #+BEGIN_EXAMPLE
+        $2 = (smpi_process_data_t) 0x8fd340
+        (gdb) p &data
+        #+END_EXAMPLE
+        
+*** TODO 2015-07-07 Tuesday [0/1]
+    - [ ] Insure that the modification for MPI_Init is correct
+    Why MSG_host_get_data doesn't work with an SMPI process?
+
 * Changes
   work in progress
 ** SimGrid
+*** Initialization 
 *** Segment data management
-*** Delete shared context only one time 
+*** Delete shared argv context only one time 
+    To avoid the double free of a shared argv, we just set to NULL
+    after freeing and check if it has already been freed before freeing.
 *** Many call to MPI_Init
     In order to be able to call MPI_Init multiple by a same process,
     now we just check if the smpi process was already initialized by
     call MPI_Initialized and skipping this initialization if it has
     already been done.  
 ** StarPU
-*** Many call to MPI_Init
+*** Initialization 
+*** Many call to MPI_Init.
+    Skip the assert insuring that MPI_Init should be done by
+    implicitly by StarPU.
 * Experiments
 ** TODO [1/3]
    - [X] Prepare all I need for test and check all is ok [3/3]
