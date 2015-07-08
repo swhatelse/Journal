@@ -7,7 +7,7 @@
     offilne?
     Parce que tout n'est pas exécutes, certains traitements sont
     remplacés par un délais.
-* TODO Simgrid [2/3]
+* TODO Simgrid [2/4]
   - [X] Acutellement quels types de programmes MPI sont testés sous
     Simgrid s'il n'y a pas la privatization entre le processus?
     Seulement des noeuds sur lesquelles tourne un seul processus MPI
@@ -17,9 +17,15 @@
     (communications CPU-GPU et réseau) et de programmation sont
     différents (mémoire partagée, mémoire distribuée).
   - [ ] Comment sont évaluées les performances des calculs coûteux
-    effectués par les utilisateurs, manuellement, où il existe un
+    effectués par les utilisateurs, manuellement, ou il existe un
     mécanisme qui va évaluer la compléxité en temps d'une fonction?
-* DONE StarPU [1/1]
+  - [ ] A quoi sert le champ data de smx_process_t?
+* DONE StarPU [2/2]
   - [X] Où réside la difficulté de programmation des plateformes
     hybrid?
     Découpage des traitement déjà compliqué sans les GPU, encore pire avec.
+  - [X] Pour starpu_[get/set]_specific qu'est-ce que cela implique que l'on
+    utilise ...host_get_data plutôt que ...process_get_data?
+    Si on se base sur le host data les données resteront accessible a
+    tout les process de l'host. Or pthread_getspecific et
+    pthread_setspecific permet de séparer les données entre les threads.

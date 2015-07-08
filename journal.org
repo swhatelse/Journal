@@ -3058,6 +3058,13 @@
      responsible for scheduling charge between nodes.
 **** Searching [1/1]
 ***** Let it run untill it crashes
+      - Debug
+      #+BEGIN_EXAMPLE
+      Warning: element with specified key does not exist ((null)|a10bd9c7)
+      Element (null)|a10bd9c7 will take 0 seconds
+      #+END_EXAMPLE
+
+      - gdb
       #+BEGIN_EXAMPLE
       #0  0x00007ffff6b11c08 in main_arena () from /usr/lib/libc.so.6
       #1  0x00007ffff74401d7 in surf_resource_get_properties (resource=0x7ffff6b11c18 <main_arena+248>)
@@ -3346,8 +3353,8 @@
 
       - [X] Did we really need to modify smpi_process_initialized?
 *** TODO 2015-07-06 Monday [0/1]
-    - [ ] Argv must be a copy.
-      Is it really necessary. Because the parent doesn't modify it, it
+    - [ ] Argv should be a copy.
+      Is it really necessary? Because the parent doesn't modify it, it
       use it just to initialize the process SMPI and create a MSG
       process.
 **** Invalid Read smpi_process_index
@@ -3391,9 +3398,9 @@
         (gdb) p &data
         #+END_EXAMPLE
         
-*** TODO 2015-07-07 Tuesday [0/1]
+*** TODO 2015-07-07 Tuesday [0/2]
     - [ ] Insure that the modification for MPI_Init is correct
-    Why MSG_host_get_data doesn't work with an SMPI process?
+    - [ ] Maybe find why MSG_host_get_data doesn't work with an SMPI process?
 
 * Changes
   work in progress
@@ -3413,6 +3420,7 @@
 *** Many call to MPI_Init.
     Skip the assert insuring that MPI_Init should be done by
     implicitly by StarPU.
+
 * Experiments
 ** TODO [1/3]
    - [X] Prepare all I need for test and check all is ok [3/3]
@@ -3464,6 +3472,7 @@
       --------------------------------------------------------------------------
       mpirun noticed that process rank 0 with PID 974 on node adonis-9.grenoble.grid5000.fr exited on signal 11 (Segmentation fault).
       #+END_EXAMPLE
+
       Strange thing, the name passed to the function was truncated
       #+BEGIN_EXAMPLE
       #1  0x0000000000485dd0 in starpu_get_env_number (str=0x4e7390 "STARPU_TARGET_AVAILABLE_MEM") at ../../include/starpu_util.h:236 
@@ -3475,5 +3484,1055 @@
  -->  $1 = 0x4e7392 "ARPU_TARGET_AVAILABLE_MEM"
       (gdb) p (char*)0x4e7390
  -->  *$2 = 0x4e7390 "STARPU_TARGET_AVAILABLE_MEM"
+      #+END_EXAMPLE
+
+      #+BEGIN_EXAMPLE
+      STARPU_SCHED=dmda STARPU_GENERATE_TRACE=1 STARPU_NOPENCL=0 /usr/bin/mpirun -hostfile /root/experiments/hostfile valgrind --db-attach=yes  /root/experiments/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit 
+      ==30979== Memcheck, a memory error detector
+      ==30979== Copyright (C) 2002-2011, and GNU GPL'd, by Julian Seward et al.
+      ==30979== Using Valgrind-3.7.0 and LibVEX; rerun with -h for copyright info
+      ==30979== Command: /root/experiments/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit
+      ==30979== 
+      [starpu][starpu_initialize] Warning: StarPU was configured with --enable-debug (-O0), and is thus not optimized
+      [starpu][starpu_initialize] Warning: StarPU was configured with --enable-spinlock-check, which slows down a bit
+      [starpu][starpu_initialize] Warning: StarPU was configured with --enable-verbose, which slows down a bit
+      [starpu][starpu_initialize] Warning: StarPU was configured with --with-fxt, which slows down a bit
+      [starpu][load_bus_affinity_file_content] loading affinities from /root/experiments/src/StarPU/tools/perfmodels/sampling//bus/mirage.affinity
+      [starpu][load_bus_latency_file_content] loading latencies from /root/experiments/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      ==30979== Conditional jump or move depends on uninitialised value(s)
+      ==30979==    at 0xB463BE1: __GI___strncasecmp_l (strcmp.S:243)
+      ==30979==    by 0xB419FE3: ____strtod_l_internal (strtod_l.c:585)
+      ==30979==    by 0xB42F16D: _IO_vfscanf (vfscanf.c:2351)
+      ==30979==    by 0xB4349B7: fscanf (fscanf.c:32)
+      ==30979==    by 0x462875: _starpu_read_double (perfmodel_nan.c:79)
+      ==30979==    by 0x45E95F: load_bus_latency_file_content (perfmodel_bus.c:1033)
+      ==30979==    by 0x45EFDC: load_bus_latency_file (perfmodel_bus.c:1211)
+      ==30979==    by 0x460AF3: _starpu_load_bus_performance_files (perfmodel_bus.c:2420)
+      ==30979==    by 0x441CCC: starpu_initialize (workers.c:1247)
+      ==30979==    by 0x4418D0: starpu_init (workers.c:1104)
+==30979==    by 0x418EC6: main (ring_async_implicit.c:65)
+      ==30903== 
+      ==30903== 
+      ==30903== ---- Attach to debugger ? --- [Return/N/n/Y/y/C/c] ---- c
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0xB466107: __GI___strncasecmp_l (strcmp.S:2255)
+      ==30903==    by 0xB419FE3: ____strtod_l_internal (strtod_l.c:585)
+      ==30903==    by 0xB42F16D: _IO_vfscanf (vfscanf.c:2351)
+      ==30903==    by 0xB4349B7: fscanf (fscanf.c:32)
+      ==30903==    by 0x462875: _starpu_read_double (perfmodel_nan.c:79)
+      ==30903==    by 0x45E95F: load_bus_latency_file_content (perfmodel_bus.c:1033)
+      ==30903==    by 0x45EFDC: load_bus_latency_file (perfmodel_bus.c:1211)
+      ==30903==    by 0x460AF3: _starpu_load_bus_performance_files (perfmodel_bus.c:2420)
+      ==30903==    by 0x441CCC: starpu_initialize (workers.c:1247)
+      ==30903==    by 0x4418D0: starpu_init (workers.c:1104)
+      ==30903==    by 0x418EC6: main (ring_async_implicit.c:65)
+      ==30903== 
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /root/experiments/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 4, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 1 devid 1 bound to cpu 0, STARPU memory node 2
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 0 bound to cpu 2, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 1 bound to cpu 3, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 4 type 0 devid 2 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 5 type 0 devid 3 bound to cpu 5, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 6 type 0 devid 4 bound to cpu 6, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 7 type 0 devid 5 bound to cpu 7, STARPU memory node 0
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][_starpu_launch_drivers] initialising worker 0/8
+      [starpu][_starpu_driver_start] worker 0x717040 0 for dev 0 is ready on logical cpu 4
+      [starpu][_starpu_driver_start] worker 0x717040 0 cpuset start at 4
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 410 MB / Limit 3685 MB / Total 4095 MB / Remains 3685 MB
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 3864002560
+      [starpu][_starpu_cuda_driver_init] cuda (Tesla T10 Processor) dev id 0 worker 0 thread is ready to run on CPU 4 !
+      [starpu][_starpu_launch_drivers] initialising worker 1/8
+      [starpu][_starpu_driver_start] worker 0x717440 1 for dev 1 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x717440 1 cpuset start at 0
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 1: Wasting 410 MB / Limit 3685 MB / Total 4095 MB / Remains 3685 MB
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 2 is 3864002560
+      [starpu][_starpu_cuda_driver_init] cuda (Tesla T10 Processor) dev id 1 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_launch_drivers] initialising worker 2/8
+      [starpu][_starpu_driver_start] worker 0x717840 2 for dev 0 is ready on logical cpu 2
+      [starpu][_starpu_driver_start] worker 0x717840 2 cpuset start at 2
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 25760276480
+      [starpu][_starpu_launch_drivers] initialising worker 3/8
+      [starpu][_starpu_driver_start] worker 0x717c40 3 for dev 1 is ready on logical cpu 3
+      [starpu][_starpu_driver_start] worker 0x717c40 3 cpuset start at 3
+      [starpu][_starpu_launch_drivers] initialising worker 4/8
+      [starpu][_starpu_driver_start] worker 0x718040 4 for dev 2 is ready on logical cpu 1
+      [starpu][_starpu_driver_start] worker 0x718040 4 cpuset start at 1
+      [starpu][_starpu_launch_drivers] initialising worker 5/8
+      [starpu][_starpu_driver_start] worker 0x718440 5 for dev 3 is ready on logical cpu 5
+      [starpu][_starpu_driver_start] worker 0x718440 5 cpuset start at 5
+      [starpu][_starpu_launch_drivers] initialising worker 6/8
+      [starpu][_starpu_driver_start] worker 0x718840 6 for dev 4 is ready on logical cpu 6
+      [starpu][_starpu_driver_start] worker 0x718840 6 cpuset start at 6
+      [starpu][_starpu_launch_drivers] initialising worker 7/8
+      [starpu][_starpu_driver_start] worker 0x718c40 7 for dev 5 is ready on logical cpu 7
+      [starpu][_starpu_driver_start] worker 0x718c40 7 cpuset start at 7
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 4 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 5 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 6 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 7 initialization
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][starpu_initialize] Initialisation finished
+      [starpu][_starpu_mpi_progress_thread_func] Calling MPI_Init_thread
+      ==30903== Thread 12:
+      ==30903== Invalid read of size 8
+      ==30903==    at 0xB46683D: _wordcopy_fwd_dest_aligned (wordcopy.c:205)
+      ==30903==    by 0xB4604DE: __GI_memmove (memmove.c:76)
+      ==30903==    by 0xB467AEB: argz_insert (argz-insert.c:55)
+      ==30903==    by 0x564D595: lt_argz_insert (ltdl.c:1683)
+      ==30903==    by 0x564DEA8: foreachfile_callback (ltdl.c:1722)
+      ==30903==    by 0x564DB85: foreach_dirinpath (ltdl.c:710)
+      ==30903==    by 0x564DC30: lt_dlforeachfile (ltdl.c:1869)
+      ==30903==    by 0x5654FFD: mca_base_component_find (mca_base_component_find.c:281)
+      ==30903==    by 0x5655BD0: mca_base_components_open (mca_base_components_open.c:129)
+      ==30903==    by 0x5671174: opal_paffinity_base_open (paffinity_base_open.c:107)
+      ==30903==    by 0x56467DE: opal_init (opal_init.c:292)
+      ==30903==    by 0x53F5A3C: orte_init (orte_init.c:76)
+      ==30903==  Address 0x18d7e058 is 40 bytes inside a block of size 43 alloc'd
+      ==30903==    at 0x4C28BED: malloc (vg_replace_malloc.c:263)
+      ==30903==    by 0x564C6D8: lt__malloc (lt__alloc.c:54)
+      ==30903==    by 0x564DE21: foreachfile_callback (ltdl.c:1768)
+      ==30903==    by 0x564DB85: foreach_dirinpath (ltdl.c:710)
+      ==30903==    by 0x564DC30: lt_dlforeachfile (ltdl.c:1869)
+      ==30903==    by 0x5654FFD: mca_base_component_find (mca_base_component_find.c:281)
+      ==30903==    by 0x5655BD0: mca_base_components_open (mca_base_components_open.c:129)
+      ==30903==    by 0x5671174: opal_paffinity_base_open (paffinity_base_open.c:107)
+      ==30903==    by 0x56467DE: opal_init (opal_init.c:292)
+      ==30903==    by 0x53F5A3C: orte_init (orte_init.c:76)
+      ==30903==    by 0x516ED46: ompi_mpi_init (ompi_mpi_init.c:344)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903== 
+      ==30903== Syscall param sched_setaffinity(mask) points to unaddressable byte(s)
+      ==30903==    at 0xB4B61D9: syscall (syscall.S:39)
+      ==30903==    by 0x1C6455D5: opal_paffinity_linux_plpa_api_probe_init (plpa_api_probe.c:56)
+      ==30903==    by 0x1C6459A4: opal_paffinity_linux_plpa_init (plpa_runtime.c:37)
+      ==30903==    by 0x1C646369: opal_paffinity_linux_plpa_have_topology_information (plpa_map.c:494)
+      ==30903==    by 0x1C64545F: linux_module_init (paffinity_linux_module.c:119)
+      ==30903==    by 0x56710FA: opal_paffinity_base_select (paffinity_base_select.c:64)
+      ==30903==    by 0x5646824: opal_init (opal_init.c:296)
+      ==30903==    by 0x53F5A3C: orte_init (orte_init.c:76)
+      ==30903==    by 0x516ED46: ompi_mpi_init (ompi_mpi_init.c:344)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+      ==30903== 
+      [adonis-2.grenoble.grid5000.fr:30903] Error in mx_init (error No MX device entry in /dev.)
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x1FEC3630: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0A90D: ibv_open_device@@IBVERBS_1.1 (device.c:144)
+      ==30903==    by 0x208FF42F: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FF605: rdma_create_event_channel (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B1CF: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:244)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903== 
+      ==30903== Use of uninitialised value of size 8
+      ==30903==    at 0xB420EBB: _itoa_word (_itoa.c:195)
+      ==30903==    by 0xB422F96: vfprintf (vfprintf.c:1628)
+      ==30903==    by 0xB449511: vsnprintf (vsnprintf.c:120)
+      ==30903==    by 0xB42C302: snprintf (snprintf.c:35)
+      ==30903==    by 0x1FEC4AB0: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x208FF3C4: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FF605: rdma_create_event_channel (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B1CF: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:244)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0xB420EC5: _itoa_word (_itoa.c:195)
+      ==30903==    by 0xB422F96: vfprintf (vfprintf.c:1628)
+      ==30903==    by 0xB449511: vsnprintf (vsnprintf.c:120)
+      ==30903==    by 0xB42C302: snprintf (snprintf.c:35)
+      ==30903==    by 0x1FEC4AB0: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x208FF3C4: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FF605: rdma_create_event_channel (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B1CF: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:244)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x208FF9C6: rdma_bind_addr (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B2BE: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:260)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==  Address 0x1c64268c is on thread 12's stack
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x208FEB1F: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x2090018D: rdma_destroy_id (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B396: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:300)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==  Address 0x1c642660 is on thread 12's stack
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20900192: rdma_destroy_id (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B396: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:300)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x209001C1: rdma_destroy_id (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B396: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:300)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x208FE7C2: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FFA0F: rdma_bind_addr (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B2BE: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:260)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==  Address 0x1c642550 is on thread 12's stack
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x208FE819: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FFA0F: rdma_bind_addr (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B2BE: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:260)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x208FE8DD: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FFA0F: rdma_bind_addr (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B2BE: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:260)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x208FE609: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FE8EA: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FFA0F: rdma_bind_addr (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2B2BE: mca_btl_openib_build_rdma_addr_list (btl_openib_iwarp.c:260)
+      ==30903==    by 0x20D2DE99: rdmacm_component_init (btl_openib_connect_rdmacm.c:2009)
+      ==30903==    by 0x20D2BC00: ompi_btl_openib_connect_base_init (btl_openib_connect_base.c:214)
+      ==30903==    by 0x20D1C964: btl_openib_component_init (btl_openib_component.c:2355)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x1FEC3630: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0A90D: ibv_open_device@@IBVERBS_1.1 (device.c:144)
+      ==30903==    by 0x20D1B555: init_one_device (btl_openib_component.c:1494)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D1B732: init_one_device (btl_openib_component.c:1114)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D1B74C: init_one_device (btl_openib_component.c:1114)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D1B96F: init_one_device (btl_openib_component.c:1516)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D28D60: ompi_btl_openib_ini_query (btl_openib_ini.c:176)
+      ==30903==    by 0x20D1B98D: init_one_device (btl_openib_component.c:1525)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D28D66: ompi_btl_openib_ini_query (btl_openib_ini.c:177)
+      ==30903==    by 0x20D1B98D: init_one_device (btl_openib_component.c:1525)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D1BB81: init_one_device (btl_openib_component.c:1736)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D1BB90: init_one_device (btl_openib_component.c:1741)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D1AD34: init_one_port (btl_openib_component.c:640)
+      ==30903==    by 0x20D1C1C9: init_one_device (btl_openib_component.c:1749)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D1AD85: init_one_port (btl_openib_component.c:660)
+      ==30903==    by 0x20D1C1C9: init_one_device (btl_openib_component.c:1749)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903== 
+      ==30903== Use of uninitialised value of size 8
+      ==30903==    at 0xB420EBB: _itoa_word (_itoa.c:195)
+      ==30903==    by 0xB422F96: vfprintf (vfprintf.c:1628)
+      ==30903==    by 0xB447998: vsprintf (iovsprintf.c:43)
+      ==30903==    by 0xB42C397: sprintf (sprintf.c:34)
+      ==30903==    by 0x20D1B021: init_one_port (btl_openib_component.c:705)
+      ==30903==    by 0x20D1C1C9: init_one_device (btl_openib_component.c:1749)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0xB420EC5: _itoa_word (_itoa.c:195)
+      ==30903==    by 0xB422F96: vfprintf (vfprintf.c:1628)
+      ==30903==    by 0xB447998: vsprintf (iovsprintf.c:43)
+      ==30903==    by 0xB42C397: sprintf (sprintf.c:34)
+      ==30903==    by 0x20D1B021: init_one_port (btl_openib_component.c:705)
+      ==30903==    by 0x20D1C1C9: init_one_device (btl_openib_component.c:1749)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D1B210: init_one_port (btl_openib_component.c:661)
+      ==30903==    by 0x20D1C1C9: init_one_device (btl_openib_component.c:1749)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D1BB4C: init_one_device (btl_openib_component.c:1727)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x208FF9C6: rdma_bind_addr (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D306E1: rdmacm_component_query (btl_openib_connect_rdmacm.c:1859)
+      ==30903==    by 0x20D2BE17: ompi_btl_openib_connect_base_select_for_local_port (btl_openib_connect_base.c:265)
+      ==30903==    by 0x20D1DA77: btl_openib_component_init (btl_openib_component.c:2665)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==  Address 0x1c6426ac is on thread 12's stack
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x208FE7C2: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FFA0F: rdma_bind_addr (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D306E1: rdmacm_component_query (btl_openib_connect_rdmacm.c:1859)
+      ==30903==    by 0x20D2BE17: ompi_btl_openib_connect_base_select_for_local_port (btl_openib_connect_base.c:265)
+      ==30903==    by 0x20D1DA77: btl_openib_component_init (btl_openib_component.c:2665)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==  Address 0x1c642570 is on thread 12's stack
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x208FE819: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FFA0F: rdma_bind_addr (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D306E1: rdmacm_component_query (btl_openib_connect_rdmacm.c:1859)
+      ==30903==    by 0x20D2BE17: ompi_btl_openib_connect_base_select_for_local_port (btl_openib_connect_base.c:265)
+      ==30903==    by 0x20D1DA77: btl_openib_component_init (btl_openib_component.c:2665)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x208FE8DD: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FFA0F: rdma_bind_addr (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D306E1: rdmacm_component_query (btl_openib_connect_rdmacm.c:1859)
+      ==30903==    by 0x20D2BE17: ompi_btl_openib_connect_base_select_for_local_port (btl_openib_connect_base.c:265)
+      ==30903==    by 0x20D1DA77: btl_openib_component_init (btl_openib_component.c:2665)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D2B035: mca_btl_openib_rdma_get_ipv4addr (btl_openib_iwarp.c:134)
+      ==30903==    by 0x20D30753: rdmacm_component_query (btl_openib_connect_rdmacm.c:1703)
+      ==30903==    by 0x20D2BE17: ompi_btl_openib_connect_base_select_for_local_port (btl_openib_connect_base.c:265)
+      ==30903==    by 0x20D1DA77: btl_openib_component_init (btl_openib_component.c:2665)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x208FFD8E: rdma_listen (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D30942: rdmacm_component_query (btl_openib_connect_rdmacm.c:1881)
+      ==30903==    by 0x20D2BE17: ompi_btl_openib_connect_base_select_for_local_port (btl_openib_connect_base.c:265)
+      ==30903==    by 0x20D1DA77: btl_openib_component_init (btl_openib_component.c:2665)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==  Address 0x1c6426b8 is on thread 12's stack
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x208FE7C2: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FFDC6: rdma_listen (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D30942: rdmacm_component_query (btl_openib_connect_rdmacm.c:1881)
+      ==30903==    by 0x20D2BE17: ompi_btl_openib_connect_base_select_for_local_port (btl_openib_connect_base.c:265)
+      ==30903==    by 0x20D1DA77: btl_openib_component_init (btl_openib_component.c:2665)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==  Address 0x1c6425a0 is on thread 12's stack
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x208FE819: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FFDC6: rdma_listen (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D30942: rdmacm_component_query (btl_openib_connect_rdmacm.c:1881)
+      ==30903==    by 0x20D2BE17: ompi_btl_openib_connect_base_select_for_local_port (btl_openib_connect_base.c:265)
+      ==30903==    by 0x20D1DA77: btl_openib_component_init (btl_openib_component.c:2665)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x208FE8DD: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x208FFDC6: rdma_listen (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D30942: rdmacm_component_query (btl_openib_connect_rdmacm.c:1881)
+      ==30903==    by 0x20D2BE17: ompi_btl_openib_connect_base_select_for_local_port (btl_openib_connect_base.c:265)
+      ==30903==    by 0x20D1DA77: btl_openib_component_init (btl_openib_component.c:2665)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20D1A6C3: prepare_device_for_use (btl_openib_component.c:951)
+      ==30903==    by 0x20D1DF02: btl_openib_component_init (btl_openib_component.c:2708)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==  Address 0x1f09fc9c is 268 bytes inside a block of size 4,576 alloc'd
+      ==30903==    at 0x4C272B8: calloc (vg_replace_malloc.c:566)
+      ==30903==    by 0x1FEC3540: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0A90D: ibv_open_device@@IBVERBS_1.1 (device.c:144)
+      ==30903==    by 0x20D1B555: init_one_device (btl_openib_component.c:1494)
+      ==30903==    by 0x20D1D031: btl_openib_component_init (btl_openib_component.c:2586)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D2929B: btl_openib_async_command_done (btl_openib_async.c:408)
+      ==30903==    by 0x20D1A6DB: prepare_device_for_use (btl_openib_component.c:957)
+      ==30903==    by 0x20D1DF02: btl_openib_component_init (btl_openib_component.c:2708)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==    by 0x51AA878: mca_bml_base_init (bml_base_init.c:69)
+      ==30903==    by 0x1F8A429F: mca_pml_ob1_component_init (pml_ob1_component.c:168)
+      ==30903==    by 0x51B4948: mca_pml_base_select (pml_base_select.c:126)
+      ==30903==    by 0x516EF96: ompi_mpi_init (ompi_mpi_init.c:535)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20B08236: ibv_cmd_reg_mr (cmd.c:251)
+      ==30903==    by 0x1FEC4BF9: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0CC3C: ibv_reg_mr@@IBVERBS_1.1 (verbs.c:165)
+      ==30903==    by 0x20D19804: openib_reg_mr (btl_openib_component.c:508)
+      ==30903==    by 0x1E87527E: register_cache_bypass (mpool_rdma_module.c:174)
+      ==30903==    by 0x1E875D38: mca_mpool_rdma_alloc (mpool_rdma_module.c:117)
+      ==30903==    by 0x51534CF: ompi_free_list_grow (ompi_free_list.c:198)
+      ==30903==    by 0x20D1A7F0: prepare_device_for_use (btl_openib_component.c:1016)
+      ==30903==    by 0x20D1DF02: btl_openib_component_init (btl_openib_component.c:2708)
+      ==30903==    by 0x51AB043: mca_btl_base_select (btl_base_select.c:110)
+      ==30903==    by 0x202EC8B1: mca_bml_r2_component_init (bml_r2_component.c:86)
+      ==30903==  Address 0x1c6425c8 is on thread 12's stack
+      ==30903== 
+      ==30903== Syscall param writev(vector[...]) points to uninitialised byte(s)
+      ==30903==    at 0xB4B2AC7: writev (writev.c:56)
+      ==30903==    by 0x1DE62166: mca_oob_tcp_msg_send_handler (oob_tcp_msg.c:248)
+      ==30903==    by 0x1DE6355C: mca_oob_tcp_peer_send (oob_tcp_peer.c:197)
+      ==30903==    by 0x1DE65C3C: mca_oob_tcp_send_nb (oob_tcp_send.c:167)
+      ==30903==    by 0x1DC587C7: orte_rml_oob_send (rml_oob_send.c:137)
+      ==30903==    by 0x1DC58A9F: orte_rml_oob_send_buffer (rml_oob_send.c:269)
+      ==30903==    by 0x1DA53D72: allgather (grpcomm_bad_module.c:369)
+      ==30903==    by 0x1DA534C9: modex (grpcomm_bad_module.c:497)
+      ==30903==    by 0x516F161: ompi_mpi_init (ompi_mpi_init.c:646)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==  Address 0x1f279757 is 119 bytes inside a block of size 512 alloc'd
+      ==30903==    at 0x4C28CCE: realloc (vg_replace_malloc.c:632)
+      ==30903==    by 0x5647B92: opal_dss_buffer_extend (dss_internal_functions.c:63)
+      ==30903==    by 0x5648544: opal_dss_copy_payload (dss_load_unload.c:164)
+      ==30903==    by 0x1DA53D47: allgather (grpcomm_bad_module.c:363)
+      ==30903==    by 0x1DA534C9: modex (grpcomm_bad_module.c:497)
+      ==30903==    by 0x516F161: ompi_mpi_init (ompi_mpi_init.c:646)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x1FEC4CA9: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0CEBE: ibv_create_cq@@IBVERBS_1.1 (verbs.c:280)
+      ==30903==    by 0x20D179DF: adjust_cq (btl_openib.c:152)
+      ==30903==    by 0x20D188F9: mca_btl_openib_add_procs (btl_openib.c:281)
+      ==30903==    by 0x202EB8B6: mca_bml_r2_add_procs (bml_r2.c:206)
+      ==30903==    by 0x1F8A24DB: mca_pml_ob1_add_procs (pml_ob1.c:316)
+      ==30903==    by 0x516F24E: ompi_mpi_init (ompi_mpi_init.c:687)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x1FEC4CED: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0CEBE: ibv_create_cq@@IBVERBS_1.1 (verbs.c:280)
+      ==30903==    by 0x20D179DF: adjust_cq (btl_openib.c:152)
+      ==30903==    by 0x20D188F9: mca_btl_openib_add_procs (btl_openib.c:281)
+      ==30903==    by 0x202EB8B6: mca_bml_r2_add_procs (bml_r2.c:206)
+      ==30903==    by 0x1F8A24DB: mca_pml_ob1_add_procs (pml_ob1.c:316)
+      ==30903==    by 0x516F24E: ompi_mpi_init (ompi_mpi_init.c:687)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x1FEC4CF5: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0CEBE: ibv_create_cq@@IBVERBS_1.1 (verbs.c:280)
+      ==30903==    by 0x20D179DF: adjust_cq (btl_openib.c:152)
+      ==30903==    by 0x20D188F9: mca_btl_openib_add_procs (btl_openib.c:281)
+      ==30903==    by 0x202EB8B6: mca_bml_r2_add_procs (bml_r2.c:206)
+      ==30903==    by 0x1F8A24DB: mca_pml_ob1_add_procs (pml_ob1.c:316)
+      ==30903==    by 0x516F24E: ompi_mpi_init (ompi_mpi_init.c:687)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x1FEC4CA9: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0CEBE: ibv_create_cq@@IBVERBS_1.1 (verbs.c:280)
+      ==30903==    by 0x20D179DF: adjust_cq (btl_openib.c:152)
+      ==30903==    by 0x20D18922: mca_btl_openib_add_procs (btl_openib.c:286)
+      ==30903==    by 0x202EB8B6: mca_bml_r2_add_procs (bml_r2.c:206)
+      ==30903==    by 0x1F8A24DB: mca_pml_ob1_add_procs (pml_ob1.c:316)
+      ==30903==    by 0x516F24E: ompi_mpi_init (ompi_mpi_init.c:687)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x1FEC4CED: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0CEBE: ibv_create_cq@@IBVERBS_1.1 (verbs.c:280)
+      ==30903==    by 0x20D179DF: adjust_cq (btl_openib.c:152)
+      ==30903==    by 0x20D18922: mca_btl_openib_add_procs (btl_openib.c:286)
+      ==30903==    by 0x202EB8B6: mca_bml_r2_add_procs (bml_r2.c:206)
+      ==30903==    by 0x1F8A24DB: mca_pml_ob1_add_procs (pml_ob1.c:316)
+      ==30903==    by 0x516F24E: ompi_mpi_init (ompi_mpi_init.c:687)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x1FEC4CF5: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0CEBE: ibv_create_cq@@IBVERBS_1.1 (verbs.c:280)
+      ==30903==    by 0x20D179DF: adjust_cq (btl_openib.c:152)
+      ==30903==    by 0x20D18922: mca_btl_openib_add_procs (btl_openib.c:286)
+      ==30903==    by 0x202EB8B6: mca_bml_r2_add_procs (bml_r2.c:206)
+      ==30903==    by 0x1F8A24DB: mca_pml_ob1_add_procs (pml_ob1.c:316)
+      ==30903==    by 0x516F24E: ompi_mpi_init (ompi_mpi_init.c:687)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20B08821: ibv_cmd_create_srq (cmd.c:466)
+      ==30903==    by 0x1FEC50A6: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0D0BB: ibv_create_srq@@IBVERBS_1.1 (verbs.c:364)
+      ==30903==    by 0x20D189F5: mca_btl_openib_add_procs (btl_openib.c:247)
+      ==30903==    by 0x202EB8B6: mca_bml_r2_add_procs (bml_r2.c:206)
+      ==30903==    by 0x1F8A24DB: mca_pml_ob1_add_procs (pml_ob1.c:316)
+      ==30903==    by 0x516F24E: ompi_mpi_init (ompi_mpi_init.c:687)
+      ==30903==    by 0x5190763: PMPI_Init_thread (pinit_thread.c:83)
+      ==30903==    by 0x420EEE: _starpu_mpi_progress_thread_func (starpu_mpi.c:1230)
+      ==30903==    by 0xAB97B4F: start_thread (pthread_create.c:304)
+      ==30903==    by 0xB4B995C: clone (clone.S:112)
+      ==30903==  Address 0x1c642938 is on thread 12's stack
+      ==30903== 
+      [starpu][_starpu_mpi_print_thread_level_support] MPI_Init_thread level = MPI_THREAD_SINGLE; MPI does not have multi-thread support, this might cause problems. The application can make calls to StarPU-MPI functions, but not call directly MPI Communication functions.
+      [starpu][starpu_profiling_set_id] Set id to <0>
+      We need at least 2 processes.
+      ==30903== Thread 1:
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20B08A2D: ibv_cmd_destroy_srq (cmd.c:585)
+      ==30903==    by 0x1FEC515C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20D17F14: mca_btl_openib_finalize_resources (btl_openib.c:1170)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903==  Address 0x7ff000360 is on thread 1's stack
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20B08AAB: ibv_cmd_destroy_srq (cmd.c:591)
+      ==30903==    by 0x1FEC515C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20D17F14: mca_btl_openib_finalize_resources (btl_openib.c:1170)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20D1A07D: device_destruct (btl_openib_component.c:854)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903==  Address 0x7ff00038c is on thread 1's stack
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20D2929B: btl_openib_async_command_done (btl_openib_async.c:408)
+      ==30903==    by 0x20D1A08F: device_destruct (btl_openib_component.c:860)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20B082D1: ibv_cmd_dereg_mr (cmd.c:271)
+      ==30903==    by 0x1FEC4C4C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20B0CCB0: ibv_dereg_mr@@IBVERBS_1.1 (verbs.c:184)
+      ==30903==    by 0x20D19761: openib_dereg_mr (btl_openib_component.c:522)
+      ==30903==    by 0x1E87613D: mca_mpool_rdma_free (mpool_rdma_module.c:89)
+      ==30903==    by 0x5153079: ompi_free_list_destruct (ompi_free_list.c:74)
+      ==30903==    by 0x20D1A1B0: device_destruct (opal_object.h:447)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==  Address 0x7ff0002b8 is on thread 1's stack
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20B086E2: ibv_cmd_destroy_cq (cmd.c:440)
+      ==30903==    by 0x1FEC4F6C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20D1A262: device_destruct (btl_openib_component.c:886)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903==  Address 0x7ff000300 is on thread 1's stack
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20B08772: ibv_cmd_destroy_cq (cmd.c:446)
+      ==30903==    by 0x1FEC4F6C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20D1A262: device_destruct (btl_openib_component.c:886)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20B0877B: ibv_cmd_destroy_cq (cmd.c:446)
+      ==30903==    by 0x1FEC4F6C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20D1A262: device_destruct (btl_openib_component.c:886)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20B086E2: ibv_cmd_destroy_cq (cmd.c:440)
+      ==30903==    by 0x1FEC4F6C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20D1A277: device_destruct (btl_openib_component.c:893)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903==  Address 0x7ff000300 is on thread 1's stack
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20B08772: ibv_cmd_destroy_cq (cmd.c:446)
+      ==30903==    by 0x1FEC4F6C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20D1A277: device_destruct (btl_openib_component.c:893)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20B0877B: ibv_cmd_destroy_cq (cmd.c:446)
+      ==30903==    by 0x1FEC4F6C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20D1A277: device_destruct (btl_openib_component.c:893)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20B08191: ibv_cmd_dealloc_pd (cmd.c:230)
+      ==30903==    by 0x1FEC4B5C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x20D1A2A6: device_destruct (btl_openib_component.c:913)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903==  Address 0x7ff000338 is on thread 1's stack
+      ==30903== 
+      ==30903== Syscall param close(fd) contains uninitialised byte(s)
+      ==30903==    at 0xAB9F25D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20B0A9A7: ibv_close_device@@IBVERBS_1.1 (device.c:175)
+      ==30903==    by 0x20D1A2DA: device_destruct (btl_openib_component.c:920)
+      ==30903==    by 0x20D17E28: mca_btl_openib_finalize_resources (opal_object.h:447)
+      ==30903==    by 0x20D181A5: mca_btl_openib_finalize (btl_openib.c:1209)
+      ==30903==    by 0x51AAA82: mca_btl_base_close (btl_base_close.c:58)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x208FEB1F: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x2090018D: rdma_destroy_id (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2EA63: id_context_destructor (btl_openib_connect_rdmacm.c:185)
+      ==30903==    by 0x20D2E8F0: rdmacm_component_finalize (opal_object.h:447)
+      ==30903==    by 0x20D2B7FA: ompi_btl_openib_connect_base_finalize (btl_openib_connect_base.c:499)
+      ==30903==    by 0x20D19D37: btl_openib_component_close (btl_openib_component.c:197)
+      ==30903==    by 0x5656181: mca_base_components_close (mca_base_components_close.c:53)
+      ==30903==    by 0x51AAAEF: mca_btl_base_close (btl_base_close.c:66)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==  Address 0x7ff000320 is on thread 1's stack
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x20900192: rdma_destroy_id (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2EA63: id_context_destructor (btl_openib_connect_rdmacm.c:185)
+      ==30903==    by 0x20D2E8F0: rdmacm_component_finalize (opal_object.h:447)
+      ==30903==    by 0x20D2B7FA: ompi_btl_openib_connect_base_finalize (btl_openib_connect_base.c:499)
+      ==30903==    by 0x20D19D37: btl_openib_component_close (btl_openib_component.c:197)
+      ==30903==    by 0x5656181: mca_base_components_close (mca_base_components_close.c:53)
+      ==30903==    by 0x51AAAEF: mca_btl_base_close (btl_base_close.c:66)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903== 
+      ==30903== Conditional jump or move depends on uninitialised value(s)
+      ==30903==    at 0x209001C1: rdma_destroy_id (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x20D2EA63: id_context_destructor (btl_openib_connect_rdmacm.c:185)
+      ==30903==    by 0x20D2E8F0: rdmacm_component_finalize (opal_object.h:447)
+      ==30903==    by 0x20D2B7FA: ompi_btl_openib_connect_base_finalize (btl_openib_connect_base.c:499)
+      ==30903==    by 0x20D19D37: btl_openib_component_close (btl_openib_component.c:197)
+      ==30903==    by 0x5656181: mca_base_components_close (mca_base_components_close.c:53)
+      ==30903==    by 0x51AAAEF: mca_btl_base_close (btl_base_close.c:66)
+      ==30903==    by 0x202EC7FD: mca_bml_r2_finalize (bml_r2.c:640)
+      ==30903==    by 0x1F8A430D: mca_pml_ob1_component_fini (pml_ob1_component.c:187)
+      ==30903==    by 0x516FC84: ompi_mpi_finalize (ompi_mpi_finalize.c:201)
+      ==30903==    by 0x418FF5: main (ring_async_implicit.c:77)
+      ==30903== 
+      ==30903== Syscall param write(buf) points to uninitialised byte(s)
+      ==30903==    at 0xAB9F19D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20B08191: ibv_cmd_dealloc_pd (cmd.c:230)
+      ==30903==    by 0x1FEC4B5C: ??? (in /usr/lib/libibverbs/libmlx4-rdmav2.so)
+      ==30903==    by 0x208FE04D: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x4012EF8: _dl_close_worker (dl-close.c:266)
+      ==30903==    by 0x40139CD: _dl_close (dl-close.c:754)
+      ==30903==    by 0x400DBD5: _dl_catch_error (dl-error.c:178)
+      ==30903==    by 0x5CA42EB: _dlerror_run (dlerror.c:164)
+      ==30903==    by 0x5CA400E: dlclose (dlclose.c:48)
+      ==30903==    by 0x565046B: vm_close (dlopen.c:212)
+      ==30903==    by 0x564D17D: lt_dlclose (ltdl.c:1943)
+      ==30903==    by 0x5655322: ri_destructor (mca_base_component_repository.c:380)
+      ==30903==  Address 0x7fefffe48 is on thread 1's stack
+      ==30903== 
+      ==30903== Syscall param close(fd) contains uninitialised byte(s)
+      ==30903==    at 0xAB9F25D: ??? (syscall-template.S:82)
+      ==30903==    by 0x20B0A9A7: ibv_close_device@@IBVERBS_1.1 (device.c:175)
+      ==30903==    by 0x208FE067: ??? (in /usr/lib/librdmacm.so.1.0.0)
+      ==30903==    by 0x4012EF8: _dl_close_worker (dl-close.c:266)
+      ==30903==    by 0x40139CD: _dl_close (dl-close.c:754)
+      ==30903==    by 0x400DBD5: _dl_catch_error (dl-error.c:178)
+      ==30903==    by 0x5CA42EB: _dlerror_run (dlerror.c:164)
+      ==30903==    by 0x5CA400E: dlclose (dlclose.c:48)
+      ==30903==    by 0x565046B: vm_close (dlopen.c:212)
+      ==30903==    by 0x564D17D: lt_dlclose (ltdl.c:1943)
+      ==30903==    by 0x5655322: ri_destructor (mca_base_component_repository.c:380)
+      ==30903==    by 0x56558F0: mca_base_component_repository_release (opal_object.h:447)
+      ==30903== 
+      Writing FxT traces into file adonis-2.grenoble.grid5000.fr:/tmp/prof_file_root_0
+      ==30903== 
+      ==30903== HEAP SUMMARY:
+      ==30903==     in use at exit: 61,333,979 bytes in 123,059 blocks
+      ==30903==   total heap usage: 204,246 allocs, 81,187 frees, 159,911,760 bytes allocated
+      ==30903== 
+      ==30903== LEAK SUMMARY:
+      ==30903==    definitely lost: 79,632 bytes in 93 blocks
+      ==30903==    indirectly lost: 21,182 bytes in 25 blocks
+      ==30903==      possibly lost: 1,738,576 bytes in 12,771 blocks
+      ==30903==    still reachable: 59,494,589 bytes in 110,170 blocks
+      ==30903==         suppressed: 0 bytes in 0 blocks
+      ==30903== Rerun with --leak-check=full to see details of leaked memory
+      ==30903== 
+      ==30903== For counts of detected and suppressed errors, rerun with: -v
+      ==30903== Use --track-origins=yes to see where uninitialised values come from
+      ==30903== ERROR SUMMARY: 978 errors from 67 contexts (suppressed: 20 from 9)
+
       #+END_EXAMPLE
 ** Simulation 
