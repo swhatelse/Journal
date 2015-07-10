@@ -3045,7 +3045,7 @@
      Plateform must be passed before the programm.
     
 ** 2015-07 July
-*** 2015-07-01 wednesday [0/1]
+*** 2015-07-01 wednesday [1/1]
     New start for the get/setspecific error
     Ce sont les processus SMPI qui executent
     _starpu_mpi_progress_thread_func.
@@ -3402,6 +3402,14 @@
     - [ ] Insure that the modification for MPI_Init is correct
     - [ ] Maybe find why MSG_host_get_data doesn't work with an SMPI process?
 
+*** DONE 2015-07-09 Thursday [1/1]
+    - [X] Rename simdata_process_t in msg_process_data_t
+      
+**** set_specific get_specific
+     Those function are based on host's data but must be instead based
+     on process_data.
+     
+     - Look for set bidoule in MSG_process_create or something like that. 
 * Changes
   work in progress
 ** SimGrid
@@ -3415,6 +3423,7 @@
     now we just check if the smpi process was already initialized by
     call MPI_Initialized and skipping this initialization if it has
     already been done.  
+*** Rename simdata_process_t in msg_process_data_t    
 ** StarPU
 *** Initialization 
 *** Many call to MPI_Init.
@@ -3510,7 +3519,7 @@
       ==30979==    by 0x460AF3: _starpu_load_bus_performance_files (perfmodel_bus.c:2420)
       ==30979==    by 0x441CCC: starpu_initialize (workers.c:1247)
       ==30979==    by 0x4418D0: starpu_init (workers.c:1104)
-==30979==    by 0x418EC6: main (ring_async_implicit.c:65)
+      ==30979==    by 0x418EC6: main (ring_async_implicit.c:65)
       ==30903== 
       ==30903== 
       ==30903== ---- Attach to debugger ? --- [Return/N/n/Y/y/C/c] ---- c
@@ -4533,6 +4542,17 @@
       ==30903== For counts of detected and suppressed errors, rerun with: -v
       ==30903== Use --track-origins=yes to see where uninitialised values come from
       ==30903== ERROR SUMMARY: 978 errors from 67 contexts (suppressed: 20 from 9)
+
+      #+END_EXAMPLE
+      #+BEGIN_EXAMPLE
+      *__GI_getenv (name=0x4e9ed5 "ARPU_MINIMUM_AVAILABLE_MEM") at getenv.c:84
+
+      0x00000000004894ec in starpu_get_env_number (
+      str=0x4e9ed3 "STARPU_MINIMUM_AVAILABLE_MEM")
+      at ../../include/starpu_util.h:236
+      236             strval = getenv(str);
+      (gdb) p str
+      $1 = 0x4e9ed3 "STARPU_MINIMUM_AVAILABLE_MEM"
 
       #+END_EXAMPLE
 ** Simulation 
