@@ -3403,13 +3403,31 @@
     - [ ] Maybe find why MSG_host_get_data doesn't work with an SMPI process?
 
 *** DONE 2015-07-09 Thursday [1/1]
-    - [X] Rename simdata_process_t in msg_process_data_t
       
-**** set_specific get_specific
+**** DONE set_specific get_specific [2/2]
      Those function are based on host's data but must be instead based
      on process_data.
-     
-     - Look for set bidoule in MSG_process_create or something like that. 
+     - [X] Rename simdata_process_t in msg_process_data_t
+
+     - [X] Look for set bidoule maybe in MSG_process_create or
+       something like that. 
+       MSG_host_set_data is called in _starpu_simgrid_init.
+       The host data is initialized like follow:
+       #+begin_src C :results output :session :exports both
+         int nb = xbt_dynar_length(hosts);
+         for (i = 0; i < nb; i++)
+           MSG_host_set_data(xbt_dynar_get_as(hosts, i, msg_host_t), calloc(MAX_TSD, sizeof(void*)));
+           
+         xbt_dynar_free(&hosts);         
+       #+end_src
+       
+       En fait ce qu'on a essayé de faire avec set/get_specific n'est
+       peut-être pas correct parce que setspecific est utilisé pour
+       crée une clé au niveau d'un noeud.
+       #+begin_src C :results output :session :exports both
+       _starpu_memory_node_set_local_key(&worker->memory_node); 
+       #+end_src
+
 * Changes
   work in progress
 ** SimGrid
