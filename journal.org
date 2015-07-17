@@ -3402,12 +3402,11 @@
     - [ ] Insure that the modification for MPI_Init is correct
     - [ ] Maybe find why MSG_host_get_data doesn't work with an SMPI process?
 
-*** DONE 2015-07-09 Thursday [1/1]      
-**** DONE starpu_pthread_setspecific starpu_pthread_getspecific [2/2]
+*** 2015-07-09 Thursday [1/1]      
+**** DONE starpu_pthread_setspecific starpu_pthread_getspecific [3/3]
      Those functions are based on host's data but instead must be based
      on process_data.
      - [X] Rename simdata_process_t in msg_process_data_t
-
      - [X] Look for set bidoule maybe in MSG_process_create or
        something like that. 
        MSG_host_set_data is called in _starpu_simgrid_init.
@@ -3427,7 +3426,41 @@
        #+begin_src C :results output :session :exports both
        _starpu_memory_node_set_local_key(&worker->memory_node); 
        #+end_src
+     - [X] Modify starpu_pthread_setspecific and
+       starpu_pthread_getspecific
 
+     - Who use setspecific / getspecific?
+     - It seems that starpu use already the data field to store stuff.
+       
+***** Use of process' data
+      - In starpu_pthread_create_on, storing a _starpu_pthread_args:
+        #+begin_src C :results output :session :exports both
+          struct _starpu_pthread_args
+          {
+            void *(*f)(void*);
+            void *arg;
+          };
+        #+end_src
+        Which stores a function and a _starpu_worker_set:
+        #+begin_src C :results output :session :exports both
+          struct _starpu_worker_set
+          {
+            starpu_pthread_mutex_t mutex;
+            starpu_pthread_t worker_thread; /* the thread which runs the worker */
+            unsigned nworkers;
+            unsigned started; /* Only one thread for the whole set */
+            void *retval;
+            struct _starpu_worker *workers;
+            starpu_pthread_cond_t ready_cond; /* indicate when the set is ready */
+            unsigned set_is_initialized;
+          };
+        #+end_src
+        - process 
+          - data
+            - data
+              - function
+              - _starpu_worker_set
+                
 * Changes
   work in progress
 ** SimGrid
@@ -3449,13 +3482,14 @@
     We made a copy of the argv in _starpu_mpi_progress_thread_func
     before calling MSG_process_create_with_arguments.
 * Experiments
-** TODO [1/3]
-   - [X] Prepare all I need for test and check all is ok [3/3]
+** TODO [0/3]
+   - [-] Prepare all I need for test and check all is ok [2/3]
      - [X] Tracing
      - [X] Script for real systems and simulations
-     - [X] Preparing environment
+     - [-] Preparing environment
        - [X] Fxt install script
        - [ ] Nodes' config
+       - [ ] Test on another cluster
    - [ ] Test on Grid5K
    - [ ] Test with SimGrid
 ** Real
