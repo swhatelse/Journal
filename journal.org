@@ -4295,6 +4295,16 @@
        0x0000000000000000 in ?? ()
 
        #+END_EXAMPLE
+*** TODO 2015-07-20 Monday [0/1]
+    - [ ] Use MSG_process_with_arguments to pass stuff.
+**** Discussed with Arnaud
+     Elements which are given at process create should be passed with
+     MSG_process_create_with_argument. So args have to be retrieve
+     from arg not from data
+
+     And process that make a call to setspecific should do a
+     pthread_key_create before if not already done.
+     
 * Changes
   work in progress
 ** SimGrid
