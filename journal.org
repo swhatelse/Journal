@@ -3402,7 +3402,7 @@
     - [ ] Insure that the modification for MPI_Init is correct
     - [ ] Maybe find why MSG_host_get_data doesn't work with an SMPI process?
 
-*** 2015-07-09 Thursday [1/1]      
+*** 2015-07-09 Thursday [1/1]
 **** DONE starpu_pthread_setspecific starpu_pthread_getspecific [3/3]
      Those functions are based on host's data but instead must be based
      on process_data.
@@ -3461,6 +3461,840 @@
               - function
               - _starpu_worker_set
                 
+**** Who calls starpu_pthread_key_create?
+     Only 3 and 4 which execute smpi_simulated_main
+     #+BEGIN_EXAMPLE
+     Starting program: /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit --cfg=surf/precision:1e-9 --cfg=network/model:SMPI --cfg=network/TCP_gamma:4194304 --cfg=smpi/privatize_global_variables:yes /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml tmpINYVjI
+     [Thread debugging using libthread_db enabled]
+     Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+     Traceback (most recent call last):
+     File "/usr/share/gdb/auto-load/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19-gdb.py", line 63, in <module>
+     from libstdcxx.v6.printers import register_libstdcxx_printers
+     ImportError: No module named 'libstdcxx'
+     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+     [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+     [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+     [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+     [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+     
+     Breakpoint 1, starpu_pthread_key_create (key=0x8db690 <sched_ctx_key>, destr_function=0x0) at ../../src/common/thread.c:181
+     181		for (i = 0; i < MAX_TSD; i++)
+     1: SIMIX_process_self()->pid = 3
+     (gdb) c
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_key_create (key=0x8db690 <sched_ctx_key>, destr_function=0x0) at ../../src/common/thread.c:181
+     181		for (i = 0; i < MAX_TSD; i++)
+     1: SIMIX_process_self()->pid = 4
+     (gdb) 
+     Continuing.
+     [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+     [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+     [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+     [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+     
+     Breakpoint 1, starpu_pthread_key_create (key=0x8c1e58 <memory_node_key>, destr_function=0x0) at ../../src/common/thread.c:181
+     181		for (i = 0; i < MAX_TSD; i++)
+     1: SIMIX_process_self()->pid = 3
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_key_create (key=0x8c1e58 <memory_node_key>, destr_function=0x0) at ../../src/common/thread.c:181
+     181		for (i = 0; i < MAX_TSD; i++)
+     1: SIMIX_process_self()->pid = 4
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+     [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+     [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+     [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+     
+     Breakpoint 1, starpu_pthread_key_create (key=0x6ebe00 <current_task_key>, destr_function=0x0) at ../../src/common/thread.c:181
+     181		for (i = 0; i < MAX_TSD; i++)
+     1: SIMIX_process_self()->pid = 3
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+     [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+     [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+     [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+     
+     Breakpoint 1, starpu_pthread_key_create (key=0x6ebe00 <current_task_key>, destr_function=0x0) at ../../src/common/thread.c:181
+     181		for (i = 0; i < MAX_TSD; i++)
+     1: SIMIX_process_self()->pid = 4
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_key_create (key=0x6ebe38 <worker_key>, destr_function=0x0) at ../../src/common/thread.c:181
+     181		for (i = 0; i < MAX_TSD; i++)
+     1: SIMIX_process_self()->pid = 3
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_key_create (key=0x6ebe3c <worker_set_key>, destr_function=0x0) at ../../src/common/thread.c:181
+     181		for (i = 0; i < MAX_TSD; i++)
+     1: SIMIX_process_self()->pid = 3
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_key_create (key=0x6ebe38 <worker_key>, destr_function=0x0) at ../../src/common/thread.c:181
+     181		for (i = 0; i < MAX_TSD; i++)
+     1: SIMIX_process_self()->pid = 4
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_key_create (key=0x6ebe3c <worker_set_key>, destr_function=0x0) at ../../src/common/thread.c:181
+     181		for (i = 0; i < MAX_TSD; i++)
+     1: SIMIX_process_self()->pid = 4
+     (gdb) 
+     Continuing.
+     [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+     [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+     [starpu][_starpu_launch_drivers] initialising worker 0/4
+     [starpu][_starpu_launch_drivers] initialising worker 0/4
+     [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+     [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+     [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+     [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+     [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+     [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+     [starpu][_starpu_launch_drivers] initialising worker 1/4
+     [starpu][_starpu_launch_drivers] initialising worker 1/4
+     [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+     [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+     [starpu][_starpu_launch_drivers] initialising worker 2/4
+     [starpu][_starpu_launch_drivers] initialising worker 2/4
+     [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+     [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+     [starpu][_starpu_launch_drivers] initialising worker 3/4
+     [starpu][_starpu_launch_drivers] initialising worker 3/4
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+     [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+     [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+     [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+     [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+     [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+     [starpu][_starpu_launch_drivers] finished launching drivers
+     [starpu][_starpu_launch_drivers] finished launching drivers
+     [starpu][starpu_initialize] Initialisation finished
+     [starpu][starpu_initialize] Initialisation finished
+     Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+     [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+     Warning: element with specified key does not exist ((null)|a10bd9c7)
+     Element (null)|a10bd9c7 will take 0 seconds
+     
+     Program received signal SIGSEGV, Segmentation fault.
+     0x0000000000000000 in ?? ()
+
+     #+END_EXAMPLE
+**** Who calls starpu_pthread_setspecific?
+     Process 4, 5, 6 , 7, 8 , 9 , 10 , 11, 12 running starpu_simgrid_thread_start.
+     #+BEGIN_EXAMPLE
+     STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /home/stemen/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun -hostfile /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/hostfile -wrapper "gdb --args" -platform /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml  /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit  --cfg=smpi/privatize_global_variables:yes
+     GNU gdb (Ubuntu 7.7.1-0ubuntu5~14.04.2) 7.7.1
+     Copyright (C) 2014 Free Software Foundation, Inc.
+     License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+     This is free software: you are free to change and redistribute it.
+     There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+     and "show warranty" for details.
+     This GDB was configured as "x86_64-linux-gnu".
+     Type "show configuration" for configuration details.
+     For bug reporting instructions, please see:
+     <http://www.gnu.org/software/gdb/bugs/>.
+     Find the GDB manual and other documentation resources online at:
+     <http://www.gnu.org/software/gdb/documentation/>.
+     For help, type "help".
+     Type "apropos word" to search for commands related to "word"...
+     Reading symbols from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit...done.
+     (gdb) br starpu_pthread_setspecific
+     Breakpoint 1 at 0x424fc1: file ../../src/common/thread.c, line 201.
+     (gdb) r
+     Starting program: /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit --cfg=surf/precision:1e-9 --cfg=network/model:SMPI --cfg=network/TCP_gamma:4194304 --cfg=smpi/privatize_global_variables:yes /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml tmptSEmbW
+     [Thread debugging using libthread_db enabled]
+     Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+     Traceback (most recent call last):
+     File "/usr/share/gdb/auto-load/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19-gdb.py", line 63, in <module>
+     from libstdcxx.v6.printers import register_libstdcxx_printers
+     ImportError: No module named 'libstdcxx'
+     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+     [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+     [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+     [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+     [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+     [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+     [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+     [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+     [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+     [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+     [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+     [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+     [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+     [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+     [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+     [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+     [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+     [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+     [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+     [starpu][_starpu_launch_drivers] initialising worker 0/4
+     [starpu][_starpu_launch_drivers] initialising worker 0/4
+     [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=1, pointer=0x6ecf40 <config+4352>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     (gdb) display SIMIX_process_self()->pid
+     1: SIMIX_process_self()->pid = 5
+     (gdb) c
+     Continuing.
+     [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=1, pointer=0x6ecf40 <config+4352>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 6
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=3, pointer=0x6eced0 <config+4240>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 5
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=3, pointer=0x6eced0 <config+4240>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 6
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=4, pointer=0x790020 <cuda_worker_set>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 5
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=4, pointer=0x790020 <cuda_worker_set>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 6
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+     [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+     [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+     [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+     [starpu][_starpu_launch_drivers] initialising worker 1/4
+     [starpu][_starpu_launch_drivers] initialising worker 1/4
+     [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=1, pointer=0x6ed200 <config+5056>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 7
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=1, pointer=0x6ed200 <config+5056>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 8
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=3, pointer=0x6ed190 <config+4944>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 7
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_launch_drivers] initialising worker 2/4
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=3, pointer=0x6ed190 <config+4944>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 8
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_launch_drivers] initialising worker 2/4
+     [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=1, pointer=0x6ed4c0 <config+5760>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 9
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=1, pointer=0x6ed4c0 <config+5760>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 10
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=3, pointer=0x6ed450 <config+5648>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 9
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_launch_drivers] initialising worker 3/4
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=3, pointer=0x6ed450 <config+5648>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 10
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_launch_drivers] initialising worker 3/4
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=1, pointer=0x6ed780 <config+6464>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 11
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=1, pointer=0x6ed780 <config+6464>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 12
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=3, pointer=0x6ed710 <config+6352>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 11
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=3, pointer=0x6ed710 <config+6352>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 12
+     (gdb) 
+     Continuing.
+     [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+     [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+     [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+     [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+     [starpu][_starpu_launch_drivers] finished launching drivers
+     [starpu][_starpu_launch_drivers] finished launching drivers
+     [starpu][starpu_initialize] Initialisation finished
+     [starpu][starpu_initialize] Initialisation finished
+     Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=2, pointer=0xb98c10) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 4
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=2, pointer=0x0) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 4
+     (gdb) 
+     Continuing.
+     [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=3, pointer=0x6eced0 <config+4240>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 5
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=3, pointer=0x6eced0 <config+4240>) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 6
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=2, pointer=0xb982e0) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 7
+     (gdb) 
+     Continuing.
+     Warning: element with specified key does not exist ((null)|a10bd9c7)
+     Element (null)|a10bd9c7 will take 0 seconds
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=2, pointer=0x0) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 7
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=2, pointer=0xb99a20) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 7
+     (gdb) 
+     Continuing.
+     
+     Breakpoint 1, starpu_pthread_setspecific (key=2, pointer=0x0) at ../../src/common/thread.c:201
+     201		void **array = MSG_host_get_data(MSG_host_self());
+     1: SIMIX_process_self()->pid = 7
+     (gdb) 
+     Continuing.
+     
+     Program received signal SIGSEGV, Segmentation fault.
+     0x0000000000000000 in ?? ()
+
+     #+END_EXAMPLE
+**** Who calls starpu_pthread_getspecific?
+     All process call starpu_pthread_getspecific
+     - 1
+       #+BEGIN_EXAMPLE
+       Breakpoint 2, starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 1
+       (gdb) bt
+       #0  starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:219
+       #1  0x000000000046ad5c in _starpu_memory_node_get_local_key () at ../../src/datawizard/memory_nodes.c:70
+       #2  0x00000000004806e1 in starpu_data_get_local_ptr (handle=0xb7f820) at ../../src/datawizard/interfaces/data_interface.c:476
+       #3  0x00000000004070a4 in _starpu_mpi_isend_size_func (req=0xb99690) at /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:370
+       #4  0x000000000040b5ae in _starpu_mpi_handle_ready_request (req=0xb99690)
+       at /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1124
+       #5  0x000000000040c900 in _starpu_mpi_progress_thread_func (arg=0x8f0bf0)
+       at /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1332
+       #6  0x000000000040dc51 in _starpu_mpi_initialize (argc=0x7ffff6124fbc, argv=0x7ffff6124fb0, initialize_mpi=1, comm=0x8f0a30)
+       at /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1589
+       #7  0x000000000040dc86 in _starpu_mpi_simgrid_init (argc=1, argv=0x8e7ae0)
+       at /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/mpi/src/starpu_mpi.c:1608
+       #8  0x00007ffff7686d77 in smx_ctx_raw_wrapper (context=0x8f01c0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+       #9  0x0000000000000000 in ?? ()
+       (gdb) c
+       Continuing.
+       
+       Program received signal SIGSEGV, Segmentation fault.
+       0x0000000000000000 in ?? ()
+       1: SIMIX_process_self()->pid = 0
+       (gdb) info breakpoints 
+       Num     Type           Disp Enb Address            What
+       1       breakpoint     keep n   0x0000000000424fc1 in starpu_pthread_setspecific at ../../src/common/thread.c:201
+       2       breakpoint     keep y   0x0000000000424fff in starpu_pthread_getspecific at ../../src/common/thread.c:219
+	stop only if MSG_process_self()->pid == 1
+	breakpoint already hit 1 time
+
+       #+END_EXAMPLE
+     - 2
+       Maybe not reached because crash before.
+       #+BEGIN_EXAMPLE
+       Program received signal SIGSEGV, Segmentation fault.
+       0x0000000000000000 in ?? ()
+       1: SIMIX_process_self()->pid = 0
+       (gdb) info breakpoints 
+       Num     Type           Disp Enb Address            What
+       1       breakpoint     keep n   0x0000000000424fc1 in starpu_pthread_setspecific at ../../src/common/thread.c:201
+       2       breakpoint     keep y   0x0000000000424fff in starpu_pthread_getspecific at ../../src/common/thread.c:219
+	stop only if MSG_process_self()->pid == 2
+       #+END_EXAMPLE
+     - 3
+       #+BEGIN_EXAMPLE
+       (gdb) info breakpoints 
+       Num     Type           Disp Enb Address            What
+       1       breakpoint     keep n   0x0000000000424fc1 in starpu_pthread_setspecific at ../../src/common/thread.c:201
+       2       breakpoint     keep y   0x0000000000424fff in starpu_pthread_getspecific at ../../src/common/thread.c:219
+	stop only if MSG_process_self()->pid == 3
+	breakpoint already hit 2054 times
+       #+END_EXAMPLE
+     - 4
+       #+BEGIN_EXAMPLE
+       (gdb) info breakpoints 
+       Num     Type           Disp Enb Address            What
+       1       breakpoint     keep n   0x0000000000424fc1 in starpu_pthread_setspecific at ../../src/common/thread.c:201
+       2       breakpoint     keep y   0x0000000000424fff in starpu_pthread_getspecific at ../../src/common/thread.c:219
+	stop only if MSG_process_self()->pid == 4
+	breakpoint already hit 2058 times
+       #+END_EXAMPLE
+     - 5
+       #+BEGIN_EXAMPLE
+     [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+     Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+     219		msg_host_t host = MSG_host_self();
+     1: SIMIX_process_self()->pid = 5
+     (gdb) bt
+     #0  starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+     #1  0x000000000042c341 in _starpu_get_local_worker_key () at ../../src/core/workers.c:929
+     #2  0x000000000042e0e9 in starpu_worker_get_id () at ../../src/core/workers.c:1710
+     #3  0x0000000000460126 in dmda_pop_task (sched_ctx_id=0) at ../../src/sched_policies/deque_modeling_policy_data_aware.c:238
+     #4  0x000000000044e62f in _starpu_pop_task (worker=0x6eced0 <config+4240>) at ../../src/core/sched_policy.c:772
+     #5  0x00000000004a4fcb in _starpu_get_multi_worker_task (workers=0x6eced0 <config+4240>, tasks=0x7ffff3d30e50, nworkers=1, memnode=1)
+     at ../../src/drivers/driver_common/driver_common.c:518
+     #6  0x00000000004999c0 in _starpu_cuda_driver_run_once (worker_set=0x790020 <cuda_worker_set>) at ../../src/drivers/cuda/driver_cuda.c:790
+     #7  0x0000000000499c46 in _starpu_cuda_worker (_arg=0x790020 <cuda_worker_set>) at ../../src/drivers/cuda/driver_cuda.c:885
+     #8  0x0000000000451385 in _starpu_simgrid_thread_start (argc=-1, argv=0x0) at ../../src/core/simgrid.c:663
+     #9  0x00007ffff7686d77 in smx_ctx_raw_wrapper (context=0xb7a740) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+     #10 0x0000000000000000 in ?? ()
+     (gdb) c
+     Continuing.
+     Warning: element with specified key does not exist ((null)|a10bd9c7)
+     Element (null)|a10bd9c7 will take 0 seconds
+     
+     Program received signal SIGSEGV, Segmentation fault.
+     0x0000000000000000 in ?? ()
+     1: SIMIX_process_self()->pid = 0
+     (gdb) info breakpoints 
+     Num     Type           Disp Enb Address            What
+     1       breakpoint     keep n   0x0000000000424fc1 in starpu_pthread_setspecific at ../../src/common/thread.c:201
+     2       breakpoint     keep y   0x0000000000424fff in starpu_pthread_getspecific at ../../src/common/thread.c:219
+	stop only if MSG_process_self()->pid == 5
+	breakpoint already hit 1 time
+
+     #+END_EXAMPLE
+     - 6
+       #+BEGIN_EXAMPLE
+       [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 6
+       (gdb)  bt
+       #0  starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       #1  0x000000000042c341 in _starpu_get_local_worker_key () at ../../src/core/workers.c:929
+       #2  0x000000000042e0e9 in starpu_worker_get_id () at ../../src/core/workers.c:1710
+       #3  0x0000000000460126 in dmda_pop_task (sched_ctx_id=0) at ../../src/sched_policies/deque_modeling_policy_data_aware.c:238
+       #4  0x000000000044e62f in _starpu_pop_task (worker=0x6eced0 <config+4240>) at ../../src/core/sched_policy.c:772
+       #5  0x00000000004a4fcb in _starpu_get_multi_worker_task (workers=0x6eced0 <config+4240>, tasks=0x7ffff352de50, nworkers=1, memnode=1)
+       at ../../src/drivers/driver_common/driver_common.c:518
+       #6  0x00000000004999c0 in _starpu_cuda_driver_run_once (worker_set=0x790020 <cuda_worker_set>) at ../../src/drivers/cuda/driver_cuda.c:790
+       #7  0x0000000000499c46 in _starpu_cuda_worker (_arg=0x790020 <cuda_worker_set>) at ../../src/drivers/cuda/driver_cuda.c:885
+       #8  0x0000000000451385 in _starpu_simgrid_thread_start (argc=-1, argv=0x0) at ../../src/core/simgrid.c:663
+       #9  0x00007ffff7686d77 in smx_ctx_raw_wrapper (context=0xb7a9d0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+       #10 0x0000000000000000 in ?? ()
+       (gdb) c
+       Continuing.
+       Warning: element with specified key does not exist ((null)|a10bd9c7)
+       Element (null)|a10bd9c7 will take 0 seconds
+       
+       Program received signal SIGSEGV, Segmentation fault.
+       0x0000000000000000 in ?? ()
+       1: SIMIX_process_self()->pid = 0
+       (gdb) info breakpoints 
+       Num     Type           Disp Enb Address            What
+       1       breakpoint     keep n   0x0000000000424fc1 in starpu_pthread_setspecific at ../../src/common/thread.c:201
+       2       breakpoint     keep y   0x0000000000424fff in starpu_pthread_getspecific at ../../src/common/thread.c:219
+	stop only if MSG_process_self()->pid == 6
+	breakpoint already hit 1 time
+       #+END_EXAMPLE
+     - 7
+       #+BEGIN_EXAMPLE
+       [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) bt
+       #0  starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       #1  0x000000000042c341 in _starpu_get_local_worker_key () at ../../src/core/workers.c:929
+       #2  0x000000000042e0e9 in starpu_worker_get_id () at ../../src/core/workers.c:1710
+       #3  0x0000000000460126 in dmda_pop_task (sched_ctx_id=0) at ../../src/sched_policies/deque_modeling_policy_data_aware.c:238
+       #4  0x000000000044e62f in _starpu_pop_task (worker=0x6ed190 <config+4944>) at ../../src/core/sched_policy.c:772
+       #5  0x00000000004a4908 in _starpu_get_worker_task (worker=0x6ed190 <config+4944>, workerid=1, memnode=0)
+       at ../../src/drivers/driver_common/driver_common.c:416
+       #6  0x000000000049792f in _starpu_cpu_driver_run_once (cpu_worker=0x6ed190 <config+4944>) at ../../src/drivers/cpu/driver_cpu.c:224
+       #7  0x0000000000497d72 in _starpu_cpu_worker (arg=0x6ed190 <config+4944>) at ../../src/drivers/cpu/driver_cpu.c:342
+       #8  0x0000000000451385 in _starpu_simgrid_thread_start (argc=-1, argv=0x0) at ../../src/core/simgrid.c:663
+       #9  0x00007ffff7686d77 in smx_ctx_raw_wrapper (context=0xb7c0c0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+       #10 0x0000000000000000 in ?? ()
+       (gdb) c
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) info breakpoints 
+       Num     Type           Disp Enb Address            What
+       1       breakpoint     keep n   0x0000000000424fc1 in starpu_pthread_setspecific at ../../src/common/thread.c:201
+       2       breakpoint     keep y   0x0000000000424fff in starpu_pthread_getspecific at ../../src/common/thread.c:219
+	stop only if MSG_process_self()->pid == 7
+	breakpoint already hit 2 times
+       (gdb) c
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) c
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) c
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) c
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) 
+       Continuing.
+       Warning: element with specified key does not exist ((null)|a10bd9c7)
+       Element (null)|a10bd9c7 will take 0 seconds
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) 
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) 
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) 
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) 
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=2) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) 
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=1) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) 
+       Continuing.
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 7
+       (gdb) 
+       Continuing.
+       
+       Program received signal SIGSEGV, Segmentation fault.
+       0x0000000000000000 in ?? ()
+       1: SIMIX_process_self()->pid = 0
+       (gdb) 
+       Continuing.
+       Segmentation fault.
+
+     #+END_EXAMPLE
+     - 8
+       #+BEGIN_EXAMPLE
+       [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 8
+       (gdb) bt
+       #0  starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       #1  0x000000000042c341 in _starpu_get_local_worker_key () at ../../src/core/workers.c:929
+       #2  0x000000000042e0e9 in starpu_worker_get_id () at ../../src/core/workers.c:1710
+       #3  0x0000000000460126 in dmda_pop_task (sched_ctx_id=0) at ../../src/sched_policies/deque_modeling_policy_data_aware.c:238
+       #4  0x000000000044e62f in _starpu_pop_task (worker=0x6ed190 <config+4944>) at ../../src/core/sched_policy.c:772
+       #5  0x00000000004a4908 in _starpu_get_worker_task (worker=0x6ed190 <config+4944>, workerid=1, memnode=0)
+       at ../../src/drivers/driver_common/driver_common.c:416
+       #6  0x000000000049792f in _starpu_cpu_driver_run_once (cpu_worker=0x6ed190 <config+4944>) at ../../src/drivers/cpu/driver_cpu.c:224
+       #7  0x0000000000497d72 in _starpu_cpu_worker (arg=0x6ed190 <config+4944>) at ../../src/drivers/cpu/driver_cpu.c:342
+       #8  0x0000000000451385 in _starpu_simgrid_thread_start (argc=-1, argv=0x0) at ../../src/core/simgrid.c:663
+       #9  0x00007ffff7686d77 in smx_ctx_raw_wrapper (context=0xb7c350) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+       #10 0x0000000000000000 in ?? ()
+       (gdb) c
+       Continuing.
+       Warning: element with specified key does not exist ((null)|a10bd9c7)
+       Element (null)|a10bd9c7 will take 0 seconds
+       
+       Program received signal SIGSEGV, Segmentation fault.
+       0x0000000000000000 in ?? ()
+
+       #+END_EXAMPLE
+     - 9
+       #+BEGIN_EXAMPLE
+       [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+       
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 9
+       (gdb) bt
+       #0  starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       #1  0x000000000042c341 in _starpu_get_local_worker_key () at ../../src/core/workers.c:929
+       #2  0x000000000042e0e9 in starpu_worker_get_id () at ../../src/core/workers.c:1710
+       #3  0x0000000000460126 in dmda_pop_task (sched_ctx_id=0) at ../../src/sched_policies/deque_modeling_policy_data_aware.c:238
+       #4  0x000000000044e62f in _starpu_pop_task (worker=0x6ed450 <config+5648>) at ../../src/core/sched_policy.c:772
+       #5  0x00000000004a4908 in _starpu_get_worker_task (worker=0x6ed450 <config+5648>, workerid=2, memnode=0)
+       at ../../src/drivers/driver_common/driver_common.c:416
+       #6  0x000000000049792f in _starpu_cpu_driver_run_once (cpu_worker=0x6ed450 <config+5648>) at ../../src/drivers/cpu/driver_cpu.c:224
+       #7  0x0000000000497d72 in _starpu_cpu_worker (arg=0x6ed450 <config+5648>) at ../../src/drivers/cpu/driver_cpu.c:342
+       #8  0x0000000000451385 in _starpu_simgrid_thread_start (argc=-1, argv=0x0) at ../../src/core/simgrid.c:663
+       #9  0x00007ffff7686d77 in smx_ctx_raw_wrapper (context=0xb7d140) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+       #10 0x0000000000000000 in ?? ()
+       (gdb) c
+       Continuing.
+       Warning: element with specified key does not exist ((null)|a10bd9c7)
+       Element (null)|a10bd9c7 will take 0 seconds
+       
+       Program received signal SIGSEGV, Segmentation fault.
+       0x0000000000000000 in ?? ()
+
+       #+END_EXAMPLE
+     - 10
+       #+BEGIN_EXAMPLE
+       [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 10
+       (gdb) bt
+       #0  starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       #1  0x000000000042c341 in _starpu_get_local_worker_key () at ../../src/core/workers.c:929
+       #2  0x000000000042e0e9 in starpu_worker_get_id () at ../../src/core/workers.c:1710
+       #3  0x0000000000460126 in dmda_pop_task (sched_ctx_id=0) at ../../src/sched_policies/deque_modeling_policy_data_aware.c:238
+       #4  0x000000000044e62f in _starpu_pop_task (worker=0x6ed450 <config+5648>) at ../../src/core/sched_policy.c:772
+       #5  0x00000000004a4908 in _starpu_get_worker_task (worker=0x6ed450 <config+5648>, workerid=2, memnode=0)
+       at ../../src/drivers/driver_common/driver_common.c:416
+       #6  0x000000000049792f in _starpu_cpu_driver_run_once (cpu_worker=0x6ed450 <config+5648>) at ../../src/drivers/cpu/driver_cpu.c:224
+       #7  0x0000000000497d72 in _starpu_cpu_worker (arg=0x6ed450 <config+5648>) at ../../src/drivers/cpu/driver_cpu.c:342
+       #8  0x0000000000451385 in _starpu_simgrid_thread_start (argc=-1, argv=0x0) at ../../src/core/simgrid.c:663
+       #9  0x00007ffff7686d77 in smx_ctx_raw_wrapper (context=0xb7d3d0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+       #10 0x0000000000000000 in ?? ()
+       (gdb) c
+       Continuing.
+       Warning: element with specified key does not exist ((null)|a10bd9c7)
+       Element (null)|a10bd9c7 will take 0 seconds
+       
+       Program received signal SIGSEGV, Segmentation fault.
+       0x0000000000000000 in ?? ()
+
+       #+END_EXAMPLE
+     - 11
+       #+BEGIN_EXAMPLE
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 11
+       (gdb) bt
+       #0  starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       #1  0x000000000042c341 in _starpu_get_local_worker_key () at ../../src/core/workers.c:929
+       #2  0x000000000042e0e9 in starpu_worker_get_id () at ../../src/core/workers.c:1710
+       #3  0x0000000000460126 in dmda_pop_task (sched_ctx_id=0) at ../../src/sched_policies/deque_modeling_policy_data_aware.c:238
+       #4  0x000000000044e62f in _starpu_pop_task (worker=0x6ed710 <config+6352>) at ../../src/core/sched_policy.c:772
+       #5  0x00000000004a4908 in _starpu_get_worker_task (worker=0x6ed710 <config+6352>, workerid=3, memnode=0)
+       at ../../src/drivers/driver_common/driver_common.c:416
+       #6  0x000000000049792f in _starpu_cpu_driver_run_once (cpu_worker=0x6ed710 <config+6352>) at ../../src/drivers/cpu/driver_cpu.c:224
+       #7  0x0000000000497d72 in _starpu_cpu_worker (arg=0x6ed710 <config+6352>) at ../../src/drivers/cpu/driver_cpu.c:342
+       #8  0x0000000000451385 in _starpu_simgrid_thread_start (argc=-1, argv=0x0) at ../../src/core/simgrid.c:663
+       #9  0x00007ffff7686d77 in smx_ctx_raw_wrapper (context=0xb7e1c0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+       #10 0x0000000000000000 in ?? ()
+       (gdb) c
+       Continuing.
+       Warning: element with specified key does not exist ((null)|a10bd9c7)
+       Element (null)|a10bd9c7 will take 0 seconds
+       
+       Program received signal SIGSEGV, Segmentation fault.
+       0x0000000000000000 in ?? ()
+
+       #+END_EXAMPLE
+     - 12
+       #+BEGIN_EXAMPLE
+       [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+
+       Breakpoint 2, starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       219		msg_host_t host = MSG_host_self();
+       1: SIMIX_process_self()->pid = 12
+       (gdb) bt
+       #0  starpu_pthread_getspecific (key=3) at ../../src/common/thread.c:219
+       #1  0x000000000042c341 in _starpu_get_local_worker_key () at ../../src/core/workers.c:929
+       #2  0x000000000042e0e9 in starpu_worker_get_id () at ../../src/core/workers.c:1710
+       #3  0x0000000000460126 in dmda_pop_task (sched_ctx_id=0) at ../../src/sched_policies/deque_modeling_policy_data_aware.c:238
+       #4  0x000000000044e62f in _starpu_pop_task (worker=0x6ed710 <config+6352>) at ../../src/core/sched_policy.c:772
+       #5  0x00000000004a4908 in _starpu_get_worker_task (worker=0x6ed710 <config+6352>, workerid=3, memnode=0)
+       at ../../src/drivers/driver_common/driver_common.c:416
+       #6  0x000000000049792f in _starpu_cpu_driver_run_once (cpu_worker=0x6ed710 <config+6352>) at ../../src/drivers/cpu/driver_cpu.c:224
+       #7  0x0000000000497d72 in _starpu_cpu_worker (arg=0x6ed710 <config+6352>) at ../../src/drivers/cpu/driver_cpu.c:342
+       #8  0x0000000000451385 in _starpu_simgrid_thread_start (argc=-1, argv=0x0) at ../../src/core/simgrid.c:663
+       #9  0x00007ffff7686d77 in smx_ctx_raw_wrapper (context=0xb7e450) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_context_raw.c:388
+       #10 0x0000000000000000 in ?? ()
+       (gdb) c
+       Continuing.
+       Warning: element with specified key does not exist ((null)|a10bd9c7)
+       Element (null)|a10bd9c7 will take 0 seconds
+       
+       Program received signal SIGSEGV, Segmentation fault.
+       0x0000000000000000 in ?? ()
+
+       #+END_EXAMPLE
 * Changes
   work in progress
 ** SimGrid
@@ -4743,6 +5577,52 @@
         [starpu][_starpu_load_history_based_model] Opening performance model file /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//codelets/44//chol_model_11.mirage for model chol_model_11 ...
         [starpu][_starpu_load_history_based_model] File exists
         mpi_cholesky: ../../src/core/perfmodel/perfmodel_history.c:644: _starpu_perfmodel_realloc: Assertion `nb > model->state->ncombs_set' failed.
-        ---Type <return> to continue, or q <return> to quit---
         #+END_EXAMPLE
+        
+        The performance model did not match the specs of the machine.
+        #+BEGIN_EXAMPLE
+        (gdb) bt
+        #0  0x00007ffff68cfcc9 in __GI_raise (sig=sig@entry=6)
+        at ../nptl/sysdeps/unix/sysv/linux/raise.c:56
+        #1  0x00007ffff68d30d8 in __GI_abort () at abort.c:89
+        #2  0x00007ffff68c8b86 in __assert_fail_base (
+        fmt=0x7ffff6a19830 "%s%s%s:%u: %s%sAssertion `%s' failed.\n%n", 
+        assertion=assertion@entry=0x4d3034 "nb > model->state->ncombs_set", 
+        file=file@entry=0x4d2ab0 "../../src/core/perfmodel/perfmodel_history.c", 
+        line=line@entry=644, 
+        function=function@entry=0x4d3b50 <__PRETTY_FUNCTION__.12203> "_starpu_perfmodel_realloc") at assert.c:92
+        #3  0x00007ffff68c8c32 in __GI___assert_fail (
+        assertion=0x4d3034 "nb > model->state->ncombs_set", 
+        file=0x4d2ab0 "../../src/core/perfmodel/perfmodel_history.c", line=644, 
+        function=0x4d3b50 <__PRETTY_FUNCTION__.12203> "_starpu_perfmodel_realloc")
+        at assert.c:101
+        #4  0x00000000004477cc in _starpu_perfmodel_realloc (
+        model=0x700720 <chol_model_11>, nb=4)
+        at ../../src/core/perfmodel/perfmodel_history.c:644
+        #5  0x0000000000447195 in parse_model_file (f=0x493bd20, 
+        model=0x700720 <chol_model_11>, scan_history=1)
+        at ../../src/core/perfmodel/perfmodel_history.c:534
+        #6  0x000000000044919f in _starpu_load_history_based_model (
+        model=0x700720 <chol_model_11>, scan_history=1)
+        at ../../src/core/perfmodel/perfmodel_history.c:958
+        #7  0x0000000000450556 in _starpu_init_and_load_perfmodel (
+        model=0x700720 <chol_model_11>) at ../../src/core/perfmodel/perfmodel.c:153
+        #8  0x000000000042d75e in _starpu_task_submit_head (task=0x493b710)
+        at ../../src/core/task.c:576
+        #9  0x000000000042d90b in starpu_task_submit (task=0x493b710)
+        at ../../src/core/task.c:618
+        #10 0x00000000004167f3 in _starpu_mpi_task_insert_v (
+        comm=0x7068e0 <ompi_mpi_comm_world>, codelet=0x7007e0 <cl11>, 
+        varg_list=0x7fffffffd7d8) at ../../../mpi/src/starpu_mpi_task_insert.c:517
+        #11 0x000000000041698b in starpu_mpi_task_insert (
+        comm=0x7068e0 <ompi_mpi_comm_world>, codelet=0x7007e0 <cl11>)
+        at ../../../mpi/src/starpu_mpi_task_insert.c:540
+        #12 0x0000000000405c95 in dw_cholesky (matA=0x7a2a40, ld=256, rank=0, nodes=1, 
+        timing=0x7fffffffd9a0, flops=0x7fffffffd9a8)
+        at ../../../mpi/examples/matrix_decomposition/mpi_cholesky_codelets.c:109
+        #13 0x0000000000405451 in main (argc=1, argv=0x7fffffffdaa8)
+        at ../../../mpi/examples/matrix_decomposition/mpi_cholesky.c:47        
+        #+END_EXAMPLE
+        
+****** Test with correct callibration 
 ** Simulation 
