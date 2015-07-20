@@ -4737,4 +4737,12 @@
 
        #+END_EXAMPLE
 ****** Test with a configure version of openmpi
+****** Test on my laptop
+******* OS Mint
+        #+BEGIN_EXAMPLE
+        [starpu][_starpu_load_history_based_model] Opening performance model file /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//codelets/44//chol_model_11.mirage for model chol_model_11 ...
+        [starpu][_starpu_load_history_based_model] File exists
+        mpi_cholesky: ../../src/core/perfmodel/perfmodel_history.c:644: _starpu_perfmodel_realloc: Assertion `nb > model->state->ncombs_set' failed.
+        ---Type <return> to continue, or q <return> to quit---
+        #+END_EXAMPLE
 ** Simulation 
