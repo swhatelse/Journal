@@ -4607,4 +4607,134 @@
       $1 = 0x4e9ed3 "STARPU_MINIMUM_AVAILABLE_MEM"
 
       #+END_EXAMPLE
+****** Test on  stremi-7 (Reims)
+       Same error!
+       #+BEGIN_EXAMPLE
+       [New Thread 0x7fffe06c2700 (LWP 31169)]
+       [starpu][_starpu_mpi_progress_thread_func] Calling MPI_Init_thread
+       
+       Program received signal SIGSEGV, Segmentation fault.
+       [Switching to Thread 0x7fffec6da700 (LWP 31145)]
+       *__GI_getenv (name=0x4e9ef2 "ARPU_TARGET_AVAILABLE_MEM") at getenv.c:84
+       84      getenv.c: No such file or directory.
+       (gdb) bt
+       #0  *__GI_getenv (name=0x4e9ef2 "ARPU_TARGET_AVAILABLE_MEM") at getenv.c:84
+       #1  0x00000000004894ec in starpu_get_env_number (
+       str=0x4e9ef0 "STARPU_TARGET_AVAILABLE_MEM")
+       at ../../include/starpu_util.h:236
+       #2  0x0000000000489591 in starpu_get_env_number_default (
+       str=0x4e9ef0 "STARPU_TARGET_AVAILABLE_MEM", defval=10)
+       at ../../include/starpu_util.h:262
+       #3  0x000000000048beca in starpu_memchunk_tidy (node=0)
+       ---Type <return> to continue, or q <return> to quit---
+       at ../../src/datawizard/memalloc.c:880
+       #4  0x00000000004847ba in __starpu_datawizard_progress (memory_node=0, 
+       may_alloc=1, push_requests=1) at ../../src/datawizard/datawizard.c:42
+       #5  0x0000000000484859 in _starpu_datawizard_progress (memory_node=0, 
+       may_alloc=1) at ../../src/datawizard/datawizard.c:68
+       #6  0x00000000004b95e5 in _starpu_cpu_driver_run_once (cpu_worker=0x717040)
+       at ../../src/drivers/cpu/driver_cpu.c:217
+       #7  0x00000000004b9ac5 in _starpu_cpu_worker (arg=0x717040)
+       at ../../src/drivers/cpu/driver_cpu.c:342
+       #8  0x00007ffff1e65b50 in start_thread (arg=<optimized out>)
+       at pthread_create.c:304
+       #9  0x00007ffff157e95d in clone ()
+       at ../sysdeps/unix/sysv/linux/x86_64/clone.S:112
+       #10 0x0000000000000000 in ?? ()
+
+       #+END_EXAMPLE
+****** Test on chimint-19 (Lille)
+       #+BEGIN_EXAMPLE
+       [New Thread 0x7fffe86d2700 (LWP 23420)]
+       [starpu][_starpu_mpi_progress_thread_func] Calling MPI_Init_thread
+       
+       Program received signal SIGSEGV, Segmentation fault.
+       [Switching to Thread 0x7fffeaed7700 (LWP 23415)]
+       *__GI_getenv (name=0x4e9ef2 "ARPU_TARGET_AVAILABLE_MEM") at getenv.c:84
+       84      getenv.c: No such file or directory.
+       (gdb) bt
+       #0  *__GI_getenv (name=0x4e9ef2 "ARPU_TARGET_AVAILABLE_MEM") at getenv.c:84
+       #1  0x00000000004894ec in starpu_get_env_number (
+       str=0x4e9ef0 "STARPU_TARGET_AVAILABLE_MEM")
+       at ../../include/starpu_util.h:236
+       #2  0x0000000000489591 in starpu_get_env_number_default (
+       str=0x4e9ef0 "STARPU_TARGET_AVAILABLE_MEM", defval=10)
+       at ../../include/starpu_util.h:262
+       #3  0x000000000048beca in starpu_memchunk_tidy (node=0)
+       ---Type <return> to continue, or q <return> to quit---
+       at ../../src/datawizard/memalloc.c:880
+       #4  0x00000000004847ba in __starpu_datawizard_progress (memory_node=0, 
+       may_alloc=1, push_requests=1) at ../../src/datawizard/datawizard.c:42
+       #5  0x0000000000484859 in _starpu_datawizard_progress (memory_node=0, 
+       may_alloc=1) at ../../src/datawizard/datawizard.c:68
+       #6  0x00000000004b95e5 in _starpu_cpu_driver_run_once (cpu_worker=0x717c40)
+       at ../../src/drivers/cpu/driver_cpu.c:217
+       #7  0x00000000004b9ac5 in _starpu_cpu_worker (arg=0x717c40)
+       at ../../src/drivers/cpu/driver_cpu.c:342
+       #8  0x00007ffff1e65b50 in start_thread (arg=<optimized out>)
+       at pthread_create.c:304
+       #9  0x00007ffff157e95d in clone ()
+       at ../sysdeps/unix/sysv/linux/x86_64/clone.S:112
+       #10 0x0000000000000000 in ?? ()
+       #+END_EXAMPLE
+****** Test withAdonis min
+       #+BEGIN_EXAMPLE
+       STARPU_SCHED=dmda STARPU_GENERATE_TRACE=1 STARPU_NOPENCL=0 /usr/bin/mpirun -hostfile /root/experiments/hostfile   /root/experiments/src/StarPU/StarPU-MPI/mpi/tests/ring_async_implicit 
+       [starpu][starpu_initialize] Warning: StarPU was configured with --enable-debug (-O0), and is thus not optimized
+       [starpu][starpu_initialize] Warning: StarPU was configured with --enable-spinlock-check, which slows down a bit
+       [starpu][starpu_initialize] Warning: StarPU was configured with --enable-verbose, which slows down a bit
+       [starpu][starpu_initialize] Warning: StarPU was configured with --with-fxt, which slows down a bit
+       [starpu][load_bus_latency_file_content] loading latencies from /root/experiments/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+       [starpu][load_bus_bandwidth_file_content] loading bandwidth from /root/experiments/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+       [starpu][_starpu_init_workers_binding] worker 0 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+       [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+       [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+       [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 3 bound to cpu 3, STARPU memory node 0
+       [starpu][_starpu_init_workers_binding] worker 4 type 0 devid 4 bound to cpu 4, STARPU memory node 0
+       [starpu][_starpu_init_workers_binding] worker 5 type 0 devid 5 bound to cpu 5, STARPU memory node 0
+       [starpu][_starpu_init_workers_binding] worker 6 type 0 devid 6 bound to cpu 6, STARPU memory node 0
+       [starpu][_starpu_init_workers_binding] worker 7 type 0 devid 7 bound to cpu 7, STARPU memory node 0
+       [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+       [starpu][_starpu_launch_drivers] initialising worker 0/8
+       [starpu][_starpu_driver_start] worker 0x6f2760 0 for dev 0 is ready on logical cpu 0
+       [starpu][_starpu_driver_start] worker 0x6f2760 0 cpuset start at 0
+       [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 25760276480
+       [starpu][_starpu_launch_drivers] initialising worker 1/8
+       [starpu][_starpu_driver_start] worker 0x6f2b60 1 for dev 1 is ready on logical cpu 1
+       [starpu][_starpu_driver_start] worker 0x6f2b60 1 cpuset start at 1
+       [starpu][_starpu_launch_drivers] initialising worker 2/8
+       [starpu][_starpu_driver_start] worker 0x6f2f60 2 for dev 2 is ready on logical cpu 2
+       [starpu][_starpu_driver_start] worker 0x6f2f60 2 cpuset start at 2
+       [starpu][_starpu_launch_drivers] initialising worker 3/8
+       [starpu][_starpu_driver_start] worker 0x6f3360 3 for dev 3 is ready on logical cpu 3
+       [starpu][_starpu_driver_start] worker 0x6f3360 3 cpuset start at 3
+       [starpu][_starpu_launch_drivers] initialising worker 4/8
+       [starpu][_starpu_driver_start] worker 0x6f3760 4 for dev 4 is ready on logical cpu 4
+       [starpu][_starpu_driver_start] worker 0x6f3760 4 cpuset start at 4
+       [starpu][_starpu_launch_drivers] initialising worker 5/8
+       [starpu][_starpu_driver_start] worker 0x6f3b60 5 for dev 5 is ready on logical cpu 5
+       [starpu][_starpu_driver_start] worker 0x6f3b60 5 cpuset start at 5
+       [starpu][_starpu_launch_drivers] initialising worker 6/8
+       [starpu][_starpu_driver_start] worker 0x6f3f60 6 for dev 6 is ready on logical cpu 6
+       [starpu][_starpu_driver_start] worker 0x6f3f60 6 cpuset start at 6
+       [starpu][_starpu_launch_drivers] initialising worker 7/8
+       [starpu][_starpu_driver_start] worker 0x6f4360 7 for dev 7 is ready on logical cpu 7
+       [starpu][_starpu_driver_start] worker 0x6f4360 7 cpuset start at 7
+       [starpu][_starpu_launch_drivers] waiting for worker 0 initialization
+       [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+       [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+       [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+       [starpu][_starpu_launch_drivers] waiting for worker 4 initialization
+       [starpu][_starpu_launch_drivers] waiting for worker 5 initialization
+       [starpu][_starpu_launch_drivers] waiting for worker 6 initialization
+       [starpu][_starpu_launch_drivers] waiting for worker 7 initialization
+       [starpu][_starpu_launch_drivers] finished launching drivers
+       [starpu][starpu_initialize] Initialisation finished
+       [starpu][_starpu_mpi_progress_thread_func] Calling MPI_Init_thread
+       [starpu][_starpu_mpi_print_thread_level_support] MPI_Init_thread level = MPI_THREAD_SINGLE; MPI does not have multi-thread support, this might cause problems. The application can make calls to StarPU-MPI functions, but not call directly MPI Communication functions.
+       [starpu][starpu_profiling_set_id] Set id to <0>
+       We need at least 2 processes.
+
+       #+END_EXAMPLE
+****** Test with a configure version of openmpi
 ** Simulation 
