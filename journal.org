@@ -4304,7 +4304,588 @@
 
      And process that make a call to setspecific should do a
      pthread_key_create before if not already done.
-     
+
+**** Using MSG_process_create_with_arguments
+***** In starpu_pthread_create_on and _starpu_simgrid_thread_start
+      #+BEGIN_EXAMPLE
+      STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /home/stemen/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun -hostfile /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/hostfile  -platform /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml  /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit  --cfg=smpi/privatize_global_variables:yes
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+      [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+      [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][starpu_initialize] Initialisation finished
+      [starpu][starpu_initialize] Initialisation finished
+      Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+      [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+      Warning: element with specified key does not exist ((null)|a10bd9c7)
+      Element (null)|a10bd9c7 will take 0 seconds
+      Segmentation fault.
+      Segmentation fault
+      Copying paje trace...
+
+      #+END_EXAMPLE
+***** In main and do_starpu_main
+      #+BEGIN_EXAMPLE
+      STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /home/stemen/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun -hostfile /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/hostfile  -platform /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml  /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit  --cfg=smpi/privatize_global_variables:yes
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+      [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+      [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][starpu_initialize] Initialisation finished
+      [starpu][starpu_initialize] Initialisation finished
+      Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+      [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+      Warning: element with specified key does not exist ((null)|a10bd9c7)
+      Element (null)|a10bd9c7 will take 0 seconds
+      Segmentation fault.
+      Segmentation fault
+      Copying paje trace...
+
+      #+END_EXAMPLE
+***** task_execute
+      #+BEGIN_EXAMPLE
+      STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /home/stemen/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun -hostfile /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/hostfile  -platform /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml  /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit  --cfg=smpi/privatize_global_variables:yes
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+      [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+      [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][starpu_initialize] Initialisation finished
+      [starpu][starpu_initialize] Initialisation finished
+      Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+      [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+      Warning: element with specified key does not exist ((null)|a10bd9c7)
+      Element (null)|a10bd9c7 will take 0 seconds
+      Segmentation fault.
+      Segmentation fault
+      #+END_EXAMPLE
+***** _starpu_simgrid_submit_job
+      #+BEGIN_EXAMPLE
+      STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /home/stemen/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun -hostfile /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/hostfile  -platform /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml  /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit  --cfg=smpi/privatize_global_variables:yes
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+      [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+      [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6ed190 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_driver_start] worker 0x6ed450 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_driver_start] worker 0x6ed710 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][starpu_initialize] Initialisation finished
+      [starpu][starpu_initialize] Initialisation finished
+      Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+      [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+      Warning: element with specified key does not exist ((null)|a10bd9c7)
+      Element (null)|a10bd9c7 will take 0 seconds
+      Segmentation fault.
+      Segmentation fault
+      #+END_EXAMPLE
+***** transfer_execute
+      #+BEGIN_EXAMPLE
+      STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /home/stemen/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun -hostfile /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/hostfile  -platform /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml  /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit  --cfg=smpi/privatize_global_variables:yes
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+      [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+      [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_driver_start] worker 0x6eceb0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6eceb0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_driver_start] worker 0x6ed170 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6ed170 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_driver_start] worker 0x6ed430 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_driver_start] worker 0x6ed430 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_driver_start] worker 0x6ed6f0 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_driver_start] worker 0x6ed6f0 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][starpu_initialize] Initialisation finished
+      [starpu][starpu_initialize] Initialisation finished
+      Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+      [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+      Warning: element with specified key does not exist ((null)|a10bd9c7)
+      Element (null)|a10bd9c7 will take 0 seconds
+      Segmentation fault.
+      Segmentation fault
+      #+END_EXAMPLE
+***** transfer_submit
+      #+BEGIN_EXAMPLE
+      STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /home/stemen/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun -hostfile /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/hostfile  -platform /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml  /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit  --cfg=smpi/privatize_global_variables:yes
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+      [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+      [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_driver_start] worker 0x6eceb0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6eceb0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_launch_drivers] initialising worker 1/4
+      [starpu][_starpu_driver_start] worker 0x6ed170 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6ed170 1 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_launch_drivers] initialising worker 2/4
+      [starpu][_starpu_driver_start] worker 0x6ed430 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_driver_start] worker 0x6ed430 2 for dev 1 is ready on logical cpu 1
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_launch_drivers] initialising worker 3/4
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_driver_start] worker 0x6ed6f0 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_driver_start] worker 0x6ed6f0 3 for dev 2 is ready on logical cpu 2
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 1 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 2 initialization
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 0 is 0
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] waiting for worker 3 initialization
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][_starpu_launch_drivers] finished launching drivers
+      [starpu][starpu_initialize] Initialisation finished
+      [starpu][starpu_initialize] Initialisation finished
+      Error while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileError while opening the inputfileStart with token value 0
+      [starpu][starpu_task_wait_for_all] Waiting for tasks submitted to context 0
+      Warning: element with specified key does not exist ((null)|a10bd9c7)
+      Element (null)|a10bd9c7 will take 0 seconds
+      Segmentation fault.
+      Segmentation fault
+      #+END_EXAMPLE
 * Changes
   work in progress
 ** SimGrid
@@ -4325,6 +4906,18 @@
 *** Double free of a shared argv
     We made a copy of the argv in _starpu_mpi_progress_thread_func
     before calling MSG_process_create_with_arguments.
+*** Data specific
+**** Using MSG_process_create_with_arguments
+     Args are passed in argv and data's process is initialized to
+     MAX_TSD * sizeof(void*):
+       - starpu_pthread_create_on
+       - _starpu_simgrid_thread_start
+       - main
+       - do_starpu_main
+       - task_execute
+       - _starpu_simgrid_submit_job
+       - transfer_execute
+       - transfer_submit
 * Experiments
 ** TODO [0/3]
    - [-] Prepare all I need for test and check all is ok [2/3]
