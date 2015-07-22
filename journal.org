@@ -4964,6 +4964,33 @@
      Copying paje trace...
      #+END_EXAMPLE
      Detached request not correctly populated?
+***** Threads' state
+      - 2 _starpu_mpi_progress_thread_func
+        cond_wait(cond_progression, mutex) l1316
+        PID 1
+
+      - 3 _starpu_mpi_progress_thread_func
+        cond_wait(cond_progression, mutex) l1316
+        PID 2
+        
+      - 4 _starpu_launch_drivers
+        cond_wait(worker_set->ready_cond, worker_set->mutex) l 768
+        PID 3
+
+      - 5 _starpu_launch_drivers
+        cond_wait(worker_set->ready_cond, worker_set->mutex) l 768
+        PID 4
+
+      - 6 _starpu_cuda_driver_init
+        mutex_lock(worker0->mutex) 0x6ecee8 l 680
+        PID 5
+        If it blocks here, it means that 0x6ecee8 as already been
+        locked else where and not released yet.
+
+      - 7 _starpu_cuda_driver_init
+        mutex_lock(worker0->mutex) 0x6ecee8 l 680
+        PID 6
+        
 ***** Is Worker_set passed correctly ?
       Yes it is!
      #+BEGIN_EXAMPLE
