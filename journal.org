@@ -5059,50 +5059,54 @@
           line :
             - 682 
             - 688
-        
-        Thread 6 and 7 are supposed to initialize the worker 0x790020
-        but there are both stucked by a lock on worker0->mutex 0x6ecee8
-        #+BEGIN_EXAMPLE
-        #9  0x0000000000499380 in _starpu_cuda_driver_init (worker_set=0x790020 <cuda_worker_set>) at ../../src/drivers/cuda/driver_cuda.c:680
-        (gdb) info threads
-        Id   Target Id         Frame 
-        7    Thread 0x7fffeeffd700 (LWP 27218) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        * 6    Thread 0x7fffef7fe700 (LWP 27217) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        5    Thread 0x7fffeffff700 (LWP 27216) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        4    Thread 0x7ffff4d3b700 (LWP 27215) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        3    Thread 0x7ffff5924700 (LWP 27212) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        2    Thread 0x7ffff6125700 (LWP 27211) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        1    Thread 0x7ffff7fd0780 (LWP 27207) "ring_async_impl" 0x00007ffff6a93cc9 in __GI_raise (sig=sig@entry=6) at ../nptl/sysdeps/unix/sysv/linux/raise.c:56
+              
+        - Thread 6 and 7 are supposed to initialize the worker 0x790020
+          but there are both stucked by a lock on worker0->mutex 0x6ecee8
+          #+BEGIN_EXAMPLE
+          #9  0x0000000000499380 in _starpu_cuda_driver_init (worker_set=0x790020 <cuda_worker_set>) at ../../src/drivers/cuda/driver_cuda.c:680
+          (gdb) info threads
+          Id   Target Id         Frame 
+          7    Thread 0x7fffeeffd700 (LWP 27218) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          * 6    Thread 0x7fffef7fe700 (LWP 27217) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          5    Thread 0x7fffeffff700 (LWP 27216) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          4    Thread 0x7ffff4d3b700 (LWP 27215) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          3    Thread 0x7ffff5924700 (LWP 27212) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          2    Thread 0x7ffff6125700 (LWP 27211) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          1    Thread 0x7ffff7fd0780 (LWP 27207) "ring_async_impl" 0x00007ffff6a93cc9 in __GI_raise (sig=sig@entry=6) at ../nptl/sysdeps/unix/sysv/linux/raise.c:56
+          
+          (gdb) p worker_set
+          $6 = (struct _starpu_worker_set *) 0x790020 <cuda_worker_set>
+          
+          (gdb) p &worker0->mutex
+          $9 = (starpu_pthread_mutex_t *) 0x6ecee8 <config+4264>
+          #+END_EXAMPLE      
 
-        (gdb) p worker_set
-        $6 = (struct _starpu_worker_set *) 0x790020 <cuda_worker_set>
-
-        (gdb) p &worker0->mutex
-        $9 = (starpu_pthread_mutex_t *) 0x6ecee8 <config+4264>
-        #+END_EXAMPLE      
-
-        #+BEGIN_EXAMPLE
-        #9  0x0000000000499380 in _starpu_cuda_driver_init (worker_set=0x790020 <cuda_worker_set>) at ../../src/drivers/cuda/driver_cuda.c:680
-        (gdb) info threads 
-        Id   Target Id         Frame 
-        * 7    Thread 0x7fffeeffd700 (LWP 27218) "ring_async_impl" 0x0000000000499380 in _starpu_cuda_driver_init (worker_set=0x790020 <cuda_worker_set>)
-        at ../../src/drivers/cuda/driver_cuda.c:680
-        6    Thread 0x7fffef7fe700 (LWP 27217) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        5    Thread 0x7fffeffff700 (LWP 27216) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        4    Thread 0x7ffff4d3b700 (LWP 27215) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        3    Thread 0x7ffff5924700 (LWP 27212) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        2    Thread 0x7ffff6125700 (LWP 27211) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
-        1    Thread 0x7ffff7fd0780 (LWP 27207) "ring_async_impl" 0x00007ffff6a93cc9 in __GI_raise (sig=sig@entry=6) at ../nptl/sysdeps/unix/sysv/linux/raise.c:56
-
-        (gdb) p worker_set
-        $6 = (struct _starpu_worker_set *) 0x790020 <cuda_worker_set>
-
-        (gdb) p &worker0->mutex
-        $9 = (starpu_pthread_mutex_t *) 0x6ecee8 <config+4264>
-        #+END_EXAMPLE
+          #+BEGIN_EXAMPLE
+          #9  0x0000000000499380 in _starpu_cuda_driver_init (worker_set=0x790020 <cuda_worker_set>) at ../../src/drivers/cuda/driver_cuda.c:680
+          (gdb) info threads 
+          Id   Target Id         Frame 
+          * 7    Thread 0x7fffeeffd700 (LWP 27218) "ring_async_impl" 0x0000000000499380 in _starpu_cuda_driver_init (worker_set=0x790020 <cuda_worker_set>)
+          at ../../src/drivers/cuda/driver_cuda.c:680
+          6    Thread 0x7fffef7fe700 (LWP 27217) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          5    Thread 0x7fffeffff700 (LWP 27216) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          4    Thread 0x7ffff4d3b700 (LWP 27215) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          3    Thread 0x7ffff5924700 (LWP 27212) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          2    Thread 0x7ffff6125700 (LWP 27211) "ring_async_impl" sem_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/sem_wait.S:85
+          1    Thread 0x7ffff7fd0780 (LWP 27207) "ring_async_impl" 0x00007ffff6a93cc9 in __GI_raise (sig=sig@entry=6) at ../nptl/sysdeps/unix/sysv/linux/raise.c:56
+          
+          (gdb) p worker_set
+          $6 = (struct _starpu_worker_set *) 0x790020 <cuda_worker_set>
+          
+          (gdb) p &worker0->mutex
+          $9 = (starpu_pthread_mutex_t *) 0x6ecee8 <config+4264>
+          #+END_EXAMPLE
         
         - Process which owns the mutex
-          Process of PID 6
+          Process of 6 (PID 5) for both thread 6 and 7. Odd,
+          because the mutex for the thread 7 should not be owned by
+          the thread 6 because they belong to two different
+          smpi_process.
+          And Thread 6 seems to be blocked because he already have it.
           #+BEGIN_EXAMPLE
           * 7    Thread 0x7fffeeffd700 (LWP 27218) "ring_async_impl" 0x0000000000499380 in _starpu_cuda_driver_init (worker_set=0x790020 <cuda_worker_set>)
           at ../../src/drivers/cuda/driver_cuda.c:680
@@ -5121,7 +5125,6 @@
 
           (gdb) p SIMIX_process_self()->pid
           $25 = 6
-
           #+END_EXAMPLE
           
           #+BEGIN_EXAMPLE
@@ -5137,7 +5140,6 @@
 
           (gdb) p *(worker0->mutex)
           $28 = {mutex = {locked = 1, owner = 0xb711e0, sleeping = 0xb6e530}}
-
           #+END_EXAMPLE
 
 ***** Lock never taken before
