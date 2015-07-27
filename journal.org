@@ -5139,6 +5139,30 @@
           $28 = {mutex = {locked = 1, owner = 0xb711e0, sleeping = 0xb6e530}}
 
           #+END_EXAMPLE
+
+***** Lock never taken before
+      This is the first time the lock is called on this mutex but the
+      process already has it.
+      #+BEGIN_EXAMPLE
+      167         XBT_DEBUG("Mutex %p now owned by %p", mutex, mutex->owner);
+      (gdb) 
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:167: [simix_synchro/DEBUG] Mutex 0xb7b150 now owned by 0xb7de20
+      168         SIMIX_simcall_answer(simcall);
+      (gdb) p simcall->issuer 
+      $1 = (smx_process_t) 0xb7de20
+      (gdb) info breakpoints 
+      Num     Type           Disp Enb Address            What
+      1       breakpoint     keep y   0x00007ffff73ba62d in simcall_HANDLER_mutex_lock 
+                                                   at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:150
+        stop only if mutex == 0xb7b150
+        breakpoint already hit 1 time
+      #+END_EXAMPLE
+*** 2015-07-24
+**** Specific variable used by SMPI process
+     key: 1, 2 3
+     - memory_node_key
+**** Key used by process "main"
+     0 1 2 3
 * Changes
   work in progress
 ** SimGrid
@@ -5176,7 +5200,7 @@
      Functions that have been modified:
        - starpu_pthread_create_on
        - _starpu_simgrid_thread_start
-       - main
+       - main (simgrid.c)
        - do_starpu_main
        - task_execute
        - _starpu_simgrid_submit_job
