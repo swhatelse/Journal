@@ -3249,8 +3249,8 @@
       #+END_EXAMPLE
 
       - [X] Did we really need to modify smpi_process_initialized?
-*** TODO 2015-07-06 Monday [0/1]
-    - [ ] Argv should be a copy.
+*** DONE 2015-07-06 Monday [1/1]
+    - [X] Argv should be a copy.
       Is it really necessary? Because the parent doesn't modify it, it
       use it just to initialize the process SMPI and create a MSG
       process.
