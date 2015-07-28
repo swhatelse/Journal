@@ -97,43 +97,7 @@
        ./configure --with-fxt
      #+end_src
 
-*** 2014-12-17 mercredi
-    Vérification de l'installation de de FxT et de la génération de trace.
-    #+begin_src sh :results output :exports both
-      STARPU_GENERATE_TRACE=1 ./cholesky_implicit -size 960 -nblocks 1    
-    #+end_src
-
-*** 2014-12-19 vendredi
-**** Installation de simgrid
-***** Test du fonctionnement de Simgrid
-      #+begin_src sh :results output :exports both
-        cd ~/Programmation/TER/SimGrid-3.11/build
-        ctest
-      #+end_src
-
-**** Compilation starpu avec support simgrid
-     - Besoin d'opencl
-
 * 2015
-** 2015-02 février
-*** 2015-02-05 jeudi
-    Linkage Starpu Simgrid.
-    Modification du script de Lukas.
-**** Réinstallation de FXT
-     #+begin_src sh :results output :exports both
-       export FXTDIR=/home/steven/Programmation/TER/fxt-0.3.0/inst
-       cd ~/Programmation/TER/fxt-0.3.0/
-       mkdir build
-       cd build
-       ./configure --prefix=$FXTDIR
-       make -5 
-       make install -j5
-     #+end_src
-*** 2015-02-06 vendredi
-    Problème d'installation simgrid récupéré sur avec starpu-simgrid, utilisation de la version tar.gz
-    
-*** 2015-02-12 jeudi
-    Si problème avec la doc à l'install -> la désactiver
 ** 2015-03 mars
 *** 2015-03-13 vendredi
     Modifs effectuées dans le fichier smx_process.c mais ne sont pas correctes. Balise test steven.
@@ -141,9 +105,8 @@
     je remonte trop haut dans la hierachie et tout mes process sont rattaché à un seul et même.
     En fait je donne le segment data du parent mais forcément ça remonte jusqu'au tout premier process. J'essaie de voir si je peux 
     m'arrêter un bon niveau dans la hierarchie avec les informations que l'on a déjà.
-    Autre problème lié à ma modifs est qu'apparemment le champs data de smx_process_t est apparement obselète et sera remplacé par moddata dont
-    mais je n'ai trouvé aucune trace.
-    
+
+    Modification marked by "Steven" "end Steven" 
 *** 2015-03-19 jeudi
     Etude de la création des MSG_process:
     Les process MSG sont créés à partir de process SIMIX. Ils servent à simplifier la création de process au niveau user.
@@ -4891,78 +4854,78 @@
       Normally it is called only one time to create a key.
     - [ ] setspecific for all process calling getspecific
 **** Deadlock 
-     #+BEGIN_EXAMPLE
-     STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /home/stemen/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun -hostfile /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/hostfile  -platform /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml  /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit  --cfg=smpi/privatize_global_variables:yes
-     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
-     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
-     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
-     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
-     [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
-     [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
-     [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
-     [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
-     [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
-     [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
-     [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
-     [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
-     [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
-     [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
-     [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
-     [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
-     [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
-     [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
-     [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
-     [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
-     [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
-     [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
-     [starpu][_starpu_launch_drivers] initialising worker 0/4
-     [starpu][_starpu_launch_drivers] initialising worker 0/4
-     [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
-     [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
-     [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
-     [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
-     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
-     [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
-     [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
-     [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
-     [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_global.c:504: [simix_kernel/CRITICAL] Oops ! Deadlock or code not perfectly clean.
-     [0.000000] [simix_kernel/INFO] 6 processes are still running, waiting for something.
-     [0.000000] [simix_kernel/INFO] Legend of the following listing: "Process <pid> (<name>@<host>): <status>"
-     [0.000000] [simix_kernel/INFO] Process 1 (0@node-1.acme.org): waiting for synchronization synchro 0xe80690 (synchro) in state 0 to finish
-     [0.000000] [simix_kernel/INFO] Process 2 (1@node-2.acme.org): waiting for synchronization synchro 0xe805a0 (synchro) in state 0 to finish
-     [0.000000] [simix_kernel/INFO] Process 3 (main@StarPU-MPI0-MAIN): waiting for synchronization synchro 0xe804b0 (synchro) in state 0 to finish
-     [0.000000] [simix_kernel/INFO] Process 4 (main@StarPU-MPI1-MAIN): waiting for synchronization synchro 0xe803c0 (synchro) in state 0 to finish
-     [0.000000] [simix_kernel/INFO] Process 5 (@StarPU-MPI0-CUDA0): waiting for synchronization synchro 0xe802d0 (synchro) in state 0 to finish
-     [0.000000] [simix_kernel/INFO] Process 6 (@StarPU-MPI1-CUDA0): waiting for synchronization synchro 0xe801e0 (synchro) in state 0 to finish
-     Error while opening the inputfileError while opening the inputfileAborted
-     Copying paje trace...
-     #+END_EXAMPLE
+      #+BEGIN_EXAMPLE
+      STARPU_SCHED=dmda STARPU_GENERATE_TRACE=0 STARPU_NOPENCL=0 /home/stemen/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun -hostfile /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/hostfile  -platform /home/stemen/Programmation/TER/starpu-simgrid/src/starpu-mpi/StarPU-MPI-platform-dNHW3y.xml  /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/mpi/tests/ring_async_implicit  --cfg=smpi/privatize_global_variables:yes
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/TCP_gamma' to '4194304'
+      [0.000000] [xbt_cfg/INFO] Configuration change: Set 'smpi/privatize_global_variables' to 'yes'
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/filename registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/platform/topology registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/group registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/computing registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/sleeping registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/internals registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/categorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/process registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/msg/vm registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_link registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_power registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/buffer registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/onelink_only registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/disable_destroy registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/basic registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/display_sizes registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/smpi/format/ti_one_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem tracing/comment_file registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/uncategorized registered twice.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/xbt/config.c:239: [xbt_cfg/WARNING] Config elem viva/categorized registered twice.
+      [0.000000] [surf_config/INFO] Switching workstation model to compound since you changed the network and/or cpu model(s)
+      [0.000000] [smpi_kernel/INFO] You did not set the power of the host running the simulation.  The timings will certainly not be accurate.  Use the option "--cfg=smpi/running_power:<flops>" to set its value.Check http://simgrid.org/simgrid/latest/doc/options.html#options_smpi_bench for more information.
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][_starpu_mpi_initialize] Calling MPI_Init_thread
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][load_bus_latency_file_content] loading latencies from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.latency
+      [starpu][load_bus_bandwidth_file_content] loading bandwidth from /home/stemen/Programmation/TER/starpu-simgrid/src/StarPU/tools/perfmodels/sampling//bus/mirage.bandwidth
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 0 type 1 devid 0 bound to cpu 0, STARPU memory node 1
+      [starpu][_starpu_init_workers_binding] worker 1 type 0 devid 0 bound to cpu 0, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 2 type 0 devid 1 bound to cpu 1, STARPU memory node 0
+      [starpu][_starpu_init_workers_binding] worker 3 type 0 devid 2 bound to cpu 2, STARPU memory node 0
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][load_sched_policy] Use dmda scheduler (data-aware performance model)
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_launch_drivers] initialising worker 0/4
+      [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_driver_start] worker 0x6eced0 0 for dev 0 is ready on logical cpu 0
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_global.c:504: [simix_kernel/CRITICAL] Oops ! Deadlock or code not perfectly clean.
+      [0.000000] [simix_kernel/INFO] 6 processes are still running, waiting for something.
+      [0.000000] [simix_kernel/INFO] Legend of the following listing: "Process <pid> (<name>@<host>): <status>"
+      [0.000000] [simix_kernel/INFO] Process 1 (0@node-1.acme.org): waiting for synchronization synchro 0xe80690 (synchro) in state 0 to finish
+      [0.000000] [simix_kernel/INFO] Process 2 (1@node-2.acme.org): waiting for synchronization synchro 0xe805a0 (synchro) in state 0 to finish
+      [0.000000] [simix_kernel/INFO] Process 3 (main@StarPU-MPI0-MAIN): waiting for synchronization synchro 0xe804b0 (synchro) in state 0 to finish
+      [0.000000] [simix_kernel/INFO] Process 4 (main@StarPU-MPI1-MAIN): waiting for synchronization synchro 0xe803c0 (synchro) in state 0 to finish
+      [0.000000] [simix_kernel/INFO] Process 5 (@StarPU-MPI0-CUDA0): waiting for synchronization synchro 0xe802d0 (synchro) in state 0 to finish
+      [0.000000] [simix_kernel/INFO] Process 6 (@StarPU-MPI1-CUDA0): waiting for synchronization synchro 0xe801e0 (synchro) in state 0 to finish
+      Error while opening the inputfileError while opening the inputfileAborted
+      Copying paje trace...
+      #+END_EXAMPLE
      Detached request not correctly populated?
 ***** Threads' state
       - 2 _starpu_mpi_progress_thread_func
@@ -5159,6 +5122,136 @@
         stop only if mutex == 0xb7b150
         breakpoint already hit 1 time
       #+END_EXAMPLE
+***** Dual lock
+      Two process took a lock and try to take the lock of each other
+      without releasing theirs:
+      #+BEGIN_EXAMPLE
+      1110 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:167: [simix_synchro/DEBUG] Mutex 0x19ff4d0 now owned by 0x1     a065b0
+      1111 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:167: [simix_synchro/DEBUG] Mutex 0x19ff480 now owned by 0x1     a06820
+      1112 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:338: [simix_synchro/DEBUG] Signal condition 0x19ff520
+      1113 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:338: [simix_synchro/DEBUG] Signal condition 0x19ff570
+      1114 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:167: [simix_synchro/DEBUG] Mutex 0x1a074d0 now owned by 0x1     77cd60
+      1115 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:167: [simix_synchro/DEBUG] Mutex 0x1a075e0 now owned by 0x1     77cf80
+      1116 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:308: [simix_synchro/DEBUG] Wait condition 0x1a07630 by proc     ess 0x177cd60 using mutex 0x1a074d0
+      1117 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:233: [simix_synchro/DEBUG] Mutex 0x1a074d0 released by proc     ess 0x177cd60
+      1118 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:308: [simix_synchro/DEBUG] Wait condition 0x1a07680 by proc     ess 0x177cf80 using mutex 0x1a075e0
+      1119 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:233: [simix_synchro/DEBUG] Mutex 0x1a075e0 released by proc     ess 0x177cf80
+      1120 [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      1121 [starpu][_starpu_cuda_limit_gpu_mem_if_needed] CUDA device 0: Wasting 0 MB / Limit 459 MB / Total 511 MB / Remains 511 MB
+      1122 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:167: [simix_synchro/DEBUG] Mutex 0x19fe120 now owned by 0x1     a065b0
+      1123 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:167: [simix_synchro/DEBUG] Mutex 0x19fe170 now owned by 0x1     a06820
+      1124 [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      1125 [starpu][_starpu_memory_manager_set_global_memory_size] Global size for node 1 is 481296384
+      1126 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:233: [simix_synchro/DEBUG] Mutex 0x19fe120 released by proc     ess 0x1a065b0
+      1127 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:233: [simix_synchro/DEBUG] Mutex 0x19fe170 released by proc     ess 0x1a06820
+      1128 [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      1129 [starpu][_starpu_cuda_driver_init] cuda (Simgrid) dev id 0 worker 0 thread is ready to run on CPU 0 !
+      1130 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:158: [simix_synchro/DEBUG] Mutex 0x19ff480 requested by pro     cess 0x1a065b0 but already owned by 0x1a06820
+      1131 [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:158: [simix_synchro/DEBUG] Mutex 0x19ff4d0 requested by pro     cess 0x1a06820 but already owned by 0x1a065b0
+
+      #+END_EXAMPLE
+      Two process running _starpu_cuda_driver_init
+      #+BEGIN_EXAMPLE
+      Breakpoint 1, simcall_HANDLER_mutex_lock (simcall=0xb7deb8, mutex=0xb7b150)
+      at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:150
+      150       XBT_IN("(%p)",simcall);
+      6: simcall->issuer->pid = 5
+      5: simcall->issuer->ppid = 3
+      4: mutex->locked = 0
+      3: mutex = (smx_mutex_t) 0xb7b150
+      2: mutex->owner = (smx_process_t) 0x0
+      1: simcall->issuer = (smx_process_t) 0xb7de20
+      (gdb) c
+      Continuing.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:167: [simix_synchro/DEBUG] Mutex 0xb7b150 now owned by 0xb7de20
+      
+      Breakpoint 2, simcall_HANDLER_mutex_lock (simcall=0xb7e3c8, mutex=0xb7b100)
+      at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:150
+      150       XBT_IN("(%p)",simcall);
+      6: simcall->issuer->pid = 6
+      5: simcall->issuer->ppid = 4
+      4: mutex->locked = 0
+      3: mutex = (smx_mutex_t) 0xb7b100
+      2: mutex->owner = (smx_process_t) 0x0
+      1: simcall->issuer = (smx_process_t) 0xb7e330
+
+      Breakpoint 2, simcall_HANDLER_mutex_lock (simcall=0xb7deb8, mutex=0xb7b100)
+      at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:150
+      150       XBT_IN("(%p)",simcall);
+      6: simcall->issuer->pid = 5
+      5: simcall->issuer->ppid = 3
+      4: mutex->locked = 1
+      3: mutex = (smx_mutex_t) 0xb7b100
+      2: mutex->owner = (smx_process_t) 0xb7e330
+      1: simcall->issuer = (smx_process_t) 0xb7de20
+      (gdb) c
+      Continuing.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:158: [simix_synchro/DEBUG] Mutex 0xb7b100 requested by process 0xb7de20 but already owned by 0xb7e330
+      
+      Breakpoint 1, simcall_HANDLER_mutex_lock (simcall=0xb7e3c8, mutex=0xb7b150)
+      at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:150
+      150       XBT_IN("(%p)",simcall);
+      6: simcall->issuer->pid = 6
+      5: simcall->issuer->ppid = 4
+      4: mutex->locked = 1
+      3: mutex = (smx_mutex_t) 0xb7b150
+      2: mutex->owner = (smx_process_t) 0xb7de20
+      1: simcall->issuer = (smx_process_t) 0xb7e330
+
+      (gdb) info breakpoints 
+      Num     Type           Disp Enb Address            What
+      1       breakpoint     keep y   0x00007ffff73ba62d in simcall_HANDLER_mutex_lock 
+                                                   at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:150
+        stop only if mutex == 0xb7b150
+        breakpoint already hit 2 times
+      2       breakpoint     keep y   0x00007ffff73ba62d in simcall_HANDLER_mutex_lock 
+                                                   at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:150
+        stop only if mutex == 0xb7b100
+        breakpoint already hit 2 times
+      #+END_EXAMPLE
+
+      Pid  Mutex
+      5 -- b150
+       \    /
+        \  /
+         \/
+         /\
+        /  \
+       /    \
+      6 -- b100
+
+***** No switch between the two locks
+      #+BEGIN_EXAMPLE
+      Breakpoint 3, smpi_switch_data_segment (dest=1) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_bench.c:605
+      605       if (smpi_loaded_page==dest)//no need to switch either
+      (gdb) 
+      Continuing.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_bench.c:638: [smpi_bench/DEBUG] Switching data frame to the one of process 1
+      [Switching to Thread 0x7ffff7fa7740 (LWP 12823)]
+      
+      Breakpoint 1, simcall_HANDLER_mutex_lock (simcall=0xb7deb8, mutex=0xb7b100)
+      at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:150
+      150       XBT_IN("(%p)",simcall);
+      (gdb) 
+      Continuing.
+      [0.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:158: [simix_synchro/DEBUG] Mutex 0xb7b100 requested by process 0xb7de20 but already owned by 0xb7e330
+      
+      Breakpoint 1, simcall_HANDLER_mutex_lock (simcall=0xb7e3c8, mutex=0xb7b150)
+      at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:150
+      150       XBT_IN("(%p)",simcall);
+
+      (gdb) info breakpoints 
+      Num     Type           Disp Enb Address            What
+      1       breakpoint     keep y   0x00007ffff73ba62d in simcall_HANDLER_mutex_lock 
+                                                   at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_synchro.c:150
+        stop only if mutex == 0xb7b150 || mutex == 0xb7b100
+        breakpoint already hit 4 times
+      3       breakpoint     keep y   0x00007ffff752746a in smpi_switch_data_segment 
+                                                   at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_bench.c:605
+        stop only if SIMIX_process_self()->pid == 5 || SIMIX_process_self()->pid == 6
+        breakpoint already hit 32 times
+      #+END_EXAMPLE
+
 *** 2015-07-24
 **** Specific variable used by SMPI process
      key: 1, 2 3
