@@ -100,25 +100,15 @@
 * 2015
 ** 2015-03 mars
 *** 2015-03-13 vendredi
-    Modifs effectuées dans le fichier smx_process.c mais ne sont pas correctes. Balise test steven.
-    J'ai essayé de rattacher les process MSG créés dans un contexte MPI, au processus qui les à créé. Mais le problème c'est que
-    je remonte trop haut dans la hierachie et tout mes process sont rattaché à un seul et même.
-    En fait je donne le segment data du parent mais forcément ça remonte jusqu'au tout premier process. J'essaie de voir si je peux 
-    m'arrêter un bon niveau dans la hierarchie avec les informations que l'on a déjà.
-
-    Modification marked by "Steven" "end Steven" 
-*** 2015-03-19 jeudi
-    Etude de la création des MSG_process:
-    Les process MSG sont créés à partir de process SIMIX. Ils servent à simplifier la création de process au niveau user.
-    Au moment de la création d'un process MSG on sait à quel host appartient ce dernier. On sait également quel est le père du process.
-
+    Modifications in smx_process.c marked by tags "Steven" "end Steven". 
+    I tried to attach the data segment of a process to the father in a
+    MPI context. But all my process have the same segment as the maestro.
 *** 2015-03-20 vendredi
-    Sous gdb en observant la creation de process SIMIX, je suis tombé
-    là dessus : dans la fonction SIMIX_process_create, un process ("worker") est rattaché à l'host
-    StarPU-MPI0-CPU0 alors que le parent de ce dernier ("mpi") est
-    rattaché à l'host StarPU-MPI1-MAIN. Ce processus mpi est sensé
-    être créé sur les deux host mais il ne semble qu'il n'y en a qu'un.
-    
+    With gdb while looking how the creation of a SIMIX process works,
+    I found this: a process is created on host StarPU-MPI0-CPU0 but
+    its parent is on host StarPU-MPI1-MAIN. Host should be StarPU-MPI1-CPU0, for
+    the son.
+
     [[file:img/gdb_bad_rank.jpg][Mauvais smx_host]]
     
     #+begin_src sh :results output :exports both
@@ -409,21 +399,15 @@
     [StarPU-MPI0-MAIN:mpi:(0) 2.000000] /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/simix/smx_process.c:900: [simix_process/DEBUG] Control returned to me: 'mpi'
     #+END_EXAMPLE    
 *** 2015-03-26 jeudi
-    Fonctionnement:
-    Smpirun execute le programme directement.
-    Pour lancer ce dernier le main du programme est remplacé par un main "secondaire" (smpi_simulated_main).
-    Ensuite le main par défaut de simgrid ("weak main") est lancé et va se charger d'exécuter le main simulé.
+    - How mpi simulation works?
+      Main of the program replaced by default simgrid main and
+      renammed in smpi_simulated_main.
+      smpi_main is in charge of creating the plateform
+      (SIMIX_create_env), creating all smpi process and privatizing
+      their data segments. Privization is only made at this moment so
+      every that is created after doesn't have the privatization.
 
-    La fonction smpi_main va s'occuper de créer la plate forme(SIMIX_create_env), de créer les différents process smpi(SIMIX_launch_app) et ensuite de privatiser leurs segments data
-    en le dupliquant quelque part dans le tas. Cela n'est fait qu'a ce moment et donc ce qui est créé après n'est pas privatisé.
-
-    Piste : jeter un oeil à Simix process_list, SIMIX_process_get_data.
-    
     process_list : type swag(sorte de liste générique)
-    Changement de segment data (smpi_switch_data_segment) effectué au niveau smpi uniquement, c'est pour ça que je ne l'avais pas vu.
-
-    Hypothèse : dans la struct smx_process_t rajouter l'index du segment data du père et rajouter le switch contexte privée. cf Discussions
-    avec Arnaud
 
 **** Discussions avec Arnaud
 - ajout d'un champ =segment_index= à =smx_process_t= qui correspond à
@@ -454,7 +438,8 @@
     #+END_SRC
     La question, c'est doit-on le faire pour tous les simcalls ? Faut tenter...
 *** 2015-03-27 vendredi
-    Fonction appelée à la fin de SIMIX_process_yield(), ça marche! Mais on dirait que le rank ne correspond pas vraiment.
+    Switch call at the end of SIMIX_process_yield() works. But rank
+    value seems to be wrong.
     #+BEGIN_EXAMPLE
     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'surf/precision' to '1e-9'
     [0.000000] [xbt_cfg/INFO] Configuration change: Set 'network/model' to 'SMPI'
@@ -747,7 +732,8 @@
     
     #+END_EXAMPLE
     
-    Dans SIMIX_run , le hostname envoyé au simcall ne correspond pas au smx_host->key du process
+    In SIMIX_run, the hostname send to the simcall doesn't match the
+    smx_host->key of the process.
     #+BEGIN_EXAMPLE
           fp = 0x83b4a0, cp = 0x83b4a0}, {c = 16 '\020', cc = 0x64e510 "StarPU-MPI0-CPU0", s = -6896, i = 6612240, l = 6612240, uc = 16 '\020', us = 58640, ui = 6612240,
       ul = 6612240, f = 9.26572176e-39, d = 3.266880626057324e-317, sz = 6612240, sgsz = 6612240, sgoff = 6612240, dp = 0x64e510, fp = 0x64e510, cp = 0x64e510}, {c = 0 '\000',
@@ -769,8 +755,9 @@
     
 ** 2015-04 avril
 *** 2015-04-02 jeudi
-    Relevé gdb plus clair du problème soulevé vendredi dernier.
-    Ici l'host du parent est StarPU-MPIO* alors que le process enfant est StarPU-MPI1*.
+    Focus on the last friday's problem.
+    Here parent's host is StarPU-MPIO* but its son has StarPU-MPI1*
+    for host
     smx_process.c:280
     #+BEGIN_EXAMPLE
     Breakpoint 3, SIMIX_process_create (process=0x7ffff51d9ee0, name=0x40100d "worker", code=0x400c16 <worker_func>, data=0x83b440, hostname=0x654a90 "StarPU-MPI1-CPU0",
@@ -782,10 +769,11 @@
     2: parent_process = (smx_process_t) 0x613220
     #+END_EXAMPLE
 
-    Sur l'exemple de Samuel, le problème ne semble apparaître que pour sur "workers" et les références sont "croisées".
-    On a StarPU-MPIO-CPU* --> StarPU-MPI1-CPU* et StarPU-MPI1-CPU* --> StarPU-MPI0-CPU*.
+    On the Samuel's example, the problem seems to happen only with
+    "workers" process, references are "crossed".
+    We have StarPU-MPIO-CPU* --> StarPU-MPI1-CPU* et StarPU-MPI1-CPU* --> StarPU-MPI0-CPU*.
     
-    - Regardons comment sont créés les workers, sont-ils correctements créés?
+    - How are workers created?
       Structure test.c:
       |-main
       | |- application_main
@@ -793,11 +781,7 @@
       | | | |- worker_func
       | |- mpi_func
       
-      Vérifier ce que me retourne MSG_get_host_by_name(name).
-      
-    - Est-ce que les segments mémoires (segment_index) rattachés sont bien corrects?
-
-    - Remonter à la source
+    - Following back the source
       smx_process.c:208
       #+BEGIN_EXAMPLE
       (gdb) p *simcall->issuer->smx_host
@@ -820,9 +804,6 @@
       $28 = {key = 0x64e040 "StarPU-MPI0-MAIN", key_len = 16, hash_code = 157978233, content = 0x64e010, next = 0x0}
       #+END_EXAMPLE
       
-      xbt_dynar_foreach est juste une macro qui permet de parcourir un tableau dynamique. Possible qu'il y ait une erreur lors de 
-      l'insertion dans le dynar?
-      
       Que fais ce code? Dans SIMIX_run smx_global.c:399
       #+BEGIN_EXAMPLE
       xbt_dynar_foreach(simix_global->process_that_ran, iter, process) {
@@ -831,11 +812,10 @@
         }
       }
       #+END_EXAMPLE
-      Si je comprends bien, process_that_ran est un dynar que nous parcourons à la recherche de process qui sont en attentes que leurs
-      appels systèmes soient pris en comptent. 
-
-      Au moment du simcall, il y a déjà une incohérence. Que se passe t-il avant?
-      Jettons un oeil à MSG_process_create pour voir où cela nous mène. 
+      
+      It looks for process which have made a simcall. It seems that
+      there is an incoherence before the simcall. Let's have a look to
+      seems what happened before.
       
       Dans simcall_BODY_process_create simcalls_generated_body.c:664
       #+BEGIN_EXAMPLE
@@ -844,18 +824,11 @@
       (gdb) p *self->smx_host
       $8 = {key = 0x64e040 "StarPU-MPI0-MAIN", key_len = 16, hash_code = 157978233, content = 0x64e010, next = 0x0}
       #+END_EXAMPLE
-
-      Déjà ici l'host du process avec lequel a été appelé le simcall diverge de l'host du process retourné par simix.
-      Est-ce que simix nous a bien retourné ce à quoi on s'attendais? 
-      Piste vérifier les pid des process "mpi" créés sur chacun des noeuds.
-
-      Hypothèses : 
-      - switch effectué mais au mauvais moment? (ça parait absurde)
-      - mauvais pointeur passé quelque part...
+      As we saw earlier, the host value of the process that is being
+      creating is not correct. The parent is not on the same host node.
 
 *** 2015-04-03 vendredi
-    J'ai rajouté un noeud au test (on en est à 3). Je n'ai pas encore vérifié si les rank sont bien retournés par les bons noeud, 
-    mais il y a le bon nombre de rang attendu. Par contre j'ai une autre erreur:
+    Added one node (3). Now having this error:
     #+BEGIN_EXAMPLE
     I'm 0/3
     I'm 1/3
@@ -885,27 +858,21 @@
     [2.000000] [simix_kernel/INFO] Process 2 (1@node-2.acme.org): waiting for synchronization action 0x714540 (synchro) in state 0 to finish
     [2.000000] [simix_kernel/INFO] Process 3 (2@node-3.acme.org): waiting for communication action 0x714630 ((null)) in state 0 to finish
     #+END_EXAMPLE
-    
-    Bon j'ai récupéré les infos du process depuis le programme de test de samuel et en fait tout semble correct, le rank correspond
-    au bon host...
+    This is because one process is waiting for a receive but none has
+    sent him something.
+
+    I have retrvied information from Samuel's test program and in fact
+    all seem to be correct...
     breakpoint test.c:29 (exemple de Samuel)
     #+BEGIN_EXAMPLE
     3: myrank = 1
     2: *host = {key = 0x654a90 "StarPU-MPI1-CPU0", key_len = 16, hash_code = 196770957, content = 0x654a60, next = 0x0}
     #+END_EXAMPLE
     
-*** 2015-04-09 jeudi
-    Effectivement comme, Arnaud me l'a suggéré, le message d"erreur précédent de Simgrid (deadlock...), n'est pas une erreur de fonctionnement de 
-    Simgrid. Il y avait un process MPI qui attendait un message alors qu'au  message ne lui a été envoyé.
 *** 2015-04-10 vendredi
-    Début d'écriture d'un script pour la configuration de starpu-mpi simgrid. 
-    Utilisation d'un fichier point org pour la construction du scrit
+    Writing a script to configure starpu-smpi. Using org mode.
 *** 2015-04-17 vendredi
-    Comme en fait dans la base que j'avais récupéré de Luka, StarPU est compilé avec Simgrid mais sans le support MPI activé,
-    je me suis fais un script pour de config et d'install, un peu comme le fichier run_inject_StarPUSG.sh de Luka.
-    En tentant l'install avec le support Simgrid et MPI activé, j'avais ce genre d'erreur (cf tuto_config.org dans le rep de 
-    starpu-simgrid):
-   
+    Compilation error with my script:
     #+BEGIN_EXAMPLE
     Making all in src
     make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/StarPU-SMPI/src »
@@ -1456,12 +1423,12 @@
     Makefile:985 : la recette pour la cible « all-recursive » a échouée
 
     #+END_EXAMPLE
-    On a donc essayé avec Luka de voir d'où ça venait. La seul piste que l'on ait est que dans Simgrid les fonctions MPI ne 
-    sont pas toutes portées et c'est ce qui causerait ces erreurs de compile.
+    Maybe because with simgrid there are some mpi functions that are
+    not implemented yet.
 *** 2015-04-23 jeudi
-    - Il manquait les flags:
-      En essayant de lancer le jeu de test de starpu (avec le support simgrid) avec la commande make check, j'ai des erreurs, par contre
-      sans le support de simgrid ça marche. J'ai essayé avec l'install de Luka mais ça me fait pareil.
+    Trying to run starpu's test with make check I have some erros but
+      without Simgrid support no errors. I tryied with Luka's
+      run_bench and run_inject, it is the same.
       #+BEGIN_EXAMPLE
     Making check in src
     make[1] : on entre dans le répertoire « /home/steven/Programmation/TER/starpu-simgrid/src/StarPU/build-simgrid/src »
@@ -1518,19 +1485,20 @@
     #+END_EXAMPLE
     
 *** 2015-04-24 vendredi
-    Tentative de maj de simgrid
+    Update of simgrid
     #+BEGIN_EXAMPLE
     git subrepo clone git+ssh://stevenqm@scm.gforge.inria.fr//gitroot/simgrid/simgrid.git src/simgrid
     #+END_EXAMPLE
 ** 2015-05 mai
 *** 2015-05-18 lundi
-    Finalement j'ai également pu lancer le make check, c'est juste qu'il manquait les variables d'environnements
+    Finally make check with SimGrid support works it was just missing
+    some environments variables.
     #+BEGIN_EXAMPLE
     . ./flags_simgrid_starpu.sh
     #+END_EXAMPLE
-    Les tests passent moins jusqu'à un certain point. 
+
 *** 2015-05-19 mardi
-    Comparaison entre le make check de l'install sans simgrid et avec:
+    Comparison of make check between with simgrid support and without
     #+begin_src sh :results output :file check_native.txt :exports both 
       cd ~/Programmation/TER/starpu-simgrid/
       . ./flags_simgrid_starpu.sh
@@ -1538,7 +1506,7 @@
       make check > ~/org/check_native.txt
     #+end_src
 
-    Install starpu simgrid avec run_inject_StarPUSG.sh de luka version master
+    Install starpu simgrid with Luka's run_inject_StarPUSG.sh version master
     #+begin_src sh :results output :file check_simgrid.txt :exports both 
       cd ~/Programmation/TER/starpu-simgrid/
       . ./flags_simgrid_starpu.sh
@@ -1549,7 +1517,7 @@
     #+RESULTS:
     [[file:check_simgrid.txt]]
 
-    Install starpu simgrid avec tuto_config.sh version steven-mpi
+    Install starpu simgrid with tuto_config.sh version steven-mpi
     #+begin_src sh :results output :file check_smpi.txt :exports both 
       cd ~/Programmation/TER/starpu-simgrid/
       . ./flags_simgrid_starpu.sh
@@ -1561,17 +1529,14 @@
     [[file:check_smpi.txt]]
 
 *** 2015-05-20 mercredi
-    
-    Dans le testcase de Samuel, on voit que la valeur récupèré de la lib n'est pas correct.
+    In Samuel's testcase, we can see the value retrieved from the lib
+    is not correct.
     #+begin_src sh :results output :exports both
     cd ~/Programmation/TER/starpu-simgrid/src/starpu-mpi
     make run
     #+end_src
-
-    
 *** 2015-05-22 vendredi
-    
-    Erreur lorsque je compile le test de Samuel avec la libtest et libsimgrid en statique:
+    Error when compiling Samuel's test with libtest end libsimgrid in static:
     #+begin_src sh :results output :file compile_test_static.txt :exports both
       cd ~/Programmation/TER/starpu-simgrid/
       . ./flags_simgrid_starpu.sh
@@ -1584,9 +1549,12 @@
 
 *** 2015-05-27 mercredi
     Solution au problème de compile précédent: dans le Makefile on demandait de tout compiler en statique.
-    
-    J'ai refait une mise à jour et une fusion propre de simgrid pour pouvoir récupérer les modifs fait sur la partie SMPI.
-    Mais souci lors de la compile de simgrid:
+    Solution to the former problem: In the Makefile we ask to compile
+    in static everything.
+
+    Redone update because i didn't merge correctly.
+
+    But compile error:
     #+begin_src sh :results output :file report/result_compile_merge_simgrid.txt :exports both 
       cd ~/Programmation/TER/starpu-simgrid/src/simgrid/
       make clean
@@ -1596,9 +1564,9 @@
     #+RESULTS:
     [[file:report/result_compile_merge_simgrid.txt]]
 
-    En fait ma variable (extern) était déclaré mais pas défini
+    Extern variable was declared but not defined.
 *** 2015-05-28 Jeudi
-    Essai avec cholesky:
+    trying with cholesky:
     #+begin_src sh :results output :exports both
       BASE="/home/steven/Programmation/TER/starpu-simgrid"
       SMPIRUN="$BASE/src/simgrid/SIMGRID/bin/smpirun"
@@ -1651,7 +1619,7 @@
     /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun : ligne 461 :  1084 Erreur de segmentation  (core dumped)${EXEC} ${TRACEOPTIONS} ${SIMOPTS} ${PLATFORMTMP} ${APPLICATIONTMP}
     #+END_EXAMPLE
     
-    Essai avec ring_async_implicit:
+    Trying with ring_async_implicit:
     #+begin_src sh :results output :exports both
       BASE="/home/steven/Programmation/TER/starpu-simgrid"
       SMPIRUN="$BASE/src/simgrid/SIMGRID/bin/smpirun"
@@ -1704,27 +1672,16 @@
     /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/SIMGRID/bin/smpirun : ligne 461 :   939 Erreur de segmentation  (core dumped)${EXEC} ${TRACEOPTIONS} ${SIMOPTS} ${PLATFORMTMP} ${APPLICATIONTMP}
     #+END_EXAMPLE
 
-    Le problème est que PMPI_Comm_set_errhandler n'est pas encore
-    implémenté dans simgrid.
+    PMPI_Comm_set_errhandler is not implemented yet in simgrid.
 
-    Dans mpi/src/starpu_mpi.c il est fait justement appel à cette
-    fonction. Je tente de la mettre en commentaire:
-    #+begin_src sh :results output :exports both
-      cd ~/Programmation/TER/starpu-simgrid/
-      ./run_StarPU_SMPI.sh -t
-    #+end_src
-
-
-    Pour le segfault:
-    Essayer point d'entré -> main de SMPI. Par exemple MPI_Comm_rank...
-    Verifier la valeur de ready_requests entre les différents
-    processus, doit être différente pour chacun.
-    Si c'est le cas surveiller la valeur de cette variable avec watch
-    de gdb.
-    Est-ce que watch fonctionne avec les adresses physiques?
+    For the segfault:
+    Try to have a look at main of SMPI. For exemple MPI_Comm_rank...
+    Check the value of ready_requests between each process, it must be
+    different for each.
+    If it is watch this variable in gdb
 
 *** 2015-05-29 vendredi
-    Break point sur MPI_Comm_rank:
+    Break point on MPI_Comm_rank:
     #+BEGIN_EXAMPLE
     Breakpoint 1, MPI_Comm_rank (comm=0x8d8dc0, rank=0x7ffff5dbde80) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_mpi.c:225
     225       return PMPI_Comm_rank(comm, rank);
@@ -1751,14 +1708,12 @@
     (gdb) 
     #+END_EXAMPLE
     
-    La chose qui ferait passé ready_requests à NULL est
-    starpu_mpi_shutdown mais on ne passe pas dedans avant le segfault.
-    Mais quelque chose ne doit pas être correct à l'attribution du
-    segment data.
+    The only way for ready_requests to have the NULL value is a call
+    to starpu_mpi_shutdown. But it isn't called before the
+    segfault. Maybe there is something we the data segment.
 ** 2015-06 Juin [6/6]
 *** 2015-06-01 lundi
-    Regardons si l'adresse pointé par ready_requests est correct pour
-    chacun ds process MPI:
+    Is the value of ready_requests correct for each SMPI process?
     #+BEGIN_EXAMPLE
     br smx_process.c:855
     cond 6 ready_requests != (void*)0    
@@ -1819,9 +1774,8 @@
     855       if (self->new_host) {
     1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d9310
     #+END_EXAMPLE
-    
-    À partir du 3e passsage l'adresse pointée ne change pas. 
-    Voyons si l'a privatisation se fait correctement.
+
+    Does the privatization work correctly?
     #+BEGIN_EXAMPLE
     br smx_process.c:855 if ready_requests != (void*)0
     #+END_EXAMPLE
@@ -1851,34 +1805,29 @@
     2: self->segment_index = 0
     1: ready_requests = (struct _starpu_mpi_req_list *) 0x8d9310
     #+END_EXAMPLE
-    L'index du segment data est le même pour les 3 noeuds. Normalement il
-    devrait être différent. 
-    L'index du segment data est défini en fonction du pid du
-    process - 1.
-    
-    Le segment data des process MPI semblent corrects. Ces processus
-    sont créés d'abord par le tout premier processus de simigrd le
-    processus "", à la création il partage le même segment data que
-    lui. C'est un peu plutard les processus sont initialisés avec
-    leurs propre segment data. Cependant l'index du segment data est
-    égal au pid du processus -1, hors le processus maestro et le
-    processus de pid 1 ont le même index (0). Le problème pourrait
-    venir de là. -> Apparemment pas.
 
-    Après vérification les exemples mpi sont bien compilé avec la
-    libstarpu en statique.
-   
-    Après avoir discuter avec Arnaud du problème, on a vu que l'index
-    du segment data était mis en place mais trop tard. Donc tentons de
-    de faire en sorte que la fonction smpi_process_init soit appelé
-    avant ou au tout debut de _starpu_mpi_simgrid_init.
+    The seggment data index is the same for all the nodes, but it must not.
+    The index equals to pid - 1
+
+    The segment data of SMPI process seems ok. Those process are
+    created by the maestro. At the creation they all share the same
+    segment data. And later, SMPI process are initialiazed with their
+    own data segment.    
+
+    I checked, the mpi examples link statically the libstarpu.
     
+
+    After discussing the problem with Arnaud, we saw that the index of
+    the data segment is set up to late. Let's try call the
+    smpi_process_init function earlier like at the beginning of
+    _starpu_mpi_simgrid_init.
+
 *** DONE 2015-06-08 lundi [1/1]
-    - [X] Modification de l'initialisation côté StarPU: 
-      l'appel à MPI_Init_thread est effectué au début de
-      _starpu_mpi_initialize pour SimGrid. Car sinon la privatisation
-      du segment data est effectué trop tard.
-    - Segfault lors de l'exécution de cholesky:
+    - [X] Modification of initialization StarPU side: 
+      The call to MPI_Init_thread is made at the begginning of
+      _starpu_mpi_initialize. Because, privatization of the segment
+      data is activated too late.
+    - Segfault when running cholesky test:
       Rapport valgrind:
       #+BEGIN_EXAMPLE
       ==24054== Invalid read of size 4
@@ -1892,7 +1841,7 @@
       #+END_EXAMPLE
 *** DONE 2015-06-09 mardi [1/1]
     - SegFault(suite):
-      - Invalid reads trouvés par valgrind:
+      - Invalid reads found by valgrind:
         #+BEGIN_EXAMPLE
         ==29290== Invalid read of size 4
         ==29290==    at 0x582583F: smpi_process_index (smpi_global.c:245)
@@ -1928,7 +1877,7 @@
         ==29290==    by 0x569DE10: smx_ctx_raw_wrapper (smx_context_raw.c:388)
         ==29290==  Address 0x0 is not stack'd, malloc'd or (recently) free'd        
         #+END_EXAMPLE
-      - Analyse du premier invalid read:
+      - Analysis of the first invalid read:
         #+BEGIN_EXAMPLE
         ==29290== Invalid read of size 4
         ==29290==    at 0x582583F: smpi_process_index (smpi_global.c:245)
@@ -1972,38 +1921,26 @@
         mon avis le maestro ne devrait pas avoir le même index.
         Que se passe t-il pour le maestro si la privatisation est
         activé? Est-ce que c'est prévu?
-      - Comment faire pour qu'au process n'est le même segment data
-        que le maestro:
-        Le process maestro n'est pas créé avec
-        SIMIX_process_create, et n'est pas comptabilisé avec 
-        SIMIX_process_count.
-        - Passage du segment_index du maestro à -1. Apparemment cela
-          ne change rien, ce qui est normal si ne maestro n'utilise
-          pas de segment data virtuel...
-    - [X] Vérifier comment fonctionne le mécanisme de segment
-      virtuel (changement de contexte). Est-ce que le maestro
-      utilise un segment virtuel? 
-      Apparement aucun smpi_switch_segment_data n'est effectuée pour
-      le maestro.
-      MSG_process_get_data() != SIMIX_process_get_data() ?
-      Privatisation pas correct?
+    - [X] Check how work the virtual segment mecanism (context
+      switch). Does the maestro use a virtual segment?
+      The answer is no, no smpi_switch_segment_data is call by the maestro.
+
 *** DONE 2015-06-11 jeudi [1/1]
-    Dans smpi_process_init on utilisait un index qui était égal au pid
-    -1 (il n'y avait pas d'héritage de segment data et chacun avait le
-    sien) mais j'imagine que maintenant, c'est le segment_index du
-    process que l'on veut utiliser la place. De plus j'ai déplacé
-    l'affectation du segment_index pour les process SMPI dans
-    SIMIX_process_create. 
+    In smpi_process_init we used an index which was equals to the
+    pid - 1 (there was no inheritage of the data segment and each
+    process had its own). But it is the segment_index we should use.
+    I also moved the affectation of the segment_index for SMPI_process
+    in SIMIX_process_create.
     
-    - [X] Vérification du segment data:
-      - A l'initialisation (smpi_initialize_global_memory_segments): 
-        - création d'un array pour faire correspondre les différents
-          process avec leur zone de mémoire virtuelle. 
-        - création d'une zone en mémoire(mmap)
-        - copie du segment data courant dans la zone.
-      - Au switch (smpi_really_switch_data_segment):
-        - Swap de segment data (mmap) 
-      - A coup de gdb, tout semble correct:
+    - [X] Verification of data segment:
+      - At the initialization (smpi_initialize_global_memory_segments): 
+        - creation of an array to store the mapping of each process of
+          their virtual memory. 
+        - creation of an area in memory(mmap)
+        - copy of the current data segment in this area.
+      - At the switch (smpi_really_switch_data_segment):
+        - Swap of data segment (mmap) 
+      - With gdb, all seems ok:
         #+BEGIN_EXAMPLE
         Breakpoint 2, smpi_really_switch_data_segment (dest=0) at /home/steven/Programmation/TER/starpu-simgrid/src/simgrid/src/smpi/smpi_bench.c:645
         645     }
@@ -2730,12 +2667,9 @@
 *** 2015-06-18 thursday [0/1]
 **** TODO Error in starpu_task_wait_for_all [0/1]
      This function is called at the end of the programm.
-     Dans StarPU un contexte sert en quelque sorte à regrouper des
-     tâches. Cette fonction va donc pour chaque contexte attendre la
-     fin des tâches. Le problème vient peut-être du fait qu'elle est
-     également appelé pour des processus SMPI.
-     starpu_pthread_getspecific doit-elle être utilisé avec des
-     process SMPI?
+     StarPU contexts are groups of task. 
+     This function wait the termination of task, the problem is maybe
+     that it is called by SMPI process.
 
     - [ ] SegFault surf_resource_get_properties ring_async_implicit
 ***** MSG_host_self on SIMIX_process
