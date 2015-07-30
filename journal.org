@@ -5185,18 +5185,32 @@
         stop only if SIMIX_process_self()->pid == 5 || SIMIX_process_self()->pid == 6
         breakpoint already hit 32 times
       #+END_EXAMPLE
-
+      Is there another way when a process wake up?
 *** 2015-07-24
 **** Specific variable used by SMPI process
      key: 1, 2 3
      - memory_node_key
 **** Key used by process "main"
      0 1 2 3
+*** 2015-07-29
+**** Managing commit
+     until:
+     - 379939c20ace07049bd168db376aea8e898a3ee7 (séparer définition)
+
 * Changes
   work in progress
 ** SimGrid
 *** Initialization 
+    Initialization of MSG in smpi_main by calling MSG_Init.
 *** Segment data management
+    SMPI process have their own data segment. MSG process inherit data
+    segment from their creator.
+    - Added field segment_index to the structure smx_process_t.
+    - The value of segment_index is set to pid - 1 if it is SMPI process,
+      and set to the creator's segment index if it is a MSG process
+      (during SIMIX_process_create).
+    - Using SMPI_switch_data_segment to change data segment each time
+      the process is re-scheduled (in SIMIX_process_yield).
 *** Many call to MPI_Init
     In order to be able to call MPI_Init multiple by a same process,
     now we just check if the smpi process was already initialized by
@@ -5204,12 +5218,17 @@
     already been done.  
 *** Rename simdata_process_t in msg_process_data_t    
 ** StarPU
-*** Initialization 
+*** Initialization
+    When using SimGrid initialization needs to be done as soon as
+    possible. To do so, MPI_Init_thread is called at the beggining of _starpu_mpi_initialize.
 *** Many call to MPI_Init.
     Skip the assert insuring that MPI_Init should be done by
     implicitly by StarPU.
 
 *** Double free of a shared argv
+    argv was shared between SMPI process and MSG "main" process and at
+    the end of the program when the garbage collector clean the
+    process's context argv was freed twice.
     We made a copy of the argv in _starpu_mpi_progress_thread_func
     before calling MSG_process_create_with_arguments.
 *** Data specific
