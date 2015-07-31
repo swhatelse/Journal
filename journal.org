@@ -5195,8 +5195,22 @@
 *** 2015-07-29
 **** Managing commit
      until:
-     - 379939c20ace07049bd168db376aea8e898a3ee7 (séparer définition)
-
+     - 8f32b4247c54cd3e2094b72aa179a2833b679a9b done
+       
+     - [X] Scripts
+       - [X] run_StarPU_SMPI.org from 6bae815e2f1ced30db3d33d7efdac6e8649c130a
+       - [X] run_bench_StarPU.sh
+       - [X] run_inject_StarPUSG.sh
+       - [X] flags_simgrid_starpu.sh from
+         6ec0ed030995f56c5aadd6fbc76a6f97fde22a4b 
+       - [X] flags_starpu.sh from
+         7f537b876c1f366345bcf42e49d0aa103fbbf937 
+       - [X] send.sh from c67432e9f0439d709af0db6cea1fbc1319bf2cde
+       - [X] prep_env.sh from 80d8f5f83cb0ab21c50380d87a97972c0ae3f1ff
+     - [ ] SimGrid Update
+     - [ ] Privatization
+     - [ ] Initialization
+     - [ ] Testcase
 * Changes
   work in progress
 ** SimGrid
